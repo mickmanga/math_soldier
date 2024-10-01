@@ -133,7 +133,7 @@ let transformedAlready = false;
 const REWARD_TIMEOUT_DURATION = 1000;
 const KILLED_ENEMY_REWARD = 30;
 
-let rewardStreak = 15;
+let rewardStreak = 1;
 
 let hardMode: boolean | null = false;
 
@@ -397,53 +397,143 @@ const Mike_memory = {
   ],
 };
 
-const MATHS_ARITHMETIC = {
-  title: "Arithmetic",
+const ALGEBRA_INTRO = {
+  title: "Algebra Introduction",
   good: [
-    new Answer("2+3=5", true),
-    new Answer("1+1=2", true),
-    new Answer("3+2=5", true),
-    new Answer("4+3=7", true),
-    new Answer("2+2=4", true),
-    new Answer("5+3=8", true),
-    new Answer("6+1=7", true),
-    new Answer("3+4=7", true),
-    new Answer("1+4=5", true),
-    new Answer("2+5=7", true),
-    new Answer("4+4=8", true),
-    new Answer("3+3=6", true),
-    new Answer("1+5=6", true),
-    new Answer("5+2=7", true),
-    new Answer("2+4=6", true),
-    new Answer("3+5=8", true),
-    new Answer("1+6=7", true),
-    new Answer("4+2=6", true),
-    new Answer("5+1=6", true),
-    new Answer("2+3=5", true),
+    new Answer("The equation 3x + 2 = 11 can be solved by first subtracting 2 from both sides to get 3x = 9, and then dividing by 3 to find that x = 3.", true),
+    new Answer("The factorization of the quadratic equation x^2 - 5x + 6 is (x - 2)(x - 3), because multiplying these factors back out gives the original expression.", true),
+    new Answer("To solve 2x + 5 = 17, first subtract 5 from both sides to get 2x = 12, and then divide both sides by 2 to get x = 6.", true),
+    new Answer("If x - 4 = 9, you can solve for x by adding 4 to both sides, which gives you the solution x = 13.", true),
+    new Answer("The equation 2x - 1 = 7 can be solved by adding 1 to both sides to get 2x = 8, then dividing by 2 to find that x = 4.", true),
+    new Answer("The degree of the polynomial 4x^3 + 2x is 3 because the highest exponent of the variable x is 3, making this a cubic polynomial.", true),
+    new Answer("The linear function f(x) = 2x + 3 has a slope of 2 and a y-intercept of 3, which means its graph is a straight line with a constant rate of change.", true),
+    new Answer("Using the distributive property, we know that (a + b)^2 expands to a^2 + 2ab + b^2, which can be verified by multiplying (a + b)(a + b).", true),
+    new Answer("When you add 5x and 3x, you combine the like terms to get 8x, because both terms have the same variable raised to the same power.", true),
+    new Answer("The expression (x + 4)(x - 4) is an example of the difference of squares, which simplifies to x^2 - 16 according to the formula a^2 - b^2 = (a + b)(a - b).", true),
+    new Answer("The quadratic expression x^2 - 9 is a difference of squares, which factors into (x + 3)(x - 3) because the square root of 9 is 3.", true),
+    new Answer("To solve the equation 2x + 4 = 10, first subtract 4 from both sides to get 2x = 6, then divide by 2 to find that x = 3.", true),
+    new Answer("A polynomial of degree 3, such as 4x^3 - 3x + 2, is called a cubic polynomial because the highest power of the variable x is 3.", true),
+    new Answer("In the linear equation y = mx + b, the value of m represents the slope of the line, which is the rate at which y changes with respect to x.", true),
+    new Answer("A quadratic function, such as f(x) = x^2, graphs as a parabola and is defined by having the highest power of x being 2.", true),
+    new Answer("The quadratic expression x^2 + 2x + 1 can be factored as (x + 1)^2 because it represents a perfect square trinomial.", true),
+    new Answer("The greatest common factor (GCF) of 12x and 8 is 4, because 4 is the largest number that divides evenly into both 12 and 8.", true),
+    new Answer("To solve the system of equations 2x + 3y = 12 and x - y = 2, you can use substitution or elimination to find that x = 4 and y = 2.", true),
+    new Answer("The function f(x) = 3x + 5 is linear, meaning that as x increases by 1, f(x) increases by 3. The graph of this function is a straight line with a slope of 3.", true),
+    new Answer("The solution to the equation 5x = 15 is x = 3, which is found by dividing both sides of the equation by 5 to isolate x.", true),
+    new Answer("When solving for x in the equation (x + 2)(x - 5) = 0, the solutions are x = -2 and x = 5, because these values make each factor equal to zero.", true)
   ],
   bad: [
-    new Answer("2+3=6", false),
-    new Answer("1+1=3", false),
-    new Answer("3+2=6", false),
-    new Answer("4+3=6", false),
-    new Answer("2+2=5", false),
-    new Answer("5+3=9", false),
-    new Answer("6+1=8", false),
-    new Answer("3+4=8", false),
-    new Answer("1+4=6", false),
-    new Answer("2+5=8", false),
-    new Answer("4+4=9", false),
-    new Answer("3+3=7", false),
-    new Answer("1+5=7", false),
-    new Answer("5+2=8", false),
-    new Answer("2+4=7", false),
-    new Answer("3+5=9", false),
-    new Answer("1+6=8", false),
-    new Answer("4+2=7", false),
-    new Answer("5+1=7", false),
-    new Answer("2+3=4", false),
+    new Answer("The equation 3x + 2 = 11 can be solved by dividing both sides by 3 first, then subtracting 2 to get x = 2.", false),
+    new Answer("The factorization of x^2 - 5x + 6 is (x + 2)(x + 3), because adding 2 and 3 gives 5.", false),
+    new Answer("If x - 4 = 9, the solution is x = 5 because 9 minus 4 equals 5.", false),
+    new Answer("In the polynomial 4x^3 + 2x, the degree is 2 because the highest variable term is 2x.", false),
+    new Answer("The linear function f(x) = 2x + 3 has a slope of 3 and y-intercept of 2, which means the slope is always the second number.", false),
+    new Answer("(a + b)^2 equals a^2 + b^2 because you simply square each term inside the parentheses individually.", false),
+    new Answer("When you add 5x and 3x, you get 5x + 3x, because they are different terms that cannot be combined.", false),
+    new Answer("The expression (x + 4)(x - 4) simplifies to x^2 + 16 because you add the terms together.", false),
+    new Answer("The solution to the equation 2x + 4 = 10 is x = 8, because dividing by 2 gives you 8.", false),
+    new Answer("In the equation y = mx + b, b represents the slope of the line because it comes after the x term.", false),
+    new Answer("A quadratic function like f(x) = x^2 has no slope, because it is a horizontal line.", false),
+    new Answer("The greatest common factor of 12x and 8 is 2, because 2 divides both 12 and 8 evenly.", false),
+    new Answer("The system of equations 2x + 3y = 12 and x - y = 2 can be solved by adding both equations to get x + y = 14.", false),
+    new Answer("The solution to 5x = 15 is x = 5, because dividing 15 by 5 gives you 5.", false),
+    new Answer("When solving (x + 2)(x - 5) = 0, there is only one solution, x = 0, because multiplying them gives zero.", false),
+    new Answer("In the equation x^2 - 9 = 0, there are no solutions because there is no number that makes x^2 equal to 9.", false),
+    new Answer("To solve the equation 3x + 5 = 20, you can subtract 5 from 20 to get x = 15.", false),
+    new Answer("The function f(x) = 2x + 3 is not linear because it involves adding 3 to the x term.", false),
+    new Answer("In a quadratic function like f(x) = x^2 + 3x, the graph is always a straight line because it contains only one variable.", false)
+  ]
+};
+
+const AUTHOR_INFO = {
+  title: "About the Author - David C. Lay",
+  good: [
+    new Answer("David C. Lay holds a B.A. from Aurora University and an M.A. and Ph.D. from UCLA.", true),
+    new Answer("David Lay has been an educator and research mathematician since 1966.", true),
+    new Answer("He has published more than 30 research articles on functional analysis and linear algebra.", true),
+    new Answer("David Lay is a founding member of the NSF-sponsored Linear Algebra Curriculum Study Group.", true),
+    new Answer("He received the title of Distinguished Scholar–Teacher of the University of Maryland in 1996.", true),
+    new Answer("In 1994, he was awarded for Distinguished College or University Teaching of Mathematics by the Mathematical Association of America.", true),
+    new Answer("David Lay has served as a visiting professor at the University of Kaiserslautern, Germany.", true),
+    new Answer("He is a member of the American Mathematical Society and the International Linear Algebra Society.", true),
+    new Answer("David Lay has co-authored several mathematics texts, including 'Introduction to Functional Analysis.'", true),
+    new Answer("He has contributed to modernizing the linear algebra curriculum.", true),
+    new Answer("David Lay has been an educator mostly at the University of Maryland, College Park.", true),
+    new Answer("He has also worked at the Free University in Amsterdam.", true),
+    new Answer("David Lay has been involved in the Association of Christians in the Mathematical Sciences since 1992.", true),
+    new Answer("He has received four university awards for teaching excellence.", true),
+    new Answer("David Lay has served on the national board of the Association of Christians in the Mathematical Sciences.", true)
+  ],
+  bad: [
+    new Answer("David C. Lay holds a B.A. from Yale University and an M.A. from Harvard University.", false),
+    new Answer("He has published over 100 research articles on number theory.", false),
+    new Answer("David Lay has never been a professor at any university.", false),
+    new Answer("He was awarded the title of Distinguished Scholar–Teacher of Harvard University in 1996.", false),
+    new Answer("David Lay has no involvement with any mathematics societies.", false),
+    new Answer("He has only taught mathematics since 1990.", false),
+    new Answer("David Lay is known for his work exclusively in geometry.", false),
+    new Answer("He received the Outstanding Alumnus award from Stanford University.", false),
+    new Answer("David Lay is a founding member of the National Mathematics Society.", false),
+    new Answer("He has never published any research articles on linear algebra.", false),
+    new Answer("David Lay has only worked in the field of applied mathematics.", false),
+    new Answer("He has not been recognized for his teaching excellence at any institution.", false),
+    new Answer("David Lay served as a visiting professor in the United Kingdom only.", false),
+    new Answer("He has authored a textbook solely on calculus.", false),
+    new Answer("David Lay's contributions are limited to the field of statistics.", false)
+  ]
+};
+
+
+const MATHS_ARITHMETIC= { 
+  title: "Advanced Arithmetic",
+  good: [
+    new Answer("12 + 15 = 27", true),
+    new Answer("24 + 36 = 60", true),
+    new Answer("45 - 18 = 27", true),
+    new Answer("30 / 5 = 6", true),
+    new Answer("7 * 8 = 56", true),
+    new Answer("18 + 12 = 30", true),
+    new Answer("50 - 22 = 28", true),
+    new Answer("15 * 3 = 45", true),
+    new Answer("100 / 4 = 25", true),
+    new Answer("32 - 14 = 18", true),
+    new Answer("9 + 16 = 25", true),
+    new Answer("14 * 2 = 28", true),
+    new Answer("36 / 6 = 6", true),
+    new Answer("27 - 9 = 18", true),
+    new Answer("8 * 7 = 56", true),
+    new Answer("64 / 8 = 8", true),
+    new Answer("11 + 29 = 40", true),
+    new Answer("21 + 34 = 55", true),
+    new Answer("90 - 45 = 45", true),
+    new Answer("5 * 6 = 30", true),
+    new Answer("8 + 37 = 45", true),
+  ],
+  bad: [
+    new Answer("12 + 15 = 30", false),
+    new Answer("24 + 36 = 50", false),
+    new Answer("45 - 18 = 20", false),
+    new Answer("30 / 5 = 5", false),
+    new Answer("7 * 8 = 54", false),
+    new Answer("18 + 12 = 40", false),
+    new Answer("50 - 22 = 20", false),
+    new Answer("15 * 3 = 50", false),
+    new Answer("100 / 4 = 15", false),
+    new Answer("32 - 14 = 25", false),
+    new Answer("9 + 16 = 20", false),
+    new Answer("14 * 2 = 30", false),
+    new Answer("36 / 6 = 5", false),
+    new Answer("27 - 9 = 15", false),
+    new Answer("8 * 7 = 60", false),
+    new Answer("64 / 8 = 10", false),
+    new Answer("11 + 29 = 50", false),
+    new Answer("21 + 34 = 60", false),
+    new Answer("90 - 45 = 50", false),
+    new Answer("5 * 6 = 25", false),
+    new Answer("8 + 37 = 50", false),
   ],
 };
+
 
 const MATHS_MEDIUM = {
   title: "Additions",
@@ -531,7 +621,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? STATS : MATHS_ARITHMETIC);
+    defineCurrentSubject(hardMode ? AUTHOR_INFO : AUTHOR_INFO);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -1017,6 +1107,62 @@ const moveCamera = (
 
   requestAnimationFrame(() => moveCamera(direction, 0, currentFrameTimeStamp));
 };
+const ALGEBRA_INTRO_2 = {
+  title: "Algebra Basics",
+  good: [
+    new Answer("A variable is a symbol for an unknown value", true),
+    new Answer("The graph of a quadratic function is a parabola", true),
+    new Answer("A constant is a number that doesn’t change", true),
+    new Answer("A coefficient is a number multiplying a variable", true),
+    new Answer("An equation shows two expressions are equal", true),
+    new Answer("A term is a part of an expression separated by + or -", true),
+    new Answer("Like terms have the same variable and power", true),
+    new Answer("A polynomial is made of terms combined by + or -", true),
+    new Answer("A monomial has one term", true),
+    new Answer("A binomial has two terms", true),
+    new Answer("A trinomial has three terms", true),
+    new Answer("The degree of a polynomial is the highest exponent", true),
+    new Answer("Factoring is rewriting an expression as products", true),
+    new Answer("Linear equations have the form ax + b = c", true),
+    new Answer("A function relates each input to one output", true),
+    new Answer("Quadratic equations have the form ax^2 + bx + c = 0", true),
+    new Answer("Distributive property: a(b + c) = ab + ac", true),
+    new Answer("The zero-product property: if ab = 0, then a = 0 or b = 0", true),
+    new Answer("An inequality compares two expressions", true),
+    new Answer("An exponent tells how many times to multiply a number by itself", true),
+    new Answer("A solution is a value that makes an equation true", true),
+    new Answer("A system of equations has more than one equation", true),
+    new Answer("The slope of a line is rise over run", true),
+    new Answer("Parallel lines have the same slope", true),
+  ],
+  bad: [
+    new Answer("A variable is a constant number", false),
+    new Answer("The graph of a linear expression is V shaped", false),
+    new Answer("A constant can change", false),
+    new Answer("A coefficient divides a variable", false),
+    new Answer("An equation only has one side", false),
+    new Answer("A term has to include two variables", false),
+    new Answer("Like terms have different variables", false),
+    new Answer("A polynomial has only one term", false),
+    new Answer("A monomial has two terms", false),
+    new Answer("A binomial has three terms", false),
+    new Answer("A trinomial has four terms", false),
+    new Answer("The degree of a polynomial is the number of terms", false),
+    new Answer("Factoring adds terms together", false),
+    new Answer("Linear equations always have a squared variable", false),
+    new Answer("A function can have multiple outputs for one input", false),
+    new Answer("Quadratic equations have no exponents", false),
+    new Answer("Distributive property is about dividing terms", false),
+    new Answer("Zero-product property applies to addition", false),
+    new Answer("An inequality always has an equal sign", false),
+    new Answer("An exponent decreases a number", false),
+    new Answer("A solution is any random number", false),
+    new Answer("A system of equations only has one equation", false),
+    new Answer("The slope of a line is horizontal distance", false),
+    new Answer("Parallel lines intersect at one point", false),
+  ]
+};
+
 
 export const launchAnimationAndDeclareItLaunched = (
   characterElement: HTMLImageElement,
@@ -1426,12 +1572,12 @@ const moveEnemy = (
 
   enemy.element.style.left = `${Math.round(
     enemy.element.getBoundingClientRect().left -
-      diff * (hardMode ? 0.33 * hardEnemyMoveRatio : 1)
+      diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
   )}px`;
 
   if (hardMode) {
     enemyViewPoint.style.left = `${Math.round(
-      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.33 : 1)
+      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1)
     )}px`;
   }
 
@@ -2318,7 +2464,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? STATS : MATHS_ARITHMETIC);
+  defineCurrentSubject(hardMode ? AUTHOR_INFO : AUTHOR_INFO);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {
@@ -2347,7 +2493,7 @@ const createGameAccordingToMode = () => {
     hardMode ? "hard_epic_audio" : "epic_audio"
   )! as HTMLAudioElement;
 
-  epicAudio.volume = hardMode ? 1 : 0.22;
+  epicAudio.volume = hardMode ? 1 : 0;
 };
 
 const launchHardModeToggle = () => {
