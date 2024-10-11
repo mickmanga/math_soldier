@@ -90,7 +90,7 @@
   runAudio.volume = 0.7;
   var currentSubject = null;
   var currentSubjectTotal = 0;
-  var swordReach = window.innerWidth * 0.3;
+  var swordReach = window.innerWidth * 0.6;
   var gameLaunched = false;
   var TRANSFORMED_BONUS_RATIO = 1;
   var REWARD_UNIT = 1;
@@ -107,7 +107,7 @@
   var heroHurt = false;
   var heroIsAlive = true;
   var lifePoints = { max: 4, value: 4 };
-  var INVISIBILITY_DURATION_IN_MILLISECONDS = 600;
+  var INVISIBILITY_DURATION_IN_MILLISECONDS = 2e3;
   var invisible = false;
   var ennemiesOnScreen = [];
   var enemiesComingTimeout = null;
@@ -386,6 +386,44 @@
       new Answer("David Lay's contributions are limited to the field of statistics.", false)
     ]
   };
+  var LINEAR_ALGEBRA_BASICS = {
+    title: "Understanding Lines and Intercepts",
+    good: [
+      new Answer("The y-intercept is where a line crosses the vertical axis (the y-axis).", true),
+      new Answer("The slope tells you how steep a line is, describing how much it rises or falls as you move along the x-axis.", true),
+      new Answer("A two-variable equation creates a straight line when graphed.", true),
+      new Answer("To find the y-intercept, set the x-variable to 0 and see where the line meets the y-axis.", true),
+      new Answer("In slope-intercept form, the y-intercept is the number at the end (without an x).", true),
+      new Answer("The slope is the number in front of x and shows how the line rises or falls as you move to the right.", true),
+      new Answer("A slope of 0 means the line is flat and doesn\u2019t rise or fall.", true),
+      new Answer("If the y-intercept is positive, the line crosses above the origin.", true),
+      new Answer("A negative slope means the line falls as you move to the right.", true),
+      new Answer("When x is zero, the value of y gives you the y-intercept.", true),
+      new Answer("Linear equations describe straight lines because the variables have no exponents.", true),
+      new Answer("The slope can be thought of as rise over run, describing how much y changes for each change in x.", true),
+      new Answer("A slope of 1 means the line rises one unit for each unit you move to the right.", true),
+      new Answer("The y-intercept is the point (0, b) in the equation y = mx + b.", true),
+      new Answer("The slope can be found by picking two points on the line and dividing the change in y by the change in x.", true)
+    ],
+    bad: [
+      new Answer("The y-intercept is where the line crosses the x-axis.", false),
+      new Answer("A two-variable equation always creates a curve, like a parabola.", false),
+      new Answer("The slope only tells you where the line starts, not how it moves.", false),
+      new Answer("The y-intercept can only be found by solving for x, not by looking at the equation.", false),
+      new Answer("The slope is always 1, and all lines are equally steep.", false),
+      new Answer("In slope-intercept form, the y-intercept is always the number attached to x.", false),
+      new Answer("A negative y-intercept means the line never crosses the y-axis.", false),
+      new Answer("The y-intercept changes based on where the line crosses the x-axis.", false),
+      new Answer("A slope of zero means the line falls straight down.", false),
+      new Answer("The y-intercept cannot be found from a graph.", false),
+      new Answer("The slope is measured by how high the line starts.", false),
+      new Answer("If the slope is negative, the line doesn\u2019t cross the y-axis.", false),
+      new Answer("The y-intercept is always a positive number.", false),
+      new Answer("All lines have the same y-intercept, regardless of the equation.", false),
+      new Answer("The slope only matters for vertical lines, not diagonal ones.", false),
+      new Answer("A two-variable equation can describe any shape, even circles and triangles.", false)
+    ]
+  };
   var MATHS_ARITHMETIC = {
     title: "Advanced Arithmetic",
     good: [
@@ -517,7 +555,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? AUTHOR_INFO : AUTHOR_INFO);
+      defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -1696,7 +1734,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? AUTHOR_INFO : AUTHOR_INFO);
+    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASIS : LINEAR_ALGEBRA_BASIS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {
@@ -1718,7 +1756,7 @@
     epicAudio = document.getElementById(
       hardMode ? "hard_epic_audio" : "epic_audio"
     );
-    epicAudio.volume = hardMode ? 1 : 0;
+    epicAudio.volume = hardMode ? 1 : 1;
   };
   var launchHardModeToggle = () => {
     const modeParameter = getUrlParameter("mode");
@@ -1743,9 +1781,7 @@
   };
   var launchGame = () => {
     runAudio.play();
-    if (!hardMode) {
-      epicAudio.play();
-    }
+    epicAudio.play();
     gameLaunched = true;
     launchRun();
     triggerOpponentsApparition();
