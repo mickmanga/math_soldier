@@ -1,23 +1,21 @@
-const app = require("express")();
-const https = require("https");
-const express = require("express");
-const db = require("./db.js")
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const userRoutes = require('./routes/router.js');
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Change '*' to your domain for better security
-  res.header("Access-Control-Allow-Methods", "GET, POST");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+const app = express();
+app.use(bodyParser.json());
 
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("thanks");
-});
-
-app.get("/ok", (req, res) => {
-  res.send("there you go");
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/memory_soldier', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
+.then(() => console.log('MongoDB connected'))
+.catch((err) => console.log(err));
 
-app.listen(3000, () => console.log("app running"));
+// Use the user routes
+app.use('/api/users', userRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

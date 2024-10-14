@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const LearningSchema = require('./Learning');  // Import Learning schema
+const LearningSchema = require('./learning.js');  // Import Learning schema
 
 // Map Schema
 const MapSchema = new Schema({
