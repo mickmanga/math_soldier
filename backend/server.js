@@ -1,6 +1,7 @@
 const app = require("express")();
 const https = require("https");
 const express = require("express");
+const db = require("./db.js")
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Change '*' to your domain for better security
