@@ -1,0 +1,26 @@
+.characterImg {
+    height: 100%;
+    width: auto;
+}
+
+#hero_container {
+    position: absolute;
+    left: 8vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 7.5vh;
+    width: 10vw;
+    top: 85vh;
+}
+
+#master_container {
+   position: absolute;
+   left: 85vw;
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+   height: 10vh;
+   width: 10vw;
+   top: 88vh;
+}
