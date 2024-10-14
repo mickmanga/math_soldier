@@ -2426,7 +2426,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASIS : LINEAR_ALGEBRA_BASIS);
+  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {

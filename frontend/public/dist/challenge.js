@@ -473,84 +473,6 @@
       new Answer("8 + 37 = 50", false)
     ]
   };
-  var MATHS_MEDIUM = {
-    title: "Additions",
-    good: [
-      new Answer("10+5=15", true),
-      new Answer("6X6=36", true),
-      new Answer("10X5+7=57", true),
-      new Answer("10+12=22", true),
-      new Answer("10-4=6", true),
-      new Answer("6x3=18", true),
-      new Answer("10-2=2x2x2", true),
-      new Answer("10X3=15x2", true),
-      new Answer("8+8=4X4", true),
-      new Answer("10X5=25X2", true),
-      new Answer("6x13=78", true),
-      new Answer("10+10.5=20.5", true),
-      new Answer("10X19+20=210", true),
-      new Answer("8+16=24", true),
-      new Answer("10+5=15", true),
-      new Answer("6X6=36", true),
-      new Answer("10X5+7=57", true),
-      new Answer("10+12=22", true),
-      new Answer("10-4=6", true),
-      new Answer("6x3=18", true),
-      new Answer("10-2=2x2x2", true),
-      new Answer("10X3=15x2", true),
-      new Answer("8+8=4X4", true),
-      new Answer("10X5=25X2", true),
-      new Answer("6x13=78", true),
-      new Answer("10+10.5=20.5", true),
-      new Answer("10X19+20=210", true),
-      new Answer("8+16=24", true),
-      new Answer("10+5=15", true),
-      new Answer("6X6=36", true),
-      new Answer("10X5+7=57", true),
-      new Answer("10+12=22", true),
-      new Answer("10-4=6", true),
-      new Answer("6x3=18", true),
-      new Answer("10-2=2x2x2", true),
-      new Answer("10X3=15x2", true),
-      new Answer("8+8=4X4", true),
-      new Answer("10X5=25X2", true),
-      new Answer("6x13=78", true),
-      new Answer("10+10.5=20.5", true),
-      new Answer("10X19+20=210", true),
-      new Answer("8+16=24", true),
-      new Answer("10+5=15", true),
-      new Answer("6X6=36", true),
-      new Answer("10X5+7=57", true),
-      new Answer("10+12=22", true),
-      new Answer("10-4=6", true),
-      new Answer("6x3=18", true),
-      new Answer("10-2=2x2x2", true),
-      new Answer("10X3=15x2", true),
-      new Answer("8+8=4X4", true),
-      new Answer("10X5=25X2", true),
-      new Answer("6x13=78", true),
-      new Answer("10+10.5=20.5", true),
-      new Answer("10X19+20=210", true),
-      new Answer("8+16=24", true)
-    ],
-    bad: [
-      new Answer("10+15=20", false),
-      new Answer("6X3=21", false),
-      new Answer("10x60=6000", false),
-      new Answer("12x12.5=250", false),
-      new Answer("15x2=20", false),
-      new Answer("6x4=20", false),
-      new Answer("10-5=20", false),
-      new Answer("100X2=400", false),
-      new Answer("8+22=40", false),
-      new Answer("10X3=1000/100", false),
-      new Answer("10X15=145", false),
-      new Answer("6x100=6000", false),
-      new Answer("10X10=1000", false),
-      new Answer("19-2.5 = 17.5", false),
-      new Answer("8+17=24", false)
-    ]
-  };
   var getNextAnswer = () => {
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
@@ -1760,7 +1682,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASIS : LINEAR_ALGEBRA_BASIS);
+    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {
