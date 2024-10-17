@@ -583,7 +583,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
+    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -2426,7 +2426,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
+  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {

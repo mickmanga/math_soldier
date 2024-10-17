@@ -1,0 +1,25 @@
+#mainContainer {
+    position: absolute;
+    top: 20%;
+    height: 60vh;
+    width: 60vw;
+    left: 20vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: purple;
+}
+
+#mainContainer div {
+    height: 80%;
+    width: 25%;
+    background: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.inactiveContainer {
+    opacity: 0.4;
+}

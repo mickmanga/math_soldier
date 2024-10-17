@@ -477,7 +477,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
+      defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -1682,7 +1682,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : LINEAR_ALGEBRA_BASICS);
+    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {

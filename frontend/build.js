@@ -11,7 +11,7 @@ build({
     path.join("src", "boss.ts"),
     path.join("src", "load.ts"),
     path.join("src", "login.ts"),
-
+    path.join("src", "learning.ts"),
   ],
   bundle: true,
   minify: false,

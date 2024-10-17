@@ -42,7 +42,7 @@
       const data = yield response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        window.location.href = "http://localhost:3001/challenge?mode=hard";
+        window.location.href = "http://localhost:3001/choice";
       } else {
         errorMessage.textContent = data.message;
       }

@@ -32,7 +32,7 @@ loginForm.addEventListener('submit', async (event) => {
         if (response.ok) {
             // Store the token (assuming JWT here)
             localStorage.setItem('token', data.token);
-            window.location.href = 'http://localhost:3001/challenge?mode=hard';  // Redirect to dashboard
+            window.location.href = 'http://localhost:3001/choice';  // Redirect to dashboard
         } else {
             errorMessage.textContent = data.message;
         }
