@@ -66,11 +66,11 @@
   function isPlainObject(obj) {
     if (typeof obj !== "object" || obj === null)
       return false;
-    let proto2 = obj;
-    while (Object.getPrototypeOf(proto2) !== null) {
-      proto2 = Object.getPrototypeOf(proto2);
+    let proto = obj;
+    while (Object.getPrototypeOf(proto) !== null) {
+      proto = Object.getPrototypeOf(proto);
     }
-    return Object.getPrototypeOf(obj) === proto2 || Object.getPrototypeOf(obj) === null;
+    return Object.getPrototypeOf(obj) === proto || Object.getPrototypeOf(obj) === null;
   }
   function miniKindOf(val) {
     if (val === void 0)
@@ -448,11 +448,11 @@
   function isPlainObject2(value) {
     if (!value || typeof value !== "object")
       return false;
-    const proto2 = getPrototypeOf(value);
-    if (proto2 === null) {
+    const proto = getPrototypeOf(value);
+    if (proto === null) {
       return true;
     }
-    const Ctor = Object.hasOwnProperty.call(proto2, "constructor") && proto2.constructor;
+    const Ctor = Object.hasOwnProperty.call(proto, "constructor") && proto.constructor;
     if (Ctor === Object)
       return true;
     return typeof Ctor == "function" && Function.toString.call(Ctor) === objectCtorString;
@@ -530,11 +530,11 @@
       }
       return Object.create(getPrototypeOf(base), descriptors);
     } else {
-      const proto2 = getPrototypeOf(base);
-      if (proto2 !== null && isPlain2) {
+      const proto = getPrototypeOf(base);
+      if (proto !== null && isPlain2) {
         return __spreadValues({}, base);
       }
-      const obj = Object.create(proto2);
+      const obj = Object.create(proto);
       return Object.assign(obj, base);
     }
   }
@@ -868,12 +868,12 @@
   function getDescriptorFromProto(source, prop) {
     if (!(prop in source))
       return void 0;
-    let proto2 = getPrototypeOf(source);
-    while (proto2) {
-      const desc = Object.getOwnPropertyDescriptor(proto2, prop);
+    let proto = getPrototypeOf(source);
+    while (proto) {
+      const desc = Object.getOwnPropertyDescriptor(proto, prop);
       if (desc)
         return desc;
-      proto2 = getPrototypeOf(proto2);
+      proto = getPrototypeOf(proto);
     }
     return void 0;
   }
@@ -1060,315 +1060,6 @@
   var createDraft = immer.createDraft.bind(immer);
   var finishDraft = immer.finishDraft.bind(immer);
 
-  // node_modules/reselect/dist/reselect.mjs
-  var runIdentityFunctionCheck = (resultFunc, inputSelectorsResults, outputSelectorResult) => {
-    if (inputSelectorsResults.length === 1 && inputSelectorsResults[0] === outputSelectorResult) {
-      let isInputSameAsOutput = false;
-      try {
-        const emptyObject = {};
-        if (resultFunc(emptyObject) === emptyObject)
-          isInputSameAsOutput = true;
-      } catch (e) {
-      }
-      if (isInputSameAsOutput) {
-        let stack = void 0;
-        try {
-          throw new Error();
-        } catch (e) {
-          ;
-          ({ stack } = e);
-        }
-        console.warn(
-          "The result function returned its own inputs without modification. e.g\n`createSelector([state => state.todos], todos => todos)`\nThis could lead to inefficient memoization and unnecessary re-renders.\nEnsure transformation logic is in the result function, and extraction logic is in the input selectors.",
-          { stack }
-        );
-      }
-    }
-  };
-  var runInputStabilityCheck = (inputSelectorResultsObject, options, inputSelectorArgs) => {
-    const { memoize, memoizeOptions } = options;
-    const { inputSelectorResults, inputSelectorResultsCopy } = inputSelectorResultsObject;
-    const createAnEmptyObject = memoize(() => ({}), ...memoizeOptions);
-    const areInputSelectorResultsEqual = createAnEmptyObject.apply(null, inputSelectorResults) === createAnEmptyObject.apply(null, inputSelectorResultsCopy);
-    if (!areInputSelectorResultsEqual) {
-      let stack = void 0;
-      try {
-        throw new Error();
-      } catch (e) {
-        ;
-        ({ stack } = e);
-      }
-      console.warn(
-        "An input selector returned a different result when passed same arguments.\nThis means your output selector will likely run more frequently than intended.\nAvoid returning a new reference inside your input selector, e.g.\n`createSelector([state => state.todos.map(todo => todo.id)], todoIds => todoIds.length)`",
-        {
-          arguments: inputSelectorArgs,
-          firstInputs: inputSelectorResults,
-          secondInputs: inputSelectorResultsCopy,
-          stack
-        }
-      );
-    }
-  };
-  var globalDevModeChecks = {
-    inputStabilityCheck: "once",
-    identityFunctionCheck: "once"
-  };
-  function assertIsFunction(func, errorMessage = `expected a function, instead received ${typeof func}`) {
-    if (typeof func !== "function") {
-      throw new TypeError(errorMessage);
-    }
-  }
-  function assertIsObject(object, errorMessage = `expected an object, instead received ${typeof object}`) {
-    if (typeof object !== "object") {
-      throw new TypeError(errorMessage);
-    }
-  }
-  function assertIsArrayOfFunctions(array, errorMessage = `expected all items to be functions, instead received the following types: `) {
-    if (!array.every((item) => typeof item === "function")) {
-      const itemTypes = array.map(
-        (item) => typeof item === "function" ? `function ${item.name || "unnamed"}()` : typeof item
-      ).join(", ");
-      throw new TypeError(`${errorMessage}[${itemTypes}]`);
-    }
-  }
-  var ensureIsArray = (item) => {
-    return Array.isArray(item) ? item : [item];
-  };
-  function getDependencies(createSelectorArgs) {
-    const dependencies = Array.isArray(createSelectorArgs[0]) ? createSelectorArgs[0] : createSelectorArgs;
-    assertIsArrayOfFunctions(
-      dependencies,
-      `createSelector expects all input-selectors to be functions, but received the following types: `
-    );
-    return dependencies;
-  }
-  function collectInputSelectorResults(dependencies, inputSelectorArgs) {
-    const inputSelectorResults = [];
-    const { length } = dependencies;
-    for (let i = 0; i < length; i++) {
-      inputSelectorResults.push(dependencies[i].apply(null, inputSelectorArgs));
-    }
-    return inputSelectorResults;
-  }
-  var getDevModeChecksExecutionInfo = (firstRun, devModeChecks) => {
-    const { identityFunctionCheck, inputStabilityCheck } = __spreadValues(__spreadValues({}, globalDevModeChecks), devModeChecks);
-    return {
-      identityFunctionCheck: {
-        shouldRun: identityFunctionCheck === "always" || identityFunctionCheck === "once" && firstRun,
-        run: runIdentityFunctionCheck
-      },
-      inputStabilityCheck: {
-        shouldRun: inputStabilityCheck === "always" || inputStabilityCheck === "once" && firstRun,
-        run: runInputStabilityCheck
-      }
-    };
-  };
-  var REDUX_PROXY_LABEL = Symbol();
-  var proto = Object.getPrototypeOf({});
-  var StrongRef = class {
-    constructor(value) {
-      this.value = value;
-    }
-    deref() {
-      return this.value;
-    }
-  };
-  var Ref = typeof WeakRef !== "undefined" ? WeakRef : StrongRef;
-  var UNTERMINATED = 0;
-  var TERMINATED = 1;
-  function createCacheNode() {
-    return {
-      s: UNTERMINATED,
-      v: void 0,
-      o: null,
-      p: null
-    };
-  }
-  function weakMapMemoize(func, options = {}) {
-    let fnNode = createCacheNode();
-    const { resultEqualityCheck } = options;
-    let lastResult;
-    let resultsCount = 0;
-    function memoized() {
-      var _a, _b;
-      let cacheNode = fnNode;
-      const { length } = arguments;
-      for (let i = 0, l = length; i < l; i++) {
-        const arg = arguments[i];
-        if (typeof arg === "function" || typeof arg === "object" && arg !== null) {
-          let objectCache = cacheNode.o;
-          if (objectCache === null) {
-            cacheNode.o = objectCache = /* @__PURE__ */ new WeakMap();
-          }
-          const objectNode = objectCache.get(arg);
-          if (objectNode === void 0) {
-            cacheNode = createCacheNode();
-            objectCache.set(arg, cacheNode);
-          } else {
-            cacheNode = objectNode;
-          }
-        } else {
-          let primitiveCache = cacheNode.p;
-          if (primitiveCache === null) {
-            cacheNode.p = primitiveCache = /* @__PURE__ */ new Map();
-          }
-          const primitiveNode = primitiveCache.get(arg);
-          if (primitiveNode === void 0) {
-            cacheNode = createCacheNode();
-            primitiveCache.set(arg, cacheNode);
-          } else {
-            cacheNode = primitiveNode;
-          }
-        }
-      }
-      const terminatedNode = cacheNode;
-      let result;
-      if (cacheNode.s === TERMINATED) {
-        result = cacheNode.v;
-      } else {
-        result = func.apply(null, arguments);
-        resultsCount++;
-        if (resultEqualityCheck) {
-          const lastResultValue = (_b = (_a = lastResult == null ? void 0 : lastResult.deref) == null ? void 0 : _a.call(lastResult)) != null ? _b : lastResult;
-          if (lastResultValue != null && resultEqualityCheck(lastResultValue, result)) {
-            result = lastResultValue;
-            resultsCount !== 0 && resultsCount--;
-          }
-          const needsWeakRef = typeof result === "object" && result !== null || typeof result === "function";
-          lastResult = needsWeakRef ? new Ref(result) : result;
-        }
-      }
-      terminatedNode.s = TERMINATED;
-      terminatedNode.v = result;
-      return result;
-    }
-    memoized.clearCache = () => {
-      fnNode = createCacheNode();
-      memoized.resetResultsCount();
-    };
-    memoized.resultsCount = () => resultsCount;
-    memoized.resetResultsCount = () => {
-      resultsCount = 0;
-    };
-    return memoized;
-  }
-  function createSelectorCreator(memoizeOrOptions, ...memoizeOptionsFromArgs) {
-    const createSelectorCreatorOptions = typeof memoizeOrOptions === "function" ? {
-      memoize: memoizeOrOptions,
-      memoizeOptions: memoizeOptionsFromArgs
-    } : memoizeOrOptions;
-    const createSelector2 = (...createSelectorArgs) => {
-      let recomputations = 0;
-      let dependencyRecomputations = 0;
-      let lastResult;
-      let directlyPassedOptions = {};
-      let resultFunc = createSelectorArgs.pop();
-      if (typeof resultFunc === "object") {
-        directlyPassedOptions = resultFunc;
-        resultFunc = createSelectorArgs.pop();
-      }
-      assertIsFunction(
-        resultFunc,
-        `createSelector expects an output function after the inputs, but received: [${typeof resultFunc}]`
-      );
-      const combinedOptions = __spreadValues(__spreadValues({}, createSelectorCreatorOptions), directlyPassedOptions);
-      const {
-        memoize,
-        memoizeOptions = [],
-        argsMemoize = weakMapMemoize,
-        argsMemoizeOptions = [],
-        devModeChecks = {}
-      } = combinedOptions;
-      const finalMemoizeOptions = ensureIsArray(memoizeOptions);
-      const finalArgsMemoizeOptions = ensureIsArray(argsMemoizeOptions);
-      const dependencies = getDependencies(createSelectorArgs);
-      const memoizedResultFunc = memoize(function recomputationWrapper() {
-        recomputations++;
-        return resultFunc.apply(
-          null,
-          arguments
-        );
-      }, ...finalMemoizeOptions);
-      let firstRun = true;
-      const selector = argsMemoize(function dependenciesChecker() {
-        dependencyRecomputations++;
-        const inputSelectorResults = collectInputSelectorResults(
-          dependencies,
-          arguments
-        );
-        lastResult = memoizedResultFunc.apply(null, inputSelectorResults);
-        if (true) {
-          const { identityFunctionCheck, inputStabilityCheck } = getDevModeChecksExecutionInfo(firstRun, devModeChecks);
-          if (identityFunctionCheck.shouldRun) {
-            identityFunctionCheck.run(
-              resultFunc,
-              inputSelectorResults,
-              lastResult
-            );
-          }
-          if (inputStabilityCheck.shouldRun) {
-            const inputSelectorResultsCopy = collectInputSelectorResults(
-              dependencies,
-              arguments
-            );
-            inputStabilityCheck.run(
-              { inputSelectorResults, inputSelectorResultsCopy },
-              { memoize, memoizeOptions: finalMemoizeOptions },
-              arguments
-            );
-          }
-          if (firstRun)
-            firstRun = false;
-        }
-        return lastResult;
-      }, ...finalArgsMemoizeOptions);
-      return Object.assign(selector, {
-        resultFunc,
-        memoizedResultFunc,
-        dependencies,
-        dependencyRecomputations: () => dependencyRecomputations,
-        resetDependencyRecomputations: () => {
-          dependencyRecomputations = 0;
-        },
-        lastResult: () => lastResult,
-        recomputations: () => recomputations,
-        resetRecomputations: () => {
-          recomputations = 0;
-        },
-        memoize,
-        argsMemoize
-      });
-    };
-    Object.assign(createSelector2, {
-      withTypes: () => createSelector2
-    });
-    return createSelector2;
-  }
-  var createSelector = /* @__PURE__ */ createSelectorCreator(weakMapMemoize);
-  var createStructuredSelector = Object.assign(
-    (inputSelectorsObject, selectorCreator = createSelector) => {
-      assertIsObject(
-        inputSelectorsObject,
-        `createStructuredSelector expects first argument to be an object where each property is a selector, instead received a ${typeof inputSelectorsObject}`
-      );
-      const inputSelectorKeys = Object.keys(inputSelectorsObject);
-      const dependencies = inputSelectorKeys.map(
-        (key) => inputSelectorsObject[key]
-      );
-      const structuredSelector = selectorCreator(
-        dependencies,
-        (...inputSelectorResults) => {
-          return inputSelectorResults.reduce((composition, value, index) => {
-            composition[inputSelectorKeys[index]] = value;
-            return composition;
-          }, {});
-        }
-      );
-      return structuredSelector;
-    },
-    { withTypes: () => createStructuredSelector }
-  );
-
   // node_modules/redux-thunk/dist/redux-thunk.mjs
   function createThunkMiddleware(extraArgument) {
     const middleware = ({ dispatch, getState }) => (next) => (action) => {
@@ -1383,24 +1074,9 @@
   var withExtraArgument = createThunkMiddleware;
 
   // node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs
-  var createDraftSafeSelectorCreator = (...args) => {
-    const createSelector2 = createSelectorCreator(...args);
-    const createDraftSafeSelector2 = Object.assign((...args2) => {
-      const selector = createSelector2(...args2);
-      const wrappedSelector = (value, ...rest) => selector(isDraft(value) ? current(value) : value, ...rest);
-      Object.assign(wrappedSelector, selector);
-      return wrappedSelector;
-    }, {
-      withTypes: () => createDraftSafeSelector2
-    });
-    return createDraftSafeSelector2;
-  };
-  var createDraftSafeSelector = createDraftSafeSelectorCreator(weakMapMemoize);
   var composeWithDevTools = typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : function() {
-    if (arguments.length === 0)
-      return void 0;
-    if (typeof arguments[0] === "object")
-      return compose;
+    if (arguments.length === 0) return void 0;
+    if (typeof arguments[0] === "object") return compose;
     return compose.apply(null, arguments);
   };
   var devToolsEnhancer = typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__ : function() {
@@ -1513,8 +1189,7 @@ It is disabled in production builds, so you don't need to worry about that.`);
       }
       return value;
     }
-    if (!handler.insert)
-      throw new Error(false ? formatProdErrorMessage(10) : "No insert provided for key not already in map");
+    if (!handler.insert) throw new Error(false ? formatProdErrorMessage(10) : "No insert provided for key not already in map");
     const inserted = handler.insert(key, map);
     map.set(key, inserted);
     return inserted;
@@ -1599,21 +1274,17 @@ It is disabled in production builds, so you don't need to worry about that.`);
         return JSON.stringify(obj, getSerialize2(serializer, decycler), indent);
       }, getSerialize2 = function(serializer, decycler) {
         let stack = [], keys = [];
-        if (!decycler)
-          decycler = function(_, value) {
-            if (stack[0] === value)
-              return "[Circular ~]";
-            return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]";
-          };
+        if (!decycler) decycler = function(_, value) {
+          if (stack[0] === value) return "[Circular ~]";
+          return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]";
+        };
         return function(key, value) {
           if (stack.length > 0) {
             var thisPos = stack.indexOf(this);
             ~thisPos ? stack.splice(thisPos + 1) : stack.push(this);
             ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key);
-            if (~stack.indexOf(value))
-              value = decycler.call(this, key, value);
-          } else
-            stack.push(value);
+            if (~stack.indexOf(value)) value = decycler.call(this, key, value);
+          } else stack.push(value);
           return serializer == null ? value : serializer.call(this, key, value);
         };
       };
@@ -1670,8 +1341,7 @@ It is disabled in production builds, so you don't need to worry about that.`);
     if (typeof value !== "object" || value === null) {
       return false;
     }
-    if (cache == null ? void 0 : cache.has(value))
-      return false;
+    if (cache == null ? void 0 : cache.has(value)) return false;
     const entries = getEntries != null ? getEntries(value) : Object.entries(value);
     const hasIgnoredPaths = ignoredPaths.length > 0;
     for (const [key, nestedValue] of entries) {
@@ -1700,18 +1370,14 @@ It is disabled in production builds, so you don't need to worry about that.`);
         }
       }
     }
-    if (cache && isNestedFrozen(value))
-      cache.add(value);
+    if (cache && isNestedFrozen(value)) cache.add(value);
     return false;
   }
   function isNestedFrozen(value) {
-    if (!Object.isFrozen(value))
-      return false;
+    if (!Object.isFrozen(value)) return false;
     for (const nestedValue of Object.values(value)) {
-      if (typeof nestedValue !== "object" || nestedValue === null)
-        continue;
-      if (!isNestedFrozen(nestedValue))
-        return false;
+      if (typeof nestedValue !== "object" || nestedValue === null) continue;
+      if (!isNestedFrozen(nestedValue)) return false;
     }
     return true;
   }
@@ -1877,7 +1543,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     return enhancerArray;
   };
-  var IS_PRODUCTION = false;
   function configureStore(options) {
     const getDefaultMiddleware = buildGetDefaultMiddleware();
     const {
@@ -1895,41 +1560,41 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     } else {
       throw new Error(false ? formatProdErrorMessage(1) : "`reducer` is a required argument, and must be a function or an object of functions that can be passed to combineReducers");
     }
-    if (!IS_PRODUCTION && middleware && typeof middleware !== "function") {
+    if (middleware && typeof middleware !== "function") {
       throw new Error(false ? formatProdErrorMessage(2) : "`middleware` field must be a callback");
     }
     let finalMiddleware;
     if (typeof middleware === "function") {
       finalMiddleware = middleware(getDefaultMiddleware);
-      if (!IS_PRODUCTION && !Array.isArray(finalMiddleware)) {
+      if (!Array.isArray(finalMiddleware)) {
         throw new Error(false ? formatProdErrorMessage(3) : "when using a middleware builder function, an array of middleware must be returned");
       }
     } else {
       finalMiddleware = getDefaultMiddleware();
     }
-    if (!IS_PRODUCTION && finalMiddleware.some((item) => typeof item !== "function")) {
+    if (finalMiddleware.some((item) => typeof item !== "function")) {
       throw new Error(false ? formatProdErrorMessage(4) : "each middleware provided to configureStore must be a function");
     }
     let finalCompose = compose;
     if (devTools) {
       finalCompose = composeWithDevTools(__spreadValues({
         // Enable capture of stack traces for dispatched Redux actions
-        trace: !IS_PRODUCTION
+        trace: true
       }, typeof devTools === "object" && devTools));
     }
     const middlewareEnhancer = applyMiddleware(...finalMiddleware);
     const getDefaultEnhancers = buildGetDefaultEnhancers(middlewareEnhancer);
-    if (!IS_PRODUCTION && enhancers && typeof enhancers !== "function") {
+    if (enhancers && typeof enhancers !== "function") {
       throw new Error(false ? formatProdErrorMessage(5) : "`enhancers` field must be a callback");
     }
     let storeEnhancers = typeof enhancers === "function" ? enhancers(getDefaultEnhancers) : getDefaultEnhancers();
-    if (!IS_PRODUCTION && !Array.isArray(storeEnhancers)) {
+    if (!Array.isArray(storeEnhancers)) {
       throw new Error(false ? formatProdErrorMessage(6) : "`enhancers` callback must return an array");
     }
-    if (!IS_PRODUCTION && storeEnhancers.some((item) => typeof item !== "function")) {
+    if (storeEnhancers.some((item) => typeof item !== "function")) {
       throw new Error(false ? formatProdErrorMessage(7) : "each enhancer provided to configureStore must be a function");
     }
-    if (!IS_PRODUCTION && finalMiddleware.length && !storeEnhancers.includes(middlewareEnhancer)) {
+    if (finalMiddleware.length && !storeEnhancers.includes(middlewareEnhancer)) {
       console.error("middlewares were provided, but middleware enhancer was not included in final enhancers - make sure to call `getDefaultEnhancers`");
     }
     const composedEnhancer = finalCompose(...storeEnhancers);
@@ -2025,7 +1690,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               if (previousState === null) {
                 return previousState;
               }
-              throw new Error(false ? formatProdErrorMessage(9) : "A case reducer on a non-draftable value must not return undefined");
+              throw Error("A case reducer on a non-draftable value must not return undefined");
             }
             return result;
           } else {
@@ -2040,15 +1705,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     reducer.getInitialState = getInitialState;
     return reducer;
   }
-  var urlAlphabet = "ModuleSymbhasOwnPr-0123456789ABCDEFGHNRVfgctiUvz_KqYTJkLxpZXIjQW";
-  var nanoid = (size = 21) => {
-    let id = "";
-    let i = size;
-    while (i--) {
-      id += urlAlphabet[Math.random() * 64 | 0];
-    }
-    return id;
-  };
   var matches = (matcher, action) => {
     if (hasMatchFunction(matcher)) {
       return matcher.match(action);
@@ -2061,6 +1717,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return matchers.some((matcher) => matches(matcher, action));
     };
   }
+  var urlAlphabet = "ModuleSymbhasOwnPr-0123456789ABCDEFGHNRVfgctiUvz_KqYTJkLxpZXIjQW";
+  var nanoid = (size = 21) => {
+    let id = "";
+    let i = size;
+    while (i--) {
+      id += urlAlphabet[Math.random() * 64 | 0];
+    }
+    return id;
+  };
   var commonProperties = ["name", "message", "stack", "code"];
   var RejectWithValue = class {
     constructor(payload, meta) {
@@ -2342,13 +2007,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       const injectedSelectorCache = /* @__PURE__ */ new Map();
       let _reducer;
       function reducer(state, action) {
-        if (!_reducer)
-          _reducer = buildReducer();
+        if (!_reducer) _reducer = buildReducer();
         return _reducer(state, action);
       }
       function getInitialState() {
-        if (!_reducer)
-          _reducer = buildReducer();
+        if (!_reducer) _reducer = buildReducer();
         return _reducer.getInitialState();
       }
       function makeSelectorProps(reducerPath2, injected = false) {
@@ -2527,67 +2190,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var taskCompleted = `task-${completed}`;
   var listenerCancelled = `${listener}-${cancelled}`;
   var listenerCompleted = `${listener}-${completed}`;
-  var assertFunction = (func, expected) => {
-    if (typeof func !== "function") {
-      throw new Error(false ? formatProdErrorMessage(32) : `${expected} is not a function`);
-    }
-  };
   var {
     assign
   } = Object;
   var alm = "listenerMiddleware";
-  var getListenerEntryPropsFrom = (options) => {
-    let {
-      type,
-      actionCreator,
-      matcher,
-      predicate,
-      effect
-    } = options;
-    if (type) {
-      predicate = createAction(type).match;
-    } else if (actionCreator) {
-      type = actionCreator.type;
-      predicate = actionCreator.match;
-    } else if (matcher) {
-      predicate = matcher;
-    } else if (predicate) {
-    } else {
-      throw new Error(false ? formatProdErrorMessage(21) : "Creating or removing a listener requires one of the known fields for matching an action");
-    }
-    assertFunction(effect, "options.listener");
-    return {
-      predicate,
-      type,
-      effect
-    };
-  };
-  var createListenerEntry = Object.assign((options) => {
-    const {
-      type,
-      predicate,
-      effect
-    } = getListenerEntryPropsFrom(options);
-    const id = nanoid();
-    const entry = {
-      id,
-      effect,
-      type,
-      predicate,
-      pending: /* @__PURE__ */ new Set(),
-      unsubscribe: () => {
-        throw new Error(false ? formatProdErrorMessage(22) : "Unsubscribe not initialized");
-      }
-    };
-    return entry;
-  }, {
-    withTypes: () => createListenerEntry
-  });
-  var addListener = Object.assign(createAction(`${alm}/add`), {
+  var addListener = /* @__PURE__ */ assign(/* @__PURE__ */ createAction(`${alm}/add`), {
     withTypes: () => addListener
   });
-  var clearAllListeners = createAction(`${alm}/removeAll`);
-  var removeListener = Object.assign(createAction(`${alm}/remove`), {
+  var clearAllListeners = /* @__PURE__ */ createAction(`${alm}/removeAll`);
+  var removeListener = /* @__PURE__ */ assign(/* @__PURE__ */ createAction(`${alm}/remove`), {
     withTypes: () => removeListener
   });
   var ORIGINAL_STATE = Symbol.for("rtk-state-proxy-original");

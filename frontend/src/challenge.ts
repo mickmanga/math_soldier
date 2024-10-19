@@ -1,5 +1,3 @@
-export {};
-
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
 };
@@ -109,13 +107,17 @@ const progressBar = document.getElementsByClassName(
 
 const bombAudio = document.getElementById("bomb_audio")! as HTMLAudioElement;
 
-swordAudio.volume = 0.65;
-bombAudio.volume = 0.12;
-electricityAudio.volume = 0.7;
-transformationScreamAudio.volume = 0.25;
-hurtAudio.volume = 0.025;
+const setInitialGameVolume = () => {
+  
+  swordAudio.volume = 0.65;
+  bombAudio.volume = 0.12;
+  electricityAudio.volume = 0.7;
+  transformationScreamAudio.volume = 0.25;
+  hurtAudio.volume = 0.025;
+  runAudio.volume = 0.7;
 
-runAudio.volume = 0.7;
+}
+
 
 let currentSubject: Subject | null = null;
 
@@ -2413,6 +2415,7 @@ const initHeroAnimations = () => {
 
 window.onload = () => {
   setupListeners();
+  setInitialGameVolume();
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${

@@ -82,12 +82,14 @@
     "progress"
   )[0];
   var bombAudio = document.getElementById("bomb_audio");
-  swordAudio.volume = 0.65;
-  bombAudio.volume = 0.12;
-  electricityAudio.volume = 0.7;
-  transformationScreamAudio.volume = 0.25;
-  hurtAudio.volume = 0.025;
-  runAudio.volume = 0.7;
+  var setInitialGameVolume = () => {
+    swordAudio.volume = 0.65;
+    bombAudio.volume = 0.12;
+    electricityAudio.volume = 0.7;
+    transformationScreamAudio.volume = 0.25;
+    hurtAudio.volume = 0.025;
+    runAudio.volume = 0.7;
+  };
   var currentSubject = null;
   var currentSubjectTotal = 0;
   var swordReach = window.innerWidth * 0.6;
@@ -1671,6 +1673,7 @@
   };
   window.onload = () => {
     setupListeners();
+    setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
     backgroundSrc = `assets/palace/maps/castle/${hardMode ? "castleback.webp" : "castle.gif"}`;

@@ -25,5 +25,4 @@ const getUser = async (userId: string) => {
 };
 
 
-
 const user = getUser("670e55bccfad7de8becf1414");

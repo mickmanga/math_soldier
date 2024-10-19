@@ -36,10 +36,12 @@ body {
 
 #boss_container {
   position: absolute;
-  top: 30vh;
+  top: 63vh;
   right: 15vw;
-  height: 60vh;
-  width: auto;
+  height: 30vh;
+  width: 20vw;
+  display: flex;
+  justify-content: flex-start;
 }
 
 #hero_container img,

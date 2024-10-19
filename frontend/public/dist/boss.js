@@ -82,12 +82,14 @@
     "progress"
   )[0];
   var bombAudio = document.getElementById("bomb_audio");
-  swordAudio.volume = 0.65;
-  bombAudio.volume = 0.12;
-  electricityAudio.volume = 0.7;
-  transformationScreamAudio.volume = 0.25;
-  hurtAudio.volume = 0.025;
-  runAudio.volume = 0.7;
+  var setInitialGameVolume = () => {
+    swordAudio.volume = 0.65;
+    bombAudio.volume = 0.12;
+    electricityAudio.volume = 0.7;
+    transformationScreamAudio.volume = 0.25;
+    hurtAudio.volume = 0.025;
+    runAudio.volume = 0.7;
+  };
   var currentSubject = null;
   var currentSubjectTotal = 0;
   var swordReach = window.innerWidth * 0.6;
@@ -1645,6 +1647,7 @@
   };
   window.onload = () => {
     setupListeners();
+    setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
     backgroundSrc = `assets/palace/maps/castle/${hardMode ? "castleback.webp" : "castle.gif"}`;
@@ -1722,7 +1725,6 @@
   var heroImage2 = document.getElementById("heroImage");
   var bossImage = document.getElementById("bossImage");
   var launcHeroIdle = () => {
-    alert("iddle");
     launchAnimationAndDeclareItLaunched(
       heroImage2,
       0,
@@ -1731,8 +1733,12 @@
       1,
       7,
       1,
-      true,
+      false,
       5 /* idle */
+    );
+    setTimeout(
+      launcHeroIdle,
+      4e3
     );
   };
   var launchBossIdle = () => {
@@ -1740,34 +1746,17 @@
       bossImage,
       0,
       "png",
-      "assets/challenge/characters/bosses/ctuluhu/idle",
+      "assets/challenge/characters/bosses/ctuluhu_boss",
       1,
-      15,
+      8,
       1,
       true,
       21 /* boss_idle */
     );
   };
-  var launchBossAttack = () => {
-    launchAnimationAndDeclareItLaunched(
-      bossImage,
-      0,
-      "png",
-      "assets/challenge/characters/bosses/ctuluhu/attack",
-      1,
-      17,
-      1,
-      false,
-      22 /* boss_attack */
-    );
-  };
   window.onload = () => {
     launcHeroIdle();
     launchBossIdle();
-    setTimeout(() => {
-      ANIMATION_RUNNING_VALUES[21 /* boss_idle */] = 0;
-      launchBossAttack();
-    }, 1e3);
   };
 })();
 //# sourceMappingURL=boss.js.map

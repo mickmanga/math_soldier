@@ -76,7 +76,6 @@ const launchCharacterAnimation = (
 };
 
 const launcHeroIdle = () => {
-  alert("iddle");
   launchAnimationAndDeclareItLaunched(
     heroImage,
     0,
@@ -85,9 +84,13 @@ const launcHeroIdle = () => {
     1,
     7,
     1,
-    true,
+    false,
     ANIMATION_ID.idle
   );
+
+  setTimeout(
+    launcHeroIdle, 4000
+  )
 };
 
 const launchBossIdle = () => {
@@ -95,9 +98,9 @@ const launchBossIdle = () => {
     bossImage,
     0,
     "png",
-    "assets/challenge/characters/bosses/ctuluhu/idle",
+    "assets/challenge/characters/bosses/ctuluhu_boss",
     1,
-    15,
+    8,
     1,
     true,
     ANIMATION_ID.boss_idle
@@ -119,8 +122,4 @@ const launchBossAttack = () => {
 window.onload = () => {
   launcHeroIdle();
   launchBossIdle();
-  setTimeout(() => {
-    ANIMATION_RUNNING_VALUES[ANIMATION_ID.boss_idle] = 0;
-    launchBossAttack();
-  }, 1000);
 };
