@@ -1906,6 +1906,57 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
   requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
 };
 
+
+const getCharacterAssets = (character: Character): string | null=> {
+
+  
+
+    const getPath = (): string | null => {
+
+      for(let i = 0; i < character.pathsAccordingToCharacterState.length; i++){
+
+
+
+      }
+
+      return null;
+
+    }
+
+    const path = getPath();
+
+    if(path === null){
+      console.log("sorry, we could not find the path associated with the current character state");
+    }
+
+    return getPath();
+
+}
+
+const launchRunAnimation = (character: Character) => {
+
+  const characterAssets = getCharacterAssets(character);
+
+  if(!characterAssets){
+
+    console.log("sorry, we could not find the path associated with the current character state");
+
+    return;
+  }
+
+  launchAnimationAndDeclareItLaunched(
+    character.element,
+    0,
+    "png",
+    characterAssets,
+    1,
+    transformed ? 6 : 8,
+    1,
+    true,
+    transformed ? ANIMATION_ID.transformation_run : ANIMATION_ID.run
+  );
+}
+
 const launchHeroRunAnimation = () => {
   if (!heroIsAlive) {
     return;
@@ -1928,7 +1979,30 @@ const launchHeroRunAnimation = () => {
   );
 };
 
-const launchRun = () => {
+type CharacterAsset = {
+  id: string,
+  length: number,
+  directoryPath: string 
+}
+
+type CharacterState = {
+  stateId: string,
+  path: string
+}
+
+class Character {
+   assets: Array<CharacterAsset>;
+   element: HTMLImageElement;
+   pathsAccordingToCharacterState: Array<CharacterState>;
+   
+   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, pathsAccordingToCharacterState:Array<CharacterState>){
+    this.assets = assets;
+    this.element = element;
+    this.pathsAccordingToCharacterState = pathsAccordingToCharacterState;
+   }
+}
+
+const launchRun = (character?: Character) => {
   if (runStopped) {
     return;
   }
@@ -2123,7 +2197,6 @@ const stopTime = () => {
 
 const resumeRun = () => {
   runStopped = false;
-
   launchRun();
   ennemiesOnScreen.forEach((enemy) => {
     ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move]++;

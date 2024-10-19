@@ -1346,7 +1346,7 @@
       transformed ? 19 /* transformation_run */ : 1 /* run */
     );
   };
-  var launchRun = () => {
+  var launchRun = (character) => {
     if (runStopped) {
       return;
     }
