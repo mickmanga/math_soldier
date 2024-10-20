@@ -2002,8 +2002,6 @@ type CharacterAnimations = {
    run: AnimationId
 }
 
-
-
 class Character {
    assets: Array<CharacterAsset>;
    element: HTMLImageElement;
