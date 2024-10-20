@@ -1,4 +1,4 @@
-const express = require('express');
+ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require("bcrypt");
@@ -72,16 +72,13 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
-        console.log(await bcrypt.compare(password, user.password));
 
         // Compare the provided password with the hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         
         if (!isMatch) {
-            console.log("invalid credentials")
-            return res.status(400).json({ message: 'Invalid credentials' });
+           return res.status(400).json({ message: 'Invalid credentials' });
         }
-        console.log("credentials ok");
 
         // Create a JWT token (replace 'your_jwt_secret' with your actual secret key)
         const token = jwt.sign({ userId: user._id, name: user.name }, 'your_jwt_secret', { expiresIn: '1h' });

@@ -1907,20 +1907,22 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 };
 
 
-const getCharacterAssets = (character: Character): string | null=> {
+const getCharacterAssets = (character: Character): CharacterStatePath | null=> {
 
-  
-
-    const getPath = (): string | null => {
+    const getPath = (): CharacterStatePath | null => {
 
       for(let i = 0; i < character.pathsAccordingToCharacterState.length; i++){
 
+        const stateAssetsPathBlock = character.pathsAccordingToCharacterState[i];
 
-
+        const state = stateAssetsPathBlock.state;
+        
+         if(character.state === state){
+           return stateAssetsPathBlock.path;
+         }
       }
 
       return null;
-
     }
 
     const path = getPath();
@@ -1930,7 +1932,6 @@ const getCharacterAssets = (character: Character): string | null=> {
     }
 
     return getPath();
-
 }
 
 const launchRunAnimation = (character: Character) => {
@@ -1948,9 +1949,9 @@ const launchRunAnimation = (character: Character) => {
     character.element,
     0,
     "png",
-    characterAssets,
+    characterAssets.path,
     1,
-    transformed ? 6 : 8,
+    parseInt(characterAssets.length),
     1,
     true,
     transformed ? ANIMATION_ID.transformation_run : ANIMATION_ID.run
@@ -1985,20 +1986,37 @@ type CharacterAsset = {
   directoryPath: string 
 }
 
-type CharacterState = {
-  stateId: string,
-  path: string
+type CharacterStatePath = {
+  path : string;
+  length: string;
 }
+
+type CharacterState = {
+  state: string,
+  path: CharacterStatePath;
+}
+
+type AnimationId = number;
+
+type CharacterAnimations = {
+   run: AnimationId
+}
+
+
 
 class Character {
    assets: Array<CharacterAsset>;
    element: HTMLImageElement;
    pathsAccordingToCharacterState: Array<CharacterState>;
+   state: string;
+   animations: CharacterAnimations;
    
-   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, pathsAccordingToCharacterState:Array<CharacterState>){
+   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, pathsAccordingToCharacterState:Array<CharacterState>, state: string, animations: CharacterAnimations){
     this.assets = assets;
     this.element = element;
     this.pathsAccordingToCharacterState = pathsAccordingToCharacterState;
+    this.state = state;
+    this.animations = animations;
    }
 }
 
