@@ -623,55 +623,96 @@
       }, 2e3);
     }, 1e3);
   };
+  var ANIMATION_ID = /* @__PURE__ */ ((ANIMATION_ID2) => {
+    ANIMATION_ID2[ANIMATION_ID2["hero_attack"] = 0] = "hero_attack";
+    ANIMATION_ID2[ANIMATION_ID2["hero_run"] = 1] = "hero_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_walk"] = 2] = "hero_walk";
+    ANIMATION_ID2[ANIMATION_ID2["hero_hurt"] = 3] = "hero_hurt";
+    ANIMATION_ID2[ANIMATION_ID2["hero_death"] = 4] = "hero_death";
+    ANIMATION_ID2[ANIMATION_ID2["hero_idle"] = 5] = "hero_idle";
+    ANIMATION_ID2[ANIMATION_ID2["stop"] = 6] = "stop";
+    ANIMATION_ID2[ANIMATION_ID2["stop_time"] = 7] = "stop_time";
+    ANIMATION_ID2[ANIMATION_ID2["cancel_stop_time"] = 8] = "cancel_stop_time";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_idle"] = 9] = "ghost_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_run"] = 10] = "ghost_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_attack"] = 11] = "ghost_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_death"] = 12] = "ghost_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_move"] = 13] = "ghost_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_idle"] = 14] = "hammer_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_run"] = 15] = "hammer_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_attack"] = 16] = "hammer_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_death"] = 17] = "hammer_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_move"] = 18] = "hammer_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["camera_left_to_right"] = 19] = "camera_left_to_right";
+    ANIMATION_ID2[ANIMATION_ID2["camera_right_to_left"] = 20] = "camera_right_to_left";
+    ANIMATION_ID2[ANIMATION_ID2["character_left_to_right_move"] = 21] = "character_left_to_right_move";
+    ANIMATION_ID2[ANIMATION_ID2["hero_sword_slash"] = 22] = "hero_sword_slash";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 23] = "hero_transformation_pre_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 24] = "hero_transformation_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 25] = "hero_transformation_hurt";
+    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 26] = "boss_idle";
+    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 27] = "boss_attack";
+    return ANIMATION_ID2;
+  })(ANIMATION_ID || {});
   var ANIMATION_RUNNING_VALUES = {
-    [0 /* attack */]: 0,
-    [1 /* run */]: 0,
-    [2 /* walk */]: 0,
-    [4 /* death */]: 0,
-    [3 /* hurt */]: 0,
-    [5 /* idle */]: 0,
+    [0 /* hero_attack */]: 0,
+    [1 /* hero_run */]: 0,
+    [2 /* hero_walk */]: 0,
+    [4 /* hero_death */]: 0,
+    [3 /* hero_hurt */]: 0,
+    [5 /* hero_idle */]: 0,
     [7 /* stop_time */]: 0,
     [6 /* stop */]: 0,
     [8 /* cancel_stop_time */]: 0,
-    [9 /* opponent_idle */]: 0,
-    [10 /* opponent_run */]: 0,
-    [11 /* opponent_attack */]: 0,
-    [13 /* opponent_death */]: 0,
-    [12 /* opponent_move */]: 0,
-    [14 /* camera_left_to_right */]: 0,
-    [15 /* camera_right_to_left */]: 0,
-    [16 /* character_left_to_right_move */]: 0,
-    [17 /* hero_sword_slash */]: 0,
-    [18 /* transformation_pre_run */]: 0,
-    [19 /* transformation_run */]: 0,
-    [20 /* transformation_hurt */]: 0,
-    [21 /* boss_idle */]: 0,
-    [22 /* boss_attack */]: 0
+    [9 /* ghost_opponent_idle */]: 0,
+    [10 /* ghost_opponent_run */]: 0,
+    [11 /* ghost_opponent_attack */]: 0,
+    [12 /* ghost_opponent_death */]: 0,
+    [13 /* ghost_opponent_move */]: 0,
+    [14 /* hammer_opponent_idle */]: 0,
+    [15 /* hammer_opponent_run */]: 0,
+    [16 /* hammer_opponent_attack */]: 0,
+    [17 /* hammer_opponent_death */]: 0,
+    [18 /* hammer_opponent_move */]: 0,
+    [19 /* camera_left_to_right */]: 0,
+    [20 /* camera_right_to_left */]: 0,
+    [21 /* character_left_to_right_move */]: 0,
+    [22 /* hero_sword_slash */]: 0,
+    [23 /* hero_transformation_pre_run */]: 0,
+    [24 /* hero_transformation_run */]: 0,
+    [25 /* hero_transformation_hurt */]: 0,
+    [26 /* boss_idle */]: 0,
+    [27 /* boss_attack */]: 0
   };
   var THROTTLE_NUMS = {
-    [0 /* attack */]: 0,
-    [1 /* run */]: 5,
-    [2 /* walk */]: 5,
-    [4 /* death */]: 5,
-    [3 /* hurt */]: 0,
-    [5 /* idle */]: 20,
+    [0 /* hero_attack */]: 0,
+    [1 /* hero_run */]: 5,
+    [2 /* hero_walk */]: 5,
+    [4 /* hero_death */]: 5,
+    [3 /* hero_hurt */]: 0,
+    [5 /* hero_idle */]: 20,
     [7 /* stop_time */]: 5,
     [6 /* stop */]: 0,
     [8 /* cancel_stop_time */]: 5,
-    [9 /* opponent_idle */]: 5,
-    [10 /* opponent_run */]: 5,
-    [11 /* opponent_attack */]: 0,
-    [13 /* opponent_death */]: 0,
-    [12 /* opponent_move */]: 1,
-    [14 /* camera_left_to_right */]: 0,
-    [15 /* camera_right_to_left */]: 5,
-    [17 /* hero_sword_slash */]: 0,
-    [16 /* character_left_to_right_move */]: 5,
-    [18 /* transformation_pre_run */]: 5,
-    [19 /* transformation_run */]: 5,
-    [20 /* transformation_hurt */]: 0,
-    [21 /* boss_idle */]: 15,
-    [22 /* boss_attack */]: 10
+    [9 /* ghost_opponent_idle */]: 5,
+    [10 /* ghost_opponent_run */]: 5,
+    [11 /* ghost_opponent_attack */]: 0,
+    [12 /* ghost_opponent_death */]: 0,
+    [13 /* ghost_opponent_move */]: 1,
+    [14 /* hammer_opponent_idle */]: 0,
+    [15 /* hammer_opponent_run */]: 0,
+    [16 /* hammer_opponent_attack */]: 0,
+    [17 /* hammer_opponent_death */]: 0,
+    [18 /* hammer_opponent_move */]: 0,
+    [19 /* camera_left_to_right */]: 0,
+    [20 /* camera_right_to_left */]: 5,
+    [22 /* hero_sword_slash */]: 0,
+    [21 /* character_left_to_right_move */]: 5,
+    [23 /* hero_transformation_pre_run */]: 5,
+    [24 /* hero_transformation_run */]: 5,
+    [25 /* hero_transformation_hurt */]: 0,
+    [26 /* boss_idle */]: 15,
+    [27 /* boss_attack */]: 10
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -684,25 +725,25 @@
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        1 /* run */,
-        0 /* attack */,
-        3 /* hurt */,
-        4 /* death */,
+        1 /* hero_run */,
+        0 /* hero_attack */,
+        3 /* hero_hurt */,
+        4 /* hero_death */,
         6 /* stop */,
         7 /* stop_time */,
-        20 /* transformation_hurt */,
-        18 /* transformation_pre_run */,
-        19 /* transformation_run */
+        25 /* hero_transformation_hurt */,
+        23 /* hero_transformation_pre_run */,
+        24 /* hero_transformation_run */
       ]
     },
     enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        11 /* opponent_attack */,
-        10 /* opponent_run */,
-        13 /* opponent_death */,
-        12 /* opponent_move */
+        11 /* ghost_opponent_attack */,
+        10 /* ghost_opponent_run */,
+        12 /* ghost_opponent_death */,
+        13 /* ghost_opponent_move */
       ]
     }
   };
@@ -743,14 +784,14 @@
     return block;
   };
   var slowTime = (multiplicator) => {
-    const runMultiplicatorBase = THROTTLE_NUMS[1 /* run */] ? THROTTLE_NUMS[1 /* run */] : 1;
-    THROTTLE_NUMS[1 /* run */] = runMultiplicatorBase * multiplicator * 1.5 * 1.5;
-    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[14 /* camera_left_to_right */] ? THROTTLE_NUMS[14 /* camera_left_to_right */] : 1;
-    THROTTLE_NUMS[14 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
-    const opponentRunMultiplicatorBase = THROTTLE_NUMS[10 /* opponent_run */] ? THROTTLE_NUMS[10 /* opponent_run */] : 1;
-    THROTTLE_NUMS[10 /* opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
-    const opponentMoveMultiplicatorBase = THROTTLE_NUMS[12 /* opponent_move */] ? THROTTLE_NUMS[12 /* opponent_move */] : 1;
-    THROTTLE_NUMS[12 /* opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
+    const runMultiplicatorBase = THROTTLE_NUMS[1 /* hero_run */] ? THROTTLE_NUMS[1 /* hero_run */] : 1;
+    THROTTLE_NUMS[1 /* hero_run */] = runMultiplicatorBase * multiplicator * 1.5 * 1.5;
+    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[19 /* camera_left_to_right */] ? THROTTLE_NUMS[19 /* camera_left_to_right */] : 1;
+    THROTTLE_NUMS[19 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
+    const opponentRunMultiplicatorBase = THROTTLE_NUMS[10 /* ghost_opponent_run */] ? THROTTLE_NUMS[10 /* ghost_opponent_run */] : 1;
+    THROTTLE_NUMS[10 /* ghost_opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
+    const opponentMoveMultiplicatorBase = THROTTLE_NUMS[13 /* ghost_opponent_move */] ? THROTTLE_NUMS[13 /* ghost_opponent_move */] : 1;
+    THROTTLE_NUMS[13 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
   };
   var moveCamera = (direction, throttleNum = 0, previousFrameTimestamp) => {
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
@@ -758,7 +799,7 @@
     }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
-    if (throttleNum < THROTTLE_NUMS[14 /* camera_left_to_right */]) {
+    if (throttleNum < THROTTLE_NUMS[19 /* camera_left_to_right */]) {
       throttleNum++;
       return requestAnimationFrame(
         () => moveCamera(direction, throttleNum, currentFrameTimeStamp)
@@ -766,7 +807,7 @@
     }
     throttleNum = 0;
     MAPS.forEach(
-      (map) => map.style.left = `${map.offsetLeft + (direction === 14 /* camera_left_to_right */ ? -1 : 1) * diff / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + (direction === 19 /* camera_left_to_right */ ? -1 : 1) * diff / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, 0, currentFrameTimeStamp));
   };
@@ -909,7 +950,7 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* run */ || animationId === 11 /* opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 11 /* ghost_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
       if (diff < ANIMTION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
         return requestAnimationFrame(
@@ -975,22 +1016,22 @@
     ANIMATION_RUNNING_VALUES[animationId] = 0;
   };
   var initAllAnimations = () => {
-    ANIMATION_RUNNING_VALUES[0 /* attack */] = 0;
-    ANIMATION_RUNNING_VALUES[1 /* run */] = 0;
-    ANIMATION_RUNNING_VALUES[4 /* death */] = 0;
-    ANIMATION_RUNNING_VALUES[3 /* hurt */] = 0;
-    ANIMATION_RUNNING_VALUES[5 /* idle */] = 0;
-    ANIMATION_RUNNING_VALUES[10 /* opponent_run */] = 0;
-    ANIMATION_RUNNING_VALUES[13 /* opponent_death */] = 0;
-    ANIMATION_RUNNING_VALUES[12 /* opponent_move */] = 0;
-    ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */] = 0;
-    ANIMATION_RUNNING_VALUES[15 /* camera_right_to_left */] = 0;
-    ANIMATION_RUNNING_VALUES[16 /* character_left_to_right_move */] = 0;
-    ANIMATION_RUNNING_VALUES[18 /* transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[19 /* transformation_run */] = 0;
-    ANIMATION_RUNNING_VALUES[20 /* transformation_hurt */] = 0;
-    ANIMATION_RUNNING_VALUES[21 /* boss_idle */] = 0;
-    ANIMATION_RUNNING_VALUES[22 /* boss_attack */] = 0;
+    ANIMATION_RUNNING_VALUES[0 /* hero_attack */] = 0;
+    ANIMATION_RUNNING_VALUES[1 /* hero_run */] = 0;
+    ANIMATION_RUNNING_VALUES[4 /* hero_death */] = 0;
+    ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
+    ANIMATION_RUNNING_VALUES[5 /* hero_idle */] = 0;
+    ANIMATION_RUNNING_VALUES[10 /* ghost_opponent_run */] = 0;
+    ANIMATION_RUNNING_VALUES[12 /* ghost_opponent_death */] = 0;
+    ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */] = 0;
+    ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[20 /* camera_right_to_left */] = 0;
+    ANIMATION_RUNNING_VALUES[21 /* character_left_to_right_move */] = 0;
+    ANIMATION_RUNNING_VALUES[23 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[24 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[25 /* hero_transformation_hurt */] = 0;
+    ANIMATION_RUNNING_VALUES[26 /* boss_idle */] = 0;
+    ANIMATION_RUNNING_VALUES[27 /* boss_attack */] = 0;
   };
   var turnHeroTransformationOff = () => {
     transformed = false;
@@ -1030,7 +1071,7 @@
       transformed ? 12 : 4,
       1,
       false,
-      0 /* attack */
+      0 /* hero_attack */
     );
     const enemyCanBeHit = (enemy) => {
       const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemy) * 1.2 : enemy.element.getBoundingClientRect().left;
@@ -1069,7 +1110,7 @@
   };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-    interruptAnimation(10 /* opponent_run */);
+    interruptAnimation(10 /* ghost_opponent_run */);
     launchAnimationAndDeclareItLaunched(
       enemy.element.firstChild,
       0,
@@ -1079,18 +1120,18 @@
       hardMode ? 16 : 4,
       1,
       true,
-      10 /* opponent_run */
+      10 /* ghost_opponent_run */
     );
-    ANIMATION_RUNNING_VALUES[12 /* opponent_move */]++;
+    ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
     moveEnemy(enemy, 0, Date.now());
   };
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
-    if (ANIMATION_RUNNING_VALUES[12 /* opponent_move */] !== 1) {
+    if (ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */] !== 1) {
       return;
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
-    if (throttleNum < THROTTLE_NUMS[12 /* opponent_move */]) {
+    if (throttleNum < THROTTLE_NUMS[13 /* ghost_opponent_move */]) {
       throttleNum++;
       return requestAnimationFrame(() => {
         moveEnemy(enemy, throttleNum, currentTimeStamp);
@@ -1208,7 +1249,7 @@
         10,
         1,
         false,
-        13 /* opponent_death */
+        12 /* ghost_opponent_death */
       );
     };
     launchExplosion();
@@ -1219,8 +1260,8 @@
     return enemyImg.getBoundingClientRect().left + enemyImg.getBoundingClientRect().width * 0.3;
   };
   var clearEnemy = (enemy) => {
-    interruptAnimation(10 /* opponent_run */);
-    interruptAnimation(11 /* opponent_attack */);
+    interruptAnimation(10 /* ghost_opponent_run */);
+    interruptAnimation(11 /* ghost_opponent_attack */);
     destroyEnemy(enemy);
   };
   var destroyEnemy = (enemy) => {
@@ -1236,7 +1277,7 @@
     ennemiesOnScreen.forEach((enemyOnScreen, index) => {
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
-        interruptAnimation(12 /* opponent_move */);
+        interruptAnimation(13 /* ghost_opponent_move */);
       }
     });
   };
@@ -1288,7 +1329,7 @@
           30,
           1,
           true,
-          11 /* opponent_attack */
+          11 /* ghost_opponent_attack */
         );
       }
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
@@ -1343,16 +1384,16 @@
       transformed ? 6 : 8,
       1,
       true,
-      transformed ? 19 /* transformation_run */ : 1 /* run */
+      transformed ? 24 /* hero_transformation_run */ : 1 /* hero_run */
     );
   };
   var launchRun = (character) => {
     if (runStopped) {
       return;
     }
-    if (ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */] === 0) {
+    if (ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] === 0) {
       startCamera();
-      moveCamera(14 /* camera_left_to_right */, 0, Date.now());
+      moveCamera(19 /* camera_left_to_right */, 0, Date.now());
     }
     launchHeroRunAnimation();
   };
@@ -1361,7 +1402,7 @@
     if (event.key === "d") {
       if (!gameLaunched) {
         launchGame();
-      } else if (ANIMATION_RUNNING_VALUES[1 /* run */] === 0) {
+      } else if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
         resumeRun();
       }
     }
@@ -1403,8 +1444,8 @@
       clearTimeout(enemiesComingTimeout);
       enemiesComingTimeout = null;
     }
-    ANIMATION_RUNNING_VALUES[12 /* opponent_move */] = 0;
-    interruptAnimation(14 /* camera_left_to_right */);
+    ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */] = 0;
+    interruptAnimation(19 /* camera_left_to_right */);
     const stopCallback = () => {
       heroImage.src = "assets/challenge/characters/hero/walk/1.png";
     };
@@ -1433,7 +1474,7 @@
     runStopped = false;
     launchRun();
     ennemiesOnScreen.forEach((enemy) => {
-      ANIMATION_RUNNING_VALUES[12 /* opponent_move */]++;
+      ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
       moveEnemy(enemy, 0, Date.now());
     });
     if (!ennemiesOnScreen.length) {
@@ -1491,7 +1532,7 @@
         6,
         1,
         true,
-        19 /* transformation_run */
+        24 /* hero_transformation_run */
       );
       setTimeout(turnHeroTransformationOff, 2e4);
       return;
@@ -1513,7 +1554,7 @@
           9,
           1,
           true,
-          18 /* transformation_pre_run */
+          23 /* hero_transformation_pre_run */
         );
         if (enemiesComingTimeout) {
           clearTimeout(enemiesComingTimeout);
@@ -1541,7 +1582,7 @@
               6,
               1,
               true,
-              19 /* transformation_run */
+              24 /* hero_transformation_run */
             );
             setTimeout(turnHeroTransformationOff, 15e3);
           }, 5e3)
@@ -1553,7 +1594,7 @@
     ennemiesOnScreen.forEach((enemy, index) => {
       enemy.element.remove();
       ennemiesOnScreen.splice(index, 1);
-      interruptAnimation(12 /* opponent_move */);
+      interruptAnimation(13 /* ghost_opponent_move */);
     });
   };
   var lightUpAnswerDataContainer = () => {
@@ -1564,21 +1605,21 @@
     answerDataValue.innerHTML = "";
   };
   var launchSwordSlash = () => {
-    ANIMATION_RUNNING_VALUES[17 /* hero_sword_slash */]++;
-    if (ANIMATION_RUNNING_VALUES[17 /* hero_sword_slash */] !== 1 || transformed) {
+    ANIMATION_RUNNING_VALUES[22 /* hero_sword_slash */]++;
+    if (ANIMATION_RUNNING_VALUES[22 /* hero_sword_slash */] !== 1 || transformed) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[17 /* hero_sword_slash */]++;
+    ANIMATION_RUNNING_VALUES[22 /* hero_sword_slash */]++;
     console.log("slash!");
     swordSlashImg.style.display = "flex";
     setTimeout(() => {
       swordSlashImg.style.display = "none";
-      ANIMATION_RUNNING_VALUES[17 /* hero_sword_slash */] = 0;
+      ANIMATION_RUNNING_VALUES[22 /* hero_sword_slash */] = 0;
     }, 75);
   };
   var launchDeathAnimation = () => {
     initHeroAnimations();
-    ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] = 0;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.current_animation = null;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.request_queue = [];
     const killHero2 = () => {
@@ -1591,7 +1632,7 @@
         6,
         1,
         false,
-        4 /* death */
+        4 /* hero_death */
       );
       clearGameTimeouts();
       setTimeout(
@@ -1615,7 +1656,7 @@
       transformed ? 5 : 3,
       1,
       false,
-      transformed ? 20 /* transformation_hurt */ : 3 /* hurt */
+      transformed ? 25 /* hero_transformation_hurt */ : 3 /* hero_hurt */
     );
     if (!hardMode) {
       stopCamera();
@@ -1624,26 +1665,26 @@
       0 /* HERO */,
       setTimeout(() => {
         heroHurt = false;
-        if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* run */] === 0) {
+        if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
           launchRun();
         }
       }, 500)
     );
   };
   var stopCamera = () => {
-    ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] = 0;
   };
   var startCamera = () => {
-    if (ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */] > 0) {
+    if (ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] > 0) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[14 /* camera_left_to_right */]++;
+    ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */]++;
   };
   var initHeroAnimations = () => {
-    ANIMATION_RUNNING_VALUES[1 /* run */] = 0;
-    ANIMATION_RUNNING_VALUES[18 /* transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[19 /* transformation_run */] = 0;
-    ANIMATION_RUNNING_VALUES[3 /* hurt */] = 0;
+    ANIMATION_RUNNING_VALUES[1 /* hero_run */] = 0;
+    ANIMATION_RUNNING_VALUES[23 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[24 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
   };
   window.onload = () => {
     setupListeners();
@@ -1734,7 +1775,7 @@
       7,
       1,
       false,
-      5 /* idle */
+      ANIMATION_ID.idle
     );
     setTimeout(
       launcHeroIdle,
@@ -1751,7 +1792,7 @@
       8,
       1,
       true,
-      21 /* boss_idle */
+      26 /* boss_idle */
     );
   };
   window.onload = () => {

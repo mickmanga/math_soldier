@@ -802,79 +802,94 @@ const launchEndOfChallenge = () => {
 };
 
 export enum ANIMATION_ID {
-  attack,
-  run,
-  walk,
-  hurt,
-  death,
-  idle,
+  hero_attack,
+  hero_run,
+  hero_walk,
+  hero_hurt,
+  hero_death,
+  hero_idle,
   stop,
   stop_time,
   cancel_stop_time,
-  opponent_idle,
-  opponent_run,
-  opponent_attack,
-  opponent_move,
-  opponent_death,
+  ghost_opponent_idle,
+  ghost_opponent_run,
+  ghost_opponent_attack,
+  ghost_opponent_death,
+  ghost_opponent_move,
+  hammer_opponent_idle,
+  hammer_opponent_run,
+  hammer_opponent_attack,
+  hammer_opponent_death,
+  hammer_opponent_move,
   camera_left_to_right,
   camera_right_to_left,
   character_left_to_right_move,
   hero_sword_slash,
-  transformation_pre_run,
-  transformation_run,
-  transformation_hurt,
+  hero_transformation_pre_run,
+  hero_transformation_run,
+  hero_transformation_hurt,
   boss_idle,
   boss_attack,
 }
 
 export const ANIMATION_RUNNING_VALUES = {
-  [ANIMATION_ID.attack]: 0,
-  [ANIMATION_ID.run]: 0,
-  [ANIMATION_ID.walk]: 0,
-  [ANIMATION_ID.death]: 0,
-  [ANIMATION_ID.hurt]: 0,
-  [ANIMATION_ID.idle]: 0,
+  [ANIMATION_ID.hero_attack]: 0,
+  [ANIMATION_ID.hero_run]: 0,
+  [ANIMATION_ID.hero_walk]: 0,
+  [ANIMATION_ID.hero_death]: 0,
+  [ANIMATION_ID.hero_hurt]: 0,
+  [ANIMATION_ID.hero_idle]: 0,
   [ANIMATION_ID.stop_time]: 0,
   [ANIMATION_ID.stop]: 0,
   [ANIMATION_ID.cancel_stop_time]: 0,
-  [ANIMATION_ID.opponent_idle]: 0,
-  [ANIMATION_ID.opponent_run]: 0,
-  [ANIMATION_ID.opponent_attack]: 0,
-  [ANIMATION_ID.opponent_death]: 0,
-  [ANIMATION_ID.opponent_move]: 0,
+  [ANIMATION_ID.ghost_opponent_idle]: 0,
+  [ANIMATION_ID.ghost_opponent_run]: 0,
+  [ANIMATION_ID.ghost_opponent_attack]: 0,
+  [ANIMATION_ID.ghost_opponent_death]: 0,
+  [ANIMATION_ID.ghost_opponent_move]: 0,
+  [ANIMATION_ID.hammer_opponent_idle]: 0, 
+  [ANIMATION_ID.hammer_opponent_run]: 0,
+  [ANIMATION_ID.hammer_opponent_attack]: 0,
+  [ANIMATION_ID.hammer_opponent_death]: 0,
+  [ANIMATION_ID.hammer_opponent_move]: 0,
   [ANIMATION_ID.camera_left_to_right]: 0,
   [ANIMATION_ID.camera_right_to_left]: 0,
   [ANIMATION_ID.character_left_to_right_move]: 0,
   [ANIMATION_ID.hero_sword_slash]: 0,
-  [ANIMATION_ID.transformation_pre_run]: 0,
-  [ANIMATION_ID.transformation_run]: 0,
-  [ANIMATION_ID.transformation_hurt]: 0,
+  [ANIMATION_ID.hero_transformation_pre_run]: 0,
+  [ANIMATION_ID.hero_transformation_run]: 0,
+  [ANIMATION_ID.hero_transformation_hurt]: 0,
   [ANIMATION_ID.boss_idle]: 0,
   [ANIMATION_ID.boss_attack]: 0,
 };
 
 export const THROTTLE_NUMS = {
-  [ANIMATION_ID.attack]: 0,
-  [ANIMATION_ID.run]: 5,
-  [ANIMATION_ID.walk]: 5,
-  [ANIMATION_ID.death]: 5,
-  [ANIMATION_ID.hurt]: 0,
-  [ANIMATION_ID.idle]: 20,
+  [ANIMATION_ID.hero_attack]: 0,
+  [ANIMATION_ID.hero_run]: 5,
+  [ANIMATION_ID.hero_walk]: 5,
+  [ANIMATION_ID.hero_death]: 5,
+  [ANIMATION_ID.hero_hurt]: 0,
+  [ANIMATION_ID.hero_idle]: 20,
   [ANIMATION_ID.stop_time]: 5,
   [ANIMATION_ID.stop]: 0,
   [ANIMATION_ID.cancel_stop_time]: 5,
-  [ANIMATION_ID.opponent_idle]: 5,
-  [ANIMATION_ID.opponent_run]: 5,
-  [ANIMATION_ID.opponent_attack]: 0,
-  [ANIMATION_ID.opponent_death]: 0,
-  [ANIMATION_ID.opponent_move]: 1,
+  [ANIMATION_ID.ghost_opponent_idle]: 5,
+  [ANIMATION_ID.ghost_opponent_run]: 5,
+  [ANIMATION_ID.ghost_opponent_attack]: 0,
+  [ANIMATION_ID.ghost_opponent_death]: 0,
+  [ANIMATION_ID.ghost_opponent_move]: 1,
+  [ANIMATION_ID.hammer_opponent_idle]: 0, 
+  [ANIMATION_ID.hammer_opponent_run]: 0,
+  [ANIMATION_ID.hammer_opponent_attack]: 0,
+  [ANIMATION_ID.hammer_opponent_death]: 0,
+  [ANIMATION_ID.hammer_opponent_move]: 0,
   [ANIMATION_ID.camera_left_to_right]: 0,
   [ANIMATION_ID.camera_right_to_left]: 5,
   [ANIMATION_ID.hero_sword_slash]: 0,
   [ANIMATION_ID.character_left_to_right_move]: 5,
-  [ANIMATION_ID.transformation_pre_run]: 5,
-  [ANIMATION_ID.transformation_run]: 5,
-  [ANIMATION_ID.transformation_hurt]: 0,
+  [ANIMATION_ID.hero_transformation_pre_run]: 5,
+  [ANIMATION_ID.hero_transformation_run]: 5,
+  [ANIMATION_ID.hero_transformation_hurt]: 0,
   [ANIMATION_ID.boss_idle]: 15,
   [ANIMATION_ID.boss_attack]: 10,
 };
@@ -884,31 +899,6 @@ const APP_IDS = {
   enemy: "enemy_container",
 };
 
-const SPRITE_SHEET_SPACE_FROM_LEFT = {
-  [ANIMATION_ID.attack]: 0,
-  [ANIMATION_ID.run]: 0,
-  [ANIMATION_ID.walk]: 0,
-  [ANIMATION_ID.death]: 0,
-  [ANIMATION_ID.hurt]: 0,
-  [ANIMATION_ID.idle]: hardMode ? 0.3 : 0,
-  [ANIMATION_ID.stop_time]: 0,
-  [ANIMATION_ID.stop]: 0,
-  [ANIMATION_ID.cancel_stop_time]: 0,
-  [ANIMATION_ID.opponent_idle]: 0,
-  [ANIMATION_ID.opponent_run]: 0,
-  [ANIMATION_ID.opponent_attack]: 0,
-  [ANIMATION_ID.opponent_death]: 0,
-  [ANIMATION_ID.opponent_move]: 0,
-  [ANIMATION_ID.camera_left_to_right]: 0,
-  [ANIMATION_ID.camera_right_to_left]: 0,
-  [ANIMATION_ID.character_left_to_right_move]: 0,
-  [ANIMATION_ID.hero_sword_slash]: 0,
-  [ANIMATION_ID.transformation_pre_run]: 0,
-  [ANIMATION_ID.transformation_run]: 0,
-  [ANIMATION_ID.transformation_hurt]: 0,
-  [ANIMATION_ID.boss_idle]: 0,
-  [ANIMATION_ID.boss_attack]: 0,
-};
 class AnimationRequest {
   animation: ANIMATION_ID;
   callBack: () => void;
@@ -937,25 +927,25 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
     request_queue: [],
     current_animation: null,
     associated_animations: [
-      ANIMATION_ID.run,
-      ANIMATION_ID.attack,
-      ANIMATION_ID.hurt,
-      ANIMATION_ID.death,
+      ANIMATION_ID.hero_run,
+      ANIMATION_ID.hero_attack,
+      ANIMATION_ID.hero_hurt,
+      ANIMATION_ID.hero_death,
       ANIMATION_ID.stop,
       ANIMATION_ID.stop_time,
-      ANIMATION_ID.transformation_hurt,
-      ANIMATION_ID.transformation_pre_run,
-      ANIMATION_ID.transformation_run,
+      ANIMATION_ID.hero_transformation_hurt,
+      ANIMATION_ID.hero_transformation_pre_run,
+      ANIMATION_ID.hero_transformation_run,
     ],
   },
   enemy: {
     request_queue: [],
     current_animation: null,
     associated_animations: [
-      ANIMATION_ID.opponent_attack,
-      ANIMATION_ID.opponent_run,
-      ANIMATION_ID.opponent_death,
-      ANIMATION_ID.opponent_move,
+      ANIMATION_ID.ghost_opponent_attack,
+      ANIMATION_ID.ghost_opponent_run,
+      ANIMATION_ID.ghost_opponent_death,
+      ANIMATION_ID.ghost_opponent_move,
     ],
   },
 };
@@ -1007,10 +997,10 @@ const createMapBlock = (left: number) => {
 };
 
 const slowTime = (multiplicator: number) => {
-  const runMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.run]
-    ? THROTTLE_NUMS[ANIMATION_ID.run]
+  const runMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.hero_run]
+    ? THROTTLE_NUMS[ANIMATION_ID.hero_run]
     : 1;
-  THROTTLE_NUMS[ANIMATION_ID.run] =
+  THROTTLE_NUMS[ANIMATION_ID.hero_run] =
     runMultiplicatorBase * multiplicator * 1.5 * 1.5;
 
   const cameraMoveMultiplicatorBase = THROTTLE_NUMS[
@@ -1021,18 +1011,18 @@ const slowTime = (multiplicator: number) => {
   THROTTLE_NUMS[ANIMATION_ID.camera_left_to_right] =
     cameraMoveMultiplicatorBase * multiplicator * 1.5;
 
-  const opponentRunMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.opponent_run]
-    ? THROTTLE_NUMS[ANIMATION_ID.opponent_run]
+  const opponentRunMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run]
+    ? THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run]
     : 1;
-  THROTTLE_NUMS[ANIMATION_ID.opponent_run] =
+  THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run] =
     opponentRunMultiplicatorBase * multiplicator;
 
   const opponentMoveMultiplicatorBase = THROTTLE_NUMS[
-    ANIMATION_ID.opponent_move
+    ANIMATION_ID.ghost_opponent_move
   ]
-    ? THROTTLE_NUMS[ANIMATION_ID.opponent_move]
+    ? THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move]
     : 1;
-  THROTTLE_NUMS[ANIMATION_ID.opponent_move] =
+  THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move] =
     opponentMoveMultiplicatorBase * multiplicator * 2;
 };
 
@@ -1279,8 +1269,8 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.run ||
-      animationId === ANIMATION_ID.opponent_attack) &&
+    (animationId === ANIMATION_ID.hero_run ||
+      animationId === ANIMATION_ID.ghost_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
@@ -1362,20 +1352,20 @@ const initAnimation = (animationId: ANIMATION_ID) => {
 };
 
 const initAllAnimations = () => {
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.attack] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.death] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hurt] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.idle] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_death] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_attack] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_death] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_idle] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_death] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_right_to_left] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.character_left_to_right_move] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.transformation_pre_run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.transformation_run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.transformation_hurt] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_transformation_pre_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_transformation_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_transformation_hurt] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.boss_idle] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.boss_attack] = 0;
 };
@@ -1429,7 +1419,7 @@ const launchAttack = () => {
     transformed ? 12 : 4,
     1,
     false,
-    ANIMATION_ID.attack
+    ANIMATION_ID.hero_attack
   );
 
   const enemyCanBeHit = (enemy: Enemy) => {
@@ -1489,7 +1479,7 @@ const clearTimeoutAndLaunchNewOne = (
 
 const launchOpponent = (enemy: Enemy) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-  interruptAnimation(ANIMATION_ID.opponent_run);
+  interruptAnimation(ANIMATION_ID.ghost_opponent_run);
 
   launchAnimationAndDeclareItLaunched(
     enemy.element.firstChild as HTMLImageElement,
@@ -1502,10 +1492,10 @@ const launchOpponent = (enemy: Enemy) => {
     hardMode ? 16 : 4,
     1,
     true,
-    ANIMATION_ID.opponent_run
+    ANIMATION_ID.ghost_opponent_run
   );
 
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move]++;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move]++;
 
   moveEnemy(enemy, 0, Date.now());
 };
@@ -1515,7 +1505,7 @@ const moveEnemy = (
   throttleNum = 0,
   previousTimeStamp: number
 ): any => {
-  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move] !== 1) {
+  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] !== 1) {
     return;
   }
 
@@ -1523,7 +1513,7 @@ const moveEnemy = (
 
   const diff = currentTimeStamp - previousTimeStamp;
 
-  if (throttleNum < THROTTLE_NUMS[ANIMATION_ID.opponent_move]) {
+  if (throttleNum < THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move]) {
     throttleNum++;
     return requestAnimationFrame(() => {
       moveEnemy(enemy, throttleNum, currentTimeStamp);
@@ -1676,7 +1666,7 @@ const killEnemy = (enemy: Enemy) => {
       10,
       1,
       false,
-      ANIMATION_ID.opponent_death
+      ANIMATION_ID.ghost_opponent_death
     );
   };
 
@@ -1695,8 +1685,8 @@ const getHardModeEnemyRealLeft = (enemy: Enemy) => {
 };
 
 const clearEnemy = (enemy: Enemy) => {
-  interruptAnimation(ANIMATION_ID.opponent_run);
-  interruptAnimation(ANIMATION_ID.opponent_attack);
+  interruptAnimation(ANIMATION_ID.ghost_opponent_run);
+  interruptAnimation(ANIMATION_ID.ghost_opponent_attack);
 
   destroyEnemy(enemy);
 };
@@ -1716,7 +1706,7 @@ const destroyEnemy = (enemy: Enemy) => {
   ennemiesOnScreen.forEach((enemyOnScreen, index) => {
     if (enemy === enemyOnScreen) {
       ennemiesOnScreen.splice(index, 1);
-      interruptAnimation(ANIMATION_ID.opponent_move);
+      interruptAnimation(ANIMATION_ID.ghost_opponent_move);
     }
   });
 };
@@ -1794,7 +1784,7 @@ const detectCollision = () => {
         30,
         1,
         true,
-        ANIMATION_ID.opponent_attack
+        ANIMATION_ID.ghost_opponent_attack
       );
     }
 
@@ -1907,41 +1897,39 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 };
 
 
-const getCharacterAssets = (character: Character): CharacterStatePath | null=> {
 
-    const getPath = (): CharacterStatePath | null => {
+type Animation = {
+   id: ANIMATION_ID,
+   sprite: { path: string, length: number},
+}
 
-      for(let i = 0; i < character.pathsAccordingToCharacterState.length; i++){
+const getCharacterAnimationAccordingToState = (character: Character, animationType: AnimationType): Animation | null => {
 
-        const stateAssetsPathBlock = character.pathsAccordingToCharacterState[i];
+   for(let i = 0; i < character.animations.length; i++){
 
-        const state = stateAssetsPathBlock.state;
-        
-         if(character.state === state){
-           return stateAssetsPathBlock.path;
-         }
-      }
-
-      return null;
+    if(character.animations[i].animationType !== animationType){
+      continue;
     }
-
-    const path = getPath();
-
-    if(path === null){
-      console.log("sorry, we could not find the path associated with the current character state");
+    
+     return {
+      id: ANIMATION_ID.hero_run,
+      sprite: { 
+        path: "", 
+        length: 10
+      },
     }
+   }
 
-    return getPath();
+   return null;
 }
 
 const launchRunAnimation = (character: Character) => {
 
-  const characterAssets = getCharacterAssets(character);
+  const animation = getCharacterAnimationAccordingToState(character, AnimationType.run);
 
-  if(!characterAssets){
-
+  if(!animation){
     console.log("sorry, we could not find the path associated with the current character state");
-
+    
     return;
   }
 
@@ -1949,12 +1937,12 @@ const launchRunAnimation = (character: Character) => {
     character.element,
     0,
     "png",
-    characterAssets.path,
+    animation.sprite.path,
     1,
-    parseInt(characterAssets.length),
+    animation.sprite.length,
     1,
     true,
-    transformed ? ANIMATION_ID.transformation_run : ANIMATION_ID.run
+    animation.id
   );
 }
 
@@ -1976,7 +1964,7 @@ const launchHeroRunAnimation = () => {
     transformed ? 6 : 8,
     1,
     true,
-    transformed ? ANIMATION_ID.transformation_run : ANIMATION_ID.run
+    transformed ? ANIMATION_ID.hero_transformation_run : ANIMATION_ID.hero_run
   );
 };
 
@@ -1998,21 +1986,36 @@ type CharacterState = {
 
 type AnimationId = number;
 
-type CharacterAnimations = {
-   run: AnimationId
+enum AnimationType {
+  attack,
+  run,
+  walk,
+  hurt,
+  death,
+  idle,
 }
+
+type CharacterAnimations = Array< 
+  {  
+    animationType: AnimationType,
+    animationsStatesBlocks: [
+      {
+        state: string,
+        animation: CharacterStatePath;
+     }
+    ]
+  }
+>
 
 class Character {
    assets: Array<CharacterAsset>;
    element: HTMLImageElement;
-   pathsAccordingToCharacterState: Array<CharacterState>;
    state: string;
    animations: CharacterAnimations;
    
-   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, pathsAccordingToCharacterState:Array<CharacterState>, state: string, animations: CharacterAnimations){
+   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, state: string, animations: CharacterAnimations){
     this.assets = assets;
     this.element = element;
-    this.pathsAccordingToCharacterState = pathsAccordingToCharacterState;
     this.state = state;
     this.animations = animations;
    }
@@ -2038,7 +2041,7 @@ const checkForOpponentAttack = () => {
       heroContainer.getBoundingClientRect().left +
         heroContainer.getBoundingClientRect().width
     ) {
-      ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_run] = 0;
+      ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_run] = 0;
 
       launchAnimationAndDeclareItLaunched(
         heroImage,
@@ -2049,7 +2052,7 @@ const checkForOpponentAttack = () => {
         4,
         1,
         false,
-        ANIMATION_ID.opponent_run
+        ANIMATION_ID.ghost_opponent_run
       );
     }
   });
@@ -2089,7 +2092,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "d") {
     if (!gameLaunched) {
       launchGame();
-    } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.run] === 0) {
+    } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
       resumeRun();
     }
   }
@@ -2142,7 +2145,7 @@ const stopRun = () => {
     enemiesComingTimeout = null;
   }
 
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] = 0;
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
@@ -2190,10 +2193,10 @@ const stopTime = () => {
     clearTimeout(enemiesComingTimeout);
   }
 
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_run] = 0;
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
 
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] = 0;
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] = 0;
 
   launchAnimationAndDeclareItLaunched(
@@ -2215,7 +2218,7 @@ const resumeRun = () => {
   runStopped = false;
   launchRun();
   ennemiesOnScreen.forEach((enemy) => {
-    ANIMATION_RUNNING_VALUES[ANIMATION_ID.opponent_move]++;
+    ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move]++;
 
     moveEnemy(enemy, 0, Date.now());
   });
@@ -2297,7 +2300,7 @@ const launchTransformation = () => {
       6,
       1,
       true,
-      ANIMATION_ID.transformation_run
+      ANIMATION_ID.hero_transformation_run
     );
 
     setTimeout(turnHeroTransformationOff, 20000);
@@ -2326,7 +2329,7 @@ const launchTransformation = () => {
         9,
         1,
         true,
-        ANIMATION_ID.transformation_pre_run
+        ANIMATION_ID.hero_transformation_pre_run
       );
 
       if (enemiesComingTimeout) {
@@ -2366,7 +2369,7 @@ const launchTransformation = () => {
             6,
             1,
             true,
-            ANIMATION_ID.transformation_run
+            ANIMATION_ID.hero_transformation_run
           );
 
           setTimeout(turnHeroTransformationOff, 15000);
@@ -2380,7 +2383,7 @@ const clearEnemiesInstantly = () => {
   ennemiesOnScreen.forEach((enemy, index) => {
     enemy.element.remove();
     ennemiesOnScreen.splice(index, 1);
-    interruptAnimation(ANIMATION_ID.opponent_move);
+    interruptAnimation(ANIMATION_ID.ghost_opponent_move);
   });
 };
 
@@ -2431,7 +2434,7 @@ const launchDeathAnimation = () => {
       6,
       1,
       false,
-      ANIMATION_ID.death
+      ANIMATION_ID.hero_death
     );
 
     clearGameTimeouts();
@@ -2466,7 +2469,7 @@ const launchHeroHurtAnimation = () => {
     transformed ? 5 : 3,
     1,
     false,
-    transformed ? ANIMATION_ID.transformation_hurt : ANIMATION_ID.hurt
+    transformed ? ANIMATION_ID.hero_transformation_hurt : ANIMATION_ID.hero_hurt
   );
 
   if (!hardMode) {
@@ -2477,7 +2480,7 @@ const launchHeroHurtAnimation = () => {
     TimeoutId.HERO,
     setTimeout(() => {
       heroHurt = false;
-      if (heroIsAlive && ANIMATION_RUNNING_VALUES[ANIMATION_ID.run] === 0) {
+      if (heroIsAlive && ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
         launchRun();
       }
     }, 500)
@@ -2496,10 +2499,10 @@ const startCamera = () => {
 };
 
 const initHeroAnimations = () => {
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.transformation_pre_run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.transformation_run] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hurt] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_transformation_pre_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_transformation_run] = 0;
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
 };
 
 window.onload = () => {
