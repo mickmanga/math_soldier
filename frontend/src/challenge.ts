@@ -1500,6 +1500,30 @@ const launchOpponent = (enemy: Enemy) => {
   moveEnemy(enemy, 0, Date.now());
 };
 
+interface ElementInterface extends HTMLImageElement {};
+
+enum Direction {
+  LEFT_TO_RIGHT,
+  RIGHT_TO_LEFT
+}
+
+type ElementVelocity = number;
+
+const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocityPerFrame: ElementVelocity, direction: Direction) => {
+
+  if(ANIMATION_RUNNING_VALUES[animation] !== 1){
+    return;
+  }
+
+  const directionalValue = direction === Direction.LEFT_TO_RIGHT ? 1 : 0;
+
+  element.style.left = `${Math.round(
+    element.getBoundingClientRect().left + (directionalValue *  velocityPerFrame)
+  )}px`;
+
+   requestAnimationFrame( () => moveElement(element, animation, velocityPerFrame, direction));
+}
+
 const moveEnemy = (
   enemy: Enemy,
   throttleNum = 0,
