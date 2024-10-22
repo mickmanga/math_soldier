@@ -1937,14 +1937,19 @@ const getCharacterAnimationAccordingToState = (character: Character, animationTy
       continue;
     }
 
-    for(let animationBlocks = 0; animationBlocks < characterAnimation.animationsStatesBlocks.length; animationBlocks++) {
+    for(let animationBlockIndex = 0; animationBlockIndex < characterAnimation.animationsStatesBlocks.length; animationBlockIndex++) {
 
-      const animationStateBlock = characterAnimation.animationsStatesBlocks[i];
+      const animationBlock = characterAnimation.animationsStatesBlocks[animationBlockIndex];
 
-      if(animationStateBlock.state === character.state){
+      for(let animationBlockStateIndex = 0; animationBlockStateIndex < animationBlock.states.length; animationBlockStateIndex++ ){
         
-        return animationStateBlock.animation;
+       const animationStateBlock = animationBlock.states[animationBlockStateIndex];
 
+        if(animationStateBlock === character.state){
+        
+          return animationBlock.animation;
+
+         }
       }
      }
    }
@@ -1952,11 +1957,11 @@ const getCharacterAnimationAccordingToState = (character: Character, animationTy
    return null;
 }
 
-const launchRunAnimation = (character: Character) => {
+const launchAnimation = (character: Character, animation: AnimationType) => {
 
-  const animation = getCharacterAnimationAccordingToState(character, AnimationType.run);
+  const characterAnimation = getCharacterAnimationAccordingToState(character, AnimationType.run);
 
-  if(!animation){
+  if(!characterAnimation){
     console.log("sorry, we could not find the path associated with the current character state");
     return;
   }
@@ -1965,16 +1970,30 @@ const launchRunAnimation = (character: Character) => {
     character.element,
     0,
     "png",
-    animation.sprite.path,
+    characterAnimation.sprite.path,
     1,
-    animation.sprite.length,
+    characterAnimation.sprite.length,
     1,
     true,
-    animation.id
+    characterAnimation.id
   );
 }
 
 const launchHeroRunAnimation = () => {
+
+  if (!heroIsAlive) {
+    return;
+  }
+
+  runAudio.volume = 0.7;
+
+  launchAnimation(heroCharacter, AnimationType.run);
+
+
+}
+
+/*
+const launchHeroRun = () => {
   if (!heroIsAlive) {
     return;
   }
@@ -1995,6 +2014,8 @@ const launchHeroRunAnimation = () => {
     transformed ? ANIMATION_ID.hero_transformation_run : ANIMATION_ID.hero_run
   );
 };
+
+*/
 
 type CharacterAsset = {
   id: string,
@@ -2022,7 +2043,7 @@ type CharacterAnimations = Array<
   {
     animationType: AnimationType,
     animationsStatesBlocks: Array<{
-        state: CharacterStates,
+        states: Array<CharacterStates>,
         animation: Animation;
     }>
   }
@@ -2043,6 +2064,13 @@ class Character {
 
 type CharacterStates = HeroCharacterStates;
 
+
+//Characters 
+
+
+//Hero
+
+
 enum HeroCharacterStates {
   idle,
   running,
@@ -2059,26 +2087,74 @@ const heroAnimations = [
   animationType: AnimationType.idle,
   animationsStatesBlocks: [
     {
-      state: HeroCharacterStates.idle,
+      states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.dead, HeroCharacterStates.running],
       animation: 
       {
         id: ANIMATION_ID.hero_idle ,
         sprite:    {
-          path: "/animations/idle.png",
-          length: 10
+          path: "assets/challenge/characters/hero/idle",
+          length: 7
       }
       }
-   
      }
    ]
   },
+  {
+    animationType: AnimationType.attack,
+    animationsStatesBlocks: [
+      {
+        states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.running],
+        animation: 
+        {
+          id: ANIMATION_ID.hero_attack ,
+          sprite:    {
+            path: "assets/challenge/characters/hero/attack",
+            length: 4
+        }
+        }
+       }
+     ]
+    },
+    {
+      animationType: AnimationType.run,
+      animationsStatesBlocks: [
+        {
+          states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.running],
+          animation: 
+          {
+            id: ANIMATION_ID.hero_run,
+            sprite:    {
+              path: "assets/challenge/characters/hero/run",
+              length: 8
+          }
+          }
+         }
+       ]
+      },
+      {
+        animationType: AnimationType.death,
+        animationsStatesBlocks: [
+          {
+            states: [HeroCharacterStates.idle, HeroCharacterStates.attacking,HeroCharacterStates.running],
+            animation: 
+            {
+              id: ANIMATION_ID.hero_death,
+              sprite:    {
+                path: "assets/challenge/characters/hero/death",
+                length: 6
+            }
+            }
+           }
+         ]
+        },
 ];
 
 const heroCharacter = new Character(heroImage, HeroCharacterStates.idle, heroAnimations);
 
-launchRunAnimation(heroCharacter);
+//hammer enemy
 
-const launchRun = (character?: Character) => {
+
+const launchHeroRun = () => {
   if (runStopped) {
     return;
   }
@@ -2089,6 +2165,7 @@ const launchRun = (character?: Character) => {
   }
 
   launchHeroRunAnimation();
+
 };
 
 const checkForOpponentAttack = () => {
@@ -2273,7 +2350,7 @@ const stopTime = () => {
 
 const resumeRun = () => {
   runStopped = false;
-  launchRun();
+  launchHeroRun();
   ennemiesOnScreen.forEach((enemy) => {
     ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move]++;
 
@@ -2538,7 +2615,7 @@ const launchHeroHurtAnimation = () => {
     setTimeout(() => {
       heroHurt = false;
       if (heroIsAlive && ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
-        launchRun();
+        launchHeroRun()
       }
     }, 500)
   );
@@ -2643,7 +2720,7 @@ const launchGame = () => {
   epicAudio.play();
   
   gameLaunched = true;
-  launchRun();
+  launchHeroRun();
   triggerOpponentsApparition();
 };
 

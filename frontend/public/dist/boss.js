@@ -1370,23 +1370,119 @@
     }
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
+  var getCharacterAnimationAccordingToState = (character, animationType) => {
+    for (let i = 0; i < character.animations.length; i++) {
+      const characterAnimation = character.animations[i];
+      if (characterAnimation.animationType !== animationType) {
+        continue;
+      }
+      for (let animationBlockIndex = 0; animationBlockIndex < characterAnimation.animationsStatesBlocks.length; animationBlockIndex++) {
+        const animationBlock = characterAnimation.animationsStatesBlocks[animationBlockIndex];
+        for (let animationBlockStateIndex = 0; animationBlockStateIndex < animationBlock.states.length; animationBlockStateIndex++) {
+          const animationStateBlock = animationBlock.states[animationBlockStateIndex];
+          if (animationStateBlock === character.state) {
+            return animationBlock.animation;
+          }
+        }
+      }
+    }
+    return null;
+  };
+  var launchAnimation = (character, animation) => {
+    const characterAnimation = getCharacterAnimationAccordingToState(character, 1 /* run */);
+    if (!characterAnimation) {
+      console.log("sorry, we could not find the path associated with the current character state");
+      return;
+    }
+    launchAnimationAndDeclareItLaunched(
+      character.element,
+      0,
+      "png",
+      characterAnimation.sprite.path,
+      1,
+      characterAnimation.sprite.length,
+      1,
+      true,
+      characterAnimation.id
+    );
+  };
   var launchHeroRunAnimation = () => {
     if (!heroIsAlive) {
       return;
     }
     runAudio.volume = 0.7;
-    launchAnimationAndDeclareItLaunched(
-      heroImage,
-      0,
-      "png",
-      `assets/challenge/characters/${transformed ? "transformed_hero" : "hero"}/run`,
-      1,
-      transformed ? 6 : 8,
-      1,
-      true,
-      transformed ? 24 /* hero_transformation_run */ : 1 /* hero_run */
-    );
+    launchAnimation(heroCharacter, 1 /* run */);
   };
+  var Character = class {
+    constructor(element, state, animations) {
+      this.element = element;
+      this.state = state;
+      this.animations = animations;
+    }
+  };
+  var heroAnimations = [
+    {
+      animationType: 5 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */],
+          animation: {
+            id: 5 /* hero_idle */,
+            sprite: {
+              path: "assets/challenge/characters/hero/idle",
+              length: 7
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          animation: {
+            id: 0 /* hero_attack */,
+            sprite: {
+              path: "assets/challenge/characters/hero/attack",
+              length: 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 1 /* run */,
+      animationsStatesBlocks: [
+        {
+          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          animation: {
+            id: 1 /* hero_run */,
+            sprite: {
+              path: "assets/challenge/characters/hero/run",
+              length: 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 4 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          animation: {
+            id: 4 /* hero_death */,
+            sprite: {
+              path: "assets/challenge/characters/hero/death",
+              length: 6
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var heroCharacter = new Character(heroImage, 0 /* idle */, heroAnimations);
   var launchRun = (character) => {
     if (runStopped) {
       return;
@@ -1472,7 +1568,7 @@
   };
   var resumeRun = () => {
     runStopped = false;
-    launchRun();
+    launchRun(heroCharacter);
     ennemiesOnScreen.forEach((enemy) => {
       ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
       moveEnemy(enemy, 0, Date.now());
@@ -1666,7 +1762,7 @@
       setTimeout(() => {
         heroHurt = false;
         if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
-          launchRun();
+          launchRun(heroCharacter);
         }
       }, 500)
     );
@@ -1749,7 +1845,7 @@
     runAudio.play();
     epicAudio.play();
     gameLaunched = true;
-    launchRun();
+    launchRun(heroCharacter);
     triggerOpponentsApparition();
   };
   var defineCurrentSubject = (subject) => {
