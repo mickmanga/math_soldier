@@ -1509,7 +1509,7 @@ enum Direction {
 
 type ElementVelocity = number;
 
-const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocityPerFrame: ElementVelocity, direction: Direction) => {
+const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocityPerMs: ElementVelocity, direction: Direction) => {
 
   if(ANIMATION_RUNNING_VALUES[animation] !== 1){
     return;
@@ -1518,10 +1518,10 @@ const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocit
   const directionalValue = direction === Direction.LEFT_TO_RIGHT ? 1 : 0;
 
   element.style.left = `${Math.round(
-    element.getBoundingClientRect().left + (directionalValue *  velocityPerFrame)
+    element.getBoundingClientRect().left + (directionalValue *  velocityPerMs)
   )}px`;
 
-   requestAnimationFrame( () => moveElement(element, animation, velocityPerFrame, direction));
+   requestAnimationFrame( () => moveElement(element, animation, velocityPerMs, direction));
 }
 
 const moveEnemy = (
@@ -1924,24 +1924,29 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
 type Animation = {
    id: ANIMATION_ID,
-   sprite: { path: string, length: number},
+   sprite: AnimationPath,
 }
 
 const getCharacterAnimationAccordingToState = (character: Character, animationType: AnimationType): Animation | null => {
 
    for(let i = 0; i < character.animations.length; i++){
 
-    if(character.animations[i].animationType !== animationType){
+    const characterAnimation = character.animations[i];
+
+    if(characterAnimation.animationType !== animationType){
       continue;
     }
-    
-     return {
-      id: ANIMATION_ID.hero_run,
-      sprite: { 
-        path: "", 
-        length: 10
-      },
-    }
+
+    for(let animationBlocks = 0; animationBlocks < characterAnimation.animationsStatesBlocks.length; animationBlocks++) {
+
+      const animationStateBlock = characterAnimation.animationsStatesBlocks[i];
+
+      if(animationStateBlock.state === character.state){
+        
+        return animationStateBlock.animation;
+
+      }
+     }
    }
 
    return null;
@@ -1953,7 +1958,6 @@ const launchRunAnimation = (character: Character) => {
 
   if(!animation){
     console.log("sorry, we could not find the path associated with the current character state");
-    
     return;
   }
 
@@ -1998,14 +2002,9 @@ type CharacterAsset = {
   directoryPath: string 
 }
 
-type CharacterStatePath = {
+type AnimationPath = {
   path : string;
-  length: string;
-}
-
-type CharacterState = {
-  state: string,
-  path: CharacterStatePath;
+  length: number;
 }
 
 type AnimationId = number;
@@ -2019,31 +2018,65 @@ enum AnimationType {
   idle,
 }
 
-type CharacterAnimations = Array< 
-  {  
+type CharacterAnimations = Array<
+  {
     animationType: AnimationType,
-    animationsStatesBlocks: [
-      {
-        state: string,
-        animation: CharacterStatePath;
-     }
-    ]
+    animationsStatesBlocks: Array<{
+        state: CharacterStates,
+        animation: Animation;
+    }>
   }
->
+>;
 
 class Character {
-   assets: Array<CharacterAsset>;
    element: HTMLImageElement;
-   state: string;
+   state: CharacterStates;
    animations: CharacterAnimations;
    
-   constructor(assets: Array<CharacterAsset>, element: HTMLImageElement, state: string, animations: CharacterAnimations){
-    this.assets = assets;
+   constructor(element: HTMLImageElement, state: CharacterStates, animations: CharacterAnimations){
     this.element = element;
     this.state = state;
     this.animations = animations;
    }
 }
+
+
+type CharacterStates = HeroCharacterStates;
+
+enum HeroCharacterStates {
+  idle,
+  running,
+  attacking,
+  dead,
+  transformed_idle,
+  transformed_running,
+  transformed_attacking,
+  transformed_dead,
+}
+
+const heroAnimations = [
+  {
+  animationType: AnimationType.idle,
+  animationsStatesBlocks: [
+    {
+      state: HeroCharacterStates.idle,
+      animation: 
+      {
+        id: ANIMATION_ID.hero_idle ,
+        sprite:    {
+          path: "/animations/idle.png",
+          length: 10
+      }
+      }
+   
+     }
+   ]
+  },
+];
+
+const heroCharacter = new Character(heroImage, HeroCharacterStates.idle, heroAnimations);
+
+launchRunAnimation(heroCharacter);
 
 const launchRun = (character?: Character) => {
   if (runStopped) {
@@ -2624,3 +2657,4 @@ const killAllAudios = () => {
   epicAudio.pause();
   transformedEpicAudio.pause();
 };
+
