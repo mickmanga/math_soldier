@@ -180,10 +180,18 @@ class Answer {
   }
 }
 
-class Enemy {
+interface EnemyInterface {
+  element: HTMLElement;
+  answer: Answer;
+  collideable:boolean;
+}
+
+class Enemy implements EnemyInterface {
   element: HTMLElement;
   answer: Answer;
   collideable = true;
+
+
 
   constructor(element: HTMLElement, answer: Answer) {
     this.element = element;
@@ -1477,7 +1485,7 @@ const clearTimeoutAndLaunchNewOne = (
   GAME_TIMEOUTS[timeoutId] = [timeout];
 };
 
-const launchOpponent = (enemy: Enemy) => {
+const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
   interruptAnimation(ANIMATION_ID.ghost_opponent_run);
 
@@ -1927,7 +1935,7 @@ type Animation = {
    sprite: AnimationPath,
 }
 
-const getCharacterAnimationAccordingToState = (character: Character, animationType: AnimationType): Animation | null => {
+const getCharacterAnimationAccordingToState = (character: CharacterInterface, animationType: AnimationType): Animation | null => {
 
    for(let i = 0; i < character.animations.length; i++){
 
@@ -1957,7 +1965,7 @@ const getCharacterAnimationAccordingToState = (character: Character, animationTy
    return null;
 }
 
-const launchAnimation = (character: Character, animation: AnimationType) => {
+const launchAnimation = (character: CharacterInterface, animation: AnimationType) => {
 
   const characterAnimation = getCharacterAnimationAccordingToState(character, AnimationType.run);
 
@@ -2049,17 +2057,27 @@ type CharacterAnimations = Array<
   }
 >;
 
-class Character {
+interface CharacterInterface {
+  element: HTMLImageElement;
+  state: CharacterStates;
+  animations: CharacterAnimations;
+}
+
+interface MovingElementInterface {
+  velocity: number;
+}
+
+interface MovingCharacterInterface extends CharacterInterface, MovingElementInterface {}
+
+class DefaultCharacter {
    element: HTMLImageElement;
    state: CharacterStates;
    animations: CharacterAnimations;
-   velocity: number;
    
-   constructor(element: HTMLImageElement, state: CharacterStates, animations: CharacterAnimations, velocity = 0){
+   constructor(element: HTMLImageElement, state: CharacterStates, animations: CharacterAnimations){
     this.element = element;
     this.state = state;
     this.animations = animations;
-    this.velocity = velocity;
    }
 }
 
@@ -2151,9 +2169,7 @@ const heroAnimations = [
         },
 ];
 
-const heroCharacter = new Character(heroImage, HeroCharacterStates.idle, heroAnimations);
-
-//hammer enemy
+const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 
 const launchHeroRun = () => {

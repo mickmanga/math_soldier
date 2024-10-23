@@ -1413,7 +1413,7 @@
     runAudio.volume = 0.7;
     launchAnimation(heroCharacter, 1 /* run */);
   };
-  var Character = class {
+  var DefaultCharacter = class {
     constructor(element, state, animations) {
       this.element = element;
       this.state = state;
@@ -1482,7 +1482,7 @@
       ]
     }
   ];
-  var heroCharacter = new Character(heroImage, 0 /* idle */, heroAnimations);
+  var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var launchHeroRun = () => {
     if (runStopped) {
       return;
