@@ -2053,11 +2053,13 @@ class Character {
    element: HTMLImageElement;
    state: CharacterStates;
    animations: CharacterAnimations;
+   velocity: number;
    
-   constructor(element: HTMLImageElement, state: CharacterStates, animations: CharacterAnimations){
+   constructor(element: HTMLImageElement, state: CharacterStates, animations: CharacterAnimations, velocity = 0){
     this.element = element;
     this.state = state;
     this.animations = animations;
+    this.velocity = velocity;
    }
 }
 

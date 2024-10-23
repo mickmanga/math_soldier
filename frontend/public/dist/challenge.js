@@ -1483,7 +1483,7 @@
     }
   ];
   var heroCharacter = new Character(heroImage, 0 /* idle */, heroAnimations);
-  var launchRun = (character) => {
+  var launchHeroRun = () => {
     if (runStopped) {
       return;
     }
@@ -1568,7 +1568,7 @@
   };
   var resumeRun = () => {
     runStopped = false;
-    launchRun(heroCharacter);
+    launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
       ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
       moveEnemy(enemy, 0, Date.now());
@@ -1762,7 +1762,7 @@
       setTimeout(() => {
         heroHurt = false;
         if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
-          launchRun(heroCharacter);
+          launchHeroRun();
         }
       }, 500)
     );
@@ -1845,7 +1845,7 @@
     runAudio.play();
     epicAudio.play();
     gameLaunched = true;
-    launchRun(heroCharacter);
+    launchHeroRun();
     triggerOpponentsApparition();
   };
   var defineCurrentSubject = (subject) => {
