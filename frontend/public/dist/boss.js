@@ -1108,9 +1108,12 @@
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
+  var interruptOpponentRun = () => {
+    interruptAnimation(10 /* ghost_opponent_run */);
+  };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-    interruptAnimation(10 /* ghost_opponent_run */);
+    interruptOpponentRun();
     launchAnimationAndDeclareItLaunched(
       enemy.element.firstChild,
       0,
@@ -1420,12 +1423,13 @@
       this.animations = animations;
     }
   };
+  var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var heroAnimations = [
     {
       animationType: 5 /* idle */,
       animationsStatesBlocks: [
         {
-          states: [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */],
+          states: ALL_HERO_STATES,
           animation: {
             id: 5 /* hero_idle */,
             sprite: {
@@ -1440,7 +1444,7 @@
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          states: ALL_HERO_STATES,
           animation: {
             id: 0 /* hero_attack */,
             sprite: {
@@ -1455,7 +1459,7 @@
       animationType: 1 /* run */,
       animationsStatesBlocks: [
         {
-          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          states: ALL_HERO_STATES,
           animation: {
             id: 1 /* hero_run */,
             sprite: {
@@ -1470,7 +1474,7 @@
       animationType: 4 /* death */,
       animationsStatesBlocks: [
         {
-          states: [0 /* idle */, 2 /* attacking */, 1 /* running */],
+          states: ALL_HERO_STATES,
           animation: {
             id: 4 /* hero_death */,
             sprite: {

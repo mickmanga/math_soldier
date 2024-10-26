@@ -191,8 +191,6 @@ class Enemy implements EnemyInterface {
   answer: Answer;
   collideable = true;
 
-
-
   constructor(element: HTMLElement, answer: Answer) {
     this.element = element;
     this.answer = answer;
@@ -1490,12 +1488,16 @@ enum EnemyId {
 }
 
 const createEnemy = (enemyId: EnemyId) => {
-  return new Enemy();  
+  return new Enemy();
+}
+
+const interruptOpponentRun = () => {
+  interruptAnimation(ANIMATION_ID.ghost_opponent_run);
 }
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-  interruptAnimation(ANIMATION_ID.ghost_opponent_run);
+  interruptOpponentRun();
 
   launchAnimationAndDeclareItLaunched(
     enemy.element.firstChild as HTMLImageElement,
@@ -2055,11 +2057,13 @@ enum AnimationType {
   idle,
 }
 
+const ALL_STATES = "ALL_STATES";
+
 type CharacterAnimations = Array<
   {
     animationType: AnimationType,
     animationsStatesBlocks: Array<{
-        states: Array<CharacterStates>,
+        states: Array<CharacterStates> ,
         animation: Animation;
     }>
   }
@@ -2090,7 +2094,9 @@ class DefaultCharacter {
 }
 
 
-type CharacterStates = HeroCharacterStates;
+type CharacterStates = HeroCharacterStates | RedHammerEnemyCharacterStates;
+
+
 
 
 //Characters 
@@ -2110,18 +2116,23 @@ enum HeroCharacterStates {
   transformed_dead,
 }
 
-enum redHammerEnemyCharacterStates {
+enum RedHammerEnemyCharacterStates {
   idle,
   running,
   attacking,
+  dead,
 }
+
+const ALL_HERO_STATES = [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.dead, HeroCharacterStates.running];
+const ALL_RED_HAMMER_ENEMY_STATES = [RedHammerEnemyCharacterStates.idle, RedHammerEnemyCharacterStates.running, RedHammerEnemyCharacterStates.attacking, RedHammerEnemyCharacterStates.dead]
+
 
 const heroAnimations = [
   {
   animationType: AnimationType.idle,
   animationsStatesBlocks: [
     {
-      states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.dead, HeroCharacterStates.running],
+      states: ALL_HERO_STATES,
       animation: 
       {
         id: ANIMATION_ID.hero_idle ,
@@ -2137,7 +2148,7 @@ const heroAnimations = [
     animationType: AnimationType.attack,
     animationsStatesBlocks: [
       {
-        states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.running],
+        states: ALL_HERO_STATES,
         animation: 
         {
           id: ANIMATION_ID.hero_attack ,
@@ -2153,7 +2164,7 @@ const heroAnimations = [
       animationType: AnimationType.run,
       animationsStatesBlocks: [
         {
-          states: [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.running],
+          states: ALL_HERO_STATES,
           animation: 
           {
             id: ANIMATION_ID.hero_run,
@@ -2169,7 +2180,7 @@ const heroAnimations = [
         animationType: AnimationType.death,
         animationsStatesBlocks: [
           {
-            states: [HeroCharacterStates.idle, HeroCharacterStates.attacking,HeroCharacterStates.running],
+            states: ALL_HERO_STATES,
             animation: 
             {
               id: ANIMATION_ID.hero_death,
@@ -2181,6 +2192,41 @@ const heroAnimations = [
            }
          ]
         },
+];
+
+const redHammerAnimations = [
+  {
+  animationType: AnimationType.idle,
+  animationsStatesBlocks: [
+    {
+      states: ALL_RED_HAMMER_ENEMY_STATES,
+      animation: 
+      {
+        id: ANIMATION_ID.hammer_opponent_idle,
+        sprite:    {
+          path: "assets/challenge/characters/enemies/hard/idle",
+          length: 16
+      }
+      }
+     }
+   ]
+  },
+  {
+    animationType: AnimationType.attack,
+    animationsStatesBlocks: [
+      {
+        states: ALL_RED_HAMMER_ENEMY_STATES,
+        animation: 
+        {
+          id: ANIMATION_ID.hammer_opponent_attack,
+          sprite:    {
+            path: "assets/challenge/characters/enemies/hard/attack",
+            length: 30
+        }
+        }
+       }
+     ]
+    },
 ];
 
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
