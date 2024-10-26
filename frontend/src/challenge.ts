@@ -1485,6 +1485,14 @@ const clearTimeoutAndLaunchNewOne = (
   GAME_TIMEOUTS[timeoutId] = [timeout];
 };
 
+enum EnemyId {
+  redHammer
+}
+
+const createEnemy = (enemyId: EnemyId) => {
+  return new Enemy();  
+}
+
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
   interruptAnimation(ANIMATION_ID.ghost_opponent_run);
@@ -2102,6 +2110,12 @@ enum HeroCharacterStates {
   transformed_dead,
 }
 
+enum redHammerEnemyCharacterStates {
+  idle,
+  running,
+  attacking,
+}
+
 const heroAnimations = [
   {
   animationType: AnimationType.idle,
@@ -2663,7 +2677,7 @@ window.onload = () => {
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "castleback.webp" : "castle.gif"
+    hardMode ? "forest.jpg" : "castle.gif"
   }`;
   MAPS.push(createMapBlock(0));
   MAPS.push(createMapBlock(100));
