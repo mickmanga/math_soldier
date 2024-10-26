@@ -1430,7 +1430,7 @@ const launchAttack = () => {
     ANIMATION_ID.hero_attack
   );
 
-  const enemyCanBeHit = (enemy: Enemy) => {
+  const enemyCanBeHit = (enemy: EnemyInterface) => {
     const enemyLeft = hardMode
       ? getHardModeEnemyRealLeft(enemy) * 1.2
       : enemy.element.getBoundingClientRect().left;
@@ -1586,7 +1586,7 @@ const transformIfRequired = () => {
   }
 };
 
-const killRightEnemyAndUpdateScore = (enemy: Enemy) => {
+const killRightEnemyAndUpdateScore = (enemy: EnemyInterface) => {
   killEnemy(enemy);
 
   rewardHero();
@@ -1616,7 +1616,7 @@ const updateScoreDisplay = () => {
   scoreContainer.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
 };
 
-const killWrongEnemy = (enemy: Enemy) => {
+const killWrongEnemy = (enemy: EnemyInterface) => {
   scoreMalusContainer.style.display = "flex";
 
   lifePoints.value--;
@@ -1692,7 +1692,7 @@ const displayTransformationKillReward = (content: string) => {
 
 const hideReward = () => {};
 
-const killEnemy = (enemy: Enemy) => {
+const killEnemy = (enemy: EnemyInterface) => {
   const launchExplosion = () => {
     bombAudio.play();
     bombAudio.currentTime = 0;
@@ -1715,7 +1715,7 @@ const killEnemy = (enemy: Enemy) => {
   destroyEnemyAndLaunchNewOne(enemy);
 };
 
-const getHardModeEnemyRealLeft = (enemy: Enemy) => {
+const getHardModeEnemyRealLeft = (enemy: EnemyInterface) => {
   const enemyImg = enemy.element as HTMLImageElement;
 
   return (
@@ -1724,14 +1724,14 @@ const getHardModeEnemyRealLeft = (enemy: Enemy) => {
   );
 };
 
-const clearEnemy = (enemy: Enemy) => {
+const clearEnemy = (enemy: EnemyInterface) => {
   interruptAnimation(ANIMATION_ID.ghost_opponent_run);
   interruptAnimation(ANIMATION_ID.ghost_opponent_attack);
 
   destroyEnemy(enemy);
 };
 
-const destroyEnemy = (enemy: Enemy) => {
+const destroyEnemy = (enemy: EnemyInterface) => {
   clearAndHideAnswerDataContainer();
   heroInTheRedZone = false;
   updateEnemyViewPointDisplay();
@@ -1751,7 +1751,7 @@ const destroyEnemy = (enemy: Enemy) => {
   });
 };
 
-const destroyEnemyAndLaunchNewOne = (enemy: Enemy) => {
+const destroyEnemyAndLaunchNewOne = (enemy: EnemyInterface) => {
   destroyEnemy(enemy);
 };
 
