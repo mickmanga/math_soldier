@@ -181,18 +181,18 @@ class Answer {
 }
 
 interface EnemyInterface {
-  element: HTMLElement;
+  character: CharacterInterface;
   answer: Answer;
   collideable:boolean;
 }
 
 class Enemy implements EnemyInterface {
-  element: HTMLElement;
+  character: CharacterInterface;
   answer: Answer;
   collideable = true;
 
-  constructor(element: HTMLElement, answer: Answer) {
-    this.element = element;
+  constructor(character: CharacterInterface, answer: Answer) {
+    this.character = character;
     this.answer = answer;
   }
 }
@@ -713,22 +713,17 @@ const buildEnemyElement = () => {
 };
 
 const buildEnemy = (answer: Answer) => {
-  //construct opponent at a specific point, run it
 
-  const enemyElement = buildEnemyElement();
+  const enemyCharacter = createRedHammerCharacter();
 
-  if (!enemyElement) {
+  if (!enemyCharacter) {
     return;
   }
 
   document.getElementsByTagName("body")[0].append();
 
-  if (hardMode) {
-    enemyViewPoint.style.left = "120vw";
-    enemyViewPoint.style.display = "flex";
-  }
 
-  const enemy = new Enemy(enemyElement, answer);
+  const enemy = new Enemy(enemyCharacter, answer);
 
   ennemiesOnScreen.push(enemy);
 
@@ -1431,7 +1426,7 @@ const launchAttack = () => {
   const enemyCanBeHit = (enemy: EnemyInterface) => {
     const enemyLeft = hardMode
       ? getHardModeEnemyRealLeft(enemy) * 1.2
-      : enemy.element.getBoundingClientRect().left;
+      : enemy.character.element.getBoundingClientRect().left;
     return (
       enemyLeft >
         heroContainer.getBoundingClientRect().left +
@@ -1499,21 +1494,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
   interruptOpponentRun();
 
-  launchAnimationAndDeclareItLaunched(
-    enemy.element.firstChild as HTMLImageElement,
-    0,
-    "png",
-    hardMode
-      ? "assets/challenge/characters/enemies/hard/idle"
-      : "assets/challenge/characters/enemies/black_spirit/run",
-    1,
-    hardMode ? 16 : 4,
-    1,
-    true,
-    ANIMATION_ID.ghost_opponent_run
-  );
-
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move]++;
+  launchAnimation(enemy.character, AnimationType.idle)
 
   moveEnemy(enemy, 0, Date.now());
 };
@@ -1566,8 +1547,8 @@ const moveEnemy = (
 
   throttleNum = 0;
 
-  enemy.element.style.left = `${Math.round(
-    enemy.element.getBoundingClientRect().left -
+  enemy.character.element.style.left = `${Math.round(
+    enemy.character.element.getBoundingClientRect().left -
       diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
   )}px`;
 
@@ -1700,7 +1681,7 @@ const killEnemy = (enemy: EnemyInterface) => {
     bombAudio.currentTime = 0;
 
     launchAnimationAndDeclareItLaunched(
-      enemy.element.firstChild as HTMLImageElement,
+      enemy.character.element.firstChild as HTMLImageElement,
       0,
       "png",
       "assets/challenge/explosion",
@@ -1718,7 +1699,7 @@ const killEnemy = (enemy: EnemyInterface) => {
 };
 
 const getHardModeEnemyRealLeft = (enemy: EnemyInterface) => {
-  const enemyImg = enemy.element as HTMLImageElement;
+  const enemyImg = enemy.character.element as HTMLImageElement;
 
   return (
     enemyImg.getBoundingClientRect().left +
@@ -1739,7 +1720,7 @@ const destroyEnemy = (enemy: EnemyInterface) => {
   updateEnemyViewPointDisplay();
 
   setTimeout(() => {
-    enemy.element.remove();
+    enemy.character.element.remove();
     if (!preTransformed) {
       triggerOpponentsApparition();
     }
@@ -1800,7 +1781,7 @@ const detectCollision = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
     const enemyLeft = hardMode
       ? getHardModeEnemyRealLeft(enemyOnScreen)
-      : enemyOnScreen.element.getBoundingClientRect().left;
+      : enemyOnScreen.character.element.getBoundingClientRect().left;
 
     if (hardMode && !viewPointOnScreen && enemyLeft < window.innerWidth) {
       viewPointOnScreen = true;
@@ -1818,7 +1799,7 @@ const detectCollision = () => {
       heroInTheRedZone = true;
       updateEnemyViewPointDisplay();
       launchAnimationAndDeclareItLaunched(
-        enemyOnScreen.element.firstChild as HTMLImageElement,
+        enemyOnScreen.character.element.firstChild as HTMLImageElement,
         0,
         "png",
         "assets/challenge/characters/enemies/hard/attack",
@@ -1977,7 +1958,7 @@ const getCharacterAnimationAccordingToState = (character: CharacterInterface, an
 
 const launchAnimation = (character: CharacterInterface, animation: AnimationType) => {
 
-  const characterAnimation = getCharacterAnimationAccordingToState(character, AnimationType.run);
+  const characterAnimation = getCharacterAnimationAccordingToState(character, animation);
 
   if(!characterAnimation){
     console.log("sorry, we could not find the path associated with the current character state");
@@ -1985,7 +1966,7 @@ const launchAnimation = (character: CharacterInterface, animation: AnimationType
   }
 
   launchAnimationAndDeclareItLaunched(
-    character.element,
+    character.element.firstChild as HTMLImageElement,
     0,
     "png",
     characterAnimation.sprite.path,
@@ -2070,7 +2051,7 @@ type CharacterAnimations = Array<
 >;
 
 interface CharacterInterface {
-  element: HTMLImageElement;
+  element: HTMLElement;
   state: CharacterStates;
   animations: CharacterAnimations;
 }
@@ -2232,6 +2213,31 @@ const redHammerAnimations = [
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 
+
+const createRedHammerCharacter = (): DefaultCharacter => {
+
+  const buildEnemyElement = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img") as HTMLImageElement;
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";  
+    newOpponentContainer.append(newEnnemyImg);
+
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+
+    //init view point
+
+    enemyViewPoint.style.left = "120vw";
+    enemyViewPoint.style.display = "flex";
+  
+    return newOpponentContainer;
+  };
+
+
+ return new DefaultCharacter(buildEnemyElement().firstChild as HTMLImageElement, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
+}
+
+
 const launchHeroRun = () => {
   if (runStopped) {
     return;
@@ -2249,7 +2255,7 @@ const launchHeroRun = () => {
 const checkForOpponentAttack = () => {
   ennemiesOnScreen.forEach((enemy) => {
     if (
-      enemy.element.getBoundingClientRect().left <
+      enemy.character.element.getBoundingClientRect().left <
       heroContainer.getBoundingClientRect().left +
         heroContainer.getBoundingClientRect().width
     ) {
@@ -2593,7 +2599,7 @@ const launchTransformation = () => {
 
 const clearEnemiesInstantly = () => {
   ennemiesOnScreen.forEach((enemy, index) => {
-    enemy.element.remove();
+    enemy.character.element.remove();
     ennemiesOnScreen.splice(index, 1);
     interruptAnimation(ANIMATION_ID.ghost_opponent_move);
   });

@@ -124,9 +124,9 @@
     }
   };
   var Enemy = class {
-    constructor(element, answer) {
+    constructor(character, answer) {
       this.collideable = true;
-      this.element = element;
+      this.character = character;
       this.answer = answer;
     }
   };
@@ -539,28 +539,13 @@
       hardMode ? "hero_container_hard" : "hero_container_easy"
     );
   };
-  var buildEnemyElement = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add(
-      hardMode ? "hard_enemy_container" : "enemy_container"
-    );
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = hardMode ? "assets/challenge/characters/enemies/hard/attack/1.png" : "assets/challenge/characters/enemies/black_spirit/run/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    return newOpponentContainer;
-  };
   var buildEnemy = (answer) => {
-    const enemyElement = buildEnemyElement();
-    if (!enemyElement) {
+    const enemyCharacter = createRedHammerCharacter();
+    if (!enemyCharacter) {
       return;
     }
     document.getElementsByTagName("body")[0].append();
-    if (hardMode) {
-      enemyViewPoint.style.left = "120vw";
-      enemyViewPoint.style.display = "flex";
-    }
-    const enemy = new Enemy(enemyElement, answer);
+    const enemy = new Enemy(enemyCharacter, answer);
     ennemiesOnScreen.push(enemy);
     return enemy;
   };
@@ -1074,7 +1059,7 @@
       0 /* hero_attack */
     );
     const enemyCanBeHit = (enemy) => {
-      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemy) * 1.2 : enemy.element.getBoundingClientRect().left;
+      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemy) * 1.2 : enemy.character.element.getBoundingClientRect().left;
       return enemyLeft > heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width && enemyLeft < heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
@@ -1114,18 +1099,7 @@
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun();
-    launchAnimationAndDeclareItLaunched(
-      enemy.element.firstChild,
-      0,
-      "png",
-      hardMode ? "assets/challenge/characters/enemies/hard/idle" : "assets/challenge/characters/enemies/black_spirit/run",
-      1,
-      hardMode ? 16 : 4,
-      1,
-      true,
-      10 /* ghost_opponent_run */
-    );
-    ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
+    launchAnimation(enemy.character, 5 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
@@ -1142,8 +1116,8 @@
     }
     let hardEnemyMoveRatio = 1;
     throttleNum = 0;
-    enemy.element.style.left = `${Math.round(
-      enemy.element.getBoundingClientRect().left - diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
+    enemy.character.element.style.left = `${Math.round(
+      enemy.character.element.getBoundingClientRect().left - diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
@@ -1244,7 +1218,7 @@
       bombAudio.play();
       bombAudio.currentTime = 0;
       launchAnimationAndDeclareItLaunched(
-        enemy.element.firstChild,
+        enemy.character.element.firstChild,
         0,
         "png",
         "assets/challenge/explosion",
@@ -1259,7 +1233,7 @@
     destroyEnemyAndLaunchNewOne(enemy);
   };
   var getHardModeEnemyRealLeft = (enemy) => {
-    const enemyImg = enemy.element;
+    const enemyImg = enemy.character.element;
     return enemyImg.getBoundingClientRect().left + enemyImg.getBoundingClientRect().width * 0.3;
   };
   var clearEnemy = (enemy) => {
@@ -1272,7 +1246,7 @@
     heroInTheRedZone = false;
     updateEnemyViewPointDisplay();
     setTimeout(() => {
-      enemy.element.remove();
+      enemy.character.element.remove();
       if (!preTransformed) {
         triggerOpponentsApparition();
       }
@@ -1315,7 +1289,7 @@
   var enemyViewPointThresholdCrossed = false;
   var detectCollision = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
-      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemyOnScreen) : enemyOnScreen.element.getBoundingClientRect().left;
+      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemyOnScreen) : enemyOnScreen.character.element.getBoundingClientRect().left;
       if (hardMode && !viewPointOnScreen && enemyLeft < window.innerWidth) {
         viewPointOnScreen = true;
         enemyViewPoint.style.display = "flex";
@@ -1324,7 +1298,7 @@
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
         launchAnimationAndDeclareItLaunched(
-          enemyOnScreen.element.firstChild,
+          enemyOnScreen.character.element.firstChild,
           0,
           "png",
           "assets/challenge/characters/enemies/hard/attack",
@@ -1392,13 +1366,13 @@
     return null;
   };
   var launchAnimation = (character, animation) => {
-    const characterAnimation = getCharacterAnimationAccordingToState(character, 1 /* run */);
+    const characterAnimation = getCharacterAnimationAccordingToState(character, animation);
     if (!characterAnimation) {
       console.log("sorry, we could not find the path associated with the current character state");
       return;
     }
     launchAnimationAndDeclareItLaunched(
-      character.element,
+      character.element.firstChild,
       0,
       "png",
       characterAnimation.sprite.path,
@@ -1424,6 +1398,7 @@
     }
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 5 /* idle */,
@@ -1486,7 +1461,53 @@
       ]
     }
   ];
+  var redHammerAnimations = [
+    {
+      animationType: 5 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 14 /* hammer_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 16 /* hammer_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
+            }
+          }
+        }
+      ]
+    }
+  ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
+  var createRedHammerCharacter = () => {
+    const buildEnemyElement = () => {
+      const newOpponentContainer = document.createElement("div");
+      newOpponentContainer.classList.add("hard_enemy_container");
+      const newEnnemyImg = document.createElement("img");
+      newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+      newOpponentContainer.append(newEnnemyImg);
+      document.getElementsByTagName("body")[0].append(newOpponentContainer);
+      enemyViewPoint.style.left = "120vw";
+      enemyViewPoint.style.display = "flex";
+      return newOpponentContainer;
+    };
+    return new DefaultCharacter(buildEnemyElement().firstChild, 0 /* idle */, redHammerAnimations);
+  };
   var launchHeroRun = () => {
     if (runStopped) {
       return;
@@ -1692,7 +1713,7 @@
   };
   var clearEnemiesInstantly = () => {
     ennemiesOnScreen.forEach((enemy, index) => {
-      enemy.element.remove();
+      enemy.character.element.remove();
       ennemiesOnScreen.splice(index, 1);
       interruptAnimation(13 /* ghost_opponent_move */);
     });
