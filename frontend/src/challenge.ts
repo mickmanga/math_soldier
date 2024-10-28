@@ -1424,9 +1424,12 @@ const launchAttack = () => {
   );
 
   const enemyCanBeHit = (enemy: EnemyInterface) => {
+
+    const enemyContainer = enemy.character.element.parentElement!;
+
     const enemyLeft = hardMode
-      ? getHardModeEnemyRealLeft(enemy) * 1.2
-      : enemy.character.element.getBoundingClientRect().left;
+      ? getHardModeEnemyRealLeft(enemy)! * 1.2
+      : enemyContainer.getBoundingClientRect().left;
     return (
       enemyLeft >
         heroContainer.getBoundingClientRect().left +
@@ -1547,8 +1550,10 @@ const moveEnemy = (
 
   throttleNum = 0;
 
-  enemy.character.element.style.left = `${Math.round(
-    enemy.character.element.getBoundingClientRect().left -
+  const enemyContainer = enemy.character.element.parentElement!;
+
+  enemyContainer.style.left = `${Math.round(
+    enemyContainer.getBoundingClientRect().left -
       diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
   )}px`;
 
@@ -1681,7 +1686,7 @@ const killEnemy = (enemy: EnemyInterface) => {
     bombAudio.currentTime = 0;
 
     launchAnimationAndDeclareItLaunched(
-      enemy.character.element.firstChild as HTMLImageElement,
+      enemy.character.element,
       0,
       "png",
       "assets/challenge/explosion",
@@ -1699,11 +1704,18 @@ const killEnemy = (enemy: EnemyInterface) => {
 };
 
 const getHardModeEnemyRealLeft = (enemy: EnemyInterface) => {
-  const enemyImg = enemy.character.element as HTMLImageElement;
+  const enemyContainer = enemy.character.element.parentElement;
+
+  if(!enemyContainer){
+
+    console.log("sorry, we did not find the html container of your enemy")
+
+    return;
+  }
 
   return (
-    enemyImg.getBoundingClientRect().left +
-    enemyImg.getBoundingClientRect().width * 0.3
+    enemyContainer.getBoundingClientRect().left +
+    enemyContainer.getBoundingClientRect().width * 0.3
   );
 };
 
@@ -1779,9 +1791,10 @@ let hardModeAttackOn = false;
 
 const detectCollision = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
+    const enemyContainer = enemyOnScreen.character.element.parentElement!;
     const enemyLeft = hardMode
-      ? getHardModeEnemyRealLeft(enemyOnScreen)
-      : enemyOnScreen.character.element.getBoundingClientRect().left;
+      ? getHardModeEnemyRealLeft(enemyOnScreen)!
+      : enemyContainer.getBoundingClientRect().left;
 
     if (hardMode && !viewPointOnScreen && enemyLeft < window.innerWidth) {
       viewPointOnScreen = true;
@@ -1799,7 +1812,7 @@ const detectCollision = () => {
       heroInTheRedZone = true;
       updateEnemyViewPointDisplay();
       launchAnimationAndDeclareItLaunched(
-        enemyOnScreen.character.element.firstChild as HTMLImageElement,
+        enemyOnScreen.character.element,
         0,
         "png",
         "assets/challenge/characters/enemies/hard/attack",
@@ -1966,7 +1979,7 @@ const launchAnimation = (character: CharacterInterface, animation: AnimationType
   }
 
   launchAnimationAndDeclareItLaunched(
-    character.element.firstChild as HTMLImageElement,
+    character.element,
     0,
     "png",
     characterAnimation.sprite.path,
@@ -2051,7 +2064,7 @@ type CharacterAnimations = Array<
 >;
 
 interface CharacterInterface {
-  element: HTMLElement;
+  element: HTMLImageElement;
   state: CharacterStates;
   animations: CharacterAnimations;
 }
@@ -2216,7 +2229,6 @@ const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, 
 
 const createRedHammerCharacter = (): DefaultCharacter => {
 
-  const buildEnemyElement = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
@@ -2230,11 +2242,8 @@ const createRedHammerCharacter = (): DefaultCharacter => {
     enemyViewPoint.style.left = "120vw";
     enemyViewPoint.style.display = "flex";
   
-    return newOpponentContainer;
-  };
 
-
- return new DefaultCharacter(buildEnemyElement().firstChild as HTMLImageElement, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
+ return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
 }
 
 
@@ -2254,8 +2263,9 @@ const launchHeroRun = () => {
 
 const checkForOpponentAttack = () => {
   ennemiesOnScreen.forEach((enemy) => {
+    const enemyContainer = enemy.character.element.parentElement!;
     if (
-      enemy.character.element.getBoundingClientRect().left <
+      enemyContainer.getBoundingClientRect().left <
       heroContainer.getBoundingClientRect().left +
         heroContainer.getBoundingClientRect().width
     ) {
@@ -2449,8 +2459,8 @@ const resumeRun = () => {
 const checkForOpponentsClearance = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
     const enemyLeft = hardMode
-      ? getHardModeEnemyRealLeft(enemyOnScreen)
-      : enemyOnScreen.element.getBoundingClientRect().left;
+      ? getHardModeEnemyRealLeft(enemyOnScreen)!
+      : enemyOnScreen.character.element.getBoundingClientRect().left;
 
     if (enemyLeft < 0 - window.innerWidth * 0.25) {
       clearEnemy(enemyOnScreen);
