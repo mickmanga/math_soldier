@@ -736,6 +736,7 @@ const buildAndLaunchEnemy = (answer: Answer) => {
   if (!enemy) {
     return;
   }
+
   lightUpAnswerDataContainer();
 
   answerDataValue.innerHTML = enemy.answer.data;
@@ -1485,19 +1486,18 @@ enum EnemyId {
   redHammer
 }
 
-const createEnemy = (enemyId: EnemyId) => {
-  return new Enemy();
-}
-
-const interruptOpponentRun = () => {
-  interruptAnimation(ANIMATION_ID.ghost_opponent_run);
+const interruptOpponentRun = (enemy: Enemy) => {
+  interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-  interruptOpponentRun();
+  interruptOpponentRun(enemy);
 
-  launchAnimation(enemy.character, AnimationType.idle)
+  const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
+  ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
+
+  launchAnimation(enemy.character, AnimationType.idle);
 
   moveEnemy(enemy, 0, Date.now());
 };
@@ -1526,12 +1526,16 @@ const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocit
    requestAnimationFrame( () => moveElement(element, animation, velocityPerMs, direction));
 }
 
+
 const moveEnemy = (
   enemy: Enemy,
   throttleNum = 0,
   previousTimeStamp: number
 ): any => {
-  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] !== 1) {
+
+  const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!; 
+
+  if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
     return;
   }
 
@@ -1939,7 +1943,7 @@ type Animation = {
    sprite: AnimationPath,
 }
 
-const getCharacterAnimationAccordingToState = (character: CharacterInterface, animationType: AnimationType): Animation | null => {
+const getCharacterAnimationAccordingToType = (character: CharacterInterface, animationType: AnimationType): Animation | null => {
 
    for(let i = 0; i < character.animations.length; i++){
 
@@ -1969,9 +1973,9 @@ const getCharacterAnimationAccordingToState = (character: CharacterInterface, an
    return null;
 }
 
-const launchAnimation = (character: CharacterInterface, animation: AnimationType) => {
+const launchAnimation = (character: CharacterInterface, animationType: AnimationType) => {
 
-  const characterAnimation = getCharacterAnimationAccordingToState(character, animation);
+  const characterAnimation = getCharacterAnimationAccordingToType(character, animationType);
 
   if(!characterAnimation){
     console.log("sorry, we could not find the path associated with the current character state");
@@ -2049,6 +2053,7 @@ enum AnimationType {
   hurt,
   death,
   idle,
+  movement
 }
 
 const ALL_STATES = "ALL_STATES";
@@ -2221,6 +2226,22 @@ const redHammerAnimations = [
        }
      ]
     },
+    {
+      animationType: AnimationType.movement,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.hammer_opponent_move,
+            sprite:    {
+              path: "",
+              length: 0
+          }
+          }
+         }
+       ]
+      },
 ];
 
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
@@ -2446,8 +2467,8 @@ const resumeRun = () => {
   runStopped = false;
   launchHeroRun();
   ennemiesOnScreen.forEach((enemy) => {
-    ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move]++;
-
+    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
+    ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
     moveEnemy(enemy, 0, Date.now());
   });
 

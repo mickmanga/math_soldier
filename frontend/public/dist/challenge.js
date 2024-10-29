@@ -1094,17 +1094,20 @@
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
-  var interruptOpponentRun = () => {
-    interruptAnimation(10 /* ghost_opponent_run */);
+  var interruptOpponentRun = (enemy) => {
+    interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 5 /* idle */).id);
   };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-    interruptOpponentRun();
+    interruptOpponentRun(enemy);
+    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 6 /* movement */);
+    ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
     launchAnimation(enemy.character, 5 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
-    if (ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */] !== 1) {
+    const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 6 /* movement */);
+    if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
       return;
     }
     const currentTimeStamp = Date.now();
@@ -1354,7 +1357,7 @@
     }
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
-  var getCharacterAnimationAccordingToState = (character, animationType) => {
+  var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
       const characterAnimation = character.animations[i];
       if (characterAnimation.animationType !== animationType) {
@@ -1372,8 +1375,8 @@
     }
     return null;
   };
-  var launchAnimation = (character, animation) => {
-    const characterAnimation = getCharacterAnimationAccordingToState(character, animation);
+  var launchAnimation = (character, animationType) => {
+    const characterAnimation = getCharacterAnimationAccordingToType(character, animationType);
     if (!characterAnimation) {
       console.log("sorry, we could not find the path associated with the current character state");
       return;
@@ -1498,6 +1501,21 @@
           }
         }
       ]
+    },
+    {
+      animationType: 6 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 18 /* hammer_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
     }
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
@@ -1599,7 +1617,8 @@
     runStopped = false;
     launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
-      ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_move */]++;
+      const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 6 /* movement */);
+      ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
       moveEnemy(enemy, 0, Date.now());
     });
     if (!ennemiesOnScreen.length) {
