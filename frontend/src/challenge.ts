@@ -27,7 +27,7 @@ const scoreRewardContainer = document.getElementById("score_reward_container")!;
 
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
-const ANIMTION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
 
 let heroInTheRedZone = false;
 
@@ -1281,7 +1281,16 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    if (diff < ANIMTION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
+    
+    if(getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy){
+      console.log("we're executing")
+    }
+
+    if (diff < ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
+
+      if(getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy){
+        console.log("we're good")
+      }
       return requestAnimationFrame(() =>
         launchCharacterAnimation(
           characterElement,

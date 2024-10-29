@@ -21,7 +21,7 @@
   var scoreMalusDetail = document.getElementById("score_malus_detail");
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
-  var ANIMTION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+  var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
   var heroInTheRedZone = false;
   var enemyViewPoint = document.getElementsByClassName(
     "enemyViewPoint"
@@ -699,6 +699,11 @@
     [26 /* boss_idle */]: 15,
     [27 /* boss_attack */]: 10
   };
+  var APP_IDS = {
+    hero: "hero_container",
+    enemy: "enemy_container",
+    red_hammer_enemy: "red_hammer_enemy"
+  };
   var AnimationRequest = class {
     constructor(animation, callBack) {
       this.animation = animation;
@@ -909,12 +914,6 @@
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
     if (elementAssociatedWithThisAnimation) {
       if (APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation !== animationId) {
-        console.log("there was an error, an animation should not run");
-        console.log("current an >" + animationId);
-        console.log("registered =>");
-        console.log(
-          APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation
-        );
         return;
       }
       const requestQueue = APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].request_queue;
@@ -947,7 +946,13 @@
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 11 /* ghost_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      if (diff < ANIMTION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
+      if (getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy) {
+        console.log("we're executing");
+      }
+      if (diff < ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
+        if (getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy) {
+          console.log("we're good");
+        }
         return requestAnimationFrame(
           () => launchCharacterAnimation(
             characterElement,
