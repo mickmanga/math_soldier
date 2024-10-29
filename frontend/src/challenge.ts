@@ -812,6 +812,7 @@ export enum ANIMATION_ID {
   hero_hurt,
   hero_death,
   hero_idle,
+  hero_special_attack,
   stop,
   stop_time,
   cancel_stop_time,
@@ -843,6 +844,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_death]: 0,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 0,
+  [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.stop_time]: 0,
   [ANIMATION_ID.stop]: 0,
   [ANIMATION_ID.cancel_stop_time]: 0,
@@ -874,6 +876,7 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_death]: 5,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 20,
+  [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.stop_time]: 5,
   [ANIMATION_ID.stop]: 0,
   [ANIMATION_ID.cancel_stop_time]: 5,
@@ -1397,33 +1400,39 @@ const turnHeroTransformationOff = () => {
   launchHeroRunAnimation();
 };
 
-const launchAttack = () => {
+const launchAttack = (special = false) => {
   if (invisible || !heroIsAlive || runStopped) {
     return;
   }
   if (transformed) {
     laserdAudio.play();
     laserdAudio.currentTime = 0;
-  } else {
+  } else if (!special) {
     swordAudio.play();
     swordAudio.currentTime = 0;
   }
-  launchSwordSlash();
 
-  launchAnimationAndDeclareItLaunched(
-    heroImage,
-    0,
-    "png",
-    `assets/challenge/characters/${
-      transformed ? "transformed_hero" : "hero"
-    }/attack`,
-    1,
-    transformed ? 12 : 4,
-    1,
-    false,
-    ANIMATION_ID.hero_attack
-  );
+  if(!special){
+    launchSwordSlash();
 
+    launchAnimationAndDeclareItLaunched(
+      heroImage,
+      0,
+      "png",
+      `assets/challenge/characters/${
+        transformed ? "transformed_hero" : "hero"
+      }/attack`,
+      1,
+      transformed ? 12 : 4,
+      1,
+      false,
+      ANIMATION_ID.hero_attack
+    );
+
+  } else {
+     launchAnimation(heroCharacter, AnimationType.specialAttack, false)
+  }
+ 
   const enemyCanBeHit = (enemy: EnemyInterface) => {
 
     const enemyContainer = enemy.character.element.parentElement!;
@@ -1472,6 +1481,7 @@ window.launchAttack = (event: Event) => {
   }
   launchAttack();
 };
+
 
 const clearTimeoutAndLaunchNewOne = (
   timeoutId: TimeoutId,
@@ -1979,7 +1989,7 @@ const getCharacterAnimationAccordingToType = (character: CharacterInterface, ani
    return null;
 }
 
-const launchAnimation = (character: CharacterInterface, animationType: AnimationType) => {
+const launchAnimation = (character: CharacterInterface, animationType: AnimationType, loop=true) => {
 
   const characterAnimation = getCharacterAnimationAccordingToType(character, animationType);
 
@@ -1996,7 +2006,7 @@ const launchAnimation = (character: CharacterInterface, animationType: Animation
     1,
     characterAnimation.sprite.length,
     1,
-    true,
+    loop,
     characterAnimation.id
   );
 }
@@ -2054,6 +2064,7 @@ type AnimationId = number;
 
 enum AnimationType {
   attack,
+  specialAttack,
   run,
   walk,
   hurt,
@@ -2165,6 +2176,22 @@ const heroAnimations = [
        }
      ]
     },
+    {
+      animationType: AnimationType.specialAttack,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.hero_special_attack ,
+            sprite:    {
+              path: "assets/challenge/characters/hero/flames",
+              length: 14
+          }
+          }
+         }
+       ]
+      },
     {
       animationType: AnimationType.run,
       animationsStatesBlocks: [
@@ -2400,6 +2427,10 @@ document.addEventListener("keydown", (event) => {
 
   if(event.key === "z"){
     executeSuperSpeedToggle();
+  }
+
+  if(event.key === "x"){
+    launchAttack(true);
   }
    
 });
