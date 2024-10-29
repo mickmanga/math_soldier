@@ -22,7 +22,7 @@
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
-  var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 33;
+  var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 2;
   var heroInTheRedZone = false;
   var enemyViewPoint = document.getElementsByClassName(

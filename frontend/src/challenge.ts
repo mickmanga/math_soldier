@@ -28,8 +28,8 @@ const scoreRewardContainer = document.getElementById("score_reward_container")!;
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
-const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 33;
-const CAMERA_SUPER_SPEED_MULTIPLICATOR = 1.25;
+const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
+const CAMERA_SUPER_SPEED_MULTIPLICATOR = 2;
 
 let heroInTheRedZone = false;
 
