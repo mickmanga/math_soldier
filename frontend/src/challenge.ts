@@ -899,6 +899,7 @@ export const THROTTLE_NUMS = {
 const APP_IDS = {
   hero: "hero_container",
   enemy: "enemy_container",
+  red_hammer_enemy: "red_hammer_enemy"
 };
 
 class AnimationRequest {
@@ -950,6 +951,16 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.ghost_opponent_move,
     ],
   },
+  red_hammer_enemy: {
+    request_queue: [],
+    current_animation: null,
+    associated_animations: [
+      ANIMATION_ID.hammer_opponent_idle,
+      ANIMATION_ID.hammer_opponent_run,
+      ANIMATION_ID.hammer_opponent_attack,
+      ANIMATION_ID.hammer_opponent_death   
+    ]
+  }
 };
 
 const getAppIdByAnimationId = (
@@ -1689,16 +1700,18 @@ const killEnemy = (enemy: EnemyInterface) => {
     bombAudio.play();
     bombAudio.currentTime = 0;
 
+    const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.death)!;
+
     launchAnimationAndDeclareItLaunched(
       enemy.character.element,
       0,
       "png",
-      "assets/challenge/explosion",
+      deathAnimation.sprite.path,
       1,
-      10,
+      deathAnimation.sprite.length,
       1,
       false,
-      ANIMATION_ID.ghost_opponent_death
+      deathAnimation.id,
     );
   };
 
@@ -1745,7 +1758,7 @@ const destroyEnemy = (enemy: EnemyInterface) => {
   ennemiesOnScreen.forEach((enemyOnScreen, index) => {
     if (enemy === enemyOnScreen) {
       ennemiesOnScreen.splice(index, 1);
-      interruptAnimation(ANIMATION_ID.ghost_opponent_move);
+      interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id);
     }
   });
 };
@@ -1813,18 +1826,22 @@ const detectCollision = () => {
         heroContainer.getBoundingClientRect().left +
           heroContainer.getBoundingClientRect().width
     ) {
+
+      const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, AnimationType.attack)!;
+
       heroInTheRedZone = true;
+
       updateEnemyViewPointDisplay();
       launchAnimationAndDeclareItLaunched(
         enemyOnScreen.character.element,
         0,
         "png",
-        "assets/challenge/characters/enemies/hard/attack",
+        attackAnimation.sprite.path,
         1,
-        30,
+        attackAnimation.sprite.length,
         1,
         true,
-        ANIMATION_ID.ghost_opponent_attack
+        attackAnimation.id
       );
     }
 
@@ -2227,6 +2244,22 @@ const redHammerAnimations = [
      ]
     },
     {
+      animationType: AnimationType.death,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.hammer_opponent_death,
+            sprite:    {
+              path: "assets/challenge/explosion",
+              length: 10
+          }
+          }
+         }
+       ]
+      },
+    {
       animationType: AnimationType.movement,
       animationsStatesBlocks: [
         {
@@ -2394,7 +2427,11 @@ const stopRun = () => {
     enemiesComingTimeout = null;
   }
 
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] = 0;
+  ennemiesOnScreen.forEach(
+    (enemy) => {
+      ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id] = 0;
+    }
+  )
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
