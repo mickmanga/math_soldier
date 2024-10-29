@@ -22,6 +22,8 @@
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+  var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 33;
+  var CAMERA_SUPER_SPEED_MULTIPLICATOR = 2;
   var heroInTheRedZone = false;
   var enemyViewPoint = document.getElementsByClassName(
     "enemyViewPoint"
@@ -690,7 +692,7 @@
     [17 /* hammer_opponent_death */]: 0,
     [18 /* hammer_opponent_move */]: 0,
     [19 /* camera_left_to_right */]: 0,
-    [20 /* camera_right_to_left */]: 5,
+    [20 /* camera_right_to_left */]: 0,
     [22 /* hero_sword_slash */]: 0,
     [21 /* character_left_to_right_move */]: 5,
     [23 /* hero_transformation_pre_run */]: 5,
@@ -698,11 +700,6 @@
     [25 /* hero_transformation_hurt */]: 0,
     [26 /* boss_idle */]: 15,
     [27 /* boss_attack */]: 10
-  };
-  var APP_IDS = {
-    hero: "hero_container",
-    enemy: "enemy_container",
-    red_hammer_enemy: "red_hammer_enemy"
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -793,23 +790,16 @@
     const opponentMoveMultiplicatorBase = THROTTLE_NUMS[13 /* ghost_opponent_move */] ? THROTTLE_NUMS[13 /* ghost_opponent_move */] : 1;
     THROTTLE_NUMS[13 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
   };
-  var moveCamera = (direction, throttleNum = 0, previousFrameTimestamp) => {
+  var moveCamera = (direction, previousFrameTimestamp) => {
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
       return;
     }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
-    if (throttleNum < THROTTLE_NUMS[19 /* camera_left_to_right */]) {
-      throttleNum++;
-      return requestAnimationFrame(
-        () => moveCamera(direction, throttleNum, currentFrameTimeStamp)
-      );
-    }
-    throttleNum = 0;
     MAPS.forEach(
-      (map) => map.style.left = `${map.offsetLeft + (direction === 19 /* camera_left_to_right */ ? -1 : 1) * diff / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + (direction === 19 /* camera_left_to_right */ ? -1 : 1) * diff * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) / 3}px`
     );
-    requestAnimationFrame(() => moveCamera(direction, 0, currentFrameTimeStamp));
+    requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp));
   };
   var ALGEBRA_INTRO_2 = {
     title: "Algebra Basics",
@@ -944,15 +934,10 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 11 /* ghost_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 14 /* hammer_opponent_idle */ || animationId === 16 /* hammer_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      if (getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy) {
-        console.log("we're executing");
-      }
-      if (diff < ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
-        if (getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy) {
-          console.log("we're good");
-        }
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
             characterElement,
@@ -1137,11 +1122,11 @@
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
+      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1)
+        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
@@ -1568,11 +1553,15 @@
     }
     if (ANIMATION_RUNNING_VALUES[19 /* camera_left_to_right */] === 0) {
       startCamera();
-      moveCamera(19 /* camera_left_to_right */, 0, Date.now());
+      moveCamera(19 /* camera_left_to_right */, Date.now());
     }
     launchHeroRunAnimation();
   };
   var heroInitialTop = heroContainer.getBoundingClientRect().top;
+  var superSpeedOn = false;
+  var executeSuperSpeedToggle = () => {
+    superSpeedOn = !superSpeedOn;
+  };
   document.addEventListener("keydown", (event) => {
     if (event.key === "d") {
       if (!gameLaunched) {
@@ -1600,6 +1589,9 @@
       if (runStopped) return;
       stopRun();
     }
+    if (event.key === "z") {
+      executeSuperSpeedToggle();
+    }
   });
   var clearGameTimeouts = () => {
     GAME_TIMEOUTS[0 /* HERO */].forEach((timeout) => {
@@ -1609,11 +1601,15 @@
     GAME_TIMEOUTS[1 /* ENEMY */].forEach((timeout) => clearTimeout(timeout));
     GAME_TIMEOUTS[1 /* ENEMY */] = [];
   };
+  var stopSuperSpeed = () => {
+    superSpeedOn = false;
+  };
   var stopRun = () => {
     if (heroInTheRedZone) {
       return;
     }
     runAudio.volume = 0;
+    stopSuperSpeed();
     runStopped = true;
     if (enemiesComingTimeout) {
       clearTimeout(enemiesComingTimeout);
@@ -1790,7 +1786,6 @@
       return;
     }
     ANIMATION_RUNNING_VALUES[22 /* hero_sword_slash */]++;
-    console.log("slash!");
     swordSlashImg.style.display = "flex";
     setTimeout(() => {
       swordSlashImg.style.display = "none";

@@ -28,6 +28,8 @@ const scoreRewardContainer = document.getElementById("score_reward_container")!;
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 33;
+const CAMERA_SUPER_SPEED_MULTIPLICATOR = 1.25;
 
 let heroInTheRedZone = false;
 
@@ -886,7 +888,7 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hammer_opponent_death]: 0,
   [ANIMATION_ID.hammer_opponent_move]: 0,
   [ANIMATION_ID.camera_left_to_right]: 0,
-  [ANIMATION_ID.camera_right_to_left]: 5,
+  [ANIMATION_ID.camera_right_to_left]: 0,
   [ANIMATION_ID.hero_sword_slash]: 0,
   [ANIMATION_ID.character_left_to_right_move]: 5,
   [ANIMATION_ID.hero_transformation_pre_run]: 5,
@@ -1041,7 +1043,6 @@ const slowTime = (multiplicator: number) => {
 
 const moveCamera = (
   direction: ANIMATION_ID,
-  throttleNum = 0,
   previousFrameTimestamp: number
 ): any => {
   if (
@@ -1055,24 +1056,15 @@ const moveCamera = (
 
   const diff = currentFrameTimeStamp - previousFrameTimestamp;
 
-  if (throttleNum < THROTTLE_NUMS[ANIMATION_ID.camera_left_to_right]) {
-    throttleNum++;
-    return requestAnimationFrame(() =>
-      moveCamera(direction, throttleNum, currentFrameTimeStamp)
-    );
-  }
-
-  throttleNum = 0;
-
   MAPS.forEach(
     (map) =>
       (map.style.left = `${
         map.offsetLeft +
-        ((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff) / 3
+        ((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) ) / 3
       }px`)
   );
 
-  requestAnimationFrame(() => moveCamera(direction, 0, currentFrameTimeStamp));
+  requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp));
 };
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
@@ -1226,6 +1218,7 @@ const launchCharacterAnimation = (
     return;
   }
 
+
   const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
 
   if (elementAssociatedWithThisAnimation) {
@@ -1276,21 +1269,15 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run ||
-      animationId === ANIMATION_ID.ghost_opponent_attack) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    
-    if(getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy){
-      console.log("we're executing")
-    }
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
-    if (diff < ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS) {
+    if (diff < minimumTimeInMsBetweenFrames) {
 
-      if(getAppIdByAnimationId(animationId) === APP_IDS.red_hammer_enemy){
-        console.log("we're good")
-      }
       return requestAnimationFrame(() =>
         launchCharacterAnimation(
           characterElement,
@@ -1571,12 +1558,12 @@ const moveEnemy = (
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5)
+      diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
   )}px`;
 
   if (hardMode) {
     enemyViewPoint.style.left = `${Math.round(
-      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1)
+      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
   }
 
@@ -2310,7 +2297,7 @@ const launchHeroRun = () => {
 
   if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] === 0) {
     startCamera();
-    moveCamera(ANIMATION_ID.camera_left_to_right, 0, Date.now());
+    moveCamera(ANIMATION_ID.camera_left_to_right, Date.now());
   }
 
   launchHeroRunAnimation();
@@ -2343,6 +2330,12 @@ const checkForOpponentAttack = () => {
 };
 
 const heroInitialTop = heroContainer.getBoundingClientRect().top;
+
+let superSpeedOn = false;
+
+const executeSuperSpeedToggle = () => {  
+  superSpeedOn = !superSpeedOn;
+}
 
 const launchFly = (jumpingForward = true) => {
   // Get the hero's current position from the bottom style property
@@ -2404,6 +2397,11 @@ document.addEventListener("keydown", (event) => {
     if (runStopped) return;
     stopRun();
   }
+
+  if(event.key === "z"){
+    executeSuperSpeedToggle();
+  }
+   
 });
 
 const clearGameTimeouts = () => {
@@ -2416,11 +2414,18 @@ const clearGameTimeouts = () => {
   GAME_TIMEOUTS[TimeoutId.ENEMY] = [];
 };
 
+const stopSuperSpeed = () => {
+  superSpeedOn = false;
+}
+
+
 const stopRun = () => {
   if (heroInTheRedZone) {
     return;
   }
   runAudio.volume = 0;
+
+  stopSuperSpeed();
 
   runStopped = true;
 
@@ -2693,7 +2698,6 @@ const launchSwordSlash = () => {
     return;
   }
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_sword_slash]++;
-  console.log("slash!");
 
   swordSlashImg.style.display = "flex";
 
