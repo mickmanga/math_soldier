@@ -1233,13 +1233,6 @@ const launchCharacterAnimation = (
       APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation]
         .current_animation !== animationId
     ) {
-      console.log("there was an error, an animation should not run");
-      console.log("current an >" + animationId);
-      console.log("registered =>");
-      console.log(
-        APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation]
-          .current_animation
-      );
       return;
     }
 
