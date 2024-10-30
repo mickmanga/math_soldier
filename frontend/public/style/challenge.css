@@ -32,9 +32,9 @@ audio {
 
 .hero_container_hard {
   position: fixed;
-  top: 60vh;
+  top: 51vh;
   left: 20vw;
-  height: 15vh;
+  height: 30vh;
   z-index: 5;
 }
 
@@ -51,7 +51,7 @@ audio {
 
 .hard_enemy_container {
   position: fixed;
-  bottom: 14.5vh;
+  bottom: 10vh;
   left: 140vw;
   height: 50vh;
   z-index: 11;
@@ -62,7 +62,7 @@ audio {
 
 .enemyViewPoint {
   position: absolute;
-  top: 45vh;
+  top: 50vh;
   left: 120vw;
   height: 25vh;
   width: 2.5vw;
@@ -487,8 +487,9 @@ body {
 #sword_slash {
   position: absolute;
   top: -5vh;
-  left: 7.5vw;
+  left: 12vw;
   display: none;
+  height: 50%;
 }
 
 @property --progress {

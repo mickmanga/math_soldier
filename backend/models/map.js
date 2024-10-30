@@ -3,13 +3,22 @@ const { Schema } = mongoose;
 const LearningSchema = require('./learning.js');  // Import Learning schema
 
 // Map Schema
-const MapSchema = new Schema({
-    background: { type: String, required: true },
-    learning: LearningSchema,   // Embeds the Learning schema
-    locations: {
-        unlocked: { type: Boolean, default: false },
-        list: [{ type: String }]   // An array of strings representing locations
-    }
-});
 
-module.exports = MapSchema;
+const MapDataSchema = new Schema({
+    images: [String]
+  });
+  
+  const MapLocationSchema = new Schema({
+    name: String, 
+    locked: Boolean,
+    data: MapDataSchema
+  });
+  
+  const MapSchema = new Schema({
+    background: { type: String, required: true },
+    learning: LearningSchema, 
+    locations: [MapLocationSchema]   
+    
+  });
+
+module.exports = {MapSchema,MapLocationSchema, MapDataSchema};

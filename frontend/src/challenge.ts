@@ -2733,7 +2733,7 @@ const launchSwordSlash = () => {
   swordSlashImg.style.display = "flex";
 
   setTimeout(() => {
-    swordSlashImg.style.display = "none";
+   swordSlashImg.style.display = "none";
     ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_sword_slash] = 0;
   }, 75);
 };

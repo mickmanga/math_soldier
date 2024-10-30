@@ -14,9 +14,9 @@ router.get('/dashboard', verifyToken, (req, res) => {
 
 // Predefined subjects
 const predefinedSubjects = [
-    { title: 'linear algebra', map: { background: 'Linear World', learning: { learners: [] }, locations: { unlocked: false, list: [] } } },
-    { title: 'calculus', map: { background: 'Calculus City', learning: { learners: [] }, locations: { unlocked: false, list: [] } } },
-    { title: 'statistic', map: { background: 'Statistic Station', learning: { learners: [] }, locations: { unlocked: false, list: [] } } }
+    { title: 'linear algebra', map: { background: 'Linear World', learning: { learners: [] }, locations: [] }},
+    { title: 'calculus', map: { background: 'Calculus City', learning: { learners: [] }, locations: [] }},
+    { title: 'statistic', map: { background: 'Statistic Station', learning: { learners: [] },  locations: [] }},
 ];
 
 // Create a new user with predefined subjects
@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
         });
 
         await newUser.save();
-        console.log("new user created")
         res.status(201).json("new user created");
     } catch (err) {
         res.status(500).json({ message: err.message });
