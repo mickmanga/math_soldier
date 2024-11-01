@@ -29,7 +29,7 @@ const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
-const CAMERA_SUPER_SPEED_MULTIPLICATOR = 3;
+const CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
 
 let heroInTheRedZone = false;
 
@@ -156,7 +156,7 @@ let heroHurt = false;
 let heroIsAlive = true;
 
 const lifePoints = { max: 4, value: 4 };
-let INVISIBILITY_DURATION_IN_MILLISECONDS = 2000;
+let INVISIBILITY_DURATION_IN_MILLISECONDS = 700;
 
 let invisible = false;
 
@@ -2933,7 +2933,8 @@ const updateTransformationProgressBarDisplay = () => {
 };
 
 const defineSwordReach = () => {
-  swordReach = window.innerWidth * (window.innerWidth > 1000 ? 0.15 : 0.35);
+//  swordReach = window.innerWidth * (window.innerWidth > 1000 ? 0.15 : 0.35);
+ swordReach = heroImage.getBoundingClientRect().height * 1.5;
 };
 
 const launchGame = () => {
@@ -2958,10 +2959,9 @@ const killAllAudios = () => {
 
 const launchHeroLightningSpeedAnimation = () => {
   superSpeedOn = true;
- setTimeout(() => {
   animateLightning()
- }, 400); 
+
   launchInvisibilityToggle();
-  setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS);
+  setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
 
 }

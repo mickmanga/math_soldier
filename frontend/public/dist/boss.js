@@ -23,7 +23,7 @@
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
-  var CAMERA_SUPER_SPEED_MULTIPLICATOR = 3;
+  var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
   var heroInTheRedZone = false;
   var enemyViewPoint = document.getElementsByClassName(
     "enemyViewPoint"
@@ -111,7 +111,7 @@
   var heroHurt = false;
   var heroIsAlive = true;
   var lifePoints = { max: 4, value: 4 };
-  var INVISIBILITY_DURATION_IN_MILLISECONDS = 2e3;
+  var INVISIBILITY_DURATION_IN_MILLISECONDS = 700;
   var invisible = false;
   var ennemiesOnScreen = [];
   var enemiesComingTimeout = null;
@@ -1968,7 +1968,7 @@
     );
   };
   var defineSwordReach = () => {
-    swordReach = window.innerWidth * (window.innerWidth > 1e3 ? 0.15 : 0.35);
+    swordReach = heroImage.getBoundingClientRect().height * 1.5;
   };
   var launchGame = () => {
     runAudio.play();
@@ -1988,11 +1988,9 @@
   };
   var launchHeroLightningSpeedAnimation = () => {
     superSpeedOn = true;
-    setTimeout(() => {
-      animateLightning();
-    }, 400);
+    animateLightning();
     launchInvisibilityToggle();
-    setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS);
+    setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
   };
 
   // src/boss.ts
