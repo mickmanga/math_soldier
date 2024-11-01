@@ -23,7 +23,7 @@
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
-  var CAMERA_SUPER_SPEED_MULTIPLICATOR = 2;
+  var CAMERA_SUPER_SPEED_MULTIPLICATOR = 3;
   var heroInTheRedZone = false;
   var enemyViewPoint = document.getElementsByClassName(
     "enemyViewPoint"
@@ -481,7 +481,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+      defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -640,6 +640,7 @@
     ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 26] = "hero_transformation_hurt";
     ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 27] = "boss_idle";
     ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 28] = "boss_attack";
+    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 29] = "lightning";
     return ANIMATION_ID2;
   })(ANIMATION_ID || {});
   var ANIMATION_RUNNING_VALUES = {
@@ -671,7 +672,8 @@
     [25 /* hero_transformation_run */]: 0,
     [26 /* hero_transformation_hurt */]: 0,
     [27 /* boss_idle */]: 0,
-    [28 /* boss_attack */]: 0
+    [28 /* boss_attack */]: 0,
+    [29 /* lightning */]: 0
   };
   var THROTTLE_NUMS = {
     [0 /* hero_attack */]: 0,
@@ -702,7 +704,8 @@
     [25 /* hero_transformation_run */]: 5,
     [26 /* hero_transformation_hurt */]: 0,
     [27 /* boss_idle */]: 15,
-    [28 /* boss_attack */]: 10
+    [28 /* boss_attack */]: 10,
+    [29 /* lightning */]: 0
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -859,14 +862,14 @@
       new Answer("Parallel lines intersect at one point", false)
     ]
   };
-  var launchAnimationAndDeclareItLaunched = (characterElement, throttleNum, extension, spriteBase, spriteIndex, max, min, loop, animationId, endOfAnimationCallback) => {
+  var launchAnimationAndDeclareItLaunched = (gameElement, throttleNum, extension, spriteBase, spriteIndex, max, min, loop, animationId, endOfAnimationCallback) => {
     if (ANIMATION_RUNNING_VALUES[animationId] >= 1) {
       return;
     }
     ANIMATION_RUNNING_VALUES[animationId]++;
     const animationCallback = () => {
       launchCharacterAnimation(
-        characterElement,
+        gameElement,
         throttleNum,
         extension,
         spriteBase,
@@ -937,7 +940,7 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 15 /* hammer_opponent_idle */ || animationId === 17 /* hammer_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 29 /* lightning */ || animationId === 15 /* hammer_opponent_idle */ || animationId === 17 /* hammer_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
       const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
@@ -1617,6 +1620,9 @@
     if (event.key === "x") {
       launchAttack(true);
     }
+    if (event.key === "c") {
+      launchHeroLightningSpeedAnimation();
+    }
   });
   var clearGameTimeouts = () => {
     GAME_TIMEOUTS[0 /* HERO */].forEach((timeout) => {
@@ -1847,6 +1853,7 @@
     setTimeout(killHero2, 1e3);
   };
   var launchHeroHurtAnimation = () => {
+    superSpeedOn = false;
     launchAnimationAndDeclareItLaunched(
       heroImage,
       0,
@@ -1886,6 +1893,24 @@
     ANIMATION_RUNNING_VALUES[25 /* hero_transformation_run */] = 0;
     ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
   };
+  var animateLightning = () => {
+    const lightningImg = document.getElementById("lightning_img");
+    lightningImg.style.display = "block";
+    launchAnimationAndDeclareItLaunched(
+      lightningImg,
+      0,
+      "png",
+      `assets/challenge/items/lightning`,
+      1,
+      17,
+      1,
+      false,
+      29 /* lightning */,
+      () => {
+        lightningImg.style.display = "none";
+      }
+    );
+  };
   window.onload = () => {
     setupListeners();
     setInitialGameVolume();
@@ -1900,7 +1925,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {
@@ -1960,6 +1985,14 @@
     runAudio.pause();
     epicAudio.pause();
     transformedEpicAudio.pause();
+  };
+  var launchHeroLightningSpeedAnimation = () => {
+    superSpeedOn = true;
+    setTimeout(() => {
+      animateLightning();
+    }, 400);
+    launchInvisibilityToggle();
+    setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS);
   };
 
   // src/boss.ts

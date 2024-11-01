@@ -40,8 +40,8 @@
         })
       });
       const data = yield response.json();
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
+      if (response.ok && data.user) {
+        localStorage.setItem("userId", data.user.userId);
         window.location.href = "http://localhost:3001/choice";
       } else {
         errorMessage.textContent = data.message;

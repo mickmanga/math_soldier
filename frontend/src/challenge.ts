@@ -29,7 +29,7 @@ const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
-const CAMERA_SUPER_SPEED_MULTIPLICATOR = 2;
+const CAMERA_SUPER_SPEED_MULTIPLICATOR = 3;
 
 let heroInTheRedZone = false;
 
@@ -593,7 +593,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -835,6 +835,7 @@ export enum ANIMATION_ID {
   hero_transformation_hurt,
   boss_idle,
   boss_attack,
+  lightning
 }
 
 export const ANIMATION_RUNNING_VALUES = {
@@ -867,6 +868,8 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_transformation_hurt]: 0,
   [ANIMATION_ID.boss_idle]: 0,
   [ANIMATION_ID.boss_attack]: 0,
+  [ANIMATION_ID.lightning]: 0,
+
 };
 
 export const THROTTLE_NUMS = {
@@ -899,6 +902,7 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_transformation_hurt]: 0,
   [ANIMATION_ID.boss_idle]: 15,
   [ANIMATION_ID.boss_attack]: 10,
+  [ANIMATION_ID.lightning]: 0,
 };
 
 const APP_IDS = {
@@ -1127,7 +1131,7 @@ const ALGEBRA_INTRO_2 = {
 
 
 export const launchAnimationAndDeclareItLaunched = (
-  characterElement: HTMLImageElement,
+  gameElement: HTMLImageElement,
   throttleNum: number,
   extension: string,
   spriteBase: string,
@@ -1146,7 +1150,7 @@ export const launchAnimationAndDeclareItLaunched = (
 
   const animationCallback = () => {
     launchCharacterAnimation(
-      characterElement,
+      gameElement,
       throttleNum,
       extension,
       spriteBase,
@@ -1271,7 +1275,7 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
@@ -2432,7 +2436,11 @@ document.addEventListener("keydown", (event) => {
   if(event.key === "x"){
     launchAttack(true);
   }
-   
+
+  if(event.key === "c"){
+    launchHeroLightningSpeedAnimation();
+  }
+ 
 });
 
 const clearGameTimeouts = () => {
@@ -2781,6 +2789,7 @@ const launchDeathAnimation = () => {
 };
 
 const launchHeroHurtAnimation = () => {
+  superSpeedOn = false;
   launchAnimationAndDeclareItLaunched(
     heroImage,
     0,
@@ -2828,6 +2837,29 @@ const initHeroAnimations = () => {
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
 };
 
+const animateLightning = () => {
+
+  const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
+
+  lightningImg.style.display = "block";
+
+  launchAnimationAndDeclareItLaunched(
+    lightningImg,
+    0,
+    "png",
+    `assets/challenge/items/lightning`,
+    1,
+    17,
+    1,
+    false,
+    ANIMATION_ID.lightning,
+    () => {
+      lightningImg.style.display = "none"
+    }
+  );
+
+}
+
 window.onload = () => {
   setupListeners();
   setInitialGameVolume();
@@ -2844,7 +2876,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+  defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {
@@ -2924,3 +2956,12 @@ const killAllAudios = () => {
   transformedEpicAudio.pause();
 };
 
+const launchHeroLightningSpeedAnimation = () => {
+  superSpeedOn = true;
+ setTimeout(() => {
+  animateLightning()
+ }, 400); 
+  launchInvisibilityToggle();
+  setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS);
+
+}

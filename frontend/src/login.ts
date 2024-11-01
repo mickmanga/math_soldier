@@ -1,7 +1,12 @@
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
 // Define the structure of the login request
 interface LoginResponse {
-    token: string;
-    message: string;
+    message: string,
+    user?: {
+     name: string;
+     userId: string;
+    }
 }
 
 // Function to handle form submission
@@ -29,14 +34,16 @@ loginForm.addEventListener('submit', async (event) => {
 
         const data: LoginResponse = await response.json();
 
-        if (response.ok) {
-            // Store the token (assuming JWT here)
-            localStorage.setItem('token', data.token);
+        if (response.ok && data.user) {
+            // Store the token (assuming JWT here);
+           localStorage.setItem('userId', data.user.userId);
             window.location.href = 'http://localhost:3001/choice';  // Redirect to dashboard
+
+
         } else {
             errorMessage.textContent = data.message;
         }
     } catch (err) {
-        errorMessage.textContent = 'Error logging in. Please try again later.';
+       errorMessage.textContent = 'Error logging in. Please try again later.';
     }
 });

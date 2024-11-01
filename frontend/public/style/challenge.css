@@ -492,6 +492,12 @@ body {
   height: 50%;
 }
 
+#lightning_img {
+  position: absolute;
+  left: 0;
+  top:0;
+}
+
 @property --progress {
   syntax: "<length>";
   initial-value: 0%;
