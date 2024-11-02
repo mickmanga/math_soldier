@@ -31,7 +31,19 @@ const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
 const CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
 
+const heroContactPointContainerRatio = 0.3;
+
 let heroInTheRedZone = false;
+
+
+const getHeroLeft = () => {
+
+  if(!heroContainer){
+    console.log("we cant get the hero left, the hero container was not initialized yet");
+  }
+
+ return heroContainer.getBoundingClientRect().left * (1 + heroContactPointContainerRatio);
+}
 
 const enemyViewPoint = document.getElementsByClassName(
   "enemyViewPoint"
@@ -1446,11 +1458,9 @@ const launchAttack = (special = false) => {
       : enemyContainer.getBoundingClientRect().left;
     return (
       enemyLeft >
-        heroContainer.getBoundingClientRect().left +
-          heroContainer.getBoundingClientRect().width &&
+      getHeroLeft() &&
       enemyLeft <
-        heroContainer.getBoundingClientRect().left +
-          heroContainer.getBoundingClientRect().width +
+      getHeroLeft() +
           swordReach
     );
   };
@@ -1826,8 +1836,7 @@ const detectCollision = () => {
       !heroInTheRedZone &&
       enemyViewPoint.getBoundingClientRect().left +
         enemyViewPoint.getBoundingClientRect().width <
-        heroContainer.getBoundingClientRect().left +
-          heroContainer.getBoundingClientRect().width
+        getHeroLeft()
     ) {
 
       const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, AnimationType.attack)!;
@@ -1857,8 +1866,7 @@ const detectCollision = () => {
     }
 
     if (
-      heroContainer.getBoundingClientRect().left +
-        heroContainer.getBoundingClientRect().width >
+      getHeroLeft() >
         enemyLeft &&
       enemyOnScreen.collideable
     ) {
@@ -2340,8 +2348,7 @@ const checkForOpponentAttack = () => {
     const enemyContainer = enemy.character.element.parentElement!;
     if (
       enemyContainer.getBoundingClientRect().left <
-      heroContainer.getBoundingClientRect().left +
-        heroContainer.getBoundingClientRect().width
+      getHeroLeft()
     ) {
       ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_run] = 0;
 
@@ -2368,34 +2375,6 @@ const executeSuperSpeedToggle = () => {
   superSpeedOn = !superSpeedOn;
 }
 
-const launchFly = (jumpingForward = true) => {
-  // Get the hero's current position from the bottom style property
-  const currentTop = heroContainer.getBoundingClientRect().top;
-
-  if (jumpingForward) {
-    // Move the hero upwards
-    const newTop = currentTop - window.innerHeight * 0.005;
-    heroContainer.style.top = `${newTop}px`;
-
-    // Check if the hero has reached the peak
-    if (newTop <= heroInitialTop - window.innerHeight * 0.2) {
-      jumpingForward = false;
-    }
-  } else {
-    // Move the hero downwards
-    const newTop = currentTop + window.innerHeight * 0.005;
-    heroContainer.style.top = `${newTop}px`;
-
-    // Check if the hero has returned to the initial position
-    if (newTop >= heroInitialTop) {
-      heroContainer.style.top = `${heroInitialTop}px`;
-      return;
-    }
-  }
-
-  // Continue the animation
-  requestAnimationFrame(() => launchFly(jumpingForward));
-};
 document.addEventListener("keydown", (event) => {
   if (event.key === "d") {
     if (!gameLaunched) {
@@ -2934,7 +2913,7 @@ const updateTransformationProgressBarDisplay = () => {
 
 const defineSwordReach = () => {
 //  swordReach = window.innerWidth * (window.innerWidth > 1000 ? 0.15 : 0.35);
- swordReach = heroImage.getBoundingClientRect().height * 1.5;
+ swordReach = heroImage.getBoundingClientRect().height * 2;
 };
 
 const launchGame = () => {

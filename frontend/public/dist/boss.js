@@ -24,7 +24,14 @@
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
+  var heroContactPointContainerRatio = 0.3;
   var heroInTheRedZone = false;
+  var getHeroLeft = () => {
+    if (!heroContainer) {
+      console.log("we cant get the hero left, the hero container was not initialized yet");
+    }
+    return heroContainer.getBoundingClientRect().left * (1 + heroContactPointContainerRatio);
+  };
   var enemyViewPoint = document.getElementsByClassName(
     "enemyViewPoint"
   )[0];
@@ -1071,7 +1078,7 @@
     const enemyCanBeHit = (enemy) => {
       const enemyContainer = enemy.character.element.parentElement;
       const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemy) * 1.2 : enemyContainer.getBoundingClientRect().left;
-      return enemyLeft > heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width && enemyLeft < heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width + swordReach;
+      return enemyLeft > getHeroLeft() && enemyLeft < getHeroLeft() + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
       if (!enemyCanBeHit(enemy)) {
@@ -1315,7 +1322,7 @@
         viewPointOnScreen = true;
         enemyViewPoint.style.display = "flex";
       }
-      if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width) {
+      if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
         const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, 0 /* attack */);
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
@@ -1334,7 +1341,7 @@
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
         enemyViewPointThresholdCrossed = true;
       }
-      if (heroContainer.getBoundingClientRect().left + heroContainer.getBoundingClientRect().width > enemyLeft && enemyOnScreen.collideable) {
+      if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable) {
         enemyOnScreen.collideable = false;
         if (!invisible || enemyOnScreen.answer.good) {
           hurtHero();
@@ -1968,7 +1975,7 @@
     );
   };
   var defineSwordReach = () => {
-    swordReach = heroImage.getBoundingClientRect().height * 1.5;
+    swordReach = heroImage.getBoundingClientRect().height * 2;
   };
   var launchGame = () => {
     runAudio.play();
