@@ -21,6 +21,7 @@
   var scoreMalusDetail = document.getElementById("score_malus_detail");
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
+  var specialMoveIndicator = document.getElementById("special_move_indicator");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
@@ -118,7 +119,7 @@
   var heroHurt = false;
   var heroIsAlive = true;
   var lifePoints = { max: 4, value: 4 };
-  var INVISIBILITY_DURATION_IN_MILLISECONDS = 1e3;
+  var INVISIBILITY_DURATION_IN_MILLISECONDS = 2e3;
   var invisible = false;
   var ennemiesOnScreen = [];
   var enemiesComingTimeout = null;
@@ -1074,6 +1075,7 @@
       );
     } else {
       launchAnimation(heroCharacter, 1 /* specialAttack */, false);
+      specialMoveIndicator.style.display = "none";
     }
     const enemyCanBeHit = (enemy) => {
       const enemyContainer = enemy.character.element.parentElement;
@@ -1152,7 +1154,9 @@
     if (rewardStreak >= TRANSFORMATION_THRESHOLD && !transformed) {
       rewardStreak = 0;
       updateTransformationProgressBarDisplay();
-      launchTransformation();
+      if (!hardMode) {
+        launchTransformation();
+      }
     }
   };
   var killRightEnemyAndUpdateScore = (enemy) => {
@@ -1165,6 +1169,9 @@
     if (!transformed) {
       rewardStreak++;
       updateTransformationProgressBarDisplay();
+      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
+        specialMoveIndicator.style.display = "flex";
+      }
     }
     score += bonus_ratio * REWARD_UNIT;
     updateScoreDisplay();
@@ -1467,8 +1474,8 @@
           animation: {
             id: 6 /* hero_special_attack */,
             sprite: {
-              path: "assets/challenge/characters/hero/flames",
-              length: 14
+              path: "assets/challenge/characters/hero/flames/new",
+              length: 22
             }
           }
         }
@@ -1606,6 +1613,10 @@
       return;
     }
     if (event.key === " " && !invisible) {
+      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
+        launchHeroLightningSpeedAnimation();
+        return;
+      }
       launchInvisibilityToggle();
     }
     if (event.key === "w") {
@@ -1625,10 +1636,10 @@
       executeSuperSpeedToggle();
     }
     if (event.key === "x") {
-      launchAttack(true);
-    }
-    if (event.key === "c") {
-      launchHeroLightningSpeedAnimation();
+      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
+        launchAttack(true);
+        return;
+      }
     }
   });
   var clearGameTimeouts = () => {
@@ -1947,10 +1958,10 @@
     (_b = document.getElementById("backToStormGradButton")) == null ? void 0 : _b.addEventListener("click", goBackToMountain);
   };
   var createGameAccordingToMode = () => {
+    progressBar.style.display = "flex";
     if (hardMode) {
       return;
     }
-    progressBar.style.display = "flex";
     epicAudio = document.getElementById(
       hardMode ? "hard_epic_audio" : "epic_audio"
     );
@@ -1997,6 +2008,7 @@
     superSpeedOn = true;
     animateLightning();
     heroImage.style.display = "none";
+    specialMoveIndicator.style.display = "none";
     launchInvisibilityToggle();
     setTimeout(() => {
       superSpeedOn = false;

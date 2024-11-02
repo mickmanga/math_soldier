@@ -31,6 +31,16 @@ audio {
   z-index: 5;
 }
 
+#special_move_indicator{
+ position: absolute;
+ top: 10vh;
+ z-index: 2;
+ color: red;
+ left: 3vw;
+ display: none;
+}
+
+
 .hero_container_hard {
   --hero-img-height: 30vh;  
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
@@ -41,7 +51,8 @@ audio {
   height: 30vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
   z-index: 5;
-  background: red;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .enemy_container {
@@ -494,7 +505,7 @@ body {
   position: absolute;
   top: 0;
   right:0;
-  display: flex;
+  display: none;
 }
 
 #lightning_img {

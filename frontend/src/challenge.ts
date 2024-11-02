@@ -27,6 +27,8 @@ const scoreRewardContainer = document.getElementById("score_reward_container")!;
 
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
+const specialMoveIndicator = document.getElementById("special_move_indicator")!;
+
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
 const CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
@@ -168,7 +170,7 @@ let heroHurt = false;
 let heroIsAlive = true;
 
 const lifePoints = { max: 4, value: 4 };
-let INVISIBILITY_DURATION_IN_MILLISECONDS = 1000;
+let INVISIBILITY_DURATION_IN_MILLISECONDS = 2000;
 
 let invisible = false;
 
@@ -1446,7 +1448,8 @@ const launchAttack = (special = false) => {
     );
 
   } else {
-     launchAnimation(heroCharacter, AnimationType.specialAttack, false)
+     launchAnimation(heroCharacter, AnimationType.specialAttack, false);
+     specialMoveIndicator.style.display = "none";
   }
  
   const enemyCanBeHit = (enemy: EnemyInterface) => {
@@ -1598,7 +1601,9 @@ const transformIfRequired = () => {
   if (rewardStreak >= TRANSFORMATION_THRESHOLD && !transformed) {
     rewardStreak = 0;
     updateTransformationProgressBarDisplay();
-    launchTransformation();
+    if(!hardMode){
+      launchTransformation();
+    }
   }
 };
 
@@ -1614,6 +1619,10 @@ const rewardHero = () => {
   if (!transformed) {
     rewardStreak++;
     updateTransformationProgressBarDisplay();
+
+    if(rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15){
+      specialMoveIndicator.style.display = "flex";
+    }
   }
 
   score += bonus_ratio * REWARD_UNIT;
@@ -2197,8 +2206,8 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_special_attack ,
             sprite:    {
-              path: "assets/challenge/characters/hero/flames",
-              length: 14
+              path: "assets/challenge/characters/hero/flames/new",
+              length: 22
           }
           }
          }
@@ -2369,6 +2378,7 @@ const checkForOpponentAttack = () => {
 
 const heroInitialTop = heroContainer.getBoundingClientRect().top;
 
+
 let superSpeedOn = false;
 
 const executeSuperSpeedToggle = () => {  
@@ -2389,6 +2399,10 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === " " && !invisible) {
+    if(rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15){
+      launchHeroLightningSpeedAnimation();
+      return;
+    }
     launchInvisibilityToggle();
   }
   if (event.key === "w") {
@@ -2413,13 +2427,12 @@ document.addEventListener("keydown", (event) => {
   }
 
   if(event.key === "x"){
-    launchAttack(true);
+    if(rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15){
+      launchAttack(true);
+      return;
+    }
   }
 
-  if(event.key === "c"){
-    launchHeroLightningSpeedAnimation();
-  }
- 
 });
 
 const clearGameTimeouts = () => {
@@ -2876,10 +2889,11 @@ const setupListeners = () => {
 };
 
 const createGameAccordingToMode = () => {
+  progressBar.style.display = "flex";
+
   if (hardMode) {
     return;
   }
-  progressBar.style.display = "flex";
   epicAudio = document.getElementById(
     hardMode ? "hard_epic_audio" : "epic_audio"
   )! as HTMLAudioElement;
@@ -2940,6 +2954,7 @@ const launchHeroLightningSpeedAnimation = () => {
   superSpeedOn = true;
   animateLightning();
   heroImage.style.display = 'none';
+  specialMoveIndicator.style.display = "none";
 
   launchInvisibilityToggle();
   setTimeout(() =>{
