@@ -156,7 +156,7 @@ let heroHurt = false;
 let heroIsAlive = true;
 
 const lifePoints = { max: 4, value: 4 };
-let INVISIBILITY_DURATION_IN_MILLISECONDS = 700;
+let INVISIBILITY_DURATION_IN_MILLISECONDS = 1000;
 
 let invisible = false;
 
@@ -2959,9 +2959,13 @@ const killAllAudios = () => {
 
 const launchHeroLightningSpeedAnimation = () => {
   superSpeedOn = true;
-  animateLightning()
+  animateLightning();
+  heroImage.style.display = 'none';
 
   launchInvisibilityToggle();
-  setTimeout(() => superSpeedOn = false, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
+  setTimeout(() =>{
+    superSpeedOn = false;
+    heroImage.style.display = 'flex';
+  }, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
 
 }
