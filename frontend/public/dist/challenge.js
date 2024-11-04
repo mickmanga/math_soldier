@@ -27,6 +27,9 @@
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
   var heroContactPointContainerRatio = 0.3;
   var heroInTheRedZone = false;
+  var idleTimerValue = 5;
+  var lastStopInMs = null;
+  var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var getHeroLeft = () => {
     if (!heroContainer) {
       console.log("we cant get the hero left, the hero container was not initialized yet");
@@ -439,57 +442,57 @@
   var MATHS_ARITHMETIC = {
     title: "Advanced Arithmetic",
     good: [
-      new Answer("12 + 15 = 27", true),
-      new Answer("24 + 36 = 60", true),
-      new Answer("45 - 18 = 27", true),
-      new Answer("30 / 5 = 6", true),
-      new Answer("7 * 8 = 56", true),
-      new Answer("18 + 12 = 30", true),
-      new Answer("50 - 22 = 28", true),
-      new Answer("15 * 3 = 45", true),
-      new Answer("100 / 4 = 25", true),
-      new Answer("32 - 14 = 18", true),
-      new Answer("9 + 16 = 25", true),
-      new Answer("14 * 2 = 28", true),
-      new Answer("36 / 6 = 6", true),
-      new Answer("27 - 9 = 18", true),
-      new Answer("8 * 7 = 56", true),
-      new Answer("64 / 8 = 8", true),
-      new Answer("11 + 29 = 40", true),
-      new Answer("21 + 34 = 55", true),
-      new Answer("90 - 45 = 45", true),
-      new Answer("5 * 6 = 30", true),
-      new Answer("8 + 37 = 45", true)
+      new Answer("13 + 18 = 31", true),
+      new Answer("25 + 35 = 60", true),
+      new Answer("48 - 16 = 32", true),
+      new Answer("40 / 8 = 5", true),
+      new Answer("9 * 7 = 63", true),
+      new Answer("20 + 14 = 34", true),
+      new Answer("55 - 23 = 32", true),
+      new Answer("17 * 2 = 34", true),
+      new Answer("120 / 6 = 20", true),
+      new Answer("38 - 15 = 23", true),
+      new Answer("11 + 19 = 30", true),
+      new Answer("16 * 3 = 48", true),
+      new Answer("42 / 7 = 6", true),
+      new Answer("28 - 10 = 18", true),
+      new Answer("6 * 9 = 54", true),
+      new Answer("72 / 9 = 8", true),
+      new Answer("15 + 25 = 40", true),
+      new Answer("22 + 33 = 55", true),
+      new Answer("80 - 40 = 40", true),
+      new Answer("4 * 7 = 28", true),
+      new Answer("10 + 30 = 40", true)
     ],
     bad: [
-      new Answer("12 + 15 = 30", false),
-      new Answer("24 + 36 = 50", false),
-      new Answer("45 - 18 = 20", false),
-      new Answer("30 / 5 = 5", false),
-      new Answer("7 * 8 = 54", false),
-      new Answer("18 + 12 = 40", false),
-      new Answer("50 - 22 = 20", false),
-      new Answer("15 * 3 = 50", false),
-      new Answer("100 / 4 = 15", false),
-      new Answer("32 - 14 = 25", false),
-      new Answer("9 + 16 = 20", false),
-      new Answer("14 * 2 = 30", false),
-      new Answer("36 / 6 = 5", false),
-      new Answer("27 - 9 = 15", false),
-      new Answer("8 * 7 = 60", false),
-      new Answer("64 / 8 = 10", false),
-      new Answer("11 + 29 = 50", false),
-      new Answer("21 + 34 = 60", false),
-      new Answer("90 - 45 = 50", false),
-      new Answer("5 * 6 = 25", false),
-      new Answer("8 + 37 = 50", false)
+      new Answer("13 + 18 = 30", false),
+      new Answer("25 + 35 = 55", false),
+      new Answer("48 - 16 = 34", false),
+      new Answer("40 / 8 = 6", false),
+      new Answer("9 * 7 = 60", false),
+      new Answer("20 + 14 = 36", false),
+      new Answer("55 - 23 = 30", false),
+      new Answer("17 * 2 = 32", false),
+      new Answer("120 / 6 = 22", false),
+      new Answer("38 - 15 = 25", false),
+      new Answer("11 + 19 = 35", false),
+      new Answer("16 * 3 = 50", false),
+      new Answer("42 / 7 = 5", false),
+      new Answer("28 - 10 = 20", false),
+      new Answer("6 * 9 = 50", false),
+      new Answer("72 / 9 = 9", false),
+      new Answer("15 + 25 = 45", false),
+      new Answer("22 + 33 = 60", false),
+      new Answer("80 - 40 = 35", false),
+      new Answer("4 * 7 = 30", false),
+      new Answer("10 + 30 = 45", false)
     ]
   };
   var getNextAnswer = () => {
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
+      defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -1169,7 +1172,7 @@
     if (!transformed) {
       rewardStreak++;
       updateTransformationProgressBarDisplay();
-      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
+      if (rewardStreak === 15) {
         specialMoveIndicator.style.display = "flex";
       }
     }
@@ -1191,6 +1194,7 @@
     checkForHerosDeath();
     updateLifePointsDisplay();
     rewardStreak = 0;
+    specialMoveIndicator.style.display = "none";
     updateTransformationProgressBarDisplay();
     killEnemy(enemy);
     displayMalus("MALUS! Wrong enemy killed!");
@@ -1590,6 +1594,7 @@
     if (runStopped) {
       return;
     }
+    interuptIdleTimer();
     if (ANIMATION_RUNNING_VALUES[20 /* camera_left_to_right */] === 0) {
       startCamera();
       moveCamera(20 /* camera_left_to_right */, Date.now());
@@ -1613,13 +1618,17 @@
       return;
     }
     if (event.key === " " && !invisible) {
-      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
+      if (rewardStreak === 15) {
         launchHeroLightningSpeedAnimation();
         return;
       }
       launchInvisibilityToggle();
     }
     if (event.key === "w") {
+      if (rewardStreak === 15) {
+        launchAttack(true);
+        return;
+      }
       launchAttack();
     }
     if (event.key === "v") {
@@ -1634,12 +1643,6 @@
     }
     if (event.key === "z") {
       executeSuperSpeedToggle();
-    }
-    if (event.key === "x") {
-      if (rewardStreak === 5 || rewardStreak === 10 || rewardStreak === 15) {
-        launchAttack(true);
-        return;
-      }
     }
   });
   var clearGameTimeouts = () => {
@@ -1657,9 +1660,15 @@
     if (heroInTheRedZone) {
       return;
     }
-    runAudio.volume = 0;
-    stopSuperSpeed();
+    const currentTime = Date.now();
+    if (lastStopInMs && currentTime - lastStopInMs < 5e3) {
+      return;
+    }
     runStopped = true;
+    launchIdleTimeout();
+    runAudio.volume = 0;
+    lastStopInMs = currentTime;
+    stopSuperSpeed();
     if (enemiesComingTimeout) {
       clearTimeout(enemiesComingTimeout);
       enemiesComingTimeout = null;
@@ -1694,8 +1703,13 @@
       APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
     }
   };
+  var stopAndResetIdleTimer = () => {
+    idleTimeoutContainer.style.display = "none";
+    idleTimerValue = 5;
+  };
   var resumeRun = () => {
     runStopped = false;
+    stopAndResetIdleTimer();
     launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
       const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */);
@@ -1841,6 +1855,33 @@
       ANIMATION_RUNNING_VALUES[23 /* hero_sword_slash */] = 0;
     }, 75);
   };
+  var updateIdleTimerInterface = () => {
+    idleTimeoutContainer.innerHTML = idleTimerValue.toString();
+  };
+  var interuptIdleTimer = () => {
+    idleTimerValue = 5;
+    updateIdleTimerInterface();
+    idleTimeoutContainer.style.display = "none";
+  };
+  var launchIdleTimeout = () => {
+    idleTimeoutContainer.style.display = "flex";
+    const tryToUpdateTimerValue = () => {
+      if (!runStopped) {
+        return;
+      }
+      if (idleTimerValue === 0) {
+        resumeRun();
+        return;
+      }
+      idleTimeoutContainer.innerHTML = idleTimerValue.toString();
+      idleTimerValue--;
+      setTimeout(
+        tryToUpdateTimerValue,
+        1e3
+      );
+    };
+    tryToUpdateTimerValue();
+  };
   var launchDeathAnimation = () => {
     initHeroAnimations();
     ANIMATION_RUNNING_VALUES[20 /* camera_left_to_right */] = 0;
@@ -1943,7 +1984,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
+    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {

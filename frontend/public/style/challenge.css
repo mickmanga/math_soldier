@@ -41,6 +41,22 @@ audio {
 }
 
 
+#idle_timeout_container {
+  position: absolute;
+  left: 45vw;
+  top: 20vh;
+  width: 10vw;
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  color: red;
+  font-size: xx-large;
+  z-index: 3;
+  display: none;
+}
+
+
 .hero_container_hard {
   --hero-img-height: 30vh;  
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
