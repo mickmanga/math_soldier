@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');  // Import bcrypt for password hashing
-const SubjectSchema = require('./Subject');  // Import Subject schema
+const SubjectSchema = require("./subject")  // Import Subject schema
 
 // User Schema
 const UserSchema = new Schema({
@@ -23,9 +23,10 @@ UserSchema.pre('save', async function (next) {
     }
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
+     const salt = await bcrypt.genSalt(10);
+     this.password = await bcrypt.hash(this.password, salt);
+     next();
+     
     } catch (err) {
         next(err);
     }

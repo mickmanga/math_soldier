@@ -1,4 +1,4 @@
- const express = require('express');
+const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require("bcrypt");
@@ -80,10 +80,10 @@ router.post('/login', async (req, res) => {
         }
 
         // Create a JWT token (replace 'your_jwt_secret' with your actual secret key)
-        const token = jwt.sign({ userId: user._id, name: user.name }, 'your_jwt_secret', { expiresIn: '1h' });
+       //    const token = jwt.sign({ userId: user._id, name: user.name }, 'your_jwt_secret', { expiresIn: '1h' });
 
         // Send back the token
-        res.json({ token, message: 'Login successful' });
+        res.json({message: "you're logged in", user: {userId: user._id, name: user.name }});
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Error logging in' });

@@ -1,24 +1,42 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const LearningSchema = require('./learning.js');  // Import Learning schema
+const { Schema, Model } = mongoose;
+const LearningSchema = require('./learning.js'); // Import Learning schema
 
-// Map Schema
+// Define KnowledgeData Schema with an explicit id field
+const KnowledgeDataContainerSchema = new Schema({
+  id: { type: Schema.Types.ObjectId, default: new mongoose.Types.ObjectId() },
+  name: String,
+  paths: [String],
+});
 
-const MapDataSchema = new Schema({
-    images: [String]
-  });
-  
-  const MapLocationSchema = new Schema({
-    name: String, 
-    locked: Boolean,
-    data: MapDataSchema
-  });
-  
-  const MapSchema = new Schema({
-    background: { type: String, required: true },
-    learning: LearningSchema, 
-    locations: [MapLocationSchema]   
-    
-  });
+// Define KnowledgeData Schema with an explicit id field
+const KnowledgeDataChapterSchema = new Schema({
+  id: { type: Schema.Types.ObjectId, default: new mongoose.Types.ObjectId() },
+  name: String,
+  chaptersOrData: [{ type: Schema.Types.Mixed }]
+});
 
-module.exports = {MapSchema,MapLocationSchema, MapDataSchema};
+// Define MapLocation Schema, referencing KnowledgeDataSchema by ID
+const MapLocationSchema = new Schema({
+  name: String, 
+  locked: Boolean,
+  dataBlocks: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeDataSchema' }]
+});
+
+// Define Map Schema
+const MapSchema = new Schema({
+  background: { type: String, required: true },
+  locations: [MapLocationSchema]
+});
+
+const KnowledgeDataContainer = new Model('KnowledgeData', KnowledgeDataContainerSchema);
+const KnowledgeDataChapter = new Model('KnowledgeChapter', KnowledgeDataChapterSchema);
+
+// Export schemas
+module.exports = {
+  MapSchema,
+  MapLocationSchema,
+  KnowledgeDataContainerSchema,
+  KnowledgeData,
+  KnowledgeDataChapter
+};

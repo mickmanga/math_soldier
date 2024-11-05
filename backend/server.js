@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/router.js');
 const cors = require('cors');
 
-
-
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3001', // Specify the allowed origin
