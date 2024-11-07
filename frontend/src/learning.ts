@@ -24,5 +24,27 @@ const getUser = async (userId: string) => {
     }
 };
 
+const getChapters = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/api/chapters', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch chapters');
+        }
+        
+        const chapters = await response.json();
+        console.log('Chapters:', chapters); // Replace with your handling logic
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
-const user = getUser("670e55bccfad7de8becf1414");
+
+window.onload = () => {
+    getChapters();
+}

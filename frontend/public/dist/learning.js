@@ -22,19 +22,25 @@
   };
 
   // src/learning.ts
-  var getUser = (userId) => __async(void 0, null, function* () {
+  var getChapters = () => __async(void 0, null, function* () {
     try {
-      const response = yield fetch(`http://localhost:3000/api/users/${userId}`);
+      const response = yield fetch("http://localhost:3000/api/chapters", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        throw new Error("Failed to fetch chapters");
       }
-      const user2 = yield response.json();
-      console.log(user2);
-      return user2;
+      const chapters = yield response.json();
+      console.log("Chapters:", chapters);
     } catch (error) {
-      console.error("Failed to fetch the user:", error);
+      console.error("Error:", error);
     }
   });
-  var user = getUser("670e55bccfad7de8becf1414");
+  window.onload = () => {
+    getChapters();
+  };
 })();
 //# sourceMappingURL=learning.js.map

@@ -514,6 +514,30 @@ const AUTHOR_INFO = {
   ]
 };
 
+const LINEAR_ALGEBRA_CHAPTER_1 = {
+  title: "Understanding Vectors",
+  good: [
+    new Answer("A vector is a mathematical entity with direction and magnitude (or length).", true),
+    new Answer("Vectors can represent elements like the speed of an object or the direction in which it moves.", true),
+    new Answer("In two-dimensional space, a vector can be written as (x, y), where x and y are its components.", true),
+    new Answer("The x component of a vector represents distance traveled horizontally, and the y component represents distance vertically.", true),
+    new Answer("Vectors can be visualized as arrows on a graph, where the arrow's length represents the vector’s magnitude.", true),
+    new Answer("Adding vectors allows us to combine different directions and lengths.", true),
+    new Answer("For example, if a boat moves north and then east, the final direction can be found by adding the two vector movements.", true),
+    new Answer("Vectors are commonly used in algebra to represent both magnitude and direction in two-dimensional or three-dimensional space.", true),
+  ],
+  bad: [
+    new Answer("A vector is just a single number with no direction.", false),
+    new Answer("The components of a vector don't indicate direction or distance.", false),
+    new Answer("Adding vectors has no practical application.", false),
+    new Answer("A vector is always a single point without length or direction.", false),
+    new Answer("A vector in two-dimensional space is represented by only one component.", false),
+    new Answer("The x and y components of a vector have no specific meaning or relation to direction.", false),
+    new Answer("Vectors cannot be visualized on a graph.", false),
+    new Answer("The length of a vector tells you nothing about its direction.", false),
+  ],
+};
+
 const LINEAR_ALGEBRA_BASICS = {
   title: "Understanding Lines and Intercepts",
   good: [
@@ -846,6 +870,16 @@ export enum ANIMATION_ID {
   hammer_opponent_attack,
   hammer_opponent_death,
   hammer_opponent_move,
+  orc_opponent_idle,
+  orc_opponent_run,
+  orc_opponent_attack,
+  orc_opponent_death,
+  orc_opponent_move,
+  dwarf_opponent_idle,
+  dwarf_opponent_run,
+  dwarf_opponent_attack,
+  dwarf_opponent_death,
+  dwarf_opponent_move,
   camera_left_to_right,
   camera_right_to_left,
   character_left_to_right_move,
@@ -2167,8 +2201,26 @@ enum RedHammerEnemyCharacterStates {
   dead,
 }
 
+enum OrcEnemyCharacterStates {
+  idle,
+  running,
+  attacking,
+  dead,
+}
+
+enum DwarfEnemyCharacterStates {
+  idle,
+  running,
+  attacking,
+  dead,
+}
+
+
 const ALL_HERO_STATES = [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.dead, HeroCharacterStates.running];
 const ALL_RED_HAMMER_ENEMY_STATES = [RedHammerEnemyCharacterStates.idle, RedHammerEnemyCharacterStates.running, RedHammerEnemyCharacterStates.attacking, RedHammerEnemyCharacterStates.dead]
+const ALL_ORC_ENEMY_STATES = [OrcEnemyCharacterStates.idle, OrcEnemyCharacterStates.running, OrcEnemyCharacterStates.attacking, OrcEnemyCharacterStates.dead];
+const ALL_DWARF_ENEMY_STATES = [DwarfEnemyCharacterStates.idle, DwarfEnemyCharacterStates.running, DwarfEnemyCharacterStates.attacking, DwarfEnemyCharacterStates.dead];
+
 
 
 const heroAnimations = [
@@ -2321,9 +2373,142 @@ const redHammerAnimations = [
       },
 ];
 
+const orcAnimations = [
+  {
+  animationType: AnimationType.idle,
+  animationsStatesBlocks: [
+    {
+      states: ALL_ORC_ENEMY_STATES,
+      animation: 
+      {
+        id: ANIMATION_ID.orc_opponent_idle,
+        sprite:    {
+          path: "assets/challenge/characters/enemies/hard/idle",
+          length: 16
+      }
+      }
+     }
+   ]
+  },
+  {
+    animationType: AnimationType.attack,
+    animationsStatesBlocks: [
+      {
+        states: ALL_ORC_ENEMY_STATES,
+        animation: 
+        {
+          id: ANIMATION_ID.orc_opponent_attack,
+          sprite:    {
+            path: "assets/challenge/characters/enemies/hard/attack",
+            length: 30
+        }
+        }
+       }
+     ]
+    },
+    {
+      animationType: AnimationType.death,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.hammer_opponent_death,
+            sprite:    {
+              path: "assets/challenge/explosion",
+              length: 10
+          }
+          }
+         }
+       ]
+      },
+    {
+      animationType: AnimationType.movement,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.orc_opponent_move,
+            sprite:    {
+              path: "",
+              length: 0
+          }
+          }
+         }
+       ]
+      },
+];
+
+const dwarfAnimations = [
+  {
+  animationType: AnimationType.idle,
+  animationsStatesBlocks: [
+    {
+      states: ALL_DWARF_ENEMY_STATES,
+      animation: 
+      {
+        id: ANIMATION_ID.dwarf_opponent_idle,
+        sprite:    {
+          path: "assets/challenge/characters/enemies/hard/idle",
+          length: 16
+      }
+      }
+     }
+   ]
+  },
+  {
+    animationType: AnimationType.attack,
+    animationsStatesBlocks: [
+      {
+        states: ALL_DWARF_ENEMY_STATES,
+        animation: 
+        {
+          id: ANIMATION_ID.dwarf_opponent_attack,
+          sprite:    {
+            path: "assets/challenge/characters/enemies/hard/attack",
+            length: 30
+        }
+        }
+       }
+     ]
+    },
+    {
+      animationType: AnimationType.death,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.dwarf_opponent_death,
+            sprite:    {
+              path: "assets/challenge/explosion",
+              length: 10
+          }
+          }
+         }
+       ]
+      },
+    {
+      animationType: AnimationType.movement,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.dwarf_opponent_move,
+            sprite:    {
+              path: "",
+              length: 0
+          }
+          }
+         }
+       ]
+      },
+];
+
+
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
-
-
 
 const createRedHammerCharacter = (): DefaultCharacter => {
 
