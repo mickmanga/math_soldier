@@ -2172,7 +2172,7 @@ class DefaultCharacter {
 }
 
 
-type CharacterStates = HeroCharacterStates | RedHammerEnemyCharacterStates;
+type CharacterStates = HeroCharacterStates | RedHammerEnemyCharacterStates | OrcEnemyCharacterStates | DwarfEnemyCharacterStates;
 
 
 
@@ -2527,6 +2527,43 @@ const createRedHammerCharacter = (): DefaultCharacter => {
   
 
  return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
+}
+const createOrcCharacter = (): DefaultCharacter => {
+
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img") as HTMLImageElement;
+    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";  
+    newOpponentContainer.append(newEnnemyImg);
+
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+
+    //init view point
+
+    enemyViewPoint.style.left = "120vw";
+    enemyViewPoint.style.display = "flex";
+  
+
+ return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
+}
+
+const createDwarfCharacter = (): DefaultCharacter => {
+
+  const newOpponentContainer = document.createElement("div");
+  newOpponentContainer.classList.add("hard_enemy_container");
+  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
+  newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";  
+  newOpponentContainer.append(newEnnemyImg);
+
+  document.getElementsByTagName("body")[0].append(newOpponentContainer);
+
+  //init view point
+
+  enemyViewPoint.style.left = "120vw";
+  enemyViewPoint.style.display = "flex";
+
+
+return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations)
 }
 
 
