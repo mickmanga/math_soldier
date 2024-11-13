@@ -24,7 +24,7 @@
   // src/learning.ts
   var getChapters = () => __async(void 0, null, function* () {
     try {
-      const response = yield fetch("http://localhost:3000/api/chapters", {
+      const response = yield fetch("http://localhost:3000/api/challenges", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"

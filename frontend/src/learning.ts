@@ -26,7 +26,7 @@ const getUser = async (userId: string) => {
 
 const getChapters = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/chapters', {
+        const response = await fetch('http://localhost:3000/api/challenges', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

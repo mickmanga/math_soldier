@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/router.js');
+const chapterRoutes = require('./routes/chapters.js');
 const cors = require('cors');
 
 const app = express();
@@ -21,7 +21,8 @@ mongoose.connect('mongodb://localhost:27017/memory_soldier', {
 .catch((err) => console.log(err));
 
 // Use the user routes
-app.use('/api/users', userRoutes);
+app.use('/api/chapters', chapterRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

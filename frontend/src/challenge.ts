@@ -577,54 +577,51 @@ const LINEAR_ALGEBRA_BASICS = {
   ],
 };
 
-
 const MATHS_ARITHMETIC = { 
-  title: "Advanced Arithmetic",
+  title: "Intermediate Arithmetic Challenge",
   good: [
-    new Answer("13 + 18 = 31", true),
-    new Answer("25 + 35 = 60", true),
-    new Answer("48 - 16 = 32", true),
-    new Answer("40 / 8 = 5", true),
-    new Answer("9 * 7 = 63", true),
-    new Answer("20 + 14 = 34", true),
-    new Answer("55 - 23 = 32", true),
-    new Answer("17 * 2 = 34", true),
-    new Answer("120 / 6 = 20", true),
-    new Answer("38 - 15 = 23", true),
-    new Answer("11 + 19 = 30", true),
-    new Answer("16 * 3 = 48", true),
-    new Answer("42 / 7 = 6", true),
-    new Answer("28 - 10 = 18", true),
-    new Answer("6 * 9 = 54", true),
-    new Answer("72 / 9 = 8", true),
-    new Answer("15 + 25 = 40", true),
-    new Answer("22 + 33 = 55", true),
-    new Answer("80 - 40 = 40", true),
-    new Answer("4 * 7 = 28", true),
-    new Answer("10 + 30 = 40", true),
+    new Answer("56 + 37 = 93", true),
+    new Answer("42 - 15 = 27", true),
+    new Answer("36 / 6 = 6", true),
+    new Answer("14 * 3 = 42", true),
+    new Answer("90 - 37 = 53", true),
+    new Answer("18 * 4 = 72", true),
+    new Answer("96 / 8 = 12", true),
+    new Answer("57 + 24 = 81", true),
+    new Answer("63 - 28 = 35", true),
+    new Answer("22 * 5 = 110", true),
+    new Answer("84 / 7 = 12", true),
+    new Answer("49 + 32 = 81", true),
+    new Answer("77 - 19 = 58", true),
+    new Answer("15 * 6 = 90", true),
+    new Answer("72 / 6 = 12", true),
+    new Answer("45 + 26 = 71", true),
+    new Answer("68 - 29 = 39", true),
+    new Answer("30 * 2 = 60", true),
+    new Answer("108 / 9 = 12", true),
+    new Answer("37 + 18 = 55", true),
   ],
   bad: [
-    new Answer("13 + 18 = 30", false),
-    new Answer("25 + 35 = 55", false),
-    new Answer("48 - 16 = 34", false),
-    new Answer("40 / 8 = 6", false),
-    new Answer("9 * 7 = 60", false),
-    new Answer("20 + 14 = 36", false),
-    new Answer("55 - 23 = 30", false),
-    new Answer("17 * 2 = 32", false),
-    new Answer("120 / 6 = 22", false),
-    new Answer("38 - 15 = 25", false),
-    new Answer("11 + 19 = 35", false),
-    new Answer("16 * 3 = 50", false),
-    new Answer("42 / 7 = 5", false),
-    new Answer("28 - 10 = 20", false),
-    new Answer("6 * 9 = 50", false),
-    new Answer("72 / 9 = 9", false),
-    new Answer("15 + 25 = 45", false),
-    new Answer("22 + 33 = 60", false),
-    new Answer("80 - 40 = 35", false),
-    new Answer("4 * 7 = 30", false),
-    new Answer("10 + 30 = 45", false),
+    new Answer("56 + 37 = 94", false),
+    new Answer("42 - 15 = 30", false),
+    new Answer("36 / 6 = 5", false),
+    new Answer("14 * 3 = 40", false),
+    new Answer("90 - 37 = 50", false),
+    new Answer("18 * 4 = 80", false),
+    new Answer("96 / 8 = 15", false),
+    new Answer("57 + 24 = 80", false),
+    new Answer("63 - 28 = 30", false),
+    new Answer("22 * 5 = 105", false),
+    new Answer("84 / 7 = 13", false),
+    new Answer("49 + 32 = 80", false),
+    new Answer("77 - 19 = 60", false),
+    new Answer("15 * 6 = 85", false),
+    new Answer("72 / 6 = 14", false),
+    new Answer("45 + 26 = 70", false),
+    new Answer("68 - 29 = 40", false),
+    new Answer("30 * 2 = 65", false),
+    new Answer("108 / 9 = 13", false),
+    new Answer("37 + 18 = 54", false),
   ],
 };
 
@@ -637,7 +634,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+    defineCurrentSubject(hardMode ? STATS : STATS);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -760,7 +757,9 @@ const buildEnemyElement = () => {
 
 const buildEnemy = (answer: Answer) => {
 
-  const enemyCharacter = createRedHammerCharacter();
+ // const enemyCharacter = createRedHammerCharacter();
+ //const enemyCharacter = createOrcCharacter();
+const enemyCharacter = createDwarfCharacter();
 
   if (!enemyCharacter) {
     return;
@@ -913,6 +912,16 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hammer_opponent_attack]: 0,
   [ANIMATION_ID.hammer_opponent_death]: 0,
   [ANIMATION_ID.hammer_opponent_move]: 0,
+  [ANIMATION_ID.orc_opponent_idle]:0,
+  [ANIMATION_ID.orc_opponent_run]:0,
+  [ANIMATION_ID.orc_opponent_attack]:0,
+  [ANIMATION_ID.orc_opponent_death]:0,
+  [ANIMATION_ID.orc_opponent_move]:0,
+  [ANIMATION_ID.dwarf_opponent_idle]:0,
+  [ANIMATION_ID.dwarf_opponent_run]:0,
+  [ANIMATION_ID.dwarf_opponent_attack]:0,
+  [ANIMATION_ID.dwarf_opponent_death]:0,
+  [ANIMATION_ID.dwarf_opponent_move]:0,
   [ANIMATION_ID.camera_left_to_right]: 0,
   [ANIMATION_ID.camera_right_to_left]: 0,
   [ANIMATION_ID.character_left_to_right_move]: 0,
@@ -947,6 +956,16 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hammer_opponent_attack]: 0,
   [ANIMATION_ID.hammer_opponent_death]: 0,
   [ANIMATION_ID.hammer_opponent_move]: 0,
+  [ANIMATION_ID.orc_opponent_idle]:0,
+  [ANIMATION_ID.orc_opponent_run]:0,
+  [ANIMATION_ID.orc_opponent_attack]:0,
+  [ANIMATION_ID.orc_opponent_death]:0,
+  [ANIMATION_ID.orc_opponent_move]:0,
+  [ANIMATION_ID.dwarf_opponent_idle]:0,
+  [ANIMATION_ID.dwarf_opponent_run]:0,
+  [ANIMATION_ID.dwarf_opponent_attack]:0,
+  [ANIMATION_ID.dwarf_opponent_death]:0,
+  [ANIMATION_ID.dwarf_opponent_move]:0,
   [ANIMATION_ID.camera_left_to_right]: 0,
   [ANIMATION_ID.camera_right_to_left]: 0,
   [ANIMATION_ID.hero_sword_slash]: 0,
@@ -962,7 +981,9 @@ export const THROTTLE_NUMS = {
 const APP_IDS = {
   hero: "hero_container",
   enemy: "enemy_container",
-  red_hammer_enemy: "red_hammer_enemy"
+  red_hammer_enemy: "red_hammer_enemy",
+  orc_enemy: "orc_enemy",
+  dwarf_enemy: "dwarf_enemy"
 };
 
 class AnimationRequest {
@@ -997,6 +1018,7 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hero_attack,
       ANIMATION_ID.hero_hurt,
       ANIMATION_ID.hero_death,
+      ANIMATION_ID.hero_special_attack,
       ANIMATION_ID.stop,
       ANIMATION_ID.stop_time,
       ANIMATION_ID.hero_transformation_hurt,
@@ -1022,6 +1044,26 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hammer_opponent_run,
       ANIMATION_ID.hammer_opponent_attack,
       ANIMATION_ID.hammer_opponent_death   
+    ]
+  },
+  orc_enemy: {
+    request_queue: [],
+    current_animation: null,
+    associated_animations: [
+      ANIMATION_ID.orc_opponent_idle,
+      ANIMATION_ID.orc_opponent_run,
+      ANIMATION_ID.orc_opponent_attack,
+      ANIMATION_ID.orc_opponent_death   
+    ]
+  },
+  dwarf_enemy: {
+    request_queue: [],
+    current_animation: null,
+    associated_animations: [
+      ANIMATION_ID.dwarf_opponent_idle,
+      ANIMATION_ID.dwarf_opponent_run,
+      ANIMATION_ID.dwarf_opponent_attack,
+      ANIMATION_ID.dwarf_opponent_death   
     ]
   }
 };
@@ -1330,7 +1372,7 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
@@ -1660,7 +1702,7 @@ const rewardHero = () => {
     rewardStreak++;
     updateTransformationProgressBarDisplay();
 
-    if(rewardStreak === 15){
+    if(rewardStreak === 5 ||  rewardStreak === 10){
       specialMoveIndicator.style.display = "flex";
     }
   }
@@ -2383,8 +2425,8 @@ const orcAnimations = [
       {
         id: ANIMATION_ID.orc_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/hard/idle",
-          length: 16
+          path: "assets/challenge/characters/enemies/orc/idle",
+          length: 42
       }
       }
      }
@@ -2399,8 +2441,8 @@ const orcAnimations = [
         {
           id: ANIMATION_ID.orc_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/hard/attack",
-            length: 30
+            path: "assets/challenge/characters/enemies/orc/attack",
+            length: 50
         }
         }
        }
@@ -2450,8 +2492,8 @@ const dwarfAnimations = [
       {
         id: ANIMATION_ID.dwarf_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/hard/idle",
-          length: 16
+          path: "assets/challenge/characters/enemies/dwarf/idle",
+          length: 57
       }
       }
      }
@@ -2466,8 +2508,8 @@ const dwarfAnimations = [
         {
           id: ANIMATION_ID.dwarf_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/hard/attack",
-            length: 30
+            path: "assets/challenge/characters/enemies/dwarf/attack",
+            length: 38
         }
         }
        }
@@ -2630,14 +2672,14 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === " " && !invisible) {
-    if(rewardStreak === 15){
+    if(rewardStreak === 5 ||  rewardStreak === 10){
       launchHeroLightningSpeedAnimation();
       return;
     }
     launchInvisibilityToggle();
   }
   if (event.key === "w") {
-    if(rewardStreak === 15){
+    if(rewardStreak === 5 ||  rewardStreak === 10){
       launchAttack(true);
       return;
     }
@@ -2992,7 +3034,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 5;
+  idleTimerValue = 240;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3144,7 +3186,7 @@ window.onload = () => {
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "forest.jpg" : "castle.gif"
+    hardMode ? "magical_forest.png" : "castle.gif"
   }`;
   MAPS.push(createMapBlock(0));
   MAPS.push(createMapBlock(100));
@@ -3154,7 +3196,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? LINEAR_ALGEBRA_BASICS : MATHS_ARITHMETIC);
+  defineCurrentSubject(hardMode ? STATS : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {
