@@ -341,6 +341,27 @@ const STATS = {
   ],
 };
 
+const TYPES_DE_FONCTIONS_COURANTES = {
+  title: "Types de Fonctions Courantes",
+  good: [
+    new Answer("Les fonctions linéaires ont la forme f(x) = mx + b et se représentent par des droites sur un graphique.", true),
+    new Answer("Dans une fonction linéaire, m représente la pente et b l'ordonnée à l'origine.", true),
+    new Answer("Les fonctions quadratiques sont de la forme f(x) = ax² + bx + c et forment des paraboles sur le graphique.", true),
+    new Answer("Les fonctions exponentielles ont la forme f(x) = a^x et montrent une croissance ou décroissance rapide.", true),
+    new Answer("Les fonctions logarithmiques sont de la forme f(x) = logₐ x et sont l'inverse des fonctions exponentielles.", true),
+    new Answer("Les fonctions trigonométriques comme f(x) = sin x modélisent des phénomènes périodiques.", true),
+  ],
+  bad: [
+    new Answer("Les fonctions linéaires sont toujours des courbes en forme de parabole sur le graphique.", false),
+    new Answer("Dans une fonction linéaire, b représente la pente et m l'ordonnée à l'origine.", false),
+    new Answer("Les fonctions quadratiques tracent des droites sur le graphique.", false),
+    new Answer("Les fonctions exponentielles ont une croissance ou décroissance lente et constante.", false),
+    new Answer("Les fonctions logarithmiques ne sont pas liées aux fonctions exponentielles.", false),
+    new Answer("Les fonctions trigonométriques ne modélisent pas de phénomènes périodiques.", false),
+  ],
+};
+
+
 const VECTORS = {
   title: "Additions",
   good: [
@@ -616,6 +637,25 @@ const FUNCTION_BASICS = {
   ],
 };
 
+const NOTATION_ET_REPRESENTATION_DES_FONCTIONS = {
+  title: "Notation et Représentation des Fonctions",
+  good: [
+    new Answer("La notation f(x) signifie la fonction f évaluée en x.", true),
+    new Answer("Dans une fonction, x est la variable indépendante (l'entrée) et y = f(x) est la variable dépendante (la sortie).", true),
+    new Answer("Les fonctions peuvent être représentées graphiquement en traçant des points (x, y) sur un plan cartésien.", true),
+    new Answer("Représenter une fonction sur un graphique nous permet de visualiser comment la fonction se comporte.", true),
+    new Answer("Pour la fonction f(x) = x², on peut tracer les points (-2, 4), (0, 0) et (2, 4).", true),
+  ],
+  bad: [
+    new Answer("La notation f(x) signifie qu'on multiplie f par x.", false),
+    new Answer("Dans une fonction, y est la variable indépendante et x est la variable dépendante.", false),
+    new Answer("Les fonctions ne peuvent pas être représentées graphiquement.", false),
+    new Answer("Tracer des points (x, y) sur un plan cartésien ne nous aide pas à visualiser le comportement de la fonction.", false),
+    new Answer("Pour la fonction f(x) = x², les points (-2, 4), (0, 0) et (2, 4) ne sont pas sur son graphe.", false),
+  ],
+};
+
+
 const MATHS_ARITHMETIC = { 
   title: "Intermediate Arithmetic Challenge",
   good: [
@@ -673,7 +713,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
+    defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -3073,7 +3113,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 2;
+  idleTimerValue = 10;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3225,7 +3265,7 @@ window.onload = () => {
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "mountain.png" : "castle.gif"
+    hardMode ? "magical_forest.png" : "castle.gif"
   }`;
   MAPS.push(createMapBlock(0));
   MAPS.push(createMapBlock(100));
@@ -3235,7 +3275,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
+  defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {

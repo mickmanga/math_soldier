@@ -239,6 +239,25 @@
       )
     ]
   };
+  var TYPES_DE_FONCTIONS_COURANTES = {
+    title: "Types de Fonctions Courantes",
+    good: [
+      new Answer("Les fonctions lin\xE9aires ont la forme f(x) = mx + b et se repr\xE9sentent par des droites sur un graphique.", true),
+      new Answer("Dans une fonction lin\xE9aire, m repr\xE9sente la pente et b l'ordonn\xE9e \xE0 l'origine.", true),
+      new Answer("Les fonctions quadratiques sont de la forme f(x) = ax\xB2 + bx + c et forment des paraboles sur le graphique.", true),
+      new Answer("Les fonctions exponentielles ont la forme f(x) = a^x et montrent une croissance ou d\xE9croissance rapide.", true),
+      new Answer("Les fonctions logarithmiques sont de la forme f(x) = log\u2090 x et sont l'inverse des fonctions exponentielles.", true),
+      new Answer("Les fonctions trigonom\xE9triques comme f(x) = sin x mod\xE9lisent des ph\xE9nom\xE8nes p\xE9riodiques.", true)
+    ],
+    bad: [
+      new Answer("Les fonctions lin\xE9aires sont toujours des courbes en forme de parabole sur le graphique.", false),
+      new Answer("Dans une fonction lin\xE9aire, b repr\xE9sente la pente et m l'ordonn\xE9e \xE0 l'origine.", false),
+      new Answer("Les fonctions quadratiques tracent des droites sur le graphique.", false),
+      new Answer("Les fonctions exponentielles ont une croissance ou d\xE9croissance lente et constante.", false),
+      new Answer("Les fonctions logarithmiques ne sont pas li\xE9es aux fonctions exponentielles.", false),
+      new Answer("Les fonctions trigonom\xE9triques ne mod\xE9lisent pas de ph\xE9nom\xE8nes p\xE9riodiques.", false)
+    ]
+  };
   var VECTORS = {
     title: "Additions",
     good: [
@@ -505,6 +524,23 @@
       new Answer("A function allows each input to have more than one output.", false)
     ]
   };
+  var NOTATION_ET_REPRESENTATION_DES_FONCTIONS = {
+    title: "Notation et Repr\xE9sentation des Fonctions",
+    good: [
+      new Answer("La notation f(x) signifie la fonction f \xE9valu\xE9e en x.", true),
+      new Answer("Dans une fonction, x est la variable ind\xE9pendante (l'entr\xE9e) et y = f(x) est la variable d\xE9pendante (la sortie).", true),
+      new Answer("Les fonctions peuvent \xEAtre repr\xE9sent\xE9es graphiquement en tra\xE7ant des points (x, y) sur un plan cart\xE9sien.", true),
+      new Answer("Repr\xE9senter une fonction sur un graphique nous permet de visualiser comment la fonction se comporte.", true),
+      new Answer("Pour la fonction f(x) = x\xB2, on peut tracer les points (-2, 4), (0, 0) et (2, 4).", true)
+    ],
+    bad: [
+      new Answer("La notation f(x) signifie qu'on multiplie f par x.", false),
+      new Answer("Dans une fonction, y est la variable ind\xE9pendante et x est la variable d\xE9pendante.", false),
+      new Answer("Les fonctions ne peuvent pas \xEAtre repr\xE9sent\xE9es graphiquement.", false),
+      new Answer("Tracer des points (x, y) sur un plan cart\xE9sien ne nous aide pas \xE0 visualiser le comportement de la fonction.", false),
+      new Answer("Pour la fonction f(x) = x\xB2, les points (-2, 4), (0, 0) et (2, 4) ne sont pas sur son graphe.", false)
+    ]
+  };
   var MATHS_ARITHMETIC = {
     title: "Intermediate Arithmetic Challenge",
     good: [
@@ -556,7 +592,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
+      defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -1974,7 +2010,7 @@
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 2;
+    idleTimerValue = 10;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
@@ -2090,7 +2126,7 @@
     setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
-    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "mountain.png" : "castle.gif"}`;
+    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "magical_forest.png" : "castle.gif"}`;
     MAPS.push(createMapBlock(0));
     MAPS.push(createMapBlock(100));
     createGameAccordingToMode();
@@ -2099,7 +2135,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
+    defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {

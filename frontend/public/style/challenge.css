@@ -62,7 +62,7 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 55vh;
+  top: 54.5vh;
   left: 20vw;
   height: 30vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
@@ -75,7 +75,7 @@ audio {
   position: fixed;
   bottom: 17.5vh;
   left: 120vw;
-  height: 17.5vh;
+  height: 17vh;
   z-index: 11;
   display: flex;
   justify-content: center;
@@ -84,7 +84,7 @@ audio {
 
 .hard_enemy_container {
   position: fixed;
-  bottom: 0.5vh;
+  bottom: 1vh;
   left: 125vw;
   height: 70vh;
   z-index: 11;
@@ -131,6 +131,7 @@ audio {
   height: 20%;
   width: 80%;
   background: rgba(40, 108, 204, 0.514);
+  display: none;
 }
 
 #hero_container img,
