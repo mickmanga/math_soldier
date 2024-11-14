@@ -344,20 +344,82 @@ const STATS = {
 const TYPES_DE_FONCTIONS_COURANTES = {
   title: "Types de Fonctions Courantes",
   good: [
-    new Answer("Les fonctions linéaires ont la forme f(x) = mx + b et se représentent par des droites sur un graphique.", true),
-    new Answer("Dans une fonction linéaire, m représente la pente et b l'ordonnée à l'origine.", true),
-    new Answer("Les fonctions quadratiques sont de la forme f(x) = ax² + bx + c et forment des paraboles sur le graphique.", true),
-    new Answer("Les fonctions exponentielles ont la forme f(x) = a^x et montrent une croissance ou décroissance rapide.", true),
-    new Answer("Les fonctions logarithmiques sont de la forme f(x) = logₐ x et sont l'inverse des fonctions exponentielles.", true),
-    new Answer("Les fonctions trigonométriques comme f(x) = sin x modélisent des phénomènes périodiques.", true),
+    new Answer("Une fonction linéaire a la forme f(x) = m x + b.", true),
+    new Answer("Le graphique d'une fonction linéaire est une droite.", true),
+    new Answer("Dans une fonction linéaire, m représente la pente de la droite.", true),
+    new Answer("Si m > 0, la droite monte de la gauche vers la droite.", true),
+    new Answer("Une fonction quadratique a la forme f(x) = a x² + b x + c.", true),
+    new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
+    new Answer("Si a > 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", true),
+    new Answer("Le sommet d'une parabole est le point où la fonction atteint son maximum ou minimum.", true),
+    new Answer("Une fonction exponentielle a la forme f(x) = a^x avec a > 0 et a ≠ 1.", true),
+    new Answer("Si a > 1, la fonction exponentielle est croissante.", true),
+    new Answer("Les fonctions exponentielles passent par le point (0, 1) car a^0 = 1.", true),
+    new Answer("Une fonction logarithmique est la fonction inverse d'une fonction exponentielle.", true),
+    new Answer("Une fonction logarithmique a la forme f(x) = log_a x avec x > 0.", true),
+    new Answer("Les fonctions logarithmiques passent par le point (1, 0) puisque log_a 1 = 0.", true),
+    new Answer("Les fonctions trigonométriques comme sin(x) et cos(x) sont périodiques.", true),
+    new Answer("La fonction sin(x) a une période de 2π.", true),
+    new Answer("La fonction valeur absolue est définie par f(x) = |x|.", true),
+    new Answer("Le graphique de la fonction valeur absolue a la forme d'un 'V'.", true),
+    new Answer("Une fonction racine carrée est définie par f(x) = √x avec x ≥ 0.", true),
+    new Answer("Les fonctions racines carrées commencent à x = 0 et augmentent lentement.", true),
+    new Answer("Une fonction polynomiale est une somme de termes de la forme a_n x^n.", true),
+    new Answer("Le degré d'un polynôme est le plus grand exposant de x avec un coefficient non nul.", true),
+    new Answer("Une fonction rationnelle est le quotient de deux polynômes.", true),
+    new Answer("Les fonctions rationnelles peuvent avoir des asymptotes verticales là où le dénominateur est zéro.", true),
+    new Answer("Les fonctions racines cubiques sont définies pour tout x.", true),
+    new Answer("La fonction racine cubique f(x) = ∛x est symétrique par rapport à l'origine.", true),
+    new Answer("Les fonctions réciproques 'annulent' l'effet d'une autre fonction.", true),
+    new Answer("Si f(x) est bijective, sa réciproque f⁻¹(x) satisfait f⁻¹(f(x)) = x.", true),
+    new Answer("La fonction exponentielle f(x) = e^x a pour réciproque la fonction logarithme naturel f⁻¹(x) = ln x.", true),
+    new Answer("La fonction carré f(x) = x² pour x ≥ 0 a pour réciproque la fonction racine carrée f⁻¹(x) = √x.", true),
   ],
   bad: [
-    new Answer("Les fonctions linéaires sont toujours des courbes en forme de parabole sur le graphique.", false),
-    new Answer("Dans une fonction linéaire, b représente la pente et m l'ordonnée à l'origine.", false),
-    new Answer("Les fonctions quadratiques tracent des droites sur le graphique.", false),
-    new Answer("Les fonctions exponentielles ont une croissance ou décroissance lente et constante.", false),
-    new Answer("Les fonctions logarithmiques ne sont pas liées aux fonctions exponentielles.", false),
-    new Answer("Les fonctions trigonométriques ne modélisent pas de phénomènes périodiques.", false),
+    new Answer("Le graphique d'une fonction linéaire est toujours une parabole.", false),
+    new Answer("Dans une fonction linéaire, b représente la pente de la droite.", false),
+    new Answer("Si m = 0 dans une fonction linéaire, la droite est verticale.", false),
+    new Answer("Une fonction quadratique a toujours la forme f(x) = ax + b.", false),
+    new Answer("Le graphique d'une fonction quadratique est une droite.", false),
+    new Answer("Si a < 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", false),
+    new Answer("Le sommet d'une parabole est toujours à l'origine (0,0).", false),
+    new Answer("Une fonction exponentielle peut être écrite comme f(x) = x^a.", false),
+    new Answer("Les fonctions exponentielles passent toujours par le point (1, 0).", false),
+    new Answer("Une fonction logarithmique est définie pour tous les nombres réels x.", false),
+    new Answer("Les fonctions logarithmiques ne sont jamais l'inverse des fonctions exponentielles.", false),
+    new Answer("Les fonctions trigonométriques comme sin(x) sont des droites.", false),
+    new Answer("La fonction valeur absolue f(x) = |x| est toujours négative.", false),
+    new Answer("Une fonction racine carrée est définie pour tous les x, y compris les négatifs.", false),
+    new Answer("Les fonctions polynomiales ne contiennent jamais de termes avec x^n.", false),
+    new Answer("Une fonction rationnelle est toujours un polynôme.", false),
+    new Answer("Les fonctions racines cubiques ne sont jamais définies pour x négatif.", false),
+    new Answer("Les fonctions réciproques n'existent pas pour les fonctions bijectives.", false),
+    new Answer("La fonction exponentielle f(x) = e^x n'a pas de fonction réciproque.", false),
+    new Answer("Le graphique de la fonction f(x) = |x| est une courbe lisse sans angles.", false),
+    new Answer("Les fonctions racines carrées diminuent à mesure que x augmente.", false),
+    new Answer("Le degré d'un polynôme est toujours égal à 1.", false),
+    new Answer("Les fonctions rationnelles n'ont jamais d'asymptotes.", false),
+    new Answer("La fonction sin(x) a une période de π.", false),
+    new Answer("Les fonctions exponentielles sont toujours décroissantes.", false),
+    new Answer("Les fonctions logarithmiques passent toujours par le point (0, 0).", false),
+  ],
+};
+
+const FONCTIONS_LINÉAIRES = {
+  title: "Fonctions Linéaires",
+  good: [
+    new Answer("Une fonction linéaire est une fonction de la forme f(x) = m x + b.", true),
+    new Answer("Le graphique d'une fonction linéaire est une droite.", true),
+    new Answer("Le coefficient m dans une fonction linéaire représente la pente de la droite.", true),
+    new Answer("Si m > 0, la droite est croissante et monte de la gauche vers la droite.", true),
+    new Answer("Si m < 0, la droite est décroissante et descend de la gauche vers la droite.", true),
+  ],
+  bad: [
+    new Answer("Le graphique d'une fonction linéaire est une courbe non linéaire.", false),
+    new Answer("Dans une fonction linéaire, le coefficient m n'affecte pas l'inclinaison de la droite.", false),
+    new Answer("Une fonction linéaire ne peut pas être constante.", false),
+    new Answer("Si m = 0, la droite est verticale.", false),
+    new Answer("Le terme b dans une fonction linéaire est appelé coefficient directeur.", false),
   ],
 };
 
@@ -713,7 +775,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
+    defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -3275,7 +3337,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
+  defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {

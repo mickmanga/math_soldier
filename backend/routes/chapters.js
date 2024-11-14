@@ -8,12 +8,6 @@ router.get('/', async (req, res) => {
     try {
         console.log("chapter requested");
        // const chapters = await KnowledgeDataChapter.find();
-        const chapters = [
-            {
-                name: 'Chapter1',
-                paths: ["img1.png"]
-            }
-        ];
         
         res.json(chapters);
     } catch (err) {

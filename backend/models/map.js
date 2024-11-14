@@ -8,6 +8,9 @@ const KnowledgeDataContainerSchema = new Schema({
   knowledgeType: String,
   name: String,
   data: String,
+  challenge: {type: Schema.Types.ObjectId,
+    ref: 'Challenge', 
+  },
 });
 
 // Define KnowledgeData Schema with an explicit id field

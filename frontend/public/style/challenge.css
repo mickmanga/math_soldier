@@ -93,6 +93,13 @@ audio {
   align-items: flex-end;
 }
 
+.gradeBlock {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: green;
+}
+
 .enemyViewPoint {
   position: absolute;
   top: 50vh;

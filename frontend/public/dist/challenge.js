@@ -242,20 +242,81 @@
   var TYPES_DE_FONCTIONS_COURANTES = {
     title: "Types de Fonctions Courantes",
     good: [
-      new Answer("Les fonctions lin\xE9aires ont la forme f(x) = mx + b et se repr\xE9sentent par des droites sur un graphique.", true),
-      new Answer("Dans une fonction lin\xE9aire, m repr\xE9sente la pente et b l'ordonn\xE9e \xE0 l'origine.", true),
-      new Answer("Les fonctions quadratiques sont de la forme f(x) = ax\xB2 + bx + c et forment des paraboles sur le graphique.", true),
-      new Answer("Les fonctions exponentielles ont la forme f(x) = a^x et montrent une croissance ou d\xE9croissance rapide.", true),
-      new Answer("Les fonctions logarithmiques sont de la forme f(x) = log\u2090 x et sont l'inverse des fonctions exponentielles.", true),
-      new Answer("Les fonctions trigonom\xE9triques comme f(x) = sin x mod\xE9lisent des ph\xE9nom\xE8nes p\xE9riodiques.", true)
+      new Answer("Une fonction lin\xE9aire a la forme f(x) = m x + b.", true),
+      new Answer("Le graphique d'une fonction lin\xE9aire est une droite.", true),
+      new Answer("Dans une fonction lin\xE9aire, m repr\xE9sente la pente de la droite.", true),
+      new Answer("Si m > 0, la droite monte de la gauche vers la droite.", true),
+      new Answer("Une fonction quadratique a la forme f(x) = a x\xB2 + b x + c.", true),
+      new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
+      new Answer("Si a > 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", true),
+      new Answer("Le sommet d'une parabole est le point o\xF9 la fonction atteint son maximum ou minimum.", true),
+      new Answer("Une fonction exponentielle a la forme f(x) = a^x avec a > 0 et a \u2260 1.", true),
+      new Answer("Si a > 1, la fonction exponentielle est croissante.", true),
+      new Answer("Les fonctions exponentielles passent par le point (0, 1) car a^0 = 1.", true),
+      new Answer("Une fonction logarithmique est la fonction inverse d'une fonction exponentielle.", true),
+      new Answer("Une fonction logarithmique a la forme f(x) = log_a x avec x > 0.", true),
+      new Answer("Les fonctions logarithmiques passent par le point (1, 0) puisque log_a 1 = 0.", true),
+      new Answer("Les fonctions trigonom\xE9triques comme sin(x) et cos(x) sont p\xE9riodiques.", true),
+      new Answer("La fonction sin(x) a une p\xE9riode de 2\u03C0.", true),
+      new Answer("La fonction valeur absolue est d\xE9finie par f(x) = |x|.", true),
+      new Answer("Le graphique de la fonction valeur absolue a la forme d'un 'V'.", true),
+      new Answer("Une fonction racine carr\xE9e est d\xE9finie par f(x) = \u221Ax avec x \u2265 0.", true),
+      new Answer("Les fonctions racines carr\xE9es commencent \xE0 x = 0 et augmentent lentement.", true),
+      new Answer("Une fonction polynomiale est une somme de termes de la forme a_n x^n.", true),
+      new Answer("Le degr\xE9 d'un polyn\xF4me est le plus grand exposant de x avec un coefficient non nul.", true),
+      new Answer("Une fonction rationnelle est le quotient de deux polyn\xF4mes.", true),
+      new Answer("Les fonctions rationnelles peuvent avoir des asymptotes verticales l\xE0 o\xF9 le d\xE9nominateur est z\xE9ro.", true),
+      new Answer("Les fonctions racines cubiques sont d\xE9finies pour tout x.", true),
+      new Answer("La fonction racine cubique f(x) = \u221Bx est sym\xE9trique par rapport \xE0 l'origine.", true),
+      new Answer("Les fonctions r\xE9ciproques 'annulent' l'effet d'une autre fonction.", true),
+      new Answer("Si f(x) est bijective, sa r\xE9ciproque f\u207B\xB9(x) satisfait f\u207B\xB9(f(x)) = x.", true),
+      new Answer("La fonction exponentielle f(x) = e^x a pour r\xE9ciproque la fonction logarithme naturel f\u207B\xB9(x) = ln x.", true),
+      new Answer("La fonction carr\xE9 f(x) = x\xB2 pour x \u2265 0 a pour r\xE9ciproque la fonction racine carr\xE9e f\u207B\xB9(x) = \u221Ax.", true)
     ],
     bad: [
-      new Answer("Les fonctions lin\xE9aires sont toujours des courbes en forme de parabole sur le graphique.", false),
-      new Answer("Dans une fonction lin\xE9aire, b repr\xE9sente la pente et m l'ordonn\xE9e \xE0 l'origine.", false),
-      new Answer("Les fonctions quadratiques tracent des droites sur le graphique.", false),
-      new Answer("Les fonctions exponentielles ont une croissance ou d\xE9croissance lente et constante.", false),
-      new Answer("Les fonctions logarithmiques ne sont pas li\xE9es aux fonctions exponentielles.", false),
-      new Answer("Les fonctions trigonom\xE9triques ne mod\xE9lisent pas de ph\xE9nom\xE8nes p\xE9riodiques.", false)
+      new Answer("Le graphique d'une fonction lin\xE9aire est toujours une parabole.", false),
+      new Answer("Dans une fonction lin\xE9aire, b repr\xE9sente la pente de la droite.", false),
+      new Answer("Si m = 0 dans une fonction lin\xE9aire, la droite est verticale.", false),
+      new Answer("Une fonction quadratique a toujours la forme f(x) = ax + b.", false),
+      new Answer("Le graphique d'une fonction quadratique est une droite.", false),
+      new Answer("Si a < 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", false),
+      new Answer("Le sommet d'une parabole est toujours \xE0 l'origine (0,0).", false),
+      new Answer("Une fonction exponentielle peut \xEAtre \xE9crite comme f(x) = x^a.", false),
+      new Answer("Les fonctions exponentielles passent toujours par le point (1, 0).", false),
+      new Answer("Une fonction logarithmique est d\xE9finie pour tous les nombres r\xE9els x.", false),
+      new Answer("Les fonctions logarithmiques ne sont jamais l'inverse des fonctions exponentielles.", false),
+      new Answer("Les fonctions trigonom\xE9triques comme sin(x) sont des droites.", false),
+      new Answer("La fonction valeur absolue f(x) = |x| est toujours n\xE9gative.", false),
+      new Answer("Une fonction racine carr\xE9e est d\xE9finie pour tous les x, y compris les n\xE9gatifs.", false),
+      new Answer("Les fonctions polynomiales ne contiennent jamais de termes avec x^n.", false),
+      new Answer("Une fonction rationnelle est toujours un polyn\xF4me.", false),
+      new Answer("Les fonctions racines cubiques ne sont jamais d\xE9finies pour x n\xE9gatif.", false),
+      new Answer("Les fonctions r\xE9ciproques n'existent pas pour les fonctions bijectives.", false),
+      new Answer("La fonction exponentielle f(x) = e^x n'a pas de fonction r\xE9ciproque.", false),
+      new Answer("Le graphique de la fonction f(x) = |x| est une courbe lisse sans angles.", false),
+      new Answer("Les fonctions racines carr\xE9es diminuent \xE0 mesure que x augmente.", false),
+      new Answer("Le degr\xE9 d'un polyn\xF4me est toujours \xE9gal \xE0 1.", false),
+      new Answer("Les fonctions rationnelles n'ont jamais d'asymptotes.", false),
+      new Answer("La fonction sin(x) a une p\xE9riode de \u03C0.", false),
+      new Answer("Les fonctions exponentielles sont toujours d\xE9croissantes.", false),
+      new Answer("Les fonctions logarithmiques passent toujours par le point (0, 0).", false)
+    ]
+  };
+  var FONCTIONS_LIN\u00C9AIRES = {
+    title: "Fonctions Lin\xE9aires",
+    good: [
+      new Answer("Une fonction lin\xE9aire est une fonction de la forme f(x) = m x + b.", true),
+      new Answer("Le graphique d'une fonction lin\xE9aire est une droite.", true),
+      new Answer("Le coefficient m dans une fonction lin\xE9aire repr\xE9sente la pente de la droite.", true),
+      new Answer("Si m > 0, la droite est croissante et monte de la gauche vers la droite.", true),
+      new Answer("Si m < 0, la droite est d\xE9croissante et descend de la gauche vers la droite.", true)
+    ],
+    bad: [
+      new Answer("Le graphique d'une fonction lin\xE9aire est une courbe non lin\xE9aire.", false),
+      new Answer("Dans une fonction lin\xE9aire, le coefficient m n'affecte pas l'inclinaison de la droite.", false),
+      new Answer("Une fonction lin\xE9aire ne peut pas \xEAtre constante.", false),
+      new Answer("Si m = 0, la droite est verticale.", false),
+      new Answer("Le terme b dans une fonction lin\xE9aire est appel\xE9 coefficient directeur.", false)
     ]
   };
   var VECTORS = {
@@ -592,7 +653,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
+      defineCurrentSubject(hardMode ? FONCTIONS_LIN\u00C9AIRES : STATS);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -2135,7 +2196,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? TYPES_DE_FONCTIONS_COURANTES : STATS);
+    defineCurrentSubject(hardMode ? FONCTIONS_LIN\u00C9AIRES : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {

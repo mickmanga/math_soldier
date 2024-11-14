@@ -17,16 +17,21 @@ const challengeDataBlockSchema = new Schema({
 
 // Définition du schéma pour Challenge
 const challengeSchema = new Schema({
-  challengeDataBlocks: {
-    type: [challengeDataBlockSchema],
-    required: true,
-  },
   grade: String,
-  chapter: { type: Schema.Types.ObjectId, ref: 'KnowledgeChapter' }
+  answers: {type: Schema.Types.ObjectId, ref: 'Answers'}
 });
+
+const AnswerSchema = new mongoose.Schema(
+    {
+      true: [String],
+      false: [String]
+    }
+);
+
+const Answers = new mongoose.model('Answers', AnswerSchema);
 
 // Création du modèle Challenge
 const Challenge = mongoose.model('Challenge', challengeSchema);
 const ChallengeDataBlock = mongoose.model('ChallengeDataBlock', challengeDataBlockSchema);
 
-module.exports = {Challenge, ChallengeDataBlock};
+module.exports = {Challenge, ChallengeDataBlock, Answers};

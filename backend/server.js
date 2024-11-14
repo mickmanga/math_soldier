@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const chapterRoutes = require('./routes/chapters.js');
+const challengesRoutes = require('./routes/challenges.js');
 const cors = require('cors');
 
 const app = express();
@@ -22,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017/memory_soldier', {
 
 // Use the user routes
 app.use('/api/chapters', chapterRoutes);
-
+app.use('/api/challenges', challengesRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
