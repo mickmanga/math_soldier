@@ -151,66 +151,92 @@
     title: "statistics",
     good: [
       new Answer(
-        "Etendue = Valeur maximale - Valeur minimale d'un jeu de donn\xE9e",
+        "L'\xE9tendue est obtenue en soustrayant la valeur minimale de la valeur maximale dans un jeu de donn\xE9es.",
         true
       ),
       new Answer(
-        "Le mode est la valeur la plus fr\xE9quente dans un ensemble de donn\xE9es.",
+        "Dans un ensemble de donn\xE9es, le mode est la valeur la plus fr\xE9quente.",
         true
       ),
       new Answer(
-        "La variance mesure \xE0 quel point les donn\xE9es d'un ensemble sont dispers\xE9es par rapport \xE0 la moyenne.",
+        "La variance montre la dispersion des valeurs autour de la moyenne d'un ensemble de donn\xE9es.",
         true
       ),
-      new Answer("L'\xE9cart type est la racine carr\xE9e de la variance", true),
+      new Answer("L'\xE9cart type est d\xE9fini comme la racine carr\xE9e de la variance.", true),
       new Answer(
-        "Les statistiques descriptives sont une des deux cat\xE9gories des statistiques",
-        true
-      ),
-      new Answer(
-        "Les statistiques Inf\xE9rentielles sont une des deux cat\xE9gories des statistiques",
+        "Les statistiques descriptives servent \xE0 r\xE9sumer et \xE0 pr\xE9senter les donn\xE9es de mani\xE8re compr\xE9hensible.",
         true
       ),
       new Answer(
-        "Les statistiques descriptives r\xE9sument ou d\xE9crivent les caract\xE9ristiques d'un ensemble de donn\xE9es",
+        "Les statistiques inf\xE9rentielles permettent de tirer des conclusions et de faire des pr\xE9visions sur une population enti\xE8re \xE0 partir d'un \xE9chantillon.",
         true
       ),
       new Answer(
-        "Les statistiques inf\xE9rentielles font des inf\xE9rences et des pr\xE9dictions sur une population \xE0 partir d'un \xE9chantillon de donn\xE9es",
+        "Un ensemble de donn\xE9es peut contenir un ou plusieurs modes, en fonction de sa distribution.",
         true
       ),
-      new Answer("Un ensemble de donn\xE9es peut avoir plusieurs modes", true),
-      new Answer("Un ensemble de donn\xE9es peut avoir 0 modes", true)
+      new Answer("Un jeu de donn\xE9es peut ne pr\xE9senter aucun mode.", true),
+      new Answer(
+        "Les statistiques sont souvent divis\xE9es en statistiques descriptives et inf\xE9rentielles.",
+        true
+      ),
+      new Answer(
+        "Le mode peut \xEAtre utile pour identifier les valeurs dominantes dans des donn\xE9es cat\xE9gorielles.",
+        true
+      ),
+      new Answer(
+        "La m\xE9diane d'un ensemble de donn\xE9es est la valeur centrale lorsqu'elles sont tri\xE9es par ordre croissant ou d\xE9croissant.",
+        true
+      ),
+      new Answer(
+        "La moyenne arithm\xE9tique est obtenue en additionnant toutes les valeurs et en divisant par le nombre de donn\xE9es.",
+        true
+      ),
+      new Answer(
+        "Les quartiles divisent un ensemble de donn\xE9es en quatre parts \xE9gales.",
+        true
+      ),
+      new Answer(
+        "L'\xE9cart interquartile est la diff\xE9rence entre le troisi\xE8me et le premier quartile, mesurant la dispersion des valeurs.",
+        true
+      )
     ],
     bad: [
-      new Answer("Etendue = la Valeur minimale d'un jeu de donn\xE9e", false),
+      new Answer("L'\xE9tendue est simplement la valeur minimale d'un ensemble de donn\xE9es.", false),
       new Answer(
-        "Le mode est la valeur la moins r\xE9pendue dans un ensemble de donn\xE9es.",
+        "Le mode est la valeur la moins fr\xE9quente dans un ensemble de donn\xE9es.",
         false
       ),
       new Answer(
-        "La variance mesure le nombre de diff\xE9rence entre deux jeux de donn\xE9es",
+        "La variance est le simple \xE9cart entre deux valeurs choisies au hasard.",
         false
       ),
       new Answer(
-        "L'\xE9cart type est l'\xE9cart entre le premier et le dernier \xE9l\xE9ment d'un jeu de donn\xE9e ",
+        "L'\xE9cart type est la diff\xE9rence entre la premi\xE8re et la derni\xE8re valeur d'un jeu de donn\xE9es.",
         false
       ),
       new Answer(
-        "Les statistiques cumulatives sont une des deux cat\xE9gories des statistiques",
+        "Les statistiques cumulatives sont une des deux cat\xE9gories principales des statistiques.",
         false
       ),
       new Answer(
-        "Les statistiques proclamatives sont une des deux cat\xE9gories des statistiques",
+        "Les statistiques descriptives n'existent pas dans la classification statistique.",
         false
       ),
-      new Answer("Les statistiques descriptives n'existent pas", false),
       new Answer(
-        "les statistique inf\xE9rentielles d\xE9crivent les caract\xE9ristiques d'un ensemble de donn\xE9es",
+        "Les statistiques inf\xE9rentielles d\xE9crivent simplement les caract\xE9ristiques d'un ensemble de donn\xE9es.",
         false
       ),
-      new Answer("Un ensemble de donn\xE9es ne peut avoir qu'un mode", false),
-      new Answer("Un ensemble de donn\xE9es ne peut pas avoir 0 mode", false)
+      new Answer(
+        "La m\xE9diane est toujours identique au mode pour un ensemble de donn\xE9es.",
+        false
+      ),
+      new Answer("Un ensemble de donn\xE9es ne peut avoir qu'un seul mode.", false),
+      new Answer("Un jeu de donn\xE9es ne peut pas avoir de quartiles.", false),
+      new Answer(
+        "La moyenne arithm\xE9tique et la m\xE9diane sont toujours \xE9gales pour tout ensemble de donn\xE9es.",
+        false
+      )
     ]
   };
   var VECTORS = {
@@ -462,6 +488,23 @@
       new Answer("A two-variable equation can describe any shape, even circles and triangles.", false)
     ]
   };
+  var FUNCTION_BASICS = {
+    title: "Understanding Functions",
+    good: [
+      new Answer("A function connects each input to exactly one output.", true),
+      new Answer("In a function, each x value gives only one y value.", true),
+      new Answer("You can think of a function like a machine: put in a number, get a result.", true),
+      new Answer("When we write f(x), it means the output from the function f when you use x as input.", true),
+      new Answer("Changing the input (x) in a function changes the output (y).", true)
+    ],
+    bad: [
+      new Answer("A function can have multiple outputs for the same input.", false),
+      new Answer("A function\u2019s output doesn\u2019t depend on its input.", false),
+      new Answer("Writing f(x) just shows the input x, not the output.", false),
+      new Answer("A function always gives the same output, no matter the input.", false),
+      new Answer("A function allows each input to have more than one output.", false)
+    ]
+  };
   var MATHS_ARITHMETIC = {
     title: "Intermediate Arithmetic Challenge",
     good: [
@@ -513,7 +556,7 @@
     const randVal = Math.random() > 0.5;
     if (!currentSubject) {
       console.log("there is no subject");
-      defineCurrentSubject(hardMode ? STATS : STATS);
+      defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
     }
     const getAndRemoveSubject = (index, list) => {
       let foundElement = null;
@@ -574,7 +617,7 @@
     );
   };
   var buildEnemy = (answer) => {
-    const enemyCharacter = createDwarfCharacter();
+    const enemyCharacter = createRedHammerCharacter();
     if (!enemyCharacter) {
       return;
     }
@@ -1510,7 +1553,7 @@
     }
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
-  var ALL_DWARF_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 6 /* idle */,
@@ -1588,17 +1631,17 @@
       ]
     }
   ];
-  var dwarfAnimations = [
+  var redHammerAnimations = [
     {
       animationType: 6 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_DWARF_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 25 /* dwarf_opponent_idle */,
+            id: 15 /* hammer_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/idle",
-              length: 57
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
             }
           }
         }
@@ -1608,12 +1651,12 @@
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_DWARF_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 27 /* dwarf_opponent_attack */,
+            id: 17 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/attack",
-              length: 38
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
             }
           }
         }
@@ -1623,9 +1666,9 @@
       animationType: 5 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_DWARF_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 28 /* dwarf_opponent_death */,
+            id: 18 /* hammer_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -1638,9 +1681,9 @@
       animationType: 7 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_DWARF_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 29 /* dwarf_opponent_move */,
+            id: 19 /* hammer_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -1651,16 +1694,16 @@
     }
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
-  var createDwarfCharacter = () => {
+  var createRedHammerCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     enemyViewPoint.style.left = "120vw";
     enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var launchHeroRun = () => {
     if (runStopped) {
@@ -1931,7 +1974,7 @@
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 240;
+    idleTimerValue = 2;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
@@ -2047,7 +2090,7 @@
     setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
-    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "magical_forest.png" : "castle.gif"}`;
+    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "mountain.png" : "castle.gif"}`;
     MAPS.push(createMapBlock(0));
     MAPS.push(createMapBlock(100));
     createGameAccordingToMode();
@@ -2056,7 +2099,7 @@
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? STATS : STATS);
+    defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     if (hardMode) {

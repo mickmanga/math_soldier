@@ -252,71 +252,92 @@ const STATS = {
   title: "statistics",
   good: [
     new Answer(
-      "Etendue = Valeur maximale - Valeur minimale d'un jeu de donnée",
-      true
-    ),
-
-    new Answer(
-      "Le mode est la valeur la plus fréquente dans un ensemble de données.",
+      "L'étendue est obtenue en soustrayant la valeur minimale de la valeur maximale dans un jeu de données.",
       true
     ),
     new Answer(
-      "La variance mesure à quel point les données d'un ensemble sont dispersées par rapport à la moyenne.",
-      true
-    ),
-    new Answer("L'écart type est la racine carrée de la variance", true),
-    new Answer(
-      "Les statistiques descriptives sont une des deux catégories des statistiques",
-      true
-    ),
-
-    new Answer(
-      "Les statistiques Inférentielles sont une des deux catégories des statistiques",
+      "Dans un ensemble de données, le mode est la valeur la plus fréquente.",
       true
     ),
     new Answer(
-      "Les statistiques descriptives résument ou décrivent les caractéristiques d'un ensemble de données",
+      "La variance montre la dispersion des valeurs autour de la moyenne d'un ensemble de données.",
       true
     ),
-
+    new Answer("L'écart type est défini comme la racine carrée de la variance.", true),
     new Answer(
-      "Les statistiques inférentielles font des inférences et des prédictions sur une population à partir d'un échantillon de données",
+      "Les statistiques descriptives servent à résumer et à présenter les données de manière compréhensible.",
       true
     ),
-    new Answer("Un ensemble de données peut avoir plusieurs modes", true),
-    new Answer("Un ensemble de données peut avoir 0 modes", true),
+    new Answer(
+      "Les statistiques inférentielles permettent de tirer des conclusions et de faire des prévisions sur une population entière à partir d'un échantillon.",
+      true
+    ),
+    new Answer(
+      "Un ensemble de données peut contenir un ou plusieurs modes, en fonction de sa distribution.",
+      true
+    ),
+    new Answer("Un jeu de données peut ne présenter aucun mode.", true),
+    new Answer(
+      "Les statistiques sont souvent divisées en statistiques descriptives et inférentielles.",
+      true
+    ),
+    new Answer(
+      "Le mode peut être utile pour identifier les valeurs dominantes dans des données catégorielles.",
+      true
+    ),
+    new Answer(
+      "La médiane d'un ensemble de données est la valeur centrale lorsqu'elles sont triées par ordre croissant ou décroissant.",
+      true
+    ),
+    new Answer(
+      "La moyenne arithmétique est obtenue en additionnant toutes les valeurs et en divisant par le nombre de données.",
+      true
+    ),
+    new Answer(
+      "Les quartiles divisent un ensemble de données en quatre parts égales.",
+      true
+    ),
+    new Answer(
+      "L'écart interquartile est la différence entre le troisième et le premier quartile, mesurant la dispersion des valeurs.",
+      true
+    ),
   ],
   bad: [
-    new Answer("Etendue = la Valeur minimale d'un jeu de donnée", false),
+    new Answer("L'étendue est simplement la valeur minimale d'un ensemble de données.", false),
     new Answer(
-      "Le mode est la valeur la moins répendue dans un ensemble de données.",
+      "Le mode est la valeur la moins fréquente dans un ensemble de données.",
       false
     ),
     new Answer(
-      "La variance mesure le nombre de différence entre deux jeux de données",
+      "La variance est le simple écart entre deux valeurs choisies au hasard.",
       false
     ),
     new Answer(
-      "L'écart type est l'écart entre le premier et le dernier élément d'un jeu de donnée ",
+      "L'écart type est la différence entre la première et la dernière valeur d'un jeu de données.",
       false
     ),
     new Answer(
-      "Les statistiques cumulatives sont une des deux catégories des statistiques",
+      "Les statistiques cumulatives sont une des deux catégories principales des statistiques.",
       false
     ),
-
     new Answer(
-      "Les statistiques proclamatives sont une des deux catégories des statistiques",
+      "Les statistiques descriptives n'existent pas dans la classification statistique.",
       false
     ),
-    new Answer("Les statistiques descriptives n'existent pas", false),
-
     new Answer(
-      "les statistique inférentielles décrivent les caractéristiques d'un ensemble de données",
+      "Les statistiques inférentielles décrivent simplement les caractéristiques d'un ensemble de données.",
       false
     ),
-    new Answer("Un ensemble de données ne peut avoir qu'un mode", false),
-    new Answer("Un ensemble de données ne peut pas avoir 0 mode", false),
+    new Answer(
+      "La médiane est toujours identique au mode pour un ensemble de données.",
+      false
+    ),
+    new Answer("Un ensemble de données ne peut avoir qu'un seul mode.", false),
+    new Answer("Un jeu de données ne peut pas avoir de quartiles.", false),
+    new Answer(
+      "La moyenne arithmétique et la médiane sont toujours égales pour tout ensemble de données.",
+      false
+    ),
   ],
 };
 
@@ -577,6 +598,24 @@ const LINEAR_ALGEBRA_BASICS = {
   ],
 };
 
+const FUNCTION_BASICS = {
+  title: "Understanding Functions",
+  good: [
+    new Answer("A function connects each input to exactly one output.", true),
+    new Answer("In a function, each x value gives only one y value.", true),
+    new Answer("You can think of a function like a machine: put in a number, get a result.", true),
+    new Answer("When we write f(x), it means the output from the function f when you use x as input.", true),
+    new Answer("Changing the input (x) in a function changes the output (y).", true),
+  ],
+  bad: [
+    new Answer("A function can have multiple outputs for the same input.", false),
+    new Answer("A function’s output doesn’t depend on its input.", false),
+    new Answer("Writing f(x) just shows the input x, not the output.", false),
+    new Answer("A function always gives the same output, no matter the input.", false),
+    new Answer("A function allows each input to have more than one output.", false),
+  ],
+};
+
 const MATHS_ARITHMETIC = { 
   title: "Intermediate Arithmetic Challenge",
   good: [
@@ -634,7 +673,7 @@ const getNextAnswer = () => {
 
   if (!currentSubject) {
     console.log("there is no subject");
-    defineCurrentSubject(hardMode ? STATS : STATS);
+    defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -757,9 +796,9 @@ const buildEnemyElement = () => {
 
 const buildEnemy = (answer: Answer) => {
 
- // const enemyCharacter = createRedHammerCharacter();
+  const enemyCharacter = createRedHammerCharacter();
  //const enemyCharacter = createOrcCharacter();
-const enemyCharacter = createDwarfCharacter();
+//const enemyCharacter = createDwarfCharacter();
 
   if (!enemyCharacter) {
     return;
@@ -3034,7 +3073,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 240;
+  idleTimerValue = 2;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3186,7 +3225,7 @@ window.onload = () => {
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "magical_forest.png" : "castle.gif"
+    hardMode ? "mountain.png" : "castle.gif"
   }`;
   MAPS.push(createMapBlock(0));
   MAPS.push(createMapBlock(100));
@@ -3196,7 +3235,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? STATS : STATS);
+  defineCurrentSubject(hardMode ? FUNCTION_BASICS : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   if (hardMode) {
