@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// Import the required models
-const KnowledgeDataChapter = require('../models/map.js');
 
 // Route to get all chapters
 router.get('/', async (req, res) => {
