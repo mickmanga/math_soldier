@@ -2709,7 +2709,7 @@ const dwarfAnimations = [
 ];
 
 
-const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, redHammerAnimations);
+const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const createRedHammerCharacter = (): DefaultCharacter => {
 
@@ -2809,6 +2809,7 @@ const checkForOpponentAttack = () => {
 };
 
 const heroInitialTop = heroContainer.getBoundingClientRect().top;
+
 
 let superSpeedOn = false;
 

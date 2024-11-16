@@ -1666,7 +1666,85 @@
       this.animations = animations;
     }
   };
+  var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var heroAnimations = [
+    {
+      animationType: 6 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 5 /* hero_idle */,
+            sprite: {
+              path: "assets/challenge/characters/hero/idle",
+              length: 7
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 0 /* hero_attack */,
+            sprite: {
+              path: "assets/challenge/characters/hero/attack",
+              length: 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 1 /* specialAttack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 6 /* hero_special_attack */,
+            sprite: {
+              path: "assets/challenge/characters/hero/flames/new",
+              length: 22
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 2 /* run */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 1 /* hero_run */,
+            sprite: {
+              path: "assets/challenge/characters/hero/run",
+              length: 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 5 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 4 /* hero_death */,
+            sprite: {
+              path: "assets/challenge/characters/hero/death",
+              length: 6
+            }
+          }
+        }
+      ]
+    }
+  ];
   var redHammerAnimations = [
     {
       animationType: 6 /* idle */,
@@ -1729,7 +1807,7 @@
       ]
     }
   ];
-  var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, redHammerAnimations);
+  var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var createRedHammerCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
