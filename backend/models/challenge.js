@@ -3,6 +3,12 @@ const { Schema } = mongoose;
 
 // Définition du sous-schéma pour un challengeDataBlock
 const challengeDataBlockSchema = new Schema({
+  name: String,
+  answers: {
+    type: Schema.Types.ObjectId,
+    ref: 'AnswersSet'
+  },
+
   validated: {
     type: Boolean,
     required: true,
@@ -21,14 +27,14 @@ const challengeSchema = new Schema({
   answers: {type: Schema.Types.ObjectId, ref: 'Answers'}
 });
 
-const AnswerSchema = new mongoose.Schema(
+const AnswersSetSchema = new mongoose.Schema(
     {
       true: [String],
-      false: [String]
+      false: [String],
     }
 );
 
-const Answers = new mongoose.model('Answers', AnswerSchema);
+const Answers = new mongoose.model('Answers', AnswersSetSchema);
 
 // Création du modèle Challenge
 const Challenge = mongoose.model('Challenge', challengeSchema);

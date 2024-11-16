@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');  // Import bcrypt for password hashing
-const SubjectSchema = require("./subject")  // Import Subject schema
 
 // User Schema
 const UserSchema = new Schema({
@@ -13,7 +12,13 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    subjects: [SubjectSchema]
+    level: Number,
+    subjects: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Subject', // Reference to the Subject model
+        },
+    ],
 });
 
 // Hash the password before saving

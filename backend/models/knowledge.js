@@ -24,7 +24,7 @@ const KnowledgeDataChapterSchema = new Schema({
 // Define MapLocation Schema, referencing KnowledgeDataSchema by ID
 const MapLocationSchema = new Schema({
   name: String, 
-  locked: Boolean,
+  backgroundPath: String,
   challenge: { type: Schema.Types.ObjectId, ref: 'Challenge' }
 });
 

@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const MapSchema = require('./map.js');  // Import Map schema
+const MapSchema = require('./knowledge.js');  // Import Map schema
 
 // Subject Schema
 const SubjectSchema = new Schema({
-    title: { type: String, required: true },
-    map: MapSchema   // Embeds the map schema
+    name: { type: String, required: true },
+    chaptersOrData: [{
+        type: Schema.Types.Mixed,
+    }]
 });
 
-module.exports = SubjectSchema;
+const Subject = new mongoose.model('Subject', SubjectSchema);
+
+module.exports = Subject;

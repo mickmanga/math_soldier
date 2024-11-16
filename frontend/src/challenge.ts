@@ -423,6 +423,24 @@ const FONCTIONS_LINÉAIRES = {
   ],
 };
 
+const FONCTIONS_QUADRATIQUES = {
+  title: "Fonctions Quadratiques",
+  good: [
+    new Answer("Une fonction quadratique est de la forme f(x) = a x² + b x + c avec a ≠ 0.", true),
+    new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
+    new Answer("Si a > 0, la parabole d'une fonction quadratique s'ouvre vers le haut.", true),
+    new Answer("Le sommet d'une parabole est le point où la fonction atteint son maximum ou minimum.", true),
+    new Answer("Dans l'exemple f(x) = x² - 4x + 3, le sommet est au point (2, -1).", true),
+  ],
+  bad: [
+    new Answer("Une fonction quadratique est de la forme f(x) = a x + b.", false),
+    new Answer("Le graphique d'une fonction quadratique est toujours une droite.", false),
+    new Answer("Si a > 0, la parabole s'ouvre vers le bas.", false),
+    new Answer("Le sommet d'une parabole est toujours à l'origine (0, 0).", false),
+    new Answer("Dans l'exemple f(x) = x² - 4x + 3, le sommet est au point (0, 3).", false),
+  ],
+};
+
 
 const VECTORS = {
   title: "Additions",
@@ -2691,7 +2709,7 @@ const dwarfAnimations = [
 ];
 
 
-const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
+const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, redHammerAnimations);
 
 const createRedHammerCharacter = (): DefaultCharacter => {
 
@@ -2791,7 +2809,6 @@ const checkForOpponentAttack = () => {
 };
 
 const heroInitialTop = heroContainer.getBoundingClientRect().top;
-
 
 let superSpeedOn = false;
 
@@ -3169,13 +3186,12 @@ const launchSwordSlash = () => {
   }, 75);
 };
 
-
 const updateIdleTimerInterface = () => {
   idleTimeoutContainer.innerHTML = idleTimerValue.toString();
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 10;
+  idleTimerValue = 240;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3210,9 +3226,7 @@ const launchIdleTimeout = () => {
 const launchDeathAnimation = () => {
   initHeroAnimations();
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] = 0;
-
-  //DIRTY
-
+  
   APP_ELEMENTS_ANIMATION_QUEUE.hero.current_animation = null;
   APP_ELEMENTS_ANIMATION_QUEUE.hero.request_queue = [];
 

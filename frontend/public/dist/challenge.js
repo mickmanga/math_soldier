@@ -319,6 +319,23 @@
       new Answer("Le terme b dans une fonction lin\xE9aire est appel\xE9 coefficient directeur.", false)
     ]
   };
+  var FONCTIONS_QUADRATIQUES = {
+    title: "Fonctions Quadratiques",
+    good: [
+      new Answer("Une fonction quadratique est de la forme f(x) = a x\xB2 + b x + c avec a \u2260 0.", true),
+      new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
+      new Answer("Si a > 0, la parabole d'une fonction quadratique s'ouvre vers le haut.", true),
+      new Answer("Le sommet d'une parabole est le point o\xF9 la fonction atteint son maximum ou minimum.", true),
+      new Answer("Dans l'exemple f(x) = x\xB2 - 4x + 3, le sommet est au point (2, -1).", true)
+    ],
+    bad: [
+      new Answer("Une fonction quadratique est de la forme f(x) = a x + b.", false),
+      new Answer("Le graphique d'une fonction quadratique est toujours une droite.", false),
+      new Answer("Si a > 0, la parabole s'ouvre vers le bas.", false),
+      new Answer("Le sommet d'une parabole est toujours \xE0 l'origine (0, 0).", false),
+      new Answer("Dans l'exemple f(x) = x\xB2 - 4x + 3, le sommet est au point (0, 3).", false)
+    ]
+  };
   var VECTORS = {
     title: "Additions",
     good: [
@@ -2071,7 +2088,7 @@
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 10;
+    idleTimerValue = 240;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };

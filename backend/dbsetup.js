@@ -1,68 +1,93 @@
+// dbsetup.js
+
 const mongoose = require('mongoose');
-const SubjectSchema = require('./models/subject.js'); // Import Subject schema model
-const KnowledgeDataSchema = require('./models/map.js'); // Corrected KnowledgeData schema model import
+const User = require('./models/user');
+const Subject = require('./models/subject');
+const { KnowledgeDataContainer, KnowledgeDataChapter } = require('./models/knowledge');
+const { Challenge, ChallengeDataBlock, Answers } = require('./models/challenge');
+const LearningSchema = require('./models/learning');
+const LearnerSchema = require('./models/learner');
+const MapSchema = require('./models/knowledge');
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/memory_soldier', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+// MongoDB connection URI
+const mongoURI = 'mongodb://localhost:27017/memory_soldier'; // Change if needed
 
-// Define the Subject and KnowledgeData models
-const Subject = mongoose.model('Subject', SubjectSchema);
-const KnowledgeData = mongoose.model('KnowledgeData', KnowledgeDataSchema);
-
-async function createSubject() {
+async function setupDB() {
   try {
-    // Create KnowledgeData entries for each chapter
-    const chapters = [
-      { name: "Chapter1", paths: ["image1.png", "image2.png", "image3.png"] },
-      { name: "Chapter2", paths: ["image1.png", "image2.png", "image3.png"] },
-      { name: "Chapter3", paths: ["image1.png", "image2.png", "image3.png"] },
-      { name: "Chapter4", paths: ["image1.png", "image2.png", "image3.png"] },
-      { name: "Chapter5", paths: ["image1.png", "image2.png", "image3.png"] }
-    ];
-
-    // Insert each chapter as a KnowledgeData document
-    const knowledgeDataEntries = await KnowledgeData.insertMany(chapters);
-    console.log("KnowledgeData entries created:", knowledgeDataEntries);
-
-    // Define location names
-    const locationNames = [
-      "The Radiant Expanse of Solthar",
-      "The Mourning Cliffs of Vandaril",
-      "The Ashen Crags of Morvaen",
-      "The Starfall Sands of Eryndor",
-      "The Eldertide Shores of Rhyllan"
-    ];
-
-    // Create locations, each referencing a chapter as its dataBlock
-    const locations = knowledgeDataEntries.map((entry, index) => ({
-      name: locationNames[index],
-      locked: false,
-      dataBlocks: [entry._id] // each location has one dataBlock
-    }));
-
-    // Create the Subject with the map and locations
-    const subject = new Subject({
-      title: "Linear Algebra",
-      map: {
-        background: "your_background_image.png",
-        locations: locations
-      }
+    // Connect to MongoDB
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
+    console.log('Connected to MongoDB');
 
-    // Save the subject to the database
-    await subject.save();
-    console.log("Subject created successfully:", subject);
+    // Create AnswerSet
+    const myAnswerSet = new Answers({
+      true: ["2024 is this year"],
+      false: ["2024 is not this year"],
+    });
+    await myAnswerSet.save();
+
+    // Create Calculus Challenge
+    const calculusChallenge = new Challenge({
+      name: "Calculus exam level A-C, Montana, 2016",
+      answers: myAnswerSet._id,
+      grade: "D",
+      topGrade: "D",
+    });
+    await calculusChallenge.save();
+
+    // Create KnowledgeData (CALCULUS_DATA)
+    const calculusData = new KnowledgeDataContainer({
+      data: "<h1>I am calculus data </h1>",
+      challenge: calculusChallenge._id,
+    });
+    await calculusData.save();
+
+    // Create Chapter (calculusChapter1)
+    const calculusChapter1 = new KnowledgeDataChapter({
+      name: "calculus_Chapter1",
+      chaptersOrData: [calculusData._id],
+      unlocked: true,
+    });
+    await calculusChapter1.save();
+
+    // Create Subject (Calculus_subject)
+    const calculusSubject = new Subject({
+      name: "calculus",
+      chaptersOrData: [calculusChapter1._id],
+    });
+    await calculusSubject.save();
+
+    // Create MapLocation (ALDUR_FOREST)
+    const aldurForest = {
+      name: "La forêt d'Aldur",
+      backgroundPath: "assets/background/forest.png",
+      challenge: calculusChallenge._id,
+    };
+
+    // Create Map (StormGrad)
+    const stormGrad = {
+      name: "StormGrad",
+      locations: [aldurForest],
+    };
+
+    // Create User (Michael)
+    const michael = new User({
+      name: "Michael",
+      password: "pass",
+      level: 1,
+      subjects: [calculusSubject],
+    });
+    await michael.save();
+
+    console.log('Database setup complete!');
+    process.exit(0); // Exit the process
   } catch (error) {
-    console.error("Error creating subject:", error);
-  } finally {
-    mongoose.connection.close();
+    console.error('Error setting up the database:', error);
+    process.exit(1); // Exit with an error code
   }
 }
 
-// Run the setup
-createSubject();
+// Run the setup script
+setupDB();

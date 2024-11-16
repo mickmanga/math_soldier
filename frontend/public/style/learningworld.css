@@ -148,8 +148,17 @@ html {
     height: 100%;
     width: 70%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.knowledge_block_ba {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
 }
 
 .courseImg {
