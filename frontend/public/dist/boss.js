@@ -1180,9 +1180,9 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 39 /* lightning */ || animationId === 15 /* hammer_opponent_idle */ || animationId === 17 /* hammer_opponent_attack */ || animationId === 20 /* orc_opponent_idle */ || animationId === 22 /* orc_opponent_attack */ || animationId === 25 /* dwarf_opponent_idle */ || animationId === 27 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 39 /* lightning */ || animationId === 15 /* hammer_opponent_idle */ || animationId === 17 /* hammer_opponent_attack */ || animationId === 20 /* orc_opponent_idle */ || animationId === 22 /* orc_opponent_attack */ || animationId === 25 /* dwarf_opponent_idle */ || animationId === 27 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 300 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -2192,11 +2192,18 @@
       1,
       17,
       1,
-      false,
+      true,
       39 /* lightning */,
       () => {
         lightningImg.style.display = "none";
       }
+    );
+  };
+  var launchIdleLoop = () => {
+    launchAnimation(heroCharacter, 6 /* idle */, false);
+    setTimeout(
+      launchIdleLoop,
+      5e3
     );
   };
   window.onload = () => {
@@ -2216,6 +2223,8 @@
     defineCurrentSubject(hardMode ? FONCTIONS_LIN\u00C9AIRES : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
+    animateLightning();
+    launchIdleLoop();
     if (hardMode) {
       epicAudio.play();
     } else {

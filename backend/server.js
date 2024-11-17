@@ -6,6 +6,8 @@ const challengesRoutes = require('./routes/challenges.js');
 const userRoutes = require('./routes/user.js');
 const cors = require('cors');
 
+const knowledgeRouter = require('./routes/knowledgeRouter'); // Adjust the path
+
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3001', // Specify the allowed origin
@@ -26,6 +28,7 @@ mongoose.connect('mongodb://localhost:27017/memory_soldier', {
 app.use('/api/chapters', chapterRoutes);
 app.use('/api/challenges', challengesRoutes);
 app.use('/api/users', userRoutes); // Add the new router
+app.use('/knowledgeblocks', knowledgeRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1530,13 +1530,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 300 :  ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -3327,7 +3327,7 @@ const animateLightning = () => {
     1,
     17,
     1,
-    false,
+    true,
     ANIMATION_ID.lightning,
     () => {
       lightningImg.style.display = "none"
@@ -3335,6 +3335,15 @@ const animateLightning = () => {
   );
 
 }
+
+ const launchIdleLoop = () => {
+
+    launchAnimation(heroCharacter, AnimationType.idle, false);
+
+    setTimeout(
+      launchIdleLoop, 5000
+    );
+ }
 
 window.onload = () => {
   setupListeners();
@@ -3355,6 +3364,9 @@ window.onload = () => {
   defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
+  animateLightning();
+  launchIdleLoop();
+  
   if (hardMode) {
     epicAudio.play();
   } else {
