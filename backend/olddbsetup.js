@@ -258,7 +258,6 @@ async function setupDB() {
     ]
     }
    },
-
    {
     title: "1.3.9 Fonctions Rationnelles",
     content: `
@@ -285,10 +284,8 @@ async function setupDB() {
             "Les fonctions rationnelles n'ont pas d'asymptotes.",
             "Les fonctions rationnelles sont définies même si Q(x) = 0."
         ]
-    }
- }
- 
-      // Similar structures for 1.3.1 to 1.3.10 will be added with complete details and expanded answers.
+       }
+     }
     ];
 
     // Iterate through sections and create KnowledgeBlocks, AnswerSets, and Challenges
