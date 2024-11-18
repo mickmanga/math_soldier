@@ -1515,7 +1515,7 @@
   var destroyEnemy = (enemy) => {
     clearAndHideAnswerDataContainer();
     heroInTheRedZone = false;
-    updateEnemyViewPointDisplay();
+    resetViewPoint();
     setTimeout(() => {
       enemy.character.element.remove();
       if (!preTransformed) {
@@ -1827,6 +1827,11 @@
     }
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
+  var resetViewPoint = () => {
+    enemyViewPoint.style.left = "120vw";
+    enemyViewPoint.style.display = "flex";
+    updateEnemyViewPointDisplay();
+  };
   var createRedHammerCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
@@ -1834,8 +1839,7 @@
     newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "120vw";
-    enemyViewPoint.style.display = "flex";
+    resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var launchHeroRun = () => {
@@ -1873,14 +1877,16 @@
       launchInvisibilityToggle();
     }
     if (event.key === "w") {
-      launchAttack(true);
-      const lightningImg = document.getElementById("lightning_img");
-      lightningImg.style.display = "none";
-      setTimeout(
-        () => lightningImg.style.display = "block",
-        2e3
-      );
-      return;
+      if (rewardStreak === 5 || rewardStreak === 10) {
+        launchAttack(true);
+        const lightningImg = document.getElementById("lightning_img");
+        lightningImg.style.display = "none";
+        setTimeout(
+          () => lightningImg.style.display = "block",
+          2e3
+        );
+        return;
+      }
       launchAttack();
     }
     if (event.key === "v") {

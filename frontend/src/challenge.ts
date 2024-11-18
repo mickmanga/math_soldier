@@ -2014,7 +2014,7 @@ const clearEnemy = (enemy: EnemyInterface) => {
 const destroyEnemy = (enemy: EnemyInterface) => {
   clearAndHideAnswerDataContainer();
   heroInTheRedZone = false;
-  updateEnemyViewPointDisplay();
+  resetViewPoint();
 
   setTimeout(() => {
     enemy.character.element.remove();
@@ -2733,6 +2733,11 @@ const dwarfAnimations = [
 
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
+const resetViewPoint = () => {
+  enemyViewPoint.style.left = "120vw";
+  enemyViewPoint.style.display = "flex";
+  updateEnemyViewPointDisplay();
+}
 const createRedHammerCharacter = (): DefaultCharacter => {
 
     const newOpponentContainer = document.createElement("div");
@@ -2745,9 +2750,7 @@ const createRedHammerCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    enemyViewPoint.style.left = "120vw";
-    enemyViewPoint.style.display = "flex";
-  
+    resetViewPoint();
 
  return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
 }
@@ -2860,7 +2863,7 @@ document.addEventListener("keydown", (event) => {
     launchInvisibilityToggle();
   }
   if (event.key === "w") {
-   // if(rewardStreak === 5 ||  rewardStreak === 10){
+    if(rewardStreak === 5 ||  rewardStreak === 10){
       launchAttack(true);
 
       const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
@@ -2872,7 +2875,7 @@ document.addEventListener("keydown", (event) => {
       )
 
       return;
-    //}
+    }
     launchAttack();
   }
 
