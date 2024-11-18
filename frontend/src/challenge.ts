@@ -1014,6 +1014,7 @@ export enum ANIMATION_ID {
   hero_hurt,
   hero_death,
   hero_idle,
+  hero_second_idle,
   hero_special_attack,
   stop,
   stop_time,
@@ -1057,6 +1058,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_death]: 0,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 0,
+  [ANIMATION_ID.hero_second_idle]: 0,
   [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.stop_time]: 0,
   [ANIMATION_ID.stop]: 0,
@@ -1101,6 +1103,7 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_death]: 5,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 20,
+  [ANIMATION_ID.hero_second_idle]: 0,
   [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.stop_time]: 5,
   [ANIMATION_ID.stop]: 0,
@@ -1183,6 +1186,7 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hero_transformation_hurt,
       ANIMATION_ID.hero_transformation_pre_run,
       ANIMATION_ID.hero_transformation_run,
+      ANIMATION_ID.hero_idle
     ],
   },
   enemy: {
@@ -1530,13 +1534,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 300 :  ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2333,7 +2337,8 @@ enum AnimationType {
   hurt,
   death,
   idle,
-  movement
+  secondIdle,
+  movement,
 }
 
 const ALL_STATES = "ALL_STATES";
@@ -2489,6 +2494,23 @@ const heroAnimations = [
          }
        ]
       },
+
+      {
+        animationType: AnimationType.secondIdle,
+        animationsStatesBlocks: [
+          {
+            states: ALL_HERO_STATES,
+            animation: 
+            {
+              id: ANIMATION_ID.hero_second_idle,
+              sprite:    {
+                path: "assets/challenge/characters/hero/second_idle",
+                length: 6
+            }
+            }
+           }
+         ]
+        },
       {
         animationType: AnimationType.death,
         animationsStatesBlocks: [
@@ -2915,10 +2937,9 @@ const stopRun = () => {
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
-  const stopCallback = () => {
-    heroImage.src = "assets/challenge/characters/hero/walk/1.png";
-  };
-  addAnimationCallbackToQueue(ANIMATION_ID.stop, stopCallback);
+  heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+
+  addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
 };
 
 const addAnimationCallbackToQueue = (
@@ -3336,12 +3357,33 @@ const animateLightning = () => {
 
 }
 
- const launchIdleLoop = () => {
+ const launchIdleLoop = (loopIndex = 0) => {
 
-    launchAnimation(heroCharacter, AnimationType.idle, false);
+   const MAX_LOOP = 0;
+
+   console.log("running iddle loop")
+
+   if(ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] !== 0){
+    return;
+   }
+
+   console.log("actually running")
+
+
+
+   if(loopIndex > MAX_LOOP){
+     loopIndex = 0;
+   }
+
+   const loops = [
+    () => launchAnimation(heroCharacter, AnimationType.idle, false),
+   ]
+   
+
+   loops[loopIndex]();
 
     setTimeout(
-      launchIdleLoop, 5000
+      () => launchIdleLoop(loopIndex+1), loopIndex === 0 ? 8000 : 5000
     );
  }
 

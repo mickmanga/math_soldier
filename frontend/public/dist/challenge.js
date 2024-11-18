@@ -806,40 +806,41 @@
     ANIMATION_ID2[ANIMATION_ID2["hero_hurt"] = 3] = "hero_hurt";
     ANIMATION_ID2[ANIMATION_ID2["hero_death"] = 4] = "hero_death";
     ANIMATION_ID2[ANIMATION_ID2["hero_idle"] = 5] = "hero_idle";
-    ANIMATION_ID2[ANIMATION_ID2["hero_special_attack"] = 6] = "hero_special_attack";
-    ANIMATION_ID2[ANIMATION_ID2["stop"] = 7] = "stop";
-    ANIMATION_ID2[ANIMATION_ID2["stop_time"] = 8] = "stop_time";
-    ANIMATION_ID2[ANIMATION_ID2["cancel_stop_time"] = 9] = "cancel_stop_time";
-    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_idle"] = 10] = "ghost_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_run"] = 11] = "ghost_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_attack"] = 12] = "ghost_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_death"] = 13] = "ghost_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_move"] = 14] = "ghost_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_idle"] = 15] = "hammer_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_run"] = 16] = "hammer_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_attack"] = 17] = "hammer_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_death"] = 18] = "hammer_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_move"] = 19] = "hammer_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_idle"] = 20] = "orc_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_run"] = 21] = "orc_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_attack"] = 22] = "orc_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_death"] = 23] = "orc_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_move"] = 24] = "orc_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_idle"] = 25] = "dwarf_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_run"] = 26] = "dwarf_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_attack"] = 27] = "dwarf_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_death"] = 28] = "dwarf_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_move"] = 29] = "dwarf_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["camera_left_to_right"] = 30] = "camera_left_to_right";
-    ANIMATION_ID2[ANIMATION_ID2["camera_right_to_left"] = 31] = "camera_right_to_left";
-    ANIMATION_ID2[ANIMATION_ID2["character_left_to_right_move"] = 32] = "character_left_to_right_move";
-    ANIMATION_ID2[ANIMATION_ID2["hero_sword_slash"] = 33] = "hero_sword_slash";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 34] = "hero_transformation_pre_run";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 35] = "hero_transformation_run";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 36] = "hero_transformation_hurt";
-    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 37] = "boss_idle";
-    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 38] = "boss_attack";
-    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 39] = "lightning";
+    ANIMATION_ID2[ANIMATION_ID2["hero_second_idle"] = 6] = "hero_second_idle";
+    ANIMATION_ID2[ANIMATION_ID2["hero_special_attack"] = 7] = "hero_special_attack";
+    ANIMATION_ID2[ANIMATION_ID2["stop"] = 8] = "stop";
+    ANIMATION_ID2[ANIMATION_ID2["stop_time"] = 9] = "stop_time";
+    ANIMATION_ID2[ANIMATION_ID2["cancel_stop_time"] = 10] = "cancel_stop_time";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_idle"] = 11] = "ghost_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_run"] = 12] = "ghost_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_attack"] = 13] = "ghost_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_death"] = 14] = "ghost_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["ghost_opponent_move"] = 15] = "ghost_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_idle"] = 16] = "hammer_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_run"] = 17] = "hammer_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_attack"] = 18] = "hammer_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_death"] = 19] = "hammer_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_move"] = 20] = "hammer_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_idle"] = 21] = "orc_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_run"] = 22] = "orc_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_attack"] = 23] = "orc_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_death"] = 24] = "orc_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_move"] = 25] = "orc_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_idle"] = 26] = "dwarf_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_run"] = 27] = "dwarf_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_attack"] = 28] = "dwarf_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_death"] = 29] = "dwarf_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_move"] = 30] = "dwarf_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["camera_left_to_right"] = 31] = "camera_left_to_right";
+    ANIMATION_ID2[ANIMATION_ID2["camera_right_to_left"] = 32] = "camera_right_to_left";
+    ANIMATION_ID2[ANIMATION_ID2["character_left_to_right_move"] = 33] = "character_left_to_right_move";
+    ANIMATION_ID2[ANIMATION_ID2["hero_sword_slash"] = 34] = "hero_sword_slash";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 35] = "hero_transformation_pre_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 36] = "hero_transformation_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 37] = "hero_transformation_hurt";
+    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 38] = "boss_idle";
+    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 39] = "boss_attack";
+    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 40] = "lightning";
     return ANIMATION_ID2;
   })(ANIMATION_ID || {});
   var ANIMATION_RUNNING_VALUES = {
@@ -849,40 +850,41 @@
     [4 /* hero_death */]: 0,
     [3 /* hero_hurt */]: 0,
     [5 /* hero_idle */]: 0,
-    [6 /* hero_special_attack */]: 0,
-    [8 /* stop_time */]: 0,
-    [7 /* stop */]: 0,
-    [9 /* cancel_stop_time */]: 0,
-    [10 /* ghost_opponent_idle */]: 0,
-    [11 /* ghost_opponent_run */]: 0,
-    [12 /* ghost_opponent_attack */]: 0,
-    [13 /* ghost_opponent_death */]: 0,
-    [14 /* ghost_opponent_move */]: 0,
-    [15 /* hammer_opponent_idle */]: 0,
-    [16 /* hammer_opponent_run */]: 0,
-    [17 /* hammer_opponent_attack */]: 0,
-    [18 /* hammer_opponent_death */]: 0,
-    [19 /* hammer_opponent_move */]: 0,
-    [20 /* orc_opponent_idle */]: 0,
-    [21 /* orc_opponent_run */]: 0,
-    [22 /* orc_opponent_attack */]: 0,
-    [23 /* orc_opponent_death */]: 0,
-    [24 /* orc_opponent_move */]: 0,
-    [25 /* dwarf_opponent_idle */]: 0,
-    [26 /* dwarf_opponent_run */]: 0,
-    [27 /* dwarf_opponent_attack */]: 0,
-    [28 /* dwarf_opponent_death */]: 0,
-    [29 /* dwarf_opponent_move */]: 0,
-    [30 /* camera_left_to_right */]: 0,
-    [31 /* camera_right_to_left */]: 0,
-    [32 /* character_left_to_right_move */]: 0,
-    [33 /* hero_sword_slash */]: 0,
-    [34 /* hero_transformation_pre_run */]: 0,
-    [35 /* hero_transformation_run */]: 0,
-    [36 /* hero_transformation_hurt */]: 0,
-    [37 /* boss_idle */]: 0,
-    [38 /* boss_attack */]: 0,
-    [39 /* lightning */]: 0
+    [6 /* hero_second_idle */]: 0,
+    [7 /* hero_special_attack */]: 0,
+    [9 /* stop_time */]: 0,
+    [8 /* stop */]: 0,
+    [10 /* cancel_stop_time */]: 0,
+    [11 /* ghost_opponent_idle */]: 0,
+    [12 /* ghost_opponent_run */]: 0,
+    [13 /* ghost_opponent_attack */]: 0,
+    [14 /* ghost_opponent_death */]: 0,
+    [15 /* ghost_opponent_move */]: 0,
+    [16 /* hammer_opponent_idle */]: 0,
+    [17 /* hammer_opponent_run */]: 0,
+    [18 /* hammer_opponent_attack */]: 0,
+    [19 /* hammer_opponent_death */]: 0,
+    [20 /* hammer_opponent_move */]: 0,
+    [21 /* orc_opponent_idle */]: 0,
+    [22 /* orc_opponent_run */]: 0,
+    [23 /* orc_opponent_attack */]: 0,
+    [24 /* orc_opponent_death */]: 0,
+    [25 /* orc_opponent_move */]: 0,
+    [26 /* dwarf_opponent_idle */]: 0,
+    [27 /* dwarf_opponent_run */]: 0,
+    [28 /* dwarf_opponent_attack */]: 0,
+    [29 /* dwarf_opponent_death */]: 0,
+    [30 /* dwarf_opponent_move */]: 0,
+    [31 /* camera_left_to_right */]: 0,
+    [32 /* camera_right_to_left */]: 0,
+    [33 /* character_left_to_right_move */]: 0,
+    [34 /* hero_sword_slash */]: 0,
+    [35 /* hero_transformation_pre_run */]: 0,
+    [36 /* hero_transformation_run */]: 0,
+    [37 /* hero_transformation_hurt */]: 0,
+    [38 /* boss_idle */]: 0,
+    [39 /* boss_attack */]: 0,
+    [40 /* lightning */]: 0
   };
   var THROTTLE_NUMS = {
     [0 /* hero_attack */]: 0,
@@ -891,40 +893,41 @@
     [4 /* hero_death */]: 5,
     [3 /* hero_hurt */]: 0,
     [5 /* hero_idle */]: 20,
-    [6 /* hero_special_attack */]: 0,
-    [8 /* stop_time */]: 5,
-    [7 /* stop */]: 0,
-    [9 /* cancel_stop_time */]: 5,
-    [10 /* ghost_opponent_idle */]: 5,
-    [11 /* ghost_opponent_run */]: 5,
-    [12 /* ghost_opponent_attack */]: 0,
-    [13 /* ghost_opponent_death */]: 0,
-    [14 /* ghost_opponent_move */]: 1,
-    [15 /* hammer_opponent_idle */]: 0,
-    [16 /* hammer_opponent_run */]: 0,
-    [17 /* hammer_opponent_attack */]: 0,
-    [18 /* hammer_opponent_death */]: 0,
-    [19 /* hammer_opponent_move */]: 0,
-    [20 /* orc_opponent_idle */]: 0,
-    [21 /* orc_opponent_run */]: 0,
-    [22 /* orc_opponent_attack */]: 0,
-    [23 /* orc_opponent_death */]: 0,
-    [24 /* orc_opponent_move */]: 0,
-    [25 /* dwarf_opponent_idle */]: 0,
-    [26 /* dwarf_opponent_run */]: 0,
-    [27 /* dwarf_opponent_attack */]: 0,
-    [28 /* dwarf_opponent_death */]: 0,
-    [29 /* dwarf_opponent_move */]: 0,
-    [30 /* camera_left_to_right */]: 0,
-    [31 /* camera_right_to_left */]: 0,
-    [33 /* hero_sword_slash */]: 0,
-    [32 /* character_left_to_right_move */]: 5,
-    [34 /* hero_transformation_pre_run */]: 5,
-    [35 /* hero_transformation_run */]: 5,
-    [36 /* hero_transformation_hurt */]: 0,
-    [37 /* boss_idle */]: 15,
-    [38 /* boss_attack */]: 10,
-    [39 /* lightning */]: 0
+    [6 /* hero_second_idle */]: 0,
+    [7 /* hero_special_attack */]: 0,
+    [9 /* stop_time */]: 5,
+    [8 /* stop */]: 0,
+    [10 /* cancel_stop_time */]: 5,
+    [11 /* ghost_opponent_idle */]: 5,
+    [12 /* ghost_opponent_run */]: 5,
+    [13 /* ghost_opponent_attack */]: 0,
+    [14 /* ghost_opponent_death */]: 0,
+    [15 /* ghost_opponent_move */]: 1,
+    [16 /* hammer_opponent_idle */]: 0,
+    [17 /* hammer_opponent_run */]: 0,
+    [18 /* hammer_opponent_attack */]: 0,
+    [19 /* hammer_opponent_death */]: 0,
+    [20 /* hammer_opponent_move */]: 0,
+    [21 /* orc_opponent_idle */]: 0,
+    [22 /* orc_opponent_run */]: 0,
+    [23 /* orc_opponent_attack */]: 0,
+    [24 /* orc_opponent_death */]: 0,
+    [25 /* orc_opponent_move */]: 0,
+    [26 /* dwarf_opponent_idle */]: 0,
+    [27 /* dwarf_opponent_run */]: 0,
+    [28 /* dwarf_opponent_attack */]: 0,
+    [29 /* dwarf_opponent_death */]: 0,
+    [30 /* dwarf_opponent_move */]: 0,
+    [31 /* camera_left_to_right */]: 0,
+    [32 /* camera_right_to_left */]: 0,
+    [34 /* hero_sword_slash */]: 0,
+    [33 /* character_left_to_right_move */]: 5,
+    [35 /* hero_transformation_pre_run */]: 5,
+    [36 /* hero_transformation_run */]: 5,
+    [37 /* hero_transformation_hurt */]: 0,
+    [38 /* boss_idle */]: 15,
+    [39 /* boss_attack */]: 10,
+    [40 /* lightning */]: 0
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -941,52 +944,53 @@
         0 /* hero_attack */,
         3 /* hero_hurt */,
         4 /* hero_death */,
-        6 /* hero_special_attack */,
-        7 /* stop */,
-        8 /* stop_time */,
-        36 /* hero_transformation_hurt */,
-        34 /* hero_transformation_pre_run */,
-        35 /* hero_transformation_run */
+        7 /* hero_special_attack */,
+        8 /* stop */,
+        9 /* stop_time */,
+        37 /* hero_transformation_hurt */,
+        35 /* hero_transformation_pre_run */,
+        36 /* hero_transformation_run */,
+        5 /* hero_idle */
       ]
     },
     enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        12 /* ghost_opponent_attack */,
-        11 /* ghost_opponent_run */,
-        13 /* ghost_opponent_death */,
-        14 /* ghost_opponent_move */
+        13 /* ghost_opponent_attack */,
+        12 /* ghost_opponent_run */,
+        14 /* ghost_opponent_death */,
+        15 /* ghost_opponent_move */
       ]
     },
     red_hammer_enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        15 /* hammer_opponent_idle */,
-        16 /* hammer_opponent_run */,
-        17 /* hammer_opponent_attack */,
-        18 /* hammer_opponent_death */
+        16 /* hammer_opponent_idle */,
+        17 /* hammer_opponent_run */,
+        18 /* hammer_opponent_attack */,
+        19 /* hammer_opponent_death */
       ]
     },
     orc_enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        20 /* orc_opponent_idle */,
-        21 /* orc_opponent_run */,
-        22 /* orc_opponent_attack */,
-        23 /* orc_opponent_death */
+        21 /* orc_opponent_idle */,
+        22 /* orc_opponent_run */,
+        23 /* orc_opponent_attack */,
+        24 /* orc_opponent_death */
       ]
     },
     dwarf_enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        25 /* dwarf_opponent_idle */,
-        26 /* dwarf_opponent_run */,
-        27 /* dwarf_opponent_attack */,
-        28 /* dwarf_opponent_death */
+        26 /* dwarf_opponent_idle */,
+        27 /* dwarf_opponent_run */,
+        28 /* dwarf_opponent_attack */,
+        29 /* dwarf_opponent_death */
       ]
     }
   };
@@ -1029,12 +1033,12 @@
   var slowTime = (multiplicator) => {
     const runMultiplicatorBase = THROTTLE_NUMS[1 /* hero_run */] ? THROTTLE_NUMS[1 /* hero_run */] : 1;
     THROTTLE_NUMS[1 /* hero_run */] = runMultiplicatorBase * multiplicator * 1.5 * 1.5;
-    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[30 /* camera_left_to_right */] ? THROTTLE_NUMS[30 /* camera_left_to_right */] : 1;
-    THROTTLE_NUMS[30 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
-    const opponentRunMultiplicatorBase = THROTTLE_NUMS[11 /* ghost_opponent_run */] ? THROTTLE_NUMS[11 /* ghost_opponent_run */] : 1;
-    THROTTLE_NUMS[11 /* ghost_opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
-    const opponentMoveMultiplicatorBase = THROTTLE_NUMS[14 /* ghost_opponent_move */] ? THROTTLE_NUMS[14 /* ghost_opponent_move */] : 1;
-    THROTTLE_NUMS[14 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
+    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[31 /* camera_left_to_right */] ? THROTTLE_NUMS[31 /* camera_left_to_right */] : 1;
+    THROTTLE_NUMS[31 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
+    const opponentRunMultiplicatorBase = THROTTLE_NUMS[12 /* ghost_opponent_run */] ? THROTTLE_NUMS[12 /* ghost_opponent_run */] : 1;
+    THROTTLE_NUMS[12 /* ghost_opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
+    const opponentMoveMultiplicatorBase = THROTTLE_NUMS[15 /* ghost_opponent_move */] ? THROTTLE_NUMS[15 /* ghost_opponent_move */] : 1;
+    THROTTLE_NUMS[15 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
   };
   var moveCamera = (direction, previousFrameTimestamp) => {
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
@@ -1043,7 +1047,7 @@
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     MAPS.forEach(
-      (map) => map.style.left = `${map.offsetLeft + (direction === 30 /* camera_left_to_right */ ? -1 : 1) * diff * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + (direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp));
   };
@@ -1180,9 +1184,9 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 39 /* lightning */ || animationId === 15 /* hammer_opponent_idle */ || animationId === 17 /* hammer_opponent_attack */ || animationId === 20 /* orc_opponent_idle */ || animationId === 22 /* orc_opponent_attack */ || animationId === 25 /* dwarf_opponent_idle */ || animationId === 27 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 40 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 300 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -1252,17 +1256,17 @@
     ANIMATION_RUNNING_VALUES[4 /* hero_death */] = 0;
     ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
     ANIMATION_RUNNING_VALUES[5 /* hero_idle */] = 0;
-    ANIMATION_RUNNING_VALUES[11 /* ghost_opponent_run */] = 0;
-    ANIMATION_RUNNING_VALUES[13 /* ghost_opponent_death */] = 0;
-    ANIMATION_RUNNING_VALUES[14 /* ghost_opponent_move */] = 0;
-    ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */] = 0;
-    ANIMATION_RUNNING_VALUES[31 /* camera_right_to_left */] = 0;
-    ANIMATION_RUNNING_VALUES[32 /* character_left_to_right_move */] = 0;
-    ANIMATION_RUNNING_VALUES[34 /* hero_transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_run */] = 0;
-    ANIMATION_RUNNING_VALUES[36 /* hero_transformation_hurt */] = 0;
-    ANIMATION_RUNNING_VALUES[37 /* boss_idle */] = 0;
-    ANIMATION_RUNNING_VALUES[38 /* boss_attack */] = 0;
+    ANIMATION_RUNNING_VALUES[12 /* ghost_opponent_run */] = 0;
+    ANIMATION_RUNNING_VALUES[14 /* ghost_opponent_death */] = 0;
+    ANIMATION_RUNNING_VALUES[15 /* ghost_opponent_move */] = 0;
+    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[32 /* camera_right_to_left */] = 0;
+    ANIMATION_RUNNING_VALUES[33 /* character_left_to_right_move */] = 0;
+    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[36 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[37 /* hero_transformation_hurt */] = 0;
+    ANIMATION_RUNNING_VALUES[38 /* boss_idle */] = 0;
+    ANIMATION_RUNNING_VALUES[39 /* boss_attack */] = 0;
   };
   var turnHeroTransformationOff = () => {
     transformed = false;
@@ -1351,19 +1355,19 @@
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
-    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */);
+    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
     launchAnimation(enemy.character, 6 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
-    const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */);
+    const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */);
     if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
       return;
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
-    if (throttleNum < THROTTLE_NUMS[14 /* ghost_opponent_move */]) {
+    if (throttleNum < THROTTLE_NUMS[15 /* ghost_opponent_move */]) {
       throttleNum++;
       return requestAnimationFrame(() => {
         moveEnemy(enemy, throttleNum, currentTimeStamp);
@@ -1504,8 +1508,8 @@
     return enemyContainer.getBoundingClientRect().left + enemyContainer.getBoundingClientRect().width * 0.3;
   };
   var clearEnemy = (enemy) => {
-    interruptAnimation(11 /* ghost_opponent_run */);
-    interruptAnimation(12 /* ghost_opponent_attack */);
+    interruptAnimation(12 /* ghost_opponent_run */);
+    interruptAnimation(13 /* ghost_opponent_attack */);
     destroyEnemy(enemy);
   };
   var destroyEnemy = (enemy) => {
@@ -1521,7 +1525,7 @@
     ennemiesOnScreen.forEach((enemyOnScreen, index) => {
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
-        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */).id);
+        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */).id);
       }
     });
   };
@@ -1705,7 +1709,7 @@
         {
           states: ALL_HERO_STATES,
           animation: {
-            id: 6 /* hero_special_attack */,
+            id: 7 /* hero_special_attack */,
             sprite: {
               path: "assets/challenge/characters/hero/flames/new",
               length: 22
@@ -1724,6 +1728,21 @@
             sprite: {
               path: "assets/challenge/characters/hero/run",
               length: 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 7 /* secondIdle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 6 /* hero_second_idle */,
+            sprite: {
+              path: "assets/challenge/characters/hero/second_idle",
+              length: 6
             }
           }
         }
@@ -1752,7 +1771,7 @@
         {
           states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 15 /* hammer_opponent_idle */,
+            id: 16 /* hammer_opponent_idle */,
             sprite: {
               path: "assets/challenge/characters/enemies/hard/idle",
               length: 16
@@ -1767,7 +1786,7 @@
         {
           states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 17 /* hammer_opponent_attack */,
+            id: 18 /* hammer_opponent_attack */,
             sprite: {
               path: "assets/challenge/characters/enemies/hard/attack",
               length: 30
@@ -1782,7 +1801,7 @@
         {
           states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 18 /* hammer_opponent_death */,
+            id: 19 /* hammer_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -1792,12 +1811,12 @@
       ]
     },
     {
-      animationType: 7 /* movement */,
+      animationType: 8 /* movement */,
       animationsStatesBlocks: [
         {
           states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 19 /* hammer_opponent_move */,
+            id: 20 /* hammer_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -1824,9 +1843,9 @@
       return;
     }
     interuptIdleTimer();
-    if (ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */] === 0) {
+    if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
       startCamera();
-      moveCamera(30 /* camera_left_to_right */, Date.now());
+      moveCamera(31 /* camera_left_to_right */, Date.now());
     }
     launchHeroRunAnimation();
   };
@@ -1904,14 +1923,12 @@
     }
     ennemiesOnScreen.forEach(
       (enemy) => {
-        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */).id] = 0;
+        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */).id] = 0;
       }
     );
-    interruptAnimation(30 /* camera_left_to_right */);
-    const stopCallback = () => {
-      heroImage.src = "assets/challenge/characters/hero/walk/1.png";
-    };
-    addAnimationCallbackToQueue(7 /* stop */, stopCallback);
+    interruptAnimation(31 /* camera_left_to_right */);
+    heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+    addAnimationCallbackToQueue(8 /* stop */, launchIdleLoop);
   };
   var addAnimationCallbackToQueue = (animation, callBack) => {
     const appElementId = getAppIdByAnimationId(animation);
@@ -1941,7 +1958,7 @@
     stopAndResetIdleTimer();
     launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
-      const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 7 /* movement */);
+      const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */);
       ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
       moveEnemy(enemy, 0, Date.now());
     });
@@ -2000,7 +2017,7 @@
         6,
         1,
         true,
-        35 /* hero_transformation_run */
+        36 /* hero_transformation_run */
       );
       setTimeout(turnHeroTransformationOff, 2e4);
       return;
@@ -2022,7 +2039,7 @@
           9,
           1,
           true,
-          34 /* hero_transformation_pre_run */
+          35 /* hero_transformation_pre_run */
         );
         if (enemiesComingTimeout) {
           clearTimeout(enemiesComingTimeout);
@@ -2050,7 +2067,7 @@
               6,
               1,
               true,
-              35 /* hero_transformation_run */
+              36 /* hero_transformation_run */
             );
             setTimeout(turnHeroTransformationOff, 15e3);
           }, 5e3)
@@ -2062,7 +2079,7 @@
     ennemiesOnScreen.forEach((enemy, index) => {
       enemy.character.element.remove();
       ennemiesOnScreen.splice(index, 1);
-      interruptAnimation(14 /* ghost_opponent_move */);
+      interruptAnimation(15 /* ghost_opponent_move */);
     });
   };
   var lightUpAnswerDataContainer = () => {
@@ -2073,15 +2090,15 @@
     answerDataValue.innerHTML = "";
   };
   var launchSwordSlash = () => {
-    ANIMATION_RUNNING_VALUES[33 /* hero_sword_slash */]++;
-    if (ANIMATION_RUNNING_VALUES[33 /* hero_sword_slash */] !== 1 || transformed) {
+    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
+    if (ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] !== 1 || transformed) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[33 /* hero_sword_slash */]++;
+    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
     swordSlashImg.style.display = "flex";
     setTimeout(() => {
       swordSlashImg.style.display = "none";
-      ANIMATION_RUNNING_VALUES[33 /* hero_sword_slash */] = 0;
+      ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] = 0;
     }, 75);
   };
   var updateIdleTimerInterface = () => {
@@ -2113,7 +2130,7 @@
   };
   var launchDeathAnimation = () => {
     initHeroAnimations();
-    ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.current_animation = null;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.request_queue = [];
     const killHero2 = () => {
@@ -2151,7 +2168,7 @@
       transformed ? 5 : 3,
       1,
       false,
-      transformed ? 36 /* hero_transformation_hurt */ : 3 /* hero_hurt */
+      transformed ? 37 /* hero_transformation_hurt */ : 3 /* hero_hurt */
     );
     if (!hardMode) {
       stopCamera();
@@ -2167,18 +2184,18 @@
     );
   };
   var stopCamera = () => {
-    ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
   };
   var startCamera = () => {
-    if (ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */] > 0) {
+    if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] > 0) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[30 /* camera_left_to_right */]++;
+    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */]++;
   };
   var initHeroAnimations = () => {
     ANIMATION_RUNNING_VALUES[1 /* hero_run */] = 0;
-    ANIMATION_RUNNING_VALUES[34 /* hero_transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[36 /* hero_transformation_run */] = 0;
     ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
   };
   var animateLightning = () => {
@@ -2193,17 +2210,29 @@
       17,
       1,
       true,
-      39 /* lightning */,
+      40 /* lightning */,
       () => {
         lightningImg.style.display = "none";
       }
     );
   };
-  var launchIdleLoop = () => {
-    launchAnimation(heroCharacter, 6 /* idle */, false);
+  var launchIdleLoop = (loopIndex = 0) => {
+    const MAX_LOOP = 0;
+    console.log("running iddle loop");
+    if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
+      return;
+    }
+    console.log("actually running");
+    if (loopIndex > MAX_LOOP) {
+      loopIndex = 0;
+    }
+    const loops = [
+      () => launchAnimation(heroCharacter, 6 /* idle */, false)
+    ];
+    loops[loopIndex]();
     setTimeout(
-      launchIdleLoop,
-      5e3
+      () => launchIdleLoop(loopIndex + 1),
+      loopIndex === 0 ? 8e3 : 5e3
     );
   };
   window.onload = () => {
