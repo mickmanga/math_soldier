@@ -2170,7 +2170,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   ) {
     MAPS.push(
       createMapBlock(
-        lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth
+        lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5
       )
     );
   }
@@ -2860,10 +2860,19 @@ document.addEventListener("keydown", (event) => {
     launchInvisibilityToggle();
   }
   if (event.key === "w") {
-    if(rewardStreak === 5 ||  rewardStreak === 10){
+   // if(rewardStreak === 5 ||  rewardStreak === 10){
       launchAttack(true);
+
+      const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
+
+      lightningImg.style.display = "none";
+
+      setTimeout(
+        () => lightningImg.style.display = "block", 2000
+      )
+
       return;
-    }
+    //}
     launchAttack();
   }
 

@@ -1614,7 +1614,7 @@
     if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
       MAPS.push(
         createMapBlock(
-          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth
+          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5
         )
       );
     }
@@ -1873,10 +1873,14 @@
       launchInvisibilityToggle();
     }
     if (event.key === "w") {
-      if (rewardStreak === 5 || rewardStreak === 10) {
-        launchAttack(true);
-        return;
-      }
+      launchAttack(true);
+      const lightningImg = document.getElementById("lightning_img");
+      lightningImg.style.display = "none";
+      setTimeout(
+        () => lightningImg.style.display = "block",
+        2e3
+      );
+      return;
       launchAttack();
     }
     if (event.key === "v") {
