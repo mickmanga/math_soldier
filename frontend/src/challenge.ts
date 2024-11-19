@@ -952,14 +952,13 @@ const buildEnemy = (answer: Answer) => {
 
   const enemyCharacter = createRedHammerCharacter();
  //const enemyCharacter = createOrcCharacter();
-//const enemyCharacter = createDwarfCharacter();
+ //const enemyCharacter = createDwarfCharacter();
 
   if (!enemyCharacter) {
     return;
   }
 
   document.getElementsByTagName("body")[0].append();
-
 
   const enemy = new Enemy(enemyCharacter, answer);
 
@@ -1569,12 +1568,12 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1880,7 +1879,7 @@ const transformIfRequired = () => {
   if (rewardStreak >= TRANSFORMATION_THRESHOLD && !transformed) {
     rewardStreak = 0;
     updateTransformationProgressBarDisplay();
-    if(!hardMode){
+    if(hardMode){
       launchTransformation();
     }
   }
@@ -3432,7 +3431,7 @@ window.onload = () => {
   launchHardModeToggle();
   setHeroClass();
   backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "magical_forest.png" : "castle.gif"
+    hardMode ? "castle.gif" : "castle.gif"
   }`;
   MAPS.push(createMapBlock(0));
   MAPS.push(createMapBlock(100));

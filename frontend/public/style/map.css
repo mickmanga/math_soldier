@@ -8,6 +8,7 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    background: white;
 }
 
 .mapBlock{
@@ -16,6 +17,6 @@ html, body {
 }
 
 .mapBlock img {
-    height: 85%;
+    height: 100%;
     width: 100%;
 }

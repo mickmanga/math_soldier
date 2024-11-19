@@ -1233,9 +1233,9 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 40 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 40 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -1439,7 +1439,7 @@
     if (rewardStreak >= TRANSFORMATION_THRESHOLD && !transformed) {
       rewardStreak = 0;
       updateTransformationProgressBarDisplay();
-      if (!hardMode) {
+      if (hardMode) {
         launchTransformation();
       }
     }
@@ -2297,7 +2297,7 @@
     setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
-    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "magical_forest.png" : "castle.gif"}`;
+    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "castle.gif" : "castle.gif"}`;
     MAPS.push(createMapBlock(0));
     MAPS.push(createMapBlock(100));
     createGameAccordingToMode();

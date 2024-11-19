@@ -62,7 +62,7 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 54.5vh;
+  top: 52vh;
   left: 20vw;
   height: 30vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
@@ -84,8 +84,21 @@ audio {
 
 .hard_enemy_container {
   position: fixed;
+  /* 
+    flames : 
+
+    bottom: 17vh;
+    height: 28.5vh;
+
+    sword: 
+
+    height: 21.5vh;
+    bottom: 21vh;
+
+*/
   left: 125vw;
-  height: 70vh;
+  height: 21.5vh;
+  bottom: 21vh;
   z-index: 11;
   display: flex;
   justify-content: center;
@@ -389,7 +402,7 @@ audio {
   height: 20vh;
   width: auto;
   z-index: 1002;
-  display: flex;
+  display: none;
 }
 
 #rightMobileButton {
@@ -399,7 +412,7 @@ audio {
   height: 20vh;
   width: auto;
   z-index: 1002;
-  display: flex;
+  display: none;
 }
 .controllerImg {
   height: 100%;
