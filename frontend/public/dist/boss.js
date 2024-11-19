@@ -1,5 +1,26 @@
 "use strict";
 (() => {
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = (value) => {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var rejected = (value) => {
+        try {
+          step(generator.throw(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
+
   // src/challenge.ts
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -30,6 +51,34 @@
   var idleTimerValue = 5;
   var lastStopInMs = null;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
+  var getQueryParam = (param) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  };
+  var answers = null;
+  var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
+    try {
+      const response = yield fetch(`http://localhost:3000/api/challenges/${challengeId}`);
+      if (!response.ok) {
+        throw new Error(`Error fetching challenge: ${response.statusText}`);
+      }
+      answers = response;
+      const challengeData = yield response.json();
+      console.log("Fetched Challenge:", challengeData);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+  var initializeChallengePage = () => __async(void 0, null, function* () {
+    const challengeId = getQueryParam("challengeId");
+    if (challengeId) {
+      const challenge = yield fetchChallengeById(challengeId);
+      console.log(challenge);
+    } else {
+      console.error("No challengeId provided in the URL.");
+    }
+  });
+  document.addEventListener("DOMContentLoaded", initializeChallengePage);
   var getHeroLeft = () => {
     if (!heroContainer) {
       console.log("we cant get the hero left, the hero container was not initialized yet");
@@ -2228,11 +2277,9 @@
   };
   var launchIdleLoop = (loopIndex = 0) => {
     const MAX_LOOP = 0;
-    console.log("running iddle loop");
     if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
       return;
     }
-    console.log("actually running");
     if (loopIndex > MAX_LOOP) {
       loopIndex = 0;
     }

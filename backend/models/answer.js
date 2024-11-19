@@ -6,4 +6,4 @@ const AnswerSchema = new mongoose.Schema({
   true: { type: Boolean, required: true },
 });
 
-module.exports = mongoose.model('Answer', AnswerSchema);
+module.exports = AnswerSchema;

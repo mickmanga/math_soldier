@@ -43,7 +43,44 @@ let lastStopInMs: null | number = null;
 
 const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
+// Utility function to get query parameters from the URL
+const getQueryParam = (param: string): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+};
 
+let answers = null;
+
+// Fetch a challenge by ID from the backend
+const fetchChallengeById = async (challengeId: string): Promise<void> => {
+  try {
+      const response = await fetch(`http://localhost:3000/api/challenges/${challengeId}`);
+      if (!response.ok) {
+          throw new Error(`Error fetching challenge: ${response.statusText}`);
+      }
+
+      answers = response;
+
+      const challengeData = await response.json();
+      console.log('Fetched Challenge:', challengeData);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};
+
+// On page load, get the challengeId from the URL and fetch the challenge
+const initializeChallengePage = async () => {
+  const challengeId = getQueryParam('challengeId');
+  if (challengeId) {
+    const challenge = await fetchChallengeById(challengeId);
+    console.log(challenge);
+
+  } else {
+      console.error('No challengeId provided in the URL.');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', initializeChallengePage);
 
 const getHeroLeft = () => {
 
@@ -785,9 +822,6 @@ const MATHS_ARITHMETIC = {
 };
 
 
-
-//local storage
-
 const getNextAnswer = () => {
   const randVal = Math.random() > 0.5;
 
@@ -803,7 +837,7 @@ const getNextAnswer = () => {
       if (elementIndex === index) {
         list.splice(elementIndex, 1);
         foundElement = element;
-        break; // Break out of the loop since we found and removed the element
+        break;
       }
     }
     if (foundElement === null) {
@@ -3373,15 +3407,9 @@ const animateLightning = () => {
 
    const MAX_LOOP = 0;
 
-   console.log("running iddle loop")
-
    if(ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] !== 0){
     return;
    }
-
-   console.log("actually running")
-
-
 
    if(loopIndex > MAX_LOOP){
      loopIndex = 0;
@@ -3389,8 +3417,7 @@ const animateLightning = () => {
 
    const loops = [
     () => launchAnimation(heroCharacter, AnimationType.idle, false),
-   ]
-   
+   ]   
 
    loops[loopIndex]();
 

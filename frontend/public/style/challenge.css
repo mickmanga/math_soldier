@@ -84,7 +84,6 @@ audio {
 
 .hard_enemy_container {
   position: fixed;
-  bottom: 1vh;
   left: 125vw;
   height: 70vh;
   z-index: 11;
