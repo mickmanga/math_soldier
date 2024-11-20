@@ -56,7 +56,6 @@ audio {
   display: none;
 }
 
-
 .hero_container_hard {
   --hero-img-height: 30vh;  
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
@@ -82,6 +81,16 @@ audio {
   align-items: flex-end;
 }
 
+.enemy_death_1_container {
+  height: 21.5vh;
+  bottom: 21vh;
+}
+
+.enemy_death_2_container {
+  bottom: 17vh;
+  height: 28.5vh;
+}
+
 .hard_enemy_container {
   position: fixed;
   /* 
@@ -97,8 +106,8 @@ audio {
 
 */
   left: 125vw;
-  height: 21.5vh;
-  bottom: 21vh;
+  height: 60.5vh;
+  bottom: 5vh;
   z-index: 11;
   display: flex;
   justify-content: center;
@@ -155,7 +164,7 @@ audio {
 
 #hero_container img,
 .hard_enemy_container img {
-  height: 50%;
+  height: 100%;
   width: auto;
 }
 
