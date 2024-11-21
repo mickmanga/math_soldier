@@ -1079,6 +1079,7 @@ export enum ANIMATION_ID {
   hero_transformation_pre_run,
   hero_transformation_run,
   hero_transformation_hurt,
+  hero_transformation_attack,
   boss_idle,
   boss_attack,
   lightning
@@ -1123,6 +1124,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_transformation_pre_run]: 0,
   [ANIMATION_ID.hero_transformation_run]: 0,
   [ANIMATION_ID.hero_transformation_hurt]: 0,
+  [ANIMATION_ID.hero_transformation_attack]: 0,
   [ANIMATION_ID.boss_idle]: 0,
   [ANIMATION_ID.boss_attack]: 0,
   [ANIMATION_ID.lightning]: 0,
@@ -1168,6 +1170,7 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_transformation_pre_run]: 5,
   [ANIMATION_ID.hero_transformation_run]: 5,
   [ANIMATION_ID.hero_transformation_hurt]: 0,
+  [ANIMATION_ID.hero_transformation_attack]: 0,
   [ANIMATION_ID.boss_idle]: 15,
   [ANIMATION_ID.boss_attack]: 10,
   [ANIMATION_ID.lightning]: 0,
@@ -1219,6 +1222,7 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hero_transformation_hurt,
       ANIMATION_ID.hero_transformation_pre_run,
       ANIMATION_ID.hero_transformation_run,
+      ANIMATION_ID.hero_transformation_attack,
       ANIMATION_ID.hero_idle
     ],
   },
@@ -1709,22 +1713,8 @@ const launchAttack = (special = false) => {
   }
 
   if(!special){
-    launchSwordSlash();
-
-    launchAnimationAndDeclareItLaunched(
-      heroImage,
-      0,
-      "png",
-      `assets/challenge/characters/${
-        transformed ? "transformed_hero" : "hero"
-      }/attack`,
-      1,
-      transformed ? 12 : 4,
-      1,
-      false,
-      ANIMATION_ID.hero_attack
-    );
-
+    //launchSwordSlash();
+    launchAnimation(heroCharacter, AnimationType.attack, false);
   } else {
      launchAnimation(heroCharacter, AnimationType.specialAttack, false);
      specialMoveIndicator.style.display = "none";
@@ -2440,6 +2430,7 @@ enum HeroCharacterStates {
   transformed_dead,
 }
 
+
 enum RedHammerEnemyCharacterStates {
   idle,
   running,
@@ -2463,6 +2454,7 @@ enum DwarfEnemyCharacterStates {
 
 
 const ALL_HERO_STATES = [HeroCharacterStates.idle, HeroCharacterStates.attacking, HeroCharacterStates.dead, HeroCharacterStates.running];
+const ALL_TRANSFORMED_HERO_STATES = [HeroCharacterStates.transformed_idle, HeroCharacterStates.transformed_attacking, HeroCharacterStates.transformed_running, HeroCharacterStates.transformed_dead, ];
 const ALL_RED_HAMMER_ENEMY_STATES = [RedHammerEnemyCharacterStates.idle, RedHammerEnemyCharacterStates.running, RedHammerEnemyCharacterStates.attacking, RedHammerEnemyCharacterStates.dead]
 const ALL_ORC_ENEMY_STATES = [OrcEnemyCharacterStates.idle, OrcEnemyCharacterStates.running, OrcEnemyCharacterStates.attacking, OrcEnemyCharacterStates.dead];
 const ALL_DWARF_ENEMY_STATES = [DwarfEnemyCharacterStates.idle, DwarfEnemyCharacterStates.running, DwarfEnemyCharacterStates.attacking, DwarfEnemyCharacterStates.dead];
@@ -2473,6 +2465,17 @@ const heroAnimations = [
   {
   animationType: AnimationType.idle,
   animationsStatesBlocks: [
+    {
+      states: ALL_TRANSFORMED_HERO_STATES,
+      animation: 
+      {
+        id: ANIMATION_ID.hero_transformation_pre_run ,
+        sprite:    {
+          path: "assets/challenge/characters/transformed_hero/pre_run",
+          length: 9
+      }
+      }
+     },
     {
       states: ALL_HERO_STATES,
       animation: 
@@ -2497,6 +2500,17 @@ const heroAnimations = [
           sprite:    {
             path: "assets/challenge/characters/hero/attack",
             length: 4
+        }
+        }
+       },
+       {
+        states: ALL_TRANSFORMED_HERO_STATES,
+        animation: 
+        {
+          id:ANIMATION_ID.hero_transformation_attack,
+          sprite:    {
+            path: "assets/challenge/characters/transformed_hero/attack",
+            length: 12
         }
         }
        }
@@ -2529,6 +2543,17 @@ const heroAnimations = [
             sprite:    {
               path: "assets/challenge/characters/hero/run",
               length: 8
+          }
+          }
+         },
+         {
+          states: ALL_TRANSFORMED_HERO_STATES,
+          animation: 
+          {
+            id: ANIMATION_ID.hero_transformation_run,
+            sprite:    {
+              path: "assets/challenge/characters/transformed_hero/run",
+              length: 6
           }
           }
          }
@@ -2988,9 +3013,10 @@ const stopRun = () => {
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
-  heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+  //heroImage.src = "assets/challenge/characters/hero/idle/1.png";
 
-  addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
+  //addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
+  launchAnimation(heroCharacter, AnimationType.idle);
 };
 
 const addAnimationCallbackToQueue = (
@@ -3450,8 +3476,10 @@ window.onload = () => {
   defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
-  animateLightning();
-  launchIdleLoop();
+  //animateLightning();
+  //launchIdleLoop();
+  heroCharacter.state = HeroCharacterStates.transformed_idle;
+  launchAnimation(heroCharacter, AnimationType.idle)
   
   if (hardMode) {
     epicAudio.play();

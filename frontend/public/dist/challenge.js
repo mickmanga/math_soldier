@@ -887,9 +887,10 @@
     ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 35] = "hero_transformation_pre_run";
     ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 36] = "hero_transformation_run";
     ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 37] = "hero_transformation_hurt";
-    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 38] = "boss_idle";
-    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 39] = "boss_attack";
-    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 40] = "lightning";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_attack"] = 38] = "hero_transformation_attack";
+    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 39] = "boss_idle";
+    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 40] = "boss_attack";
+    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 41] = "lightning";
     return ANIMATION_ID2;
   })(ANIMATION_ID || {});
   var ANIMATION_RUNNING_VALUES = {
@@ -931,9 +932,10 @@
     [35 /* hero_transformation_pre_run */]: 0,
     [36 /* hero_transformation_run */]: 0,
     [37 /* hero_transformation_hurt */]: 0,
-    [38 /* boss_idle */]: 0,
-    [39 /* boss_attack */]: 0,
-    [40 /* lightning */]: 0
+    [38 /* hero_transformation_attack */]: 0,
+    [39 /* boss_idle */]: 0,
+    [40 /* boss_attack */]: 0,
+    [41 /* lightning */]: 0
   };
   var THROTTLE_NUMS = {
     [0 /* hero_attack */]: 0,
@@ -974,9 +976,10 @@
     [35 /* hero_transformation_pre_run */]: 5,
     [36 /* hero_transformation_run */]: 5,
     [37 /* hero_transformation_hurt */]: 0,
-    [38 /* boss_idle */]: 15,
-    [39 /* boss_attack */]: 10,
-    [40 /* lightning */]: 0
+    [38 /* hero_transformation_attack */]: 0,
+    [39 /* boss_idle */]: 15,
+    [40 /* boss_attack */]: 10,
+    [41 /* lightning */]: 0
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -999,6 +1002,7 @@
         37 /* hero_transformation_hurt */,
         35 /* hero_transformation_pre_run */,
         36 /* hero_transformation_run */,
+        38 /* hero_transformation_attack */,
         5 /* hero_idle */
       ]
     },
@@ -1233,7 +1237,7 @@
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 40 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 41 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
       const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
@@ -1314,8 +1318,8 @@
     ANIMATION_RUNNING_VALUES[35 /* hero_transformation_pre_run */] = 0;
     ANIMATION_RUNNING_VALUES[36 /* hero_transformation_run */] = 0;
     ANIMATION_RUNNING_VALUES[37 /* hero_transformation_hurt */] = 0;
-    ANIMATION_RUNNING_VALUES[38 /* boss_idle */] = 0;
-    ANIMATION_RUNNING_VALUES[39 /* boss_attack */] = 0;
+    ANIMATION_RUNNING_VALUES[39 /* boss_idle */] = 0;
+    ANIMATION_RUNNING_VALUES[40 /* boss_attack */] = 0;
   };
   var turnHeroTransformationOff = () => {
     transformed = false;
@@ -1346,18 +1350,7 @@
       swordAudio.currentTime = 0;
     }
     if (!special) {
-      launchSwordSlash();
-      launchAnimationAndDeclareItLaunched(
-        heroImage,
-        0,
-        "png",
-        `assets/challenge/characters/${transformed ? "transformed_hero" : "hero"}/attack`,
-        1,
-        transformed ? 12 : 4,
-        1,
-        false,
-        0 /* hero_attack */
-      );
+      launchAnimation(heroCharacter, 0 /* attack */, false);
     } else {
       launchAnimation(heroCharacter, 1 /* specialAttack */, false);
       specialMoveIndicator.style.display = "none";
@@ -1725,11 +1718,22 @@
     }
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
+  var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
   var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 6 /* idle */,
       animationsStatesBlocks: [
+        {
+          states: ALL_TRANSFORMED_HERO_STATES,
+          animation: {
+            id: 35 /* hero_transformation_pre_run */,
+            sprite: {
+              path: "assets/challenge/characters/transformed_hero/pre_run",
+              length: 9
+            }
+          }
+        },
         {
           states: ALL_HERO_STATES,
           animation: {
@@ -1752,6 +1756,16 @@
             sprite: {
               path: "assets/challenge/characters/hero/attack",
               length: 4
+            }
+          }
+        },
+        {
+          states: ALL_TRANSFORMED_HERO_STATES,
+          animation: {
+            id: 38 /* hero_transformation_attack */,
+            sprite: {
+              path: "assets/challenge/characters/transformed_hero/attack",
+              length: 12
             }
           }
         }
@@ -1782,6 +1796,16 @@
             sprite: {
               path: "assets/challenge/characters/hero/run",
               length: 8
+            }
+          }
+        },
+        {
+          states: ALL_TRANSFORMED_HERO_STATES,
+          animation: {
+            id: 36 /* hero_transformation_run */,
+            sprite: {
+              path: "assets/challenge/characters/transformed_hero/run",
+              length: 6
             }
           }
         }
@@ -1991,17 +2015,7 @@
       }
     );
     interruptAnimation(31 /* camera_left_to_right */);
-    heroImage.src = "assets/challenge/characters/hero/idle/1.png";
-    addAnimationCallbackToQueue(8 /* stop */, launchIdleLoop);
-  };
-  var addAnimationCallbackToQueue = (animation, callBack) => {
-    const appElementId = getAppIdByAnimationId(animation);
-    if (!appElementId) {
-      return;
-    }
-    APP_ELEMENTS_ANIMATION_QUEUE[appElementId].request_queue.unshift(
-      new AnimationRequest(animation, callBack)
-    );
+    launchAnimation(heroCharacter, 6 /* idle */);
   };
   var interruptAnimation = (animation) => {
     ANIMATION_RUNNING_VALUES[animation] = 0;
@@ -2153,18 +2167,6 @@
     answerDataContainer.style.opacity = "1";
     answerDataValue.innerHTML = "";
   };
-  var launchSwordSlash = () => {
-    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
-    if (ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] !== 1 || transformed) {
-      return;
-    }
-    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
-    swordSlashImg.style.display = "flex";
-    setTimeout(() => {
-      swordSlashImg.style.display = "none";
-      ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] = 0;
-    }, 75);
-  };
   var updateIdleTimerInterface = () => {
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
@@ -2273,27 +2275,10 @@
       17,
       1,
       true,
-      40 /* lightning */,
+      41 /* lightning */,
       () => {
         lightningImg.style.display = "none";
       }
-    );
-  };
-  var launchIdleLoop = (loopIndex = 0) => {
-    const MAX_LOOP = 0;
-    if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
-      return;
-    }
-    if (loopIndex > MAX_LOOP) {
-      loopIndex = 0;
-    }
-    const loops = [
-      () => launchAnimation(heroCharacter, 6 /* idle */, false)
-    ];
-    loops[loopIndex]();
-    setTimeout(
-      () => launchIdleLoop(loopIndex + 1),
-      loopIndex === 0 ? 8e3 : 5e3
     );
   };
   window.onload = () => {
@@ -2313,8 +2298,8 @@
     defineCurrentSubject(hardMode ? FONCTIONS_LIN\u00C9AIRES : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
-    animateLightning();
-    launchIdleLoop();
+    heroCharacter.state = 4 /* transformed_idle */;
+    launchAnimation(heroCharacter, 6 /* idle */);
     if (hardMode) {
       epicAudio.play();
     } else {
