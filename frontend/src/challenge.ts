@@ -2041,20 +2041,27 @@ const clearEnemy = (enemy: EnemyInterface) => {
   interruptAnimation(ANIMATION_ID.ghost_opponent_run);
   interruptAnimation(ANIMATION_ID.ghost_opponent_attack);
 
-  destroyEnemy(enemy);
+  destroyEnemy(enemy, false);
 };
 
-const destroyEnemy = (enemy: EnemyInterface) => {
+const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
+  
   clearAndHideAnswerDataContainer();
   heroInTheRedZone = false;
   resetViewPoint();
 
-  setTimeout(() => {
+  const enemyDestructionAndRevivalCallback = () => {
     enemy.character.element.remove();
     if (!preTransformed) {
       triggerOpponentsApparition();
     }
-  }, 300);
+  }
+
+  if(delay){
+    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 600 : 300);
+  } else {
+    enemyDestructionAndRevivalCallback();
+  }
 
   ennemiesOnScreen.forEach((enemyOnScreen, index) => {
     if (enemy === enemyOnScreen) {
@@ -2317,7 +2324,7 @@ const launchHeroRunAnimation = () => {
     return;
   }
 
-  //runAudio.volume = 0.7;
+  runAudio.volume = 0.7;
 
   launchAnimation(heroCharacter, AnimationType.run);
 
@@ -3072,7 +3079,7 @@ const checkForOpponentsClearance = () => {
       ? getHardModeEnemyRealLeft(enemyOnScreen)!
       : enemyOnScreen.character.element.getBoundingClientRect().left;
 
-    if (enemyLeft < 0 - window.innerWidth * 0.25) {
+    if (enemyLeft < 0 - window.innerWidth * 0.05) {
       clearEnemy(enemyOnScreen);
     }
   });
