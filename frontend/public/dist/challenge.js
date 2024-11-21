@@ -150,7 +150,7 @@
     electricityAudio.volume = 0.7;
     transformationScreamAudio.volume = 0.25;
     hurtAudio.volume = 0.025;
-    runAudio.volume = 0.7;
+    runAudio.volume = 0;
   };
   var currentSubject = null;
   var currentSubjectTotal = 0;
@@ -808,7 +808,7 @@
           launchEndOfChallenge();
         }
       },
-      Math.random() > 0.5 ? 500 : 1e3
+      Math.random() > 0.5 ? 10 : 50
     );
   };
   var backgroundSrc = null;
@@ -1709,7 +1709,6 @@
     if (!heroIsAlive) {
       return;
     }
-    runAudio.volume = 0.7;
     launchAnimation(heroCharacter, 2 /* run */);
   };
   var DefaultCharacter = class {
@@ -1877,7 +1876,7 @@
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var resetViewPoint = () => {
-    enemyViewPoint.style.left = "120vw";
+    enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
@@ -1968,7 +1967,7 @@
       return;
     }
     const currentTime = Date.now();
-    if (lastStopInMs && currentTime - lastStopInMs < 5e3) {
+    if (lastStopInMs && currentTime - lastStopInMs < 1e3) {
       return;
     }
     runStopped = true;
@@ -2164,7 +2163,7 @@
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 240;
+    idleTimerValue = 10;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
@@ -2217,7 +2216,6 @@
     setTimeout(killHero2, 1e3);
   };
   var launchHeroHurtAnimation = () => {
-    superSpeedOn = false;
     launchAnimationAndDeclareItLaunched(
       heroImage,
       0,

@@ -105,9 +105,9 @@ audio {
     bottom: 21vh;
 
 */
-  left: 125vw;
-  height: 60.5vh;
-  bottom: 5vh;
+  left: 111vw;
+  height: 21.5vh;
+  bottom: 21vh;
   z-index: 11;
   display: flex;
   justify-content: center;
@@ -124,7 +124,7 @@ audio {
 .enemyViewPoint {
   position: absolute;
   top: 50vh;
-  left: 120vw;
+  left: 101vw;
   height: 25vh;
   width: 2.5vw;
   display: none;

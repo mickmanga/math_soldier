@@ -174,7 +174,7 @@ const setInitialGameVolume = () => {
   electricityAudio.volume = 0.7;
   transformationScreamAudio.volume = 0.25;
   hurtAudio.volume = 0.025;
-  runAudio.volume = 0.7;
+  runAudio.volume = 0;
 
 }
 
@@ -991,7 +991,7 @@ const triggerOpponentsApparition = () => {
         launchEndOfChallenge();
       }
     },
-    Math.random() > 0.5 ? 500 : 1000
+    Math.random() > 0.5 ? 10 : 50
   );
 };
 
@@ -2317,7 +2317,7 @@ const launchHeroRunAnimation = () => {
     return;
   }
 
-  runAudio.volume = 0.7;
+  //runAudio.volume = 0.7;
 
   launchAnimation(heroCharacter, AnimationType.run);
 
@@ -2767,7 +2767,7 @@ const dwarfAnimations = [
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
-  enemyViewPoint.style.left = "120vw";
+  enemyViewPoint.style.left = "105vw";
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
@@ -2799,9 +2799,8 @@ const createOrcCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    enemyViewPoint.style.left = "120vw";
+    enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
-  
 
  return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
 }
@@ -2954,7 +2953,7 @@ const stopRun = () => {
   
   const currentTime = Date.now();
 
-  if(lastStopInMs && (currentTime - lastStopInMs ) < 5000){
+  if(lastStopInMs && (currentTime - lastStopInMs ) < 1000){
     return;
   }
 
@@ -3258,7 +3257,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 240;
+  idleTimerValue = 10;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3331,7 +3330,7 @@ const launchDeathAnimation = () => {
 };
 
 const launchHeroHurtAnimation = () => {
-  superSpeedOn = false;
+ // superSpeedOn = false;
   launchAnimationAndDeclareItLaunched(
     heroImage,
     0,
