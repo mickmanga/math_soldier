@@ -8,6 +8,8 @@ const getUrlParameter = (name: string): string | null => {
 };
 
 const MAPS: HTMLElement[] = [];
+const MAP_SETS: MapSet[] = [];
+
 const heroContainer = document.getElementById("hero_container")!;
 const heroImage = document.getElementById("heroImg")! as HTMLImageElement;
 
@@ -995,8 +997,6 @@ const triggerOpponentsApparition = () => {
   );
 };
 
-let backgroundSrc: string | null = null;
-
 const launchEndOfChallenge = () => {
   gameFinished = true;
   document.getElementById("endOfGameInterface")!.style.display = "flex";
@@ -1299,14 +1299,32 @@ const timeManipulationToggle = () => {
   }
 };
 
-const createMapBlock = (left: number) => {
+class MapSet {
+  imagePath: string;
+  velocity: number;
+  maps: HTMLElement[]
+
+  constructor(imagePath: string, velocity: number, zIndex: string){
+    this.imagePath = imagePath;
+    this.velocity = velocity;
+    this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(100, imagePath, zIndex) ]
+  }
+}
+
+const createMapSet = (imagePath: string, velocity: number, zIndex = "1") => {
+  MAP_SETS.push(new MapSet(imagePath, velocity, zIndex));
+}
+
+const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
   const block = document.createElement("div");
   block.classList.add("mapBlock");
+  block.style.zIndex = zIndex;
   const backgroundImage = document.createElement("img");
-  backgroundImage.src = backgroundSrc ? backgroundSrc : "";
+  backgroundImage.src = imagePath
+
   block.append(backgroundImage);
   block.style.position = "fixed";
-  block.style.left = `${left}px`;
+  block.style.left = `${left}vw`;
   block.onclick = (event: Event) => timeManipulationToggle();
 
   document.getElementsByTagName("body")[0].append(block);
@@ -1346,7 +1364,8 @@ const slowTime = (multiplicator: number) => {
 
 const moveCamera = (
   direction: ANIMATION_ID,
-  previousFrameTimestamp: number
+  previousFrameTimestamp: number,
+  mapSetIndex: number
 ): any => {
   if (
     ANIMATION_RUNNING_VALUES[direction] === 0 ||
@@ -1359,15 +1378,19 @@ const moveCamera = (
 
   const diff = currentFrameTimeStamp - previousFrameTimestamp;
 
-  MAPS.forEach(
-    (map) =>
-      (map.style.left = `${
-        map.offsetLeft +
-        ((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) ) / 3
-      }px`)
-  );
+  const mapSet = MAP_SETS[mapSetIndex];
 
-  requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp));
+    mapSet.maps.forEach(
+      (map) =>
+        (map.style.left = `${
+          map.offsetLeft +
+          ((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (mapSet.velocity/10) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+       }px`)
+     );
+
+  requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));  
+
+
 };
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
@@ -1713,7 +1736,7 @@ const launchAttack = (special = false) => {
   }
 
   if(!special){
-    //launchSwordSlash();
+    launchSwordSlash();
     launchAnimation(heroCharacter, AnimationType.attack, false);
   } else {
      launchAnimation(heroCharacter, AnimationType.specialAttack, false);
@@ -2170,43 +2193,42 @@ const detectCollision = () => {
 };
 
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
-  if (throttleNum < 10) {
-    throttleNum++;
-    return requestAnimationFrame(() =>
-      checkForScreenUpdateFromLeftToRight(throttleNum)
-    );
-  }
-
   throttleNum = 0;
 
   //deletion
 
   //pick first map block
 
-  const firstMapDomElement = MAPS[0];
+  MAP_SETS.forEach(
+
+  (mapSet) => {
+      
+  const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.offsetLeft < -window.innerWidth) {
     firstMapDomElement.remove();
-    MAPS.shift();
+    mapSet.maps.shift();
   }
 
-  //creation
+  const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
 
-  const lastMapDomElement = MAPS[MAPS.length - 1];
-
-  if (
-    lastMapDomElement &&
-    lastMapDomElement.offsetLeft <= window.innerWidth / 10
-  ) {
-    MAPS.push(
-      createMapBlock(
-        lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5
-      )
-    );
-  }
+    if (
+      lastMapDomElement &&
+      lastMapDomElement.offsetLeft <= window.innerWidth / 10
+    ) {
+     mapSet.maps.push(
+       createMapBlock(
+         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5, mapSet.imagePath
+        )
+      );
+    }
+    }
+  )
 
   requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
 };
+
+/*
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
   if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_right_to_left] === 0) {
@@ -2249,6 +2271,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
   requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
 };
 
+*/
 
 
 type Animation = {
@@ -2866,7 +2889,9 @@ const launchHeroRun = () => {
 
   if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] === 0) {
     startCamera();
-    moveCamera(ANIMATION_ID.camera_left_to_right, Date.now());
+    for(let i=0; i < 8 ; i++){
+      moveCamera(ANIMATION_ID.camera_left_to_right, Date.now(), i);
+    }
   }
 
   launchHeroRunAnimation();
@@ -3013,10 +3038,10 @@ const stopRun = () => {
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
-  //heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+  heroImage.src = "assets/challenge/characters/hero/idle/1.png";
 
-  //addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
-  launchAnimation(heroCharacter, AnimationType.idle);
+  addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
+  //launchAnimation(heroCharacter, AnimationType.idle);
 };
 
 const addAnimationCallbackToQueue = (
@@ -3457,16 +3482,23 @@ const animateLightning = () => {
     );
  }
 
+ const createMapSets = () => {
+
+    for(let i=1; i <= 8; i++){
+
+      const velocity = i;
+      createMapSet( `assets/challenge/maps/forest/${i}.png` , velocity, `${i}`);
+
+    } 
+
+ }
+
 window.onload = () => {
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();
   setHeroClass();
-  backgroundSrc = `assets/palace/maps/castle/${
-    hardMode ? "castle.gif" : "castle.gif"
-  }`;
-  MAPS.push(createMapBlock(0));
-  MAPS.push(createMapBlock(100));
+  createMapSets();
   createGameAccordingToMode();
   updateLifePointsDisplay();
   updateScoreDisplay();
@@ -3476,10 +3508,8 @@ window.onload = () => {
   defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
-  //animateLightning();
-  //launchIdleLoop();
-  heroCharacter.state = HeroCharacterStates.transformed_idle;
-  launchAnimation(heroCharacter, AnimationType.idle)
+  animateLightning();
+  launchIdleLoop();
   
   if (hardMode) {
     epicAudio.play();

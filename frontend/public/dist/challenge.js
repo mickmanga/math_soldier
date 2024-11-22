@@ -29,7 +29,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
   };
-  var MAPS = [];
+  var MAP_SETS = [];
   var heroContainer = document.getElementById("hero_container");
   var heroImage = document.getElementById("heroImg");
   var swordSlashImg = document.getElementById(
@@ -811,7 +811,6 @@
       Math.random() > 0.5 ? 10 : 50
     );
   };
-  var backgroundSrc = null;
   var launchEndOfChallenge = () => {
     gameFinished = true;
     document.getElementById("endOfGameInterface").style.display = "flex";
@@ -1071,14 +1070,25 @@
       stopRun();
     }
   };
-  var createMapBlock = (left) => {
+  var MapSet = class {
+    constructor(imagePath, velocity, zIndex) {
+      this.imagePath = imagePath;
+      this.velocity = velocity;
+      this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(100, imagePath, zIndex)];
+    }
+  };
+  var createMapSet = (imagePath, velocity, zIndex = "1") => {
+    MAP_SETS.push(new MapSet(imagePath, velocity, zIndex));
+  };
+  var createMapBlock = (left, imagePath, zIndex = "1") => {
     const block = document.createElement("div");
     block.classList.add("mapBlock");
+    block.style.zIndex = zIndex;
     const backgroundImage = document.createElement("img");
-    backgroundImage.src = backgroundSrc ? backgroundSrc : "";
+    backgroundImage.src = imagePath;
     block.append(backgroundImage);
     block.style.position = "fixed";
-    block.style.left = `${left}px`;
+    block.style.left = `${left}vw`;
     block.onclick = (event) => timeManipulationToggle();
     document.getElementsByTagName("body")[0].append(block);
     return block;
@@ -1093,16 +1103,17 @@
     const opponentMoveMultiplicatorBase = THROTTLE_NUMS[15 /* ghost_opponent_move */] ? THROTTLE_NUMS[15 /* ghost_opponent_move */] : 1;
     THROTTLE_NUMS[15 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
   };
-  var moveCamera = (direction, previousFrameTimestamp) => {
+  var moveCamera = (direction, previousFrameTimestamp, mapSetIndex) => {
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
       return;
     }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
-    MAPS.forEach(
-      (map) => map.style.left = `${map.offsetLeft + (direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) / 3}px`
+    const mapSet = MAP_SETS[mapSetIndex];
+    mapSet.maps.forEach(
+      (map) => map.style.left = `${map.offsetLeft + (direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 10) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 3}px`
     );
-    requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp));
+    requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
   var ALGEBRA_INTRO_2 = {
     title: "Algebra Basics",
@@ -1350,6 +1361,7 @@
       swordAudio.currentTime = 0;
     }
     if (!special) {
+      launchSwordSlash();
       launchAnimation(heroCharacter, 0 /* attack */, false);
     } else {
       launchAnimation(heroCharacter, 1 /* specialAttack */, false);
@@ -1645,26 +1657,25 @@
     requestAnimationFrame(detectCollision);
   };
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
-    if (throttleNum < 10) {
-      throttleNum++;
-      return requestAnimationFrame(
-        () => checkForScreenUpdateFromLeftToRight(throttleNum)
-      );
-    }
     throttleNum = 0;
-    const firstMapDomElement = MAPS[0];
-    if (firstMapDomElement.offsetLeft < -window.innerWidth) {
-      firstMapDomElement.remove();
-      MAPS.shift();
-    }
-    const lastMapDomElement = MAPS[MAPS.length - 1];
-    if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
-      MAPS.push(
-        createMapBlock(
-          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5
-        )
-      );
-    }
+    MAP_SETS.forEach(
+      (mapSet) => {
+        const firstMapDomElement = mapSet.maps[0];
+        if (firstMapDomElement.offsetLeft < -window.innerWidth) {
+          firstMapDomElement.remove();
+          mapSet.maps.shift();
+        }
+        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+        if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
+          mapSet.maps.push(
+            createMapBlock(
+              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5,
+              mapSet.imagePath
+            )
+          );
+        }
+      }
+    );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
@@ -1927,7 +1938,9 @@
     interuptIdleTimer();
     if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
       startCamera();
-      moveCamera(31 /* camera_left_to_right */, Date.now());
+      for (let i = 0; i < 8; i++) {
+        moveCamera(31 /* camera_left_to_right */, Date.now(), i);
+      }
     }
     launchHeroRunAnimation();
   };
@@ -2015,7 +2028,17 @@
       }
     );
     interruptAnimation(31 /* camera_left_to_right */);
-    launchAnimation(heroCharacter, 6 /* idle */);
+    heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+    addAnimationCallbackToQueue(8 /* stop */, launchIdleLoop);
+  };
+  var addAnimationCallbackToQueue = (animation, callBack) => {
+    const appElementId = getAppIdByAnimationId(animation);
+    if (!appElementId) {
+      return;
+    }
+    APP_ELEMENTS_ANIMATION_QUEUE[appElementId].request_queue.unshift(
+      new AnimationRequest(animation, callBack)
+    );
   };
   var interruptAnimation = (animation) => {
     ANIMATION_RUNNING_VALUES[animation] = 0;
@@ -2167,6 +2190,18 @@
     answerDataContainer.style.opacity = "1";
     answerDataValue.innerHTML = "";
   };
+  var launchSwordSlash = () => {
+    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
+    if (ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] !== 1 || transformed) {
+      return;
+    }
+    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
+    swordSlashImg.style.display = "flex";
+    setTimeout(() => {
+      swordSlashImg.style.display = "none";
+      ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] = 0;
+    }, 75);
+  };
   var updateIdleTimerInterface = () => {
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
@@ -2281,14 +2316,35 @@
       }
     );
   };
+  var launchIdleLoop = (loopIndex = 0) => {
+    const MAX_LOOP = 0;
+    if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
+      return;
+    }
+    if (loopIndex > MAX_LOOP) {
+      loopIndex = 0;
+    }
+    const loops = [
+      () => launchAnimation(heroCharacter, 6 /* idle */, false)
+    ];
+    loops[loopIndex]();
+    setTimeout(
+      () => launchIdleLoop(loopIndex + 1),
+      loopIndex === 0 ? 8e3 : 5e3
+    );
+  };
+  var createMapSets = () => {
+    for (let i = 1; i <= 8; i++) {
+      const velocity = i;
+      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`);
+    }
+  };
   window.onload = () => {
     setupListeners();
     setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
-    backgroundSrc = `assets/palace/maps/castle/${hardMode ? "castle.gif" : "castle.gif"}`;
-    MAPS.push(createMapBlock(0));
-    MAPS.push(createMapBlock(100));
+    createMapSets();
     createGameAccordingToMode();
     updateLifePointsDisplay();
     updateScoreDisplay();
@@ -2298,8 +2354,8 @@
     defineCurrentSubject(hardMode ? FONCTIONS_LIN\u00C9AIRES : STATS);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
-    heroCharacter.state = 4 /* transformed_idle */;
-    launchAnimation(heroCharacter, 6 /* idle */);
+    animateLightning();
+    launchIdleLoop();
     if (hardMode) {
       epicAudio.play();
     } else {

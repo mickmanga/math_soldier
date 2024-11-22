@@ -65,7 +65,7 @@ audio {
   left: 20vw;
   height: 30vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
-  z-index: 5;
+  z-index: 100;
   display: flex;
   justify-content: flex-start;
 }
@@ -108,7 +108,7 @@ audio {
   left: 111vw;
   height: 21.5vh;
   bottom: 21vh;
-  z-index: 11;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -558,6 +558,82 @@ body {
   left: 0;
   top:0;
   display: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.parallax-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  width: 200%; /* Double the width to ensure seamless repetition */
+  height: 100%;
+  display: flex;
+  background-size: contain;
+  background-repeat: repeat-x; /* Repeats horizontally to avoid gaps */
+  background-position: center;
+  animation: scroll infinite linear;
+}
+
+/* Layer images and scroll durations */
+.layer-1 {
+  background-image: url('backgrounds/1.png');
+  animation-duration: 60s;
+}
+
+.layer-2 {
+  background-image: url('backgrounds/2.png');
+  animation-duration: 55s;
+}
+
+.layer-3 {
+  background-image: url('backgrounds/3.png');
+  animation-duration: 50s;
+}
+
+.layer-4 {
+  background-image: url('backgrounds/4.png');
+  animation-duration: 45s;
+}
+
+.layer-5 {
+  background-image: url('backgrounds/5.png');
+  animation-duration: 40s;
+}
+
+.layer-6 {
+  background-image: url('backgrounds/6.png');
+  animation-duration: 35s;
+}
+
+.layer-7 {
+  background-image: url('backgrounds/7.png');
+  animation-duration: 30s;
+}
+
+.layer-8 {
+  background-image: url('backgrounds/8.png');
+  animation-duration: 25s;
+}
+
+/* Scrolling animation */
+@keyframes scroll {
+  from {
+      transform: translateX(0);
+  }
+  to {
+      transform: translateX(-50%);
+  }
 }
 
 @property --progress {
