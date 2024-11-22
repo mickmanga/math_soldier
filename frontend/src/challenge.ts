@@ -1320,7 +1320,7 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
   block.classList.add("mapBlock");
   block.style.zIndex = zIndex;
   const backgroundImage = document.createElement("img");
-  backgroundImage.src = imagePath
+  backgroundImage.src = imagePath;
 
   block.append(backgroundImage);
   block.style.position = "fixed";
@@ -1384,7 +1384,7 @@ const moveCamera = (
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          ((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (mapSet.velocity/10) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (mapSet.velocity/10) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
@@ -2195,13 +2195,9 @@ const detectCollision = () => {
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   throttleNum = 0;
 
-  //deletion
-
-  //pick first map block
-
   MAP_SETS.forEach(
 
-  (mapSet) => {
+  (mapSet, index) => {
       
   const firstMapDomElement = mapSet.maps[0];
 
@@ -2216,12 +2212,15 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.offsetLeft <= window.innerWidth / 10
     ) {
+      console.log("adding an element");
      mapSet.maps.push(
        createMapBlock(
-         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5, mapSet.imagePath
+         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5, mapSet.imagePath, `${index}`
         )
       );
-    }
+      } else {
+     }
+
     }
   )
 

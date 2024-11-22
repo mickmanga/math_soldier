@@ -1083,7 +1083,6 @@
   var createMapBlock = (left, imagePath, zIndex = "1") => {
     const block = document.createElement("div");
     block.classList.add("mapBlock");
-    block.style.zIndex = zIndex;
     const backgroundImage = document.createElement("img");
     backgroundImage.src = imagePath;
     block.append(backgroundImage);
@@ -1111,7 +1110,7 @@
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + (direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 10) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 10) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
@@ -1659,7 +1658,7 @@
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
     throttleNum = 0;
     MAP_SETS.forEach(
-      (mapSet) => {
+      (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.offsetLeft < -window.innerWidth) {
           firstMapDomElement.remove();
@@ -1667,12 +1666,15 @@
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
+          console.log("adding an element");
           mapSet.maps.push(
             createMapBlock(
               lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5,
-              mapSet.imagePath
+              mapSet.imagePath,
+              `${index}`
             )
           );
+        } else {
         }
       }
     );
