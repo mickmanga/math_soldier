@@ -43,7 +43,7 @@
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var specialMoveIndicator = document.getElementById("special_move_indicator");
-  var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+  var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 80;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
   var heroContactPointContainerRatio = 0.3;
@@ -1074,7 +1074,7 @@
     constructor(imagePath, velocity, zIndex) {
       this.imagePath = imagePath;
       this.velocity = velocity;
-      this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(100, imagePath, zIndex)];
+      this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(window.innerWidth * 0.98, imagePath, zIndex)];
     }
   };
   var createMapSet = (imagePath, velocity, zIndex = "1") => {
@@ -1083,11 +1083,12 @@
   var createMapBlock = (left, imagePath, zIndex = "1") => {
     const block = document.createElement("div");
     block.classList.add("mapBlock");
+    block.style.zIndex = zIndex;
     const backgroundImage = document.createElement("img");
     backgroundImage.src = imagePath;
     block.append(backgroundImage);
-    block.style.position = "fixed";
-    block.style.left = `${left}vw`;
+    block.style.position = "absolute";
+    block.style.left = `${left}px`;
     block.onclick = (event) => timeManipulationToggle();
     document.getElementsByTagName("body")[0].append(block);
     return block;
@@ -1110,7 +1111,7 @@
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 10) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
@@ -1666,15 +1667,13 @@
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
-          console.log("adding an element");
           mapSet.maps.push(
             createMapBlock(
-              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5,
+              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
               mapSet.imagePath,
               `${index}`
             )
           );
-        } else {
         }
       }
     );
@@ -1940,7 +1939,7 @@
     interuptIdleTimer();
     if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
       startCamera();
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 5; i++) {
         moveCamera(31 /* camera_left_to_right */, Date.now(), i);
       }
     }
@@ -2336,9 +2335,9 @@
     );
   };
   var createMapSets = () => {
-    for (let i = 1; i <= 8; i++) {
-      const velocity = i;
-      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`);
+    for (let i = 1; i <= 5; i++) {
+      const velocity = i * i;
+      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`);
     }
   };
   window.onload = () => {

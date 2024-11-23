@@ -31,7 +31,7 @@ const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 
 const specialMoveIndicator = document.getElementById("special_move_indicator")!;
 
-const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 100;
+const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 80;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
 const CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
 
@@ -1307,7 +1307,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(100, imagePath, zIndex) ]
+    this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ]
   }
 }
 
@@ -1323,8 +1323,8 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
   backgroundImage.src = imagePath;
 
   block.append(backgroundImage);
-  block.style.position = "fixed";
-  block.style.left = `${left}vw`;
+  block.style.position = "absolute";
+  block.style.left = `${left}px`;
   block.onclick = (event: Event) => timeManipulationToggle();
 
   document.getElementsByTagName("body")[0].append(block);
@@ -1384,7 +1384,7 @@ const moveCamera = (
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * (mapSet.velocity/10) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * ((mapSet.velocity)/20) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
@@ -2212,15 +2212,13 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.offsetLeft <= window.innerWidth / 10
     ) {
-      console.log("adding an element");
+   
      mapSet.maps.push(
        createMapBlock(
-         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 5, mapSet.imagePath, `${index}`
+         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
         )
       );
-      } else {
-     }
-
+      } 
     }
   )
 
@@ -2888,7 +2886,7 @@ const launchHeroRun = () => {
 
   if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] === 0) {
     startCamera();
-    for(let i=0; i < 8 ; i++){
+    for(let i=0; i < 5 ; i++){
       moveCamera(ANIMATION_ID.camera_left_to_right, Date.now(), i);
     }
   }
@@ -3483,10 +3481,10 @@ const animateLightning = () => {
 
  const createMapSets = () => {
 
-    for(let i=1; i <= 8; i++){
+    for(let i=1; i <= 5; i++){
 
-      const velocity = i;
-      createMapSet( `assets/challenge/maps/forest/${i}.png` , velocity, `${i}`);
+      const velocity = i * i;
+      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`);
 
     } 
 
