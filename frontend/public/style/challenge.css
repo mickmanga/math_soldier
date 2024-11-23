@@ -106,8 +106,8 @@ audio {
 
 */
   left: 111vw;
-  height: 21.5vh;
-  bottom: 21vh;
+  height: 40.5vh;
+  bottom: 15vh;
   z-index: 100;
   display: flex;
   justify-content: center;
