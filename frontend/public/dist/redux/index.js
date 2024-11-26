@@ -2231,8 +2231,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/index.ts
   var store = configureStore({
     reducer: {
-      user: userSlice_default
-      // Add other reducers here as needed
+      user: userSlice_default,
+      challenge: userSlice_default
     }
   });
 })();

@@ -825,7 +825,31 @@ const MATHS_ARITHMETIC = {
 
 const findNextAnswer = () => {
 
-  
+  /*
+   const answersFromBD = getAnswerFrom Redux.
+
+   const currentIndex = reduxState.currentIndex
+
+   if(currentIndex === (answersFromBD.length - 1)){
+      
+      stop. Game over
+
+      return;
+
+   }
+
+   currentIndex++;
+
+   const newAnswer = answersFromBD[currentIndex];
+
+   //insert this newAnswer into reudxState.answers
+
+   Then, when the opponent is passed : take the last element 
+   
+   */
+
+
+
 }
 
 
@@ -1605,7 +1629,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.hammer_opponent_attack ? 85 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2629,8 +2653,8 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/wolf/idle",
-          length: 8
+          path: "assets/challenge/characters/enemies/golem/idle",
+          length: 12
       }
       }
      }
@@ -2645,8 +2669,8 @@ const redHammerAnimations = [
         {
           id: ANIMATION_ID.hammer_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/wolf/attack",
-            length: 15
+            path: "assets/challenge/characters/enemies/king/attack",
+            length: 58
         }
         }
        }
