@@ -12,6 +12,8 @@ build({
     path.join("src", "load.ts"),
     path.join("src", "login.ts"),
     path.join("src", "learning.ts"),
+    path.join("src/redux", "index.ts"),
+
   ],
   bundle: true,
   minify: false,

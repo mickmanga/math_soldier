@@ -823,6 +823,11 @@ const MATHS_ARITHMETIC = {
   ],
 };
 
+const findNextAnswer = () => {
+
+  
+}
+
 
 const getNextAnswer = () => {
   const randVal = Math.random() > 0.5;
@@ -1600,7 +1605,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.hammer_opponent_attack ? 85 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2640,8 +2645,8 @@ const redHammerAnimations = [
         {
           id: ANIMATION_ID.hammer_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/hard/attack",
-            length: 30
+            path: "assets/challenge/characters/enemies/wolf/attack",
+            length: 15
         }
         }
        }
@@ -2837,8 +2842,17 @@ const createRedHammerCharacter = (): DefaultCharacter => {
 
     resetViewPoint();
 
- return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations)
+ return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations);
 }
+
+const createExplosionElement = (hostEnemy: EnemyInterface) => {
+   const explosionContainer = document.getElementById("div")!;
+   explosionContainer.classList.add("explosion_container");
+
+   hostEnemy.character.element.append(explosionContainer);
+
+}
+
 const createOrcCharacter = (): DefaultCharacter => {
 
     const newOpponentContainer = document.createElement("div");
@@ -3312,7 +3326,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 10;
+  idleTimerValue = 1000;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }

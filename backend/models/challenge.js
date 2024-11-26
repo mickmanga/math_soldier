@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
-const AnswerSchema = require('./answer');
 const { Schema } = mongoose;
 
 
 // Définition du schéma pour Challenge
 const challengeSchema = new Schema({
   grade: String,
-  answers: [AnswerSchema]
+  answers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Answer'
+    }
+  ]
 });
 
 // Création du modèle Challenge

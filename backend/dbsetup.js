@@ -2,10 +2,10 @@
 // dbsetup.js
 
 const mongoose = require('mongoose');
-const User = require('./models/user');
 const Subject = require('./models/subject');
 const { KnowledgeDataContainer, KnowledgeDataChapter } = require('./models/knowledge');
 const { Challenge } = require('./models/challenge');
+const Answer = require('./models/answer');
 
 // MongoDB connection URI
 const mongoURI = 'mongodb://localhost:27017/memory_soldier'; // Change if needed
@@ -567,10 +567,19 @@ async function setupDB() {
     const knowledgeBlocks = [];
     for (const section of sections) {
 
+      const answers = [];
+
+      for( const answer of section.answers){
+
+        const answerModel = await new Answer(answer).save();
+
+        answers.push(answerModel._id);
+      }
+
       // Create Challenge
       const challenge = new Challenge({
         name: `Challenge for ${section.title}`,
-        answers: section.answers,
+        answers: answers,
         grade: "D",
         topGrade: "D",
       });

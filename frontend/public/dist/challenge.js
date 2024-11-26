@@ -1250,7 +1250,7 @@
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 41 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : animationId === 16 /* hammer_opponent_idle */ ? 120 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : animationId === 16 /* hammer_opponent_idle */ ? 115 : animationId === 18 /* hammer_opponent_attack */ ? 85 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -1878,8 +1878,8 @@
           animation: {
             id: 18 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
+              path: "assets/challenge/characters/enemies/wolf/attack",
+              length: 15
             }
           }
         }
@@ -2207,7 +2207,7 @@
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 10;
+    idleTimerValue = 1e3;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
