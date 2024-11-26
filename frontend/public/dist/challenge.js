@@ -1863,8 +1863,8 @@
           animation: {
             id: 16 /* hammer_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/golem/idle",
-              length: 12
+              path: "assets/challenge/characters/enemies/witch/idle",
+              length: 7
             }
           }
         }
@@ -1878,8 +1878,8 @@
           animation: {
             id: 18 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/king/attack",
-              length: 58
+              path: "assets/challenge/characters/enemies/witch/attack",
+              length: 18
             }
           }
         }
