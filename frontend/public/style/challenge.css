@@ -113,7 +113,7 @@ audio {
 */
   left: 140vw;
   height: 40.5vh;
-  bottom: 15vh;
+  bottom: 2vh;
   z-index: 100;
   display: flex;
   justify-content: center;

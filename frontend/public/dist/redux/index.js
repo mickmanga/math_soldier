@@ -293,10 +293,10 @@
   function assertReducerShape(reducers) {
     Object.keys(reducers).forEach((key) => {
       const reducer = reducers[key];
-      const initialState2 = reducer(void 0, {
+      const initialState3 = reducer(void 0, {
         type: actionTypes_default.INIT
       });
-      if (typeof initialState2 === "undefined") {
+      if (typeof initialState3 === "undefined") {
         throw new Error(false ? formatProdErrorMessage(12) : `The slice reducer for key "${key}" returned undefined during initialization. If the state passed to the reducer is undefined, you must explicitly return the initial state. The initial state may not be undefined. If you don't want to set a value for this reducer, you can use null instead of undefined.`);
       }
       if (typeof reducer(void 0, {
@@ -1652,7 +1652,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   function isStateFunction(x) {
     return typeof x === "function";
   }
-  function createReducer(initialState2, mapOrBuilderCallback) {
+  function createReducer(initialState3, mapOrBuilderCallback) {
     if (true) {
       if (typeof mapOrBuilderCallback === "object") {
         throw new Error(false ? formatProdErrorMessage(8) : "The object notation for `createReducer` has been removed. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createReducer");
@@ -1660,10 +1660,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     let [actionsMap, finalActionMatchers, finalDefaultCaseReducer] = executeReducerBuilderCallback(mapOrBuilderCallback);
     let getInitialState;
-    if (isStateFunction(initialState2)) {
-      getInitialState = () => freezeDraftable(initialState2());
+    if (isStateFunction(initialState3)) {
+      getInitialState = () => freezeDraftable(initialState3());
     } else {
-      const frozenInitialState = freezeDraftable(initialState2);
+      const frozenInitialState = freezeDraftable(initialState3);
       getInitialState = () => frozenInitialState;
     }
     function reducer(state = getInitialState(), action) {
@@ -2228,11 +2228,30 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var { setUser, clearUser } = userSlice.actions;
   var userSlice_default = userSlice.reducer;
 
+  // src/redux/slices/challengeSlice.ts
+  var initialState2 = {
+    answers: []
+  };
+  var challengeSlice = createSlice({
+    name: "challengeAnswers",
+    initialState: initialState2,
+    reducers: {
+      addAnswer: (state, action) => {
+        state.answers.push(action.payload);
+      },
+      clearAnswers: (state) => {
+        state.answers = [];
+      }
+    }
+  });
+  var { addAnswer, clearAnswers } = challengeSlice.actions;
+  var challengeSlice_default = challengeSlice.reducer;
+
   // src/redux/index.ts
   var store = configureStore({
     reducer: {
       user: userSlice_default,
-      challenge: userSlice_default
+      challenge: challengeSlice_default
     }
   });
 })();
