@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const { KnowledgeDataChapter } = require('../models/knowledge.js');
 
 // Route to get all chapters
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        console.log("chapter requested");
-       // const chapters = await KnowledgeDataChapter.find();
-        
-        res.json(chapters);
+       const chapter = await KnowledgeDataChapter.findById(req.params.id).populate('chaptersOrData');
+       res.status(200).json(chapter);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

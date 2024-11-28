@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     try {
-        const challenge = await Challenge.findById(req.params.id);
+        const challenge = await Challenge.findById(req.params.id).populate('answers');
 
         if (!challenge) {
             console.log("we didnt find the challenge");
