@@ -1,3 +1,6 @@
+import {store} from "./redux/index";
+import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
+
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
 };
@@ -64,7 +67,9 @@ const fetchChallengeById = async (challengeId: string): Promise<void> => {
       answers = response;
 
       const challengeData = await response.json();
-      console.log('Fetched Challenge:', challengeData);
+
+      sortAndStoreAnswers(challengeData.answers);
+
   } catch (error) {
       console.error('Error:', error);
   }
@@ -194,7 +199,7 @@ const REWARD_UNIT = 1;
 
 let transformedAlready = false;
 
-const REWARD_TIMEOUT_DURATION = 1000;
+const REWARD_TIMEOUT_DURATION = 5;
 const KILLED_ENEMY_REWARD = 30;
 
 let rewardStreak = 1;
@@ -244,16 +249,16 @@ class Answer {
 
 interface EnemyInterface {
   character: CharacterInterface;
-  answer: Answer;
+  answer: ChallengeAnswerData;
   collideable:boolean;
 }
 
 class Enemy implements EnemyInterface {
   character: CharacterInterface;
-  answer: Answer;
+  answer: ChallengeAnswerData;
   collideable = true;
 
-  constructor(character: CharacterInterface, answer: Answer) {
+  constructor(character: CharacterInterface, answer: ChallengeAnswerData) {
     this.character = character;
     this.answer = answer;
   }
@@ -774,81 +779,78 @@ const NOTATION_ET_REPRESENTATION_DES_FONCTIONS = {
   ],
 };
 
-
-const MATHS_ARITHMETIC = { 
+const MATHS_ARITHMETIC = {
   title: "Intermediate Arithmetic Challenge",
   good: [
-    new Answer("56 + 37 = 93", true),
-    new Answer("42 - 15 = 27", true),
-    new Answer("36 / 6 = 6", true),
-    new Answer("14 * 3 = 42", true),
-    new Answer("90 - 37 = 53", true),
-    new Answer("18 * 4 = 72", true),
-    new Answer("96 / 8 = 12", true),
-    new Answer("57 + 24 = 81", true),
-    new Answer("63 - 28 = 35", true),
-    new Answer("22 * 5 = 110", true),
-    new Answer("84 / 7 = 12", true),
-    new Answer("49 + 32 = 81", true),
-    new Answer("77 - 19 = 58", true),
-    new Answer("15 * 6 = 90", true),
-    new Answer("72 / 6 = 12", true),
-    new Answer("45 + 26 = 71", true),
-    new Answer("68 - 29 = 39", true),
-    new Answer("30 * 2 = 60", true),
-    new Answer("108 / 9 = 12", true),
-    new Answer("37 + 18 = 55", true),
+    new Answer("12 + 8 = 20", true),
+    new Answer("15 - 6 = 9", true),
+    new Answer("9 + 7 = 16", true),
+    new Answer("18 - 11 = 7", true),
+    new Answer("14 + 6 = 20", true),
+    new Answer("21 - 13 = 8", true),
+    new Answer("16 + 5 = 21", true),
+    new Answer("24 - 10 = 14", true),
+    new Answer("13 + 8 = 21", true),
+    new Answer("20 - 12 = 8", true),
   ],
   bad: [
-    new Answer("56 + 37 = 94", false),
-    new Answer("42 - 15 = 30", false),
-    new Answer("36 / 6 = 5", false),
-    new Answer("14 * 3 = 40", false),
-    new Answer("90 - 37 = 50", false),
-    new Answer("18 * 4 = 80", false),
-    new Answer("96 / 8 = 15", false),
-    new Answer("57 + 24 = 80", false),
-    new Answer("63 - 28 = 30", false),
-    new Answer("22 * 5 = 105", false),
-    new Answer("84 / 7 = 13", false),
-    new Answer("49 + 32 = 80", false),
-    new Answer("77 - 19 = 60", false),
-    new Answer("15 * 6 = 85", false),
-    new Answer("72 / 6 = 14", false),
-    new Answer("45 + 26 = 70", false),
-    new Answer("68 - 29 = 40", false),
-    new Answer("30 * 2 = 65", false),
-    new Answer("108 / 9 = 13", false),
-    new Answer("37 + 18 = 54", false),
+    new Answer("12 + 8 = 22", false),
+    new Answer("15 - 6 = 8", false),
+    new Answer("9 + 7 = 15", false),
+    new Answer("18 - 11 = 6", false),
+    new Answer("14 + 6 = 22", false),
+    new Answer("21 - 13 = 10", false),
+    new Answer("16 + 5 = 22", false),
+    new Answer("24 - 10 = 15", false),
+    new Answer("13 + 8 = 20", false),
+    new Answer("20 - 12 = 10", false),
   ],
 };
 
+const sortAndStoreAnswers = (challengeData: Array<ChallengeAnswerData>) => {
+
+  const shuffle = (array: Array<ChallengeAnswerData>) => {
+
+    for (let i = array.length - 1; i > 0; i--) {
+      // Generate a random index between 0 and i
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      // Swap elements at i and randomIndex
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+    return array;
+  }
+
+  let randomlySortedChallengeArray = shuffle(challengeData);
+
+
+  randomlySortedChallengeArray.forEach(
+    (challenge) => {
+       store.dispatch(addAnswer({
+        data: challenge,
+        found: null
+       }))
+    }
+  )
+
+}
+
+
 const findNextAnswer = () => {
 
-  /*
-   const answersFromBD = getAnswerFrom Redux.
+  const challenge = store.getState().challenge;
+  const currentAnswerIndex = challenge.currentAnswerIndex;
+  const answers = challenge.answers;
 
-   const currentIndex = reduxState.currentIndex
+  if(currentAnswerIndex >= answers.length){
+        
+    return "done";
+  }
 
-   if(currentIndex === (answersFromBD.length - 1)){
-      
-      stop. Game over
+  const data = answers[store.getState().challenge.currentAnswerIndex].data;
 
-      return;
+  store.dispatch(incrementAnswerIndex());
 
-   }
-
-   currentIndex++;
-
-   const newAnswer = answersFromBD[currentIndex];
-
-   //insert this newAnswer into reudxState.answers
-
-   Then, when the opponent is passed : take the last element 
-   
-   */
-
-
+  return data;
 
 }
 
@@ -857,8 +859,7 @@ const getNextAnswer = () => {
   const randVal = Math.random() > 0.5;
 
   if (!currentSubject) {
-    console.log("there is no subject");
-    defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
+    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   }
 
   const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
@@ -979,7 +980,7 @@ const buildEnemyElement = () => {
   return newOpponentContainer;
 };
 
-const buildEnemy = (answer: Answer) => {
+const buildEnemy = (answer: ChallengeAnswerData) => {
 
   const enemyCharacter = createRedHammerCharacter();
  //const enemyCharacter = createOrcCharacter();
@@ -998,7 +999,7 @@ const buildEnemy = (answer: Answer) => {
   return enemy;
 };
 
-const buildAndLaunchEnemy = (answer: Answer) => {
+const buildAndLaunchEnemy = (answer: ChallengeAnswerData) => {
   const enemy = buildEnemy(answer);
 
   if (!enemy) {
@@ -1007,13 +1008,13 @@ const buildAndLaunchEnemy = (answer: Answer) => {
 
   lightUpAnswerDataContainer();
 
-  answerDataValue.innerHTML = enemy.answer.data;
+  answerDataValue.innerHTML = enemy.answer.text;
 
   launchOpponent(enemy);
 };
 
 const triggerOpponentsApparition = () => {
-  const newAnswer = getNextAnswer();
+  const newAnswer = findNextAnswer();
   enemiesComingTimeout = setTimeout(
     () => {
       if (newAnswer && newAnswer !== "done") {
@@ -1792,7 +1793,7 @@ const launchAttack = (special = false) => {
     if (!enemyCanBeHit(enemy)) {
       return;
     }
-    if (!enemy.answer.good) {
+    if (!enemy.answer.true) {
       killWrongEnemy(enemy);
     } else {
       killRightEnemyAndUpdateScore(enemy);
@@ -1936,6 +1937,9 @@ const killRightEnemyAndUpdateScore = (enemy: EnemyInterface) => {
 
 const rewardHero = () => {
   const bonus_ratio = transformed ? TRANSFORMED_BONUS_RATIO : 1;
+
+  store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: true}))
+
   if (!transformed) {
     rewardStreak++;
     updateTransformationProgressBarDisplay();
@@ -1963,6 +1967,8 @@ const updateScoreDisplay = () => {
 
 const killWrongEnemy = (enemy: EnemyInterface) => {
   scoreMalusContainer.style.display = "flex";
+
+  store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: false}))
 
   lifePoints.value--;
   checkForHerosDeath();
@@ -2653,8 +2659,8 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/witch/idle",
-          length: 7
+          path: "assets/challenge/characters/enemies/hard/idle",
+          length: 16
       }
       }
      }
@@ -2669,8 +2675,8 @@ const redHammerAnimations = [
         {
           id: ANIMATION_ID.hammer_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/witch/attack",
-            length: 18
+            path: "assets/challenge/characters/enemies/hard/attack",
+            length: 30
         }
         }
        }
@@ -2907,7 +2913,7 @@ const createDwarfCharacter = (): DefaultCharacter => {
 
   //init view point
 
-  enemyViewPoint.style.left = "120vw";
+  enemyViewPoint.style.left = "110vw";
   enemyViewPoint.style.display = "flex";
 
 
@@ -3350,7 +3356,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 1000;
+  idleTimerValue = 5;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3540,11 +3546,20 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? FONCTIONS_LINÉAIRES : STATS);
+  defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
   launchIdleLoop();
+
+  console.log("store =>");
+  console.log(store);
+
+  store.dispatch(
+    () => {
+      
+    }
+  )
   
   if (hardMode) {
     epicAudio.play();

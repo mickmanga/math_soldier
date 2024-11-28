@@ -2230,7 +2230,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/challengeSlice.ts
   var initialState2 = {
-    answers: []
+    answers: [],
+    currentAnswerIndex: 0
   };
   var challengeSlice = createSlice({
     name: "challengeAnswers",
@@ -2241,10 +2242,24 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       clearAnswers: (state) => {
         state.answers = [];
+      },
+      incrementAnswerIndex: (state) => {
+        state.currentAnswerIndex++;
+      },
+      resetAnswerIndex: (state) => {
+        state.currentAnswerIndex = 0;
+      },
+      setFoundAtIndex: (state, action) => {
+        const { index, found } = action.payload;
+        if (index >= 0 && index < state.answers.length) {
+          state.answers[index].found = found;
+        } else {
+          console.error("Index out of bounds");
+        }
       }
     }
   });
-  var { addAnswer, clearAnswers } = challengeSlice.actions;
+  var { addAnswer, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } = challengeSlice.actions;
   var challengeSlice_default = challengeSlice.reducer;
 
   // src/redux/index.ts

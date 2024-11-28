@@ -53,7 +53,7 @@ audio {
   align-items: center; 
   color: red;
   font-size: xx-large;
-  z-index: 3;
+  z-index: 100;
   display: none;
 }
 
@@ -111,9 +111,9 @@ audio {
     bottom: 21vh;
 
 */
-  left: 140vw;
-  height: 40.5vh;
-  bottom: 2vh;
+  left: 110vw;
+  height: 58.5vh;
+  bottom: 4vh;
   z-index: 100;
   display: flex;
   justify-content: center;
