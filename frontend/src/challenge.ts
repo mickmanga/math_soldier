@@ -1028,6 +1028,11 @@ const triggerOpponentsApparition = () => {
 };
 
 const launchEndOfChallenge = () => {
+
+  window.location.href = "http://localhost:3001/dead_hard";
+
+  return; 
+
   gameFinished = true;
   document.getElementById("endOfGameInterface")!.style.display = "flex";
   clearGameTimeouts();

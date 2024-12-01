@@ -1,38 +1,200 @@
-*,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: "Garamond", serif;
-  text-align: center;
+html {
+  background: rgb(15, 15, 15);
 }
 
-#gameOverContainer {
-  height: 100vh;
-  width: 100vw;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  line-height: 1.6;
+  padding: 20px;
+}
+h1, h2, h3 {
+  color: #ffcc00;
+}
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+p {
+  margin-bottom: 15px;
+}
+ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+li {
+  margin-bottom: 8px;
+}
+
+.characterImg {
+  height: 100%;
+  width: auto;
+}
+
+#hero_container {
+  position: absolute;
+  left: 8vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 7.5vh;
+  width: 10vw;
+  top: 85vh;
+}
+
+#master_container {
+ position: absolute;
+ left: 85vw;
+ display: flex;
+ justify-content: flex-end;
+ align-items: center;
+ height: 10vh;
+ width: 10vw;
+ top: 88vh;
+}
+
+#interface_container{
+  position: absolute;
+  top: 2.5vh;
+  left: 10vw;
+  width: 80vw;
+  height: 80vh;
+  display: flex;
+  border: solid 1px;
+}
+
+#interface_container_a {
+  width: 0%;
+  height: 100%;
+}
+
+#interface_container_b {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#challenge_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: rgb(181, 177, 177);
+}
+
+#course_container {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+}
+
+#course_container_a {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: large;
+  font-weight: bold;
+}
+
+#course_container_b {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+#challenge_container_a {
+  width: 100%;
+  height: 30%;
+  overflow: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#challenge_container_b {
+  width: 100%;
+  height: 70%;
+  overflow: auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#grade_container {
+  width: 20%;
+  height: 20%;
+  background: rgb(41, 38, 38);
+  color: chartreuse;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#backgroundImg {
+
+#challenge_info_container {
+  width: 30%;
+  height: 20%;
+  background: rgb(41, 38, 38);
+  color: chartreuse;    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.knowledge_block {
+height: 200px;
+width: 100%;
+display: flex;
+justify-content: space-around;
+align-items: center;
+flex-direction: row;
+margin-bottom: 50px;
+}
+
+.knowledge_block_a {
+  width : 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: green;
+}
+
+.knowledge_block_b {
   height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.knowledge_block_ba {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
 }
 
-#gameOverContainer button {
-  position: absolute;
-  width: 10%;
-  height: 10vh;
-  left: 45vw;
-  top: 70vh;
-  z-index: 2;
-  border-radius: 12px;
-  border: none;
-  background: none;
-}
-
-#sword {
-  height: 100%;
-  width: auto;
-  cursor: pointer;
+.courseImg {
+  width: 70%;
+  height: auto;
 }

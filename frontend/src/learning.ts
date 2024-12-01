@@ -24,9 +24,12 @@ const getUser = async (userId: string) => {
     }
 };
 
+
 const getChapters = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/challenges', {
+        const courseContainer = document.getElementById("course_container_b")!;
+
+        const response = await fetch('http://localhost:3000/api/chapters/6745f0ee352dc4f203f01b99', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,8 +40,19 @@ const getChapters = async () => {
             throw new Error('Failed to fetch chapters');
         }
         
-        const chapters = await response.json();
-        console.log('Chapters:', chapters); // Replace with your handling logic
+        const knowledgeData = await response.json() as Array<any>;
+        console.log('data:', knowledgeData); // Replace with your handling logic
+
+        knowledgeData.forEach(
+            data => {
+                console.log(data);
+                courseContainer.innerHTML = courseContainer?.innerHTML + data.data;
+
+                courseContainer.innerHTML += "</n> <a href='http://localhost:3001/challenge?mode=hard&challengeId=" + data.challenge + "'><button>Lancer un challenge </b> </n></a>"
+
+            }
+        )
+    
     } catch (error) {
         console.error('Error:', error);
     }

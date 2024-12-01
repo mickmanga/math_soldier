@@ -24,7 +24,8 @@
   // src/learning.ts
   var getChapters = () => __async(void 0, null, function* () {
     try {
-      const response = yield fetch("http://localhost:3000/api/challenges", {
+      const courseContainer = document.getElementById("course_container_b");
+      const response = yield fetch("http://localhost:3000/api/chapters/6745f0ee352dc4f203f01b99", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -33,8 +34,15 @@
       if (!response.ok) {
         throw new Error("Failed to fetch chapters");
       }
-      const chapters = yield response.json();
-      console.log("Chapters:", chapters);
+      const knowledgeData = yield response.json();
+      console.log("data:", knowledgeData);
+      knowledgeData.forEach(
+        (data) => {
+          console.log(data);
+          courseContainer.innerHTML = (courseContainer == null ? void 0 : courseContainer.innerHTML) + data.data;
+          courseContainer.innerHTML += "</n> <a href='http://localhost:3001/challenge?mode=hard&challengeId=" + data.challenge + "'><button>Lancer un challenge </b> </n></a>";
+        }
+      );
     } catch (error) {
       console.error("Error:", error);
     }

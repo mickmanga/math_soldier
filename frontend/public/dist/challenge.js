@@ -2966,7 +2966,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const challenge = store.getState().challenge;
     const currentAnswerIndex = challenge.currentAnswerIndex;
     const answers2 = challenge.answers;
-    if (currentAnswerIndex === answers2.length) {
+    if (currentAnswerIndex >= answers2.length) {
       return "done";
     }
     const data = answers2[store.getState().challenge.currentAnswerIndex].data;
@@ -3031,6 +3031,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var launchEndOfChallenge = () => {
+    window.location.href = "http://localhost:3001/dead_hard";
+    return;
     gameFinished = true;
     document.getElementById("endOfGameInterface").style.display = "flex";
     clearGameTimeouts();
