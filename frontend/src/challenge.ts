@@ -982,8 +982,8 @@ const buildEnemyElement = () => {
 
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
-  const enemyCharacter = createRedHammerCharacter();
- //const enemyCharacter = createOrcCharacter();
+ //const enemyCharacter = createRedHammerCharacter();
+ const enemyCharacter = createOrcCharacter();
  //const enemyCharacter = createDwarfCharacter();
 
   if (!enemyCharacter) {
@@ -1419,7 +1419,7 @@ const moveCamera = (
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * ((mapSet.velocity)/20) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * ((mapSet.velocity)/50) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
@@ -2935,7 +2935,7 @@ const launchHeroRun = () => {
 
   if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] === 0) {
     startCamera();
-    for(let i=0; i < 5 ; i++){
+    for(let i=0; i < 8 ; i++){
       moveCamera(ANIMATION_ID.camera_left_to_right, Date.now(), i);
     }
   }
@@ -3361,7 +3361,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 5;
+  idleTimerValue = 1000;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3530,10 +3530,10 @@ const animateLightning = () => {
 
  const createMapSets = () => {
 
-    for(let i=1; i <= 5; i++){
+    for(let i=1; i <= 8; i++){
 
       const velocity = i * i;
-      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`);
+      createMapSet( `assets/challenge/maps/forest/${i}.png` , velocity, `${i}`);
 
     } 
 
@@ -3556,15 +3556,6 @@ window.onload = () => {
   updateTransformationProgressBarDisplay();
   animateLightning();
   launchIdleLoop();
-
-  console.log("store =>");
-  console.log(store);
-
-  store.dispatch(
-    () => {
-      
-    }
-  )
   
   if (hardMode) {
     epicAudio.play();

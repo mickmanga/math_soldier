@@ -1,9 +1,13 @@
 "use strict";
 (() => {
+  var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __defProps = Object.defineProperties;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __propIsEnum = Object.prototype.propertyIsEnumerable;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -31,6 +35,25 @@
       }
     return target;
   };
+  var __commonJS = (cb, mod) => function __require() {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+    mod
+  ));
   var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -52,6 +75,108 @@
       step((generator = generator.apply(__this, __arguments)).next());
     });
   };
+
+  // node_modules/redux-persist/lib/storage/getStorage.js
+  var require_getStorage = __commonJS({
+    "node_modules/redux-persist/lib/storage/getStorage.js"(exports) {
+      "use strict";
+      exports.__esModule = true;
+      exports.default = getStorage;
+      function _typeof2(obj) {
+        if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+          _typeof2 = function _typeof3(obj2) {
+            return typeof obj2;
+          };
+        } else {
+          _typeof2 = function _typeof3(obj2) {
+            return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+          };
+        }
+        return _typeof2(obj);
+      }
+      function noop2() {
+      }
+      var noopStorage = {
+        getItem: noop2,
+        setItem: noop2,
+        removeItem: noop2
+      };
+      function hasStorage(storageType) {
+        if ((typeof self === "undefined" ? "undefined" : _typeof2(self)) !== "object" || !(storageType in self)) {
+          return false;
+        }
+        try {
+          var storage2 = self[storageType];
+          var testKey = "redux-persist ".concat(storageType, " test");
+          storage2.setItem(testKey, "test");
+          storage2.getItem(testKey);
+          storage2.removeItem(testKey);
+        } catch (e) {
+          if (true) console.warn("redux-persist ".concat(storageType, " test failed, persistence will be disabled."));
+          return false;
+        }
+        return true;
+      }
+      function getStorage(type) {
+        var storageType = "".concat(type, "Storage");
+        if (hasStorage(storageType)) return self[storageType];
+        else {
+          if (true) {
+            console.error("redux-persist failed to create sync storage. falling back to noop storage.");
+          }
+          return noopStorage;
+        }
+      }
+    }
+  });
+
+  // node_modules/redux-persist/lib/storage/createWebStorage.js
+  var require_createWebStorage = __commonJS({
+    "node_modules/redux-persist/lib/storage/createWebStorage.js"(exports) {
+      "use strict";
+      exports.__esModule = true;
+      exports.default = createWebStorage;
+      var _getStorage = _interopRequireDefault(require_getStorage());
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj };
+      }
+      function createWebStorage(type) {
+        var storage2 = (0, _getStorage.default)(type);
+        return {
+          getItem: function getItem(key) {
+            return new Promise(function(resolve, reject) {
+              resolve(storage2.getItem(key));
+            });
+          },
+          setItem: function setItem(key, item) {
+            return new Promise(function(resolve, reject) {
+              resolve(storage2.setItem(key, item));
+            });
+          },
+          removeItem: function removeItem(key) {
+            return new Promise(function(resolve, reject) {
+              resolve(storage2.removeItem(key));
+            });
+          }
+        };
+      }
+    }
+  });
+
+  // node_modules/redux-persist/lib/storage/index.js
+  var require_storage = __commonJS({
+    "node_modules/redux-persist/lib/storage/index.js"(exports) {
+      "use strict";
+      exports.__esModule = true;
+      exports.default = void 0;
+      var _createWebStorage = _interopRequireDefault(require_createWebStorage());
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { default: obj };
+      }
+      var _default = (0, _createWebStorage.default)("local");
+      exports.default = _default;
+    }
+  });
 
   // node_modules/redux/dist/redux.mjs
   var $$observable = /* @__PURE__ */ (() => typeof Symbol === "function" && Symbol.observable || "@@observable")();
@@ -901,9 +1026,9 @@
         if (typeof base === "function" && typeof recipe !== "function") {
           const defaultBase = recipe;
           recipe = base;
-          const self = this;
+          const self2 = this;
           return function curriedProduce(base2 = defaultBase, ...args) {
-            return self.produce(base2, (draft) => recipe.call(this, draft, ...args));
+            return self2.produce(base2, (draft) => recipe.call(this, draft, ...args));
           };
         }
         if (typeof recipe !== "function")
@@ -2262,11 +2387,409 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var { addAnswer, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } = challengeSlice.actions;
   var challengeSlice_default = challengeSlice.reducer;
 
+  // node_modules/redux-persist/es/constants.js
+  var KEY_PREFIX = "persist:";
+  var FLUSH = "persist/FLUSH";
+  var REHYDRATE = "persist/REHYDRATE";
+  var PAUSE = "persist/PAUSE";
+  var PERSIST = "persist/PERSIST";
+  var PURGE = "persist/PURGE";
+  var DEFAULT_VERSION = -1;
+
+  // node_modules/redux-persist/es/stateReconciler/autoMergeLevel1.js
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function _typeof2(obj2) {
+        return typeof obj2;
+      };
+    } else {
+      _typeof = function _typeof2(obj2) {
+        return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+      };
+    }
+    return _typeof(obj);
+  }
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys(source, true).forEach(function(key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(source).forEach(function(key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+    return target;
+  }
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  function autoMergeLevel1(inboundState, originalState, reducedState, _ref) {
+    var debug = _ref.debug;
+    var newState = _objectSpread({}, reducedState);
+    if (inboundState && _typeof(inboundState) === "object") {
+      Object.keys(inboundState).forEach(function(key) {
+        if (key === "_persist") return;
+        if (originalState[key] !== reducedState[key]) {
+          if (debug) console.log("redux-persist/stateReconciler: sub state for key `%s` modified, skipping.", key);
+          return;
+        }
+        newState[key] = inboundState[key];
+      });
+    }
+    if (debug && inboundState && _typeof(inboundState) === "object") console.log("redux-persist/stateReconciler: rehydrated keys '".concat(Object.keys(inboundState).join(", "), "'"));
+    return newState;
+  }
+
+  // node_modules/redux-persist/es/createPersistoid.js
+  function createPersistoid(config) {
+    var blacklist = config.blacklist || null;
+    var whitelist = config.whitelist || null;
+    var transforms = config.transforms || [];
+    var throttle = config.throttle || 0;
+    var storageKey = "".concat(config.keyPrefix !== void 0 ? config.keyPrefix : KEY_PREFIX).concat(config.key);
+    var storage2 = config.storage;
+    var serialize;
+    if (config.serialize === false) {
+      serialize = function serialize2(x) {
+        return x;
+      };
+    } else if (typeof config.serialize === "function") {
+      serialize = config.serialize;
+    } else {
+      serialize = defaultSerialize;
+    }
+    var writeFailHandler = config.writeFailHandler || null;
+    var lastState = {};
+    var stagedState = {};
+    var keysToProcess = [];
+    var timeIterator = null;
+    var writePromise = null;
+    var update = function update2(state) {
+      Object.keys(state).forEach(function(key) {
+        if (!passWhitelistBlacklist(key)) return;
+        if (lastState[key] === state[key]) return;
+        if (keysToProcess.indexOf(key) !== -1) return;
+        keysToProcess.push(key);
+      });
+      Object.keys(lastState).forEach(function(key) {
+        if (state[key] === void 0 && passWhitelistBlacklist(key) && keysToProcess.indexOf(key) === -1 && lastState[key] !== void 0) {
+          keysToProcess.push(key);
+        }
+      });
+      if (timeIterator === null) {
+        timeIterator = setInterval(processNextKey, throttle);
+      }
+      lastState = state;
+    };
+    function processNextKey() {
+      if (keysToProcess.length === 0) {
+        if (timeIterator) clearInterval(timeIterator);
+        timeIterator = null;
+        return;
+      }
+      var key = keysToProcess.shift();
+      var endState = transforms.reduce(function(subState, transformer) {
+        return transformer.in(subState, key, lastState);
+      }, lastState[key]);
+      if (endState !== void 0) {
+        try {
+          stagedState[key] = serialize(endState);
+        } catch (err) {
+          console.error("redux-persist/createPersistoid: error serializing state", err);
+        }
+      } else {
+        delete stagedState[key];
+      }
+      if (keysToProcess.length === 0) {
+        writeStagedState();
+      }
+    }
+    function writeStagedState() {
+      Object.keys(stagedState).forEach(function(key) {
+        if (lastState[key] === void 0) {
+          delete stagedState[key];
+        }
+      });
+      writePromise = storage2.setItem(storageKey, serialize(stagedState)).catch(onWriteFail);
+    }
+    function passWhitelistBlacklist(key) {
+      if (whitelist && whitelist.indexOf(key) === -1 && key !== "_persist") return false;
+      if (blacklist && blacklist.indexOf(key) !== -1) return false;
+      return true;
+    }
+    function onWriteFail(err) {
+      if (writeFailHandler) writeFailHandler(err);
+      if (err && true) {
+        console.error("Error storing data", err);
+      }
+    }
+    var flush = function flush2() {
+      while (keysToProcess.length !== 0) {
+        processNextKey();
+      }
+      return writePromise || Promise.resolve();
+    };
+    return {
+      update,
+      flush
+    };
+  }
+  function defaultSerialize(data) {
+    return JSON.stringify(data);
+  }
+
+  // node_modules/redux-persist/es/getStoredState.js
+  function getStoredState(config) {
+    var transforms = config.transforms || [];
+    var storageKey = "".concat(config.keyPrefix !== void 0 ? config.keyPrefix : KEY_PREFIX).concat(config.key);
+    var storage2 = config.storage;
+    var debug = config.debug;
+    var deserialize;
+    if (config.deserialize === false) {
+      deserialize = function deserialize2(x) {
+        return x;
+      };
+    } else if (typeof config.deserialize === "function") {
+      deserialize = config.deserialize;
+    } else {
+      deserialize = defaultDeserialize;
+    }
+    return storage2.getItem(storageKey).then(function(serialized) {
+      if (!serialized) return void 0;
+      else {
+        try {
+          var state = {};
+          var rawState = deserialize(serialized);
+          Object.keys(rawState).forEach(function(key) {
+            state[key] = transforms.reduceRight(function(subState, transformer) {
+              return transformer.out(subState, key, rawState);
+            }, deserialize(rawState[key]));
+          });
+          return state;
+        } catch (err) {
+          if (debug) console.log("redux-persist/getStoredState: Error restoring data ".concat(serialized), err);
+          throw err;
+        }
+      }
+    });
+  }
+  function defaultDeserialize(serial) {
+    return JSON.parse(serial);
+  }
+
+  // node_modules/redux-persist/es/purgeStoredState.js
+  function purgeStoredState(config) {
+    var storage2 = config.storage;
+    var storageKey = "".concat(config.keyPrefix !== void 0 ? config.keyPrefix : KEY_PREFIX).concat(config.key);
+    return storage2.removeItem(storageKey, warnIfRemoveError);
+  }
+  function warnIfRemoveError(err) {
+    if (err && true) {
+      console.error("redux-persist/purgeStoredState: Error purging data stored state", err);
+    }
+  }
+
+  // node_modules/redux-persist/es/persistReducer.js
+  function ownKeys2(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys2(source, true).forEach(function(key) {
+          _defineProperty2(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys2(source).forEach(function(key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+    return target;
+  }
+  function _defineProperty2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  function _objectWithoutProperties(source, excluded) {
+    if (source == null) return {};
+    var target = _objectWithoutPropertiesLoose(source, excluded);
+    var key, i;
+    if (Object.getOwnPropertySymbols) {
+      var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+      for (i = 0; i < sourceSymbolKeys.length; i++) {
+        key = sourceSymbolKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+        target[key] = source[key];
+      }
+    }
+    return target;
+  }
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+    return target;
+  }
+  var DEFAULT_TIMEOUT = 5e3;
+  function persistReducer(config, baseReducer) {
+    if (true) {
+      if (!config) throw new Error("config is required for persistReducer");
+      if (!config.key) throw new Error("key is required in persistor config");
+      if (!config.storage) throw new Error("redux-persist: config.storage is required. Try using one of the provided storage engines `import storage from 'redux-persist/lib/storage'`");
+    }
+    var version = config.version !== void 0 ? config.version : DEFAULT_VERSION;
+    var debug = config.debug || false;
+    var stateReconciler = config.stateReconciler === void 0 ? autoMergeLevel1 : config.stateReconciler;
+    var getStoredState2 = config.getStoredState || getStoredState;
+    var timeout = config.timeout !== void 0 ? config.timeout : DEFAULT_TIMEOUT;
+    var _persistoid = null;
+    var _purge = false;
+    var _paused = true;
+    var conditionalUpdate = function conditionalUpdate2(state) {
+      state._persist.rehydrated && _persistoid && !_paused && _persistoid.update(state);
+      return state;
+    };
+    return function(state, action) {
+      var _ref = state || {}, _persist = _ref._persist, rest = _objectWithoutProperties(_ref, ["_persist"]);
+      var restState = rest;
+      if (action.type === PERSIST) {
+        var _sealed = false;
+        var _rehydrate = function _rehydrate2(payload, err) {
+          if (_sealed) console.error('redux-persist: rehydrate for "'.concat(config.key, '" called after timeout.'), payload, err);
+          if (!_sealed) {
+            action.rehydrate(config.key, payload, err);
+            _sealed = true;
+          }
+        };
+        timeout && setTimeout(function() {
+          !_sealed && _rehydrate(void 0, new Error('redux-persist: persist timed out for persist key "'.concat(config.key, '"')));
+        }, timeout);
+        _paused = false;
+        if (!_persistoid) _persistoid = createPersistoid(config);
+        if (_persist) {
+          return _objectSpread2({}, baseReducer(restState, action), {
+            _persist
+          });
+        }
+        if (typeof action.rehydrate !== "function" || typeof action.register !== "function") throw new Error("redux-persist: either rehydrate or register is not a function on the PERSIST action. This can happen if the action is being replayed. This is an unexplored use case, please open an issue and we will figure out a resolution.");
+        action.register(config.key);
+        getStoredState2(config).then(function(restoredState) {
+          var migrate = config.migrate || function(s, v) {
+            return Promise.resolve(s);
+          };
+          migrate(restoredState, version).then(function(migratedState) {
+            _rehydrate(migratedState);
+          }, function(migrateErr) {
+            if (migrateErr) console.error("redux-persist: migration error", migrateErr);
+            _rehydrate(void 0, migrateErr);
+          });
+        }, function(err) {
+          _rehydrate(void 0, err);
+        });
+        return _objectSpread2({}, baseReducer(restState, action), {
+          _persist: {
+            version,
+            rehydrated: false
+          }
+        });
+      } else if (action.type === PURGE) {
+        _purge = true;
+        action.result(purgeStoredState(config));
+        return _objectSpread2({}, baseReducer(restState, action), {
+          _persist
+        });
+      } else if (action.type === FLUSH) {
+        action.result(_persistoid && _persistoid.flush());
+        return _objectSpread2({}, baseReducer(restState, action), {
+          _persist
+        });
+      } else if (action.type === PAUSE) {
+        _paused = true;
+      } else if (action.type === REHYDRATE) {
+        if (_purge) return _objectSpread2({}, restState, {
+          _persist: _objectSpread2({}, _persist, {
+            rehydrated: true
+          })
+          // @NOTE if key does not match, will continue to default else below
+        });
+        if (action.key === config.key) {
+          var reducedState = baseReducer(restState, action);
+          var inboundState = action.payload;
+          var reconciledRest = stateReconciler !== false && inboundState !== void 0 ? stateReconciler(inboundState, state, reducedState, config) : reducedState;
+          var _newState = _objectSpread2({}, reconciledRest, {
+            _persist: _objectSpread2({}, _persist, {
+              rehydrated: true
+            })
+          });
+          return conditionalUpdate(_newState);
+        }
+      }
+      if (!_persist) return baseReducer(state, action);
+      var newState = baseReducer(restState, action);
+      if (newState === restState) return state;
+      return conditionalUpdate(_objectSpread2({}, newState, {
+        _persist
+      }));
+    };
+  }
+
   // src/redux/index.ts
+  var import_storage = __toESM(require_storage(), 1);
+  var persistConfig = {
+    key: "root",
+    storage: import_storage.default
+  };
+  var persistedUserReducer = persistReducer(persistConfig, userSlice_default);
+  var persistedChallengeReducer = persistReducer(persistConfig, challengeSlice_default);
   var store = configureStore({
     reducer: {
-      user: userSlice_default,
-      challenge: challengeSlice_default
+      user: persistedUserReducer,
+      challenge: persistedChallengeReducer
     }
   });
 
@@ -2999,7 +3522,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var buildEnemy = (answer) => {
-    const enemyCharacter = createRedHammerCharacter();
+    const enemyCharacter = createOrcCharacter();
     if (!enemyCharacter) {
       return;
     }
@@ -3332,7 +3855,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 50) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
@@ -3954,7 +4477,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 6 /* idle */,
@@ -4077,17 +4600,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var redHammerAnimations = [
+  var orcAnimations = [
     {
       animationType: 6 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_ORC_ENEMY_STATES,
           animation: {
-            id: 16 /* hammer_opponent_idle */,
+            id: 21 /* orc_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/idle",
-              length: 16
+              path: "assets/challenge/characters/enemies/orc/idle",
+              length: 42
             }
           }
         }
@@ -4097,12 +4620,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_ORC_ENEMY_STATES,
           animation: {
-            id: 18 /* hammer_opponent_attack */,
+            id: 23 /* orc_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
+              path: "assets/challenge/characters/enemies/orc/attack",
+              length: 50
             }
           }
         }
@@ -4112,7 +4635,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 5 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_ORC_ENEMY_STATES,
           animation: {
             id: 19 /* hammer_opponent_death */,
             sprite: {
@@ -4127,9 +4650,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 8 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_ORC_ENEMY_STATES,
           animation: {
-            id: 20 /* hammer_opponent_move */,
+            id: 25 /* orc_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4145,15 +4668,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createRedHammerCharacter = () => {
+  var createOrcCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+    enemyViewPoint.style.left = "105vw";
+    enemyViewPoint.style.display = "flex";
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
   };
   var launchHeroRun = () => {
     if (runStopped) {
@@ -4162,7 +4686,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interuptIdleTimer();
     if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
       startCamera();
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 8; i++) {
         moveCamera(31 /* camera_left_to_right */, Date.now(), i);
       }
     }
@@ -4430,7 +4954,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 5;
+    idleTimerValue = 1e3;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
@@ -4558,9 +5082,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var createMapSets = () => {
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 8; i++) {
       const velocity = i * i;
-      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`);
+      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`);
     }
   };
   window.onload = () => {
@@ -4580,12 +5104,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateTransformationProgressBarDisplay();
     animateLightning();
     launchIdleLoop();
-    console.log("store =>");
-    console.log(store);
-    store.dispatch(
-      () => {
-      }
-    );
     if (hardMode) {
       epicAudio.play();
     } else {

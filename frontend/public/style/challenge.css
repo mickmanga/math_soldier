@@ -9,7 +9,7 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden; /* Prevent scrolling */
-  background: #137fb1;
+  background: #257ec1;
 }
 
 audio {
@@ -113,7 +113,7 @@ audio {
 */
   left: 110vw;
   height: 45.5vh;
-  bottom: 4vh;
+  bottom: -7.5vh;
   z-index: 100;
   display: flex;
   justify-content: center;
