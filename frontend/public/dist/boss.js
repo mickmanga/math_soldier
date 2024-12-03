@@ -3522,7 +3522,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var buildEnemy = (answer) => {
-    const enemyCharacter = createOrcCharacter();
+    const enemyCharacter = createRedHammerCharacter();
     if (!enemyCharacter) {
       return;
     }
@@ -3855,7 +3855,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 50) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
@@ -4259,6 +4259,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       currentRewardContainerTimeout = null;
     }
     scoreRewardContainer.style.display = "flex";
+    displaySoundEffectImage();
     currentRewardContainerTimeout = setTimeout(() => {
       scoreRewardDetail.innerHTML = "";
       scoreRewardContainer.style.display = "none";
@@ -4477,7 +4478,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 6 /* idle */,
@@ -4600,17 +4601,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var orcAnimations = [
+  var redHammerAnimations = [
     {
       animationType: 6 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_ORC_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 21 /* orc_opponent_idle */,
+            id: 16 /* hammer_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/orc/idle",
-              length: 42
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
             }
           }
         }
@@ -4620,12 +4621,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_ORC_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 23 /* orc_opponent_attack */,
+            id: 18 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/orc/attack",
-              length: 50
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
             }
           }
         }
@@ -4635,7 +4636,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 5 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_ORC_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
             id: 19 /* hammer_opponent_death */,
             sprite: {
@@ -4650,9 +4651,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 8 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_ORC_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 25 /* orc_opponent_move */,
+            id: 20 /* hammer_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4668,16 +4669,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createOrcCharacter = () => {
+  var createRedHammerCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "105vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var launchHeroRun = () => {
     if (runStopped) {
@@ -4686,7 +4686,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interuptIdleTimer();
     if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
       startCamera();
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 5; i++) {
         moveCamera(31 /* camera_left_to_right */, Date.now(), i);
       }
     }
@@ -4715,7 +4715,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
       launchInvisibilityToggle();
     }
-    if (event.key === "w") {
+    if (event.key === "m") {
       if (rewardStreak === 5 || rewardStreak === 10) {
         launchAttack(true);
         const lightningImg = document.getElementById("lightning_img");
@@ -4758,6 +4758,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     const currentTime = Date.now();
+    ennemiesOnScreen.forEach(
+      (enemy) => {
+        enemy.character.element.style.opacity = "1";
+      }
+    );
     if (lastStopInMs && currentTime - lastStopInMs < 1e3) {
       return;
     }
@@ -5082,9 +5087,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var createMapSets = () => {
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 5; i++) {
       const velocity = i * i;
-      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`);
+      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`);
     }
   };
   window.onload = () => {
@@ -5162,16 +5167,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     epicAudio.pause();
     transformedEpicAudio.pause();
   };
-  var launchHeroLightningSpeedAnimation = () => {
-    superSpeedOn = true;
-    animateLightning();
-    heroImage.style.display = "none";
-    specialMoveIndicator.style.display = "none";
-    launchInvisibilityToggle();
-    setTimeout(() => {
-      superSpeedOn = false;
-      heroImage.style.display = "flex";
-    }, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
+  var soundEffectImage = document.getElementById("sound_effect_img_container");
+  var displaySoundEffectImage = () => {
+    soundEffectImage.style.display = "flex";
+    setTimeout(
+      () => soundEffectImage.style.display = "none",
+      1e3
+    );
   };
 
   // src/boss.ts

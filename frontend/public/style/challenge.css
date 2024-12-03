@@ -113,7 +113,7 @@ audio {
 */
   left: 110vw;
   height: 45.5vh;
-  bottom: -7.5vh;
+  bottom: 5.75vh;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -138,6 +138,8 @@ audio {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */
+
 }
 
 .enemyViewPointTopDiv {
@@ -174,6 +176,9 @@ audio {
   width: auto;
 }
 
+.hard_enemy_container img {
+  opacity: 0.9;
+}
 .enemy_container img {
   height: 90%;
   width: auto;
@@ -310,6 +315,20 @@ audio {
   z-index: 10;
   font-size: xx-large;
   color: red;
+}
+
+#sound_effect_img_container {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  height: 30vh;
+  z-index: 20;
+  display: none;
+}
+
+#sound_effect_img_container img {
+  height: 100%;
+  width: auto;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Akronim);
