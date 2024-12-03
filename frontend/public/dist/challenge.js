@@ -3613,27 +3613,42 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_attack"] = 18] = "hammer_opponent_attack";
     ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_death"] = 19] = "hammer_opponent_death";
     ANIMATION_ID2[ANIMATION_ID2["hammer_opponent_move"] = 20] = "hammer_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_idle"] = 21] = "orc_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_run"] = 22] = "orc_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_attack"] = 23] = "orc_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_death"] = 24] = "orc_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_move"] = 25] = "orc_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_idle"] = 26] = "dwarf_opponent_idle";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_run"] = 27] = "dwarf_opponent_run";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_attack"] = 28] = "dwarf_opponent_attack";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_death"] = 29] = "dwarf_opponent_death";
-    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_move"] = 30] = "dwarf_opponent_move";
-    ANIMATION_ID2[ANIMATION_ID2["camera_left_to_right"] = 31] = "camera_left_to_right";
-    ANIMATION_ID2[ANIMATION_ID2["camera_right_to_left"] = 32] = "camera_right_to_left";
-    ANIMATION_ID2[ANIMATION_ID2["character_left_to_right_move"] = 33] = "character_left_to_right_move";
-    ANIMATION_ID2[ANIMATION_ID2["hero_sword_slash"] = 34] = "hero_sword_slash";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 35] = "hero_transformation_pre_run";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 36] = "hero_transformation_run";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 37] = "hero_transformation_hurt";
-    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_attack"] = 38] = "hero_transformation_attack";
-    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 39] = "boss_idle";
-    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 40] = "boss_attack";
-    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 41] = "lightning";
+    ANIMATION_ID2[ANIMATION_ID2["golem_opponent_idle"] = 21] = "golem_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["golem_opponent_run"] = 22] = "golem_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["golem_opponent_attack"] = 23] = "golem_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["golem_opponent_death"] = 24] = "golem_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["golem_opponent_move"] = 25] = "golem_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["king_opponent_idle"] = 26] = "king_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["king_opponent_run"] = 27] = "king_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["king_opponent_attack"] = 28] = "king_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["king_opponent_death"] = 29] = "king_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["king_opponent_move"] = 30] = "king_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["witch_opponent_idle"] = 31] = "witch_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["witch_opponent_run"] = 32] = "witch_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["witch_opponent_attack"] = 33] = "witch_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["witch_opponent_death"] = 34] = "witch_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["witch_opponent_move"] = 35] = "witch_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_idle"] = 36] = "orc_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_run"] = 37] = "orc_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_attack"] = 38] = "orc_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_death"] = 39] = "orc_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["orc_opponent_move"] = 40] = "orc_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_idle"] = 41] = "dwarf_opponent_idle";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_run"] = 42] = "dwarf_opponent_run";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_attack"] = 43] = "dwarf_opponent_attack";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_death"] = 44] = "dwarf_opponent_death";
+    ANIMATION_ID2[ANIMATION_ID2["dwarf_opponent_move"] = 45] = "dwarf_opponent_move";
+    ANIMATION_ID2[ANIMATION_ID2["camera_left_to_right"] = 46] = "camera_left_to_right";
+    ANIMATION_ID2[ANIMATION_ID2["camera_right_to_left"] = 47] = "camera_right_to_left";
+    ANIMATION_ID2[ANIMATION_ID2["character_left_to_right_move"] = 48] = "character_left_to_right_move";
+    ANIMATION_ID2[ANIMATION_ID2["hero_sword_slash"] = 49] = "hero_sword_slash";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_pre_run"] = 50] = "hero_transformation_pre_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_run"] = 51] = "hero_transformation_run";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_hurt"] = 52] = "hero_transformation_hurt";
+    ANIMATION_ID2[ANIMATION_ID2["hero_transformation_attack"] = 53] = "hero_transformation_attack";
+    ANIMATION_ID2[ANIMATION_ID2["boss_idle"] = 54] = "boss_idle";
+    ANIMATION_ID2[ANIMATION_ID2["boss_attack"] = 55] = "boss_attack";
+    ANIMATION_ID2[ANIMATION_ID2["lightning"] = 56] = "lightning";
     return ANIMATION_ID2;
   })(ANIMATION_ID || {});
   var ANIMATION_RUNNING_VALUES = {
@@ -3658,27 +3673,42 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [18 /* hammer_opponent_attack */]: 0,
     [19 /* hammer_opponent_death */]: 0,
     [20 /* hammer_opponent_move */]: 0,
-    [21 /* orc_opponent_idle */]: 0,
-    [22 /* orc_opponent_run */]: 0,
-    [23 /* orc_opponent_attack */]: 0,
-    [24 /* orc_opponent_death */]: 0,
-    [25 /* orc_opponent_move */]: 0,
-    [26 /* dwarf_opponent_idle */]: 0,
-    [27 /* dwarf_opponent_run */]: 0,
-    [28 /* dwarf_opponent_attack */]: 0,
-    [29 /* dwarf_opponent_death */]: 0,
-    [30 /* dwarf_opponent_move */]: 0,
-    [31 /* camera_left_to_right */]: 0,
-    [32 /* camera_right_to_left */]: 0,
-    [33 /* character_left_to_right_move */]: 0,
-    [34 /* hero_sword_slash */]: 0,
-    [35 /* hero_transformation_pre_run */]: 0,
-    [36 /* hero_transformation_run */]: 0,
-    [37 /* hero_transformation_hurt */]: 0,
-    [38 /* hero_transformation_attack */]: 0,
-    [39 /* boss_idle */]: 0,
-    [40 /* boss_attack */]: 0,
-    [41 /* lightning */]: 0
+    [36 /* orc_opponent_idle */]: 0,
+    [37 /* orc_opponent_run */]: 0,
+    [38 /* orc_opponent_attack */]: 0,
+    [39 /* orc_opponent_death */]: 0,
+    [40 /* orc_opponent_move */]: 0,
+    [41 /* dwarf_opponent_idle */]: 0,
+    [42 /* dwarf_opponent_run */]: 0,
+    [43 /* dwarf_opponent_attack */]: 0,
+    [44 /* dwarf_opponent_death */]: 0,
+    [45 /* dwarf_opponent_move */]: 0,
+    [21 /* golem_opponent_idle */]: 0,
+    [22 /* golem_opponent_run */]: 0,
+    [23 /* golem_opponent_attack */]: 0,
+    [24 /* golem_opponent_death */]: 0,
+    [25 /* golem_opponent_move */]: 0,
+    [26 /* king_opponent_idle */]: 0,
+    [27 /* king_opponent_run */]: 0,
+    [28 /* king_opponent_attack */]: 0,
+    [29 /* king_opponent_death */]: 0,
+    [30 /* king_opponent_move */]: 0,
+    [31 /* witch_opponent_idle */]: 0,
+    [32 /* witch_opponent_run */]: 0,
+    [33 /* witch_opponent_attack */]: 0,
+    [34 /* witch_opponent_death */]: 0,
+    [35 /* witch_opponent_move */]: 0,
+    [46 /* camera_left_to_right */]: 0,
+    [47 /* camera_right_to_left */]: 0,
+    [48 /* character_left_to_right_move */]: 0,
+    [49 /* hero_sword_slash */]: 0,
+    [50 /* hero_transformation_pre_run */]: 0,
+    [51 /* hero_transformation_run */]: 0,
+    [52 /* hero_transformation_hurt */]: 0,
+    [53 /* hero_transformation_attack */]: 0,
+    [54 /* boss_idle */]: 0,
+    [55 /* boss_attack */]: 0,
+    [56 /* lightning */]: 0
   };
   var THROTTLE_NUMS = {
     [0 /* hero_attack */]: 0,
@@ -3702,27 +3732,42 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [18 /* hammer_opponent_attack */]: 0,
     [19 /* hammer_opponent_death */]: 0,
     [20 /* hammer_opponent_move */]: 0,
-    [21 /* orc_opponent_idle */]: 0,
-    [22 /* orc_opponent_run */]: 0,
-    [23 /* orc_opponent_attack */]: 0,
-    [24 /* orc_opponent_death */]: 0,
-    [25 /* orc_opponent_move */]: 0,
-    [26 /* dwarf_opponent_idle */]: 0,
-    [27 /* dwarf_opponent_run */]: 0,
-    [28 /* dwarf_opponent_attack */]: 0,
-    [29 /* dwarf_opponent_death */]: 0,
-    [30 /* dwarf_opponent_move */]: 0,
-    [31 /* camera_left_to_right */]: 0,
-    [32 /* camera_right_to_left */]: 0,
-    [34 /* hero_sword_slash */]: 0,
-    [33 /* character_left_to_right_move */]: 5,
-    [35 /* hero_transformation_pre_run */]: 5,
-    [36 /* hero_transformation_run */]: 5,
-    [37 /* hero_transformation_hurt */]: 0,
-    [38 /* hero_transformation_attack */]: 0,
-    [39 /* boss_idle */]: 15,
-    [40 /* boss_attack */]: 10,
-    [41 /* lightning */]: 0
+    [36 /* orc_opponent_idle */]: 0,
+    [37 /* orc_opponent_run */]: 0,
+    [38 /* orc_opponent_attack */]: 0,
+    [39 /* orc_opponent_death */]: 0,
+    [40 /* orc_opponent_move */]: 0,
+    [41 /* dwarf_opponent_idle */]: 0,
+    [42 /* dwarf_opponent_run */]: 0,
+    [43 /* dwarf_opponent_attack */]: 0,
+    [44 /* dwarf_opponent_death */]: 0,
+    [45 /* dwarf_opponent_move */]: 0,
+    [21 /* golem_opponent_idle */]: 0,
+    [22 /* golem_opponent_run */]: 0,
+    [23 /* golem_opponent_attack */]: 0,
+    [24 /* golem_opponent_death */]: 0,
+    [25 /* golem_opponent_move */]: 0,
+    [26 /* king_opponent_idle */]: 0,
+    [27 /* king_opponent_run */]: 0,
+    [28 /* king_opponent_attack */]: 0,
+    [29 /* king_opponent_death */]: 0,
+    [30 /* king_opponent_move */]: 0,
+    [31 /* witch_opponent_idle */]: 0,
+    [32 /* witch_opponent_run */]: 0,
+    [33 /* witch_opponent_attack */]: 0,
+    [34 /* witch_opponent_death */]: 0,
+    [35 /* witch_opponent_move */]: 0,
+    [46 /* camera_left_to_right */]: 0,
+    [47 /* camera_right_to_left */]: 0,
+    [49 /* hero_sword_slash */]: 0,
+    [48 /* character_left_to_right_move */]: 5,
+    [50 /* hero_transformation_pre_run */]: 5,
+    [51 /* hero_transformation_run */]: 5,
+    [52 /* hero_transformation_hurt */]: 0,
+    [53 /* hero_transformation_attack */]: 0,
+    [54 /* boss_idle */]: 15,
+    [55 /* boss_attack */]: 10,
+    [56 /* lightning */]: 0
   };
   var AnimationRequest = class {
     constructor(animation, callBack) {
@@ -3742,10 +3787,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         7 /* hero_special_attack */,
         8 /* stop */,
         9 /* stop_time */,
-        37 /* hero_transformation_hurt */,
-        35 /* hero_transformation_pre_run */,
-        36 /* hero_transformation_run */,
-        38 /* hero_transformation_attack */,
+        52 /* hero_transformation_hurt */,
+        50 /* hero_transformation_pre_run */,
+        51 /* hero_transformation_run */,
+        53 /* hero_transformation_attack */,
         5 /* hero_idle */
       ]
     },
@@ -3773,20 +3818,20 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        21 /* orc_opponent_idle */,
-        22 /* orc_opponent_run */,
-        23 /* orc_opponent_attack */,
-        24 /* orc_opponent_death */
+        36 /* orc_opponent_idle */,
+        37 /* orc_opponent_run */,
+        38 /* orc_opponent_attack */,
+        39 /* orc_opponent_death */
       ]
     },
     dwarf_enemy: {
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        26 /* dwarf_opponent_idle */,
-        27 /* dwarf_opponent_run */,
-        28 /* dwarf_opponent_attack */,
-        29 /* dwarf_opponent_death */
+        41 /* dwarf_opponent_idle */,
+        42 /* dwarf_opponent_run */,
+        43 /* dwarf_opponent_attack */,
+        44 /* dwarf_opponent_death */
       ]
     }
   };
@@ -3840,8 +3885,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var slowTime = (multiplicator) => {
     const runMultiplicatorBase = THROTTLE_NUMS[1 /* hero_run */] ? THROTTLE_NUMS[1 /* hero_run */] : 1;
     THROTTLE_NUMS[1 /* hero_run */] = runMultiplicatorBase * multiplicator * 1.5 * 1.5;
-    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[31 /* camera_left_to_right */] ? THROTTLE_NUMS[31 /* camera_left_to_right */] : 1;
-    THROTTLE_NUMS[31 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
+    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[46 /* camera_left_to_right */] ? THROTTLE_NUMS[46 /* camera_left_to_right */] : 1;
+    THROTTLE_NUMS[46 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
     const opponentRunMultiplicatorBase = THROTTLE_NUMS[12 /* ghost_opponent_run */] ? THROTTLE_NUMS[12 /* ghost_opponent_run */] : 1;
     THROTTLE_NUMS[12 /* ghost_opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
     const opponentMoveMultiplicatorBase = THROTTLE_NUMS[15 /* ghost_opponent_move */] ? THROTTLE_NUMS[15 /* ghost_opponent_move */] : 1;
@@ -3855,7 +3900,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 31 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 46 /* camera_left_to_right */ ? -1 : 1) * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));
   };
@@ -3992,7 +4037,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 41 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 21 /* orc_opponent_idle */ || animationId === 23 /* orc_opponent_attack */ || animationId === 26 /* dwarf_opponent_idle */ || animationId === 28 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 56 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 36 /* orc_opponent_idle */ || animationId === 38 /* orc_opponent_attack */ || animationId === 41 /* dwarf_opponent_idle */ || animationId === 43 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
       const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : animationId === 16 /* hammer_opponent_idle */ ? 115 : animationId === 18 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
@@ -4067,14 +4112,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ANIMATION_RUNNING_VALUES[12 /* ghost_opponent_run */] = 0;
     ANIMATION_RUNNING_VALUES[14 /* ghost_opponent_death */] = 0;
     ANIMATION_RUNNING_VALUES[15 /* ghost_opponent_move */] = 0;
-    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
-    ANIMATION_RUNNING_VALUES[32 /* camera_right_to_left */] = 0;
-    ANIMATION_RUNNING_VALUES[33 /* character_left_to_right_move */] = 0;
-    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[36 /* hero_transformation_run */] = 0;
-    ANIMATION_RUNNING_VALUES[37 /* hero_transformation_hurt */] = 0;
-    ANIMATION_RUNNING_VALUES[39 /* boss_idle */] = 0;
-    ANIMATION_RUNNING_VALUES[40 /* boss_attack */] = 0;
+    ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[47 /* camera_right_to_left */] = 0;
+    ANIMATION_RUNNING_VALUES[48 /* character_left_to_right_move */] = 0;
+    ANIMATION_RUNNING_VALUES[50 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[51 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[52 /* hero_transformation_hurt */] = 0;
+    ANIMATION_RUNNING_VALUES[54 /* boss_idle */] = 0;
+    ANIMATION_RUNNING_VALUES[55 /* boss_attack */] = 0;
   };
   var turnHeroTransformationOff = () => {
     transformed = false;
@@ -4486,7 +4531,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         {
           states: ALL_TRANSFORMED_HERO_STATES,
           animation: {
-            id: 35 /* hero_transformation_pre_run */,
+            id: 50 /* hero_transformation_pre_run */,
             sprite: {
               path: "assets/challenge/characters/transformed_hero/pre_run",
               length: 9
@@ -4521,7 +4566,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         {
           states: ALL_TRANSFORMED_HERO_STATES,
           animation: {
-            id: 38 /* hero_transformation_attack */,
+            id: 53 /* hero_transformation_attack */,
             sprite: {
               path: "assets/challenge/characters/transformed_hero/attack",
               length: 12
@@ -4561,7 +4606,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         {
           states: ALL_TRANSFORMED_HERO_STATES,
           animation: {
-            id: 36 /* hero_transformation_run */,
+            id: 51 /* hero_transformation_run */,
             sprite: {
               path: "assets/challenge/characters/transformed_hero/run",
               length: 6
@@ -4684,10 +4729,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     interuptIdleTimer();
-    if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] === 0) {
+    if (ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */] === 0) {
       startCamera();
       for (let i = 0; i < 5; i++) {
-        moveCamera(31 /* camera_left_to_right */, Date.now(), i);
+        moveCamera(46 /* camera_left_to_right */, Date.now(), i);
       }
     }
     launchHeroRunAnimation();
@@ -4780,7 +4825,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 8 /* movement */).id] = 0;
       }
     );
-    interruptAnimation(31 /* camera_left_to_right */);
+    interruptAnimation(46 /* camera_left_to_right */);
     heroImage.src = "assets/challenge/characters/hero/idle/1.png";
     addAnimationCallbackToQueue(8 /* stop */, launchIdleLoop);
   };
@@ -4871,7 +4916,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         6,
         1,
         true,
-        36 /* hero_transformation_run */
+        51 /* hero_transformation_run */
       );
       setTimeout(turnHeroTransformationOff, 2e4);
       return;
@@ -4893,7 +4938,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           9,
           1,
           true,
-          35 /* hero_transformation_pre_run */
+          50 /* hero_transformation_pre_run */
         );
         if (enemiesComingTimeout) {
           clearTimeout(enemiesComingTimeout);
@@ -4921,7 +4966,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               6,
               1,
               true,
-              36 /* hero_transformation_run */
+              51 /* hero_transformation_run */
             );
             setTimeout(turnHeroTransformationOff, 15e3);
           }, 5e3)
@@ -4944,15 +4989,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     answerDataValue.innerHTML = "";
   };
   var launchSwordSlash = () => {
-    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
-    if (ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] !== 1 || transformed) {
+    ANIMATION_RUNNING_VALUES[49 /* hero_sword_slash */]++;
+    if (ANIMATION_RUNNING_VALUES[49 /* hero_sword_slash */] !== 1 || transformed) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */]++;
+    ANIMATION_RUNNING_VALUES[49 /* hero_sword_slash */]++;
     swordSlashImg.style.display = "flex";
     setTimeout(() => {
       swordSlashImg.style.display = "none";
-      ANIMATION_RUNNING_VALUES[34 /* hero_sword_slash */] = 0;
+      ANIMATION_RUNNING_VALUES[49 /* hero_sword_slash */] = 0;
     }, 75);
   };
   var updateIdleTimerInterface = () => {
@@ -4984,7 +5029,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var launchDeathAnimation = () => {
     initHeroAnimations();
-    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */] = 0;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.current_animation = null;
     APP_ELEMENTS_ANIMATION_QUEUE.hero.request_queue = [];
     const killHero2 = () => {
@@ -5021,7 +5066,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       transformed ? 5 : 3,
       1,
       false,
-      transformed ? 37 /* hero_transformation_hurt */ : 3 /* hero_hurt */
+      transformed ? 52 /* hero_transformation_hurt */ : 3 /* hero_hurt */
     );
     if (!hardMode) {
       stopCamera();
@@ -5037,18 +5082,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var stopCamera = () => {
-    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */] = 0;
   };
   var startCamera = () => {
-    if (ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */] > 0) {
+    if (ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */] > 0) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[31 /* camera_left_to_right */]++;
+    ANIMATION_RUNNING_VALUES[46 /* camera_left_to_right */]++;
   };
   var initHeroAnimations = () => {
     ANIMATION_RUNNING_VALUES[1 /* hero_run */] = 0;
-    ANIMATION_RUNNING_VALUES[35 /* hero_transformation_pre_run */] = 0;
-    ANIMATION_RUNNING_VALUES[36 /* hero_transformation_run */] = 0;
+    ANIMATION_RUNNING_VALUES[50 /* hero_transformation_pre_run */] = 0;
+    ANIMATION_RUNNING_VALUES[51 /* hero_transformation_run */] = 0;
     ANIMATION_RUNNING_VALUES[3 /* hero_hurt */] = 0;
   };
   var animateLightning = () => {
@@ -5063,7 +5108,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       17,
       1,
       true,
-      41 /* lightning */,
+      56 /* lightning */,
       () => {
         lightningImg.style.display = "none";
       }
