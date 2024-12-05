@@ -67,8 +67,8 @@ const launchGolemIdleAnimation = () => {
 };
 
 const launchTutorialTalk = () => {
-  if (converstationWithBardStarted) {
-    window.location.href = `http://localhost:3001/challenge`;
+  if (!converstationWithBardStarted) {
+    window.location.href = `http://localhost:3001/learningworld`;
     return;
   }
   converstationWithBardStarted = true;

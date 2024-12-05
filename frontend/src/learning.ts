@@ -29,7 +29,7 @@ const getChapters = async () => {
     try {
         const courseContainer = document.getElementById("course_container_b")!;
 
-        const response = await fetch('http://localhost:3000/api/chapters/6745f0ee352dc4f203f01b99', {
+        const response = await fetch('http://localhost:3000/api/chapters/675066592e63c665c9bc5aef', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,6 +58,14 @@ const getChapters = async () => {
     }
 }
 
+document.addEventListener("keydown", 
+    (event) => {
+        if(event.key === "g"){
+            document.getElementById("interface_container")!.style.opacity = "1";
+        }
+
+    }
+)
 
 window.onload = () => {
     getChapters();

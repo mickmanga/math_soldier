@@ -2,18 +2,17 @@
   <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style/dead.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
-    <div id="hero_container">
-      <img class="characterImg" src="assets/challenge/characters/hero/idle/1.png" alt="hero">
-    </div>
+    <div id="background">
+      <img src="assets/challenge/items/castle.gif" alt="">
 
-    <div id="master_container">
-      <img class="characterImg" src="assets/challenge/characters/neutral/golem/1.png" alt="master">
     </div>
-    
 
     <div id="interface_container">
       <div id="interface_container_a"></div>
@@ -210,7 +209,7 @@
                 <div class="knowledge_block_a">V</div>
                 <div class="knowledge_block_b">
                   <div class="knowledge_block_ba">
-                    1.1 Qu'est-ce qu'une fonction ? <button>v</button>
+                    1.1 Qu'est-ce qu'une fonction ? <button onclick="openAnswerDetails()">v</button>
                   </div>
                   <div>
                   </div>
@@ -309,6 +308,5 @@
     
     </div>
 
-    <script src="dist/learning.js"></script>
   </body>
 </html>

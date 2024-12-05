@@ -2845,7 +2845,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const challengeId = getQueryParam("challengeId");
     if (challengeId) {
       const challenge = yield fetchChallengeById(challengeId);
-      console.log(challenge);
     } else {
       console.error("No challengeId provided in the URL.");
     }
@@ -3522,7 +3521,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var buildEnemy = (answer) => {
-    const enemyCharacter = createRedHammerCharacter();
+    const enemyCreationCallbacks = [
+      createKingCharacter
+    ];
+    const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
+    const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
     if (!enemyCharacter) {
       return;
     }
@@ -3833,6 +3836,36 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         43 /* dwarf_opponent_attack */,
         44 /* dwarf_opponent_death */
       ]
+    },
+    golem_enemy: {
+      request_queue: [],
+      current_animation: null,
+      associated_animations: [
+        21 /* golem_opponent_idle */,
+        22 /* golem_opponent_run */,
+        23 /* golem_opponent_attack */,
+        24 /* golem_opponent_death */
+      ]
+    },
+    king_enemy: {
+      request_queue: [],
+      current_animation: null,
+      associated_animations: [
+        26 /* king_opponent_idle */,
+        27 /* king_opponent_run */,
+        28 /* king_opponent_attack */,
+        29 /* king_opponent_death */
+      ]
+    },
+    witch_enemy: {
+      request_queue: [],
+      current_animation: null,
+      associated_animations: [
+        31 /* witch_opponent_idle */,
+        33 /* witch_opponent_attack */,
+        32 /* witch_opponent_run */,
+        34 /* witch_opponent_death */
+      ]
     }
   };
   var getAppIdByAnimationId = (animationId) => {
@@ -4037,9 +4070,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 56 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 36 /* orc_opponent_idle */ || animationId === 38 /* orc_opponent_attack */ || animationId === 41 /* dwarf_opponent_idle */ || animationId === 43 /* dwarf_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_idle */ || animationId === 6 /* hero_second_idle */ || animationId === 56 /* lightning */ || animationId === 16 /* hammer_opponent_idle */ || animationId === 19 /* hammer_opponent_death */ || animationId === 34 /* witch_opponent_death */ || animationId === 18 /* hammer_opponent_attack */ || animationId === 36 /* orc_opponent_idle */ || animationId === 38 /* orc_opponent_attack */ || animationId === 41 /* dwarf_opponent_idle */ || animationId === 43 /* dwarf_opponent_attack */ || animationId === 21 /* golem_opponent_idle */ || animationId === 23 /* golem_opponent_attack */ || animationId === 26 /* king_opponent_idle */ || animationId === 28 /* king_opponent_attack */ || animationId === 31 /* witch_opponent_idle */ || animationId === 33 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : animationId === 16 /* hammer_opponent_idle */ ? 115 : animationId === 18 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_idle */ ? 225 : animationId === 6 /* hero_second_idle */ ? 400 : animationId === 19 /* hammer_opponent_death */ ? 17 : animationId === 34 /* witch_opponent_death */ ? 17 : animationId === 16 /* hammer_opponent_idle */ ? 115 : animationId === 36 /* orc_opponent_idle */ ? 115 : animationId === 21 /* golem_opponent_idle */ ? 115 : animationId === 31 /* witch_opponent_idle */ ? 120 : animationId === 33 /* witch_opponent_attack */ ? 120 : animationId === 26 /* king_opponent_idle */ ? 115 : animationId === 28 /* king_opponent_attack */ ? 120 : animationId === 41 /* dwarf_opponent_idle */ ? 80 : animationId === 18 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4421,17 +4454,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, 0 /* attack */);
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
-        launchAnimationAndDeclareItLaunched(
-          enemyOnScreen.character.element,
-          0,
-          "png",
-          attackAnimation.sprite.path,
-          1,
-          attackAnimation.sprite.length,
-          1,
-          true,
-          attackAnimation.id
-        );
+        launchAnimation(enemyOnScreen.character, 0 /* attack */);
       }
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
         enemyViewPointThresholdCrossed = true;
@@ -4523,7 +4546,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_KING_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 6 /* idle */,
@@ -4646,17 +4669,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var redHammerAnimations = [
+  var kingAnimations = [
     {
       animationType: 6 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 16 /* hammer_opponent_idle */,
+            id: 26 /* king_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/idle",
-              length: 16
+              path: "assets/challenge/characters/enemies/king/idle",
+              length: 18
             }
           }
         }
@@ -4666,12 +4689,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 18 /* hammer_opponent_attack */,
+            id: 43 /* dwarf_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
+              path: "assets/challenge/characters/enemies/king/attack",
+              length: 58
             }
           }
         }
@@ -4681,9 +4704,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 5 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 19 /* hammer_opponent_death */,
+            id: 29 /* king_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -4696,9 +4719,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 8 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 20 /* hammer_opponent_move */,
+            id: 30 /* king_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4714,15 +4737,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createRedHammerCharacter = () => {
+  var createKingCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+    newEnnemyImg.src = "assets/challenge/characters/enemies/king/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, kingAnimations);
   };
   var launchHeroRun = () => {
     if (runStopped) {
@@ -5219,6 +5242,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       () => soundEffectImage.style.display = "none",
       1e3
     );
+  };
+  var launchHeroLightningSpeedAnimation = () => {
+    superSpeedOn = true;
+    animateLightning();
+    heroImage.style.display = "none";
+    specialMoveIndicator.style.display = "none";
+    launchInvisibilityToggle();
+    setTimeout(() => {
+      superSpeedOn = false;
+      heroImage.style.display = "flex";
+    }, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
   };
 
   // src/boss.ts

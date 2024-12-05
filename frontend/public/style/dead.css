@@ -1,5 +1,7 @@
 html {
   background: rgb(15, 15, 15);
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -7,7 +9,9 @@ body {
   background-color: #1e1e1e;
   color: #ffffff;
   line-height: 1.6;
-  padding: 20px;
+  font-family: "MedievalSharp", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 h1, h2, h3 {
   color: #ffcc00;
@@ -40,6 +44,16 @@ li {
   width: auto;
 }
 
+#background {
+  height: 100%;
+  width: 100%;
+}
+
+#background img {
+  height: 100%;
+  width: 100%;
+}
+
 #hero_container {
   position: absolute;
   left: 8vw;
@@ -70,7 +84,21 @@ li {
   height: 80vh;
   display: flex;
   border: solid 1px;
+  border-radius: 15px;
+  background-color:rgba(0, 0, 0, 0.5);
+  overflow: overlay;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(90, 90, 90);
+  border-radius: 15px;
+}
+
 
 #interface_container_a {
   width: 0%;
@@ -142,8 +170,7 @@ li {
 #grade_container {
   width: 20%;
   height: 20%;
-  background: rgb(41, 38, 38);
-  color: chartreuse;
+  color: rgb(221, 216, 171);    
   display: flex;
   justify-content: center;
   align-items: center;
@@ -151,12 +178,13 @@ li {
 
 
 #challenge_info_container {
-  width: 30%;
+  width: 40%;
   height: 20%;
-  background: rgb(41, 38, 38);
-  color: chartreuse;    display: flex;
+  color: rgb(221, 216, 171);    
+  display: flex;
   justify-content: center;
   align-items: center;
+  font-size: medium;
 }
 
 .knowledge_block {

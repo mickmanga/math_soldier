@@ -25,7 +25,7 @@
   var getChapters = () => __async(void 0, null, function* () {
     try {
       const courseContainer = document.getElementById("course_container_b");
-      const response = yield fetch("http://localhost:3000/api/chapters/6745f0ee352dc4f203f01b99", {
+      const response = yield fetch("http://localhost:3000/api/chapters/675066592e63c665c9bc5aef", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -47,6 +47,14 @@
       console.error("Error:", error);
     }
   });
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key === "g") {
+        document.getElementById("interface_container").style.opacity = "1";
+      }
+    }
+  );
   window.onload = () => {
     getChapters();
   };

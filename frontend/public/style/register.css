@@ -1,0 +1,7 @@
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    margin: auto;
+    margin-top: 30vh;
+}

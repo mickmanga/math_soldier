@@ -1,16 +1,34 @@
 html {
-    background: rgb(15, 15, 15);
+    background-color: #212121;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1e1e;
+    background-color: #212121;
     color: #ffffff;
     line-height: 1.6;
     padding: 20px;
+    overflow: overlay;
+    font-family: "MedievalSharp", cursive;
+    font-weight: 400;
+    font-style: normal;
+
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(90, 90, 90);
+    border-radius: 15px;
+  }
+  
+  ::-webkit-scrollbar-track {
+  }
+  
   h1, h2, h3 {
-    color: #ffcc00;
+    color: #5d00ff;
   }
   h1 {
     font-size: 24px;
@@ -26,6 +44,7 @@ body {
   }
   p {
     margin-bottom: 15px;
+    padding: 30px;
   }
   ul {
     margin-left: 20px;
@@ -70,6 +89,9 @@ body {
     height: 80vh;
     display: flex;
     border: solid 1px;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out; /* Transition sur l'opacité, durée de 1 seconde */
 }
 
 #interface_container_a {
