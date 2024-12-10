@@ -26,15 +26,45 @@ async function setupDB() {
           <p>Une <strong>fonction</strong> est une relation qui associe à chaque valeur d'entrée
           (appelée variable indépendante) une seule valeur de sortie (appelée variable dépendante).
           Pensez à une fonction comme une machine qui prend un ingrédient (l'entrée) et produit un produit (la sortie).</p>
-          <h3>Exemple :</h3>
+      
+          <p>En termes simples, une fonction peut être vue comme une règle qui applique une opération spécifique sur les valeurs d'entrée pour produire une sortie unique.</p>
+      
+          <h3>Exemple : Une règle simple</h3>
           <ul>
             <li>Si on entre 3, la machine sort 5.</li>
             <li>Si on entre 7, la machine sort 9.</li>
           </ul>
+      
+          <p>Dans cet exemple, la règle est : <em>ajouter 2 à l'entrée</em>.</p>
+      
           <h3>Mathématiquement :</h3>
           <ul>
             <li>f(3) = 3 + 2 = 5</li>
             <li>f(7) = 7 + 2 = 9</li>
+          </ul>
+      
+          <h3>Exemple : Une règle plus complexe</h3>
+          <p>Considérons une autre fonction :</p>
+          <ul>
+            <li>Règle : multiplier par 2, puis ajouter 1.</li>
+            <li>f(x) = 2x + 1</li>
+          </ul>
+          <p>Calculons :</p>
+          <ul>
+            <li>f(2) = 2 × 2 + 1 = 5</li>
+            <li>f(4) = 2 × 4 + 1 = 9</li>
+          </ul>
+      
+          <h3>Points importants :</h3>
+          <ul>
+            <li>Chaque valeur d'entrée a une seule et unique valeur de sortie.</li>
+            <li>Une fonction peut être définie par une règle simple ou complexe.</li>
+          </ul>
+      
+          <h3>Ce que n'est pas une fonction :</h3>
+          <ul>
+            <li>Si une valeur d'entrée est associée à plusieurs sorties, ce n'est pas une fonction.</li>
+            <li>Exemple : Si 3 donne à la fois 5 et 7, ce n'est pas une fonction.</li>
           </ul>
         `,
         answers: [
@@ -58,39 +88,26 @@ async function setupDB() {
             explanation: "Elle est fausse, car les fonctions sont fondamentales en mathématiques.",
             true: false,
           },
-        ],
-      },
-      {
-        title: "1.2 Notation et Représentation des Fonctions",
-        content: `
-          <ul>
-            <li><strong>Notation fonctionnelle :</strong> f(x) signifie la fonction f évaluée en x.</li>
-            <li><strong>Variable indépendante :</strong> x (l'entrée).</li>
-            <li><strong>Variable dépendante :</strong> y = f(x) (la sortie).</li>
-          </ul>
-          <p>Les fonctions peuvent être représentées graphiquement en traçant des points (x, y) sur un plan cartésien. Cela permet de visualiser comment la fonction se comporte.</p>
-        `,
-        answers: [
           {
-            text: "La notation fonctionnelle f(x) signifie que f est une fonction appliquée à x.",
-            explanation: "Elle est vraie, car c'est la définition standard de la notation fonctionnelle.",
+            text: "Une fonction est définie par une règle qui produit une sortie unique.",
+            explanation: "Elle est vraie, car c'est la définition même d'une fonction.",
             true: true,
           },
           {
-            text: "Dans f(x), x est l'entrée de la fonction.",
-            explanation: "Elle est vraie, car x représente toujours la variable indépendante.",
+            text: "Si une valeur d'entrée est associée à plusieurs valeurs de sortie, il s'agit bien d'une fonction.",
+            explanation: "Elle est fausse, car cela viole la définition de fonction.",
+            true: false,
+          },
+          {
+            text: "La règle d'une fonction peut être simple ou complexe.",
+            explanation: "Elle est vraie, car une fonction peut inclure des calculs simples ou avancés.",
             true: true,
           },
           {
-            text: "La notation fonctionnelle f(x) indique toujours une addition.",
-            explanation: "Elle est fausse, car f(x) peut représenter n'importe quelle opération définie par la fonction.",
-            true: false,
-          },
-          {
-            text: "Dans f(x), x est toujours un nombre négatif.",
-            explanation: "Elle est fausse, car x peut être n'importe quelle valeur dans le domaine de la fonction.",
-            true: false,
-          },
+            text: "Un exemple de fonction est f(x) = 2x + 1.",
+            explanation: "Elle est vraie, car cette règle associe une seule sortie à chaque entrée.",
+            true: true,
+          }
         ],
       },
       {
@@ -102,12 +119,41 @@ async function setupDB() {
             <li>m est le coefficient directeur ou pente de la droite.</li>
             <li>b est l'ordonnée à l'origine, le point où la droite coupe l'axe des ordonnées (y).</li>
           </ul>
-          <h3>Caractéristiques :</h3>
+      
+          <h3>Comprendre le coefficient directeur (m) :</h3>
+          <ul>
+            <li>Si \( m > 0 \), la droite est croissante (elle monte de gauche à droite).</li>
+            <li>Si \( m < 0 \), la droite est décroissante (elle descend de gauche à droite).</li>
+            <li>Si \( m = 0 \), la droite est horizontale (constante).</li>
+          </ul>
+          <p>Le coefficient directeur représente la variation de \( y \) lorsque \( x \) augmente d'une unité.</p>
+      
+          <h3>Comprendre l'ordonnée à l'origine (b) :</h3>
+          <p>L'ordonnée à l'origine est la valeur de \( y \) lorsque \( x = 0 \). Cela correspond au point où la droite coupe l'axe des ordonnées.</p>
+      
+          <h3>Exemple pratique :</h3>
+          <ul>
+            <li>Si \( f(x) = 2x + 3 \) :
+              <ul>
+                <li>La pente \( m = 2 \) signifie que la droite monte de 2 unités pour chaque unité de \( x \).</li>
+                <li>L'ordonnée à l'origine \( b = 3 \) signifie que la droite coupe l'axe des ordonnées à \( y = 3 \).</li>
+              </ul>
+            </li>
+          </ul>
+      
+          <h3>Caractéristiques des fonctions linéaires :</h3>
           <ul>
             <li>Le graphique d'une fonction linéaire est une droite.</li>
-            <li>Si m > 0, la droite est croissante.</li>
-            <li>Si m < 0, la droite est décroissante.</li>
-            <li>Si m = 0, la fonction est constante et la droite est horizontale.</li>
+            <li>Si \( m > 0 \), la droite est croissante.</li>
+            <li>Si \( m < 0 \), la droite est décroissante.</li>
+            <li>Si \( m = 0 \), la fonction est constante et la droite est horizontale.</li>
+            <li>Les fonctions linéaires ont toujours un domaine et une image qui couvrent tous les nombres réels.</li>
+          </ul>
+      
+          <h3>Cas particuliers :</h3>
+          <ul>
+            <li>Lorsque \( b = 0 \), la droite passe par l'origine (\( 0, 0 \)).</li>
+            <li>Une fonction linéaire avec \( m = 0 \) est une constante, comme \( f(x) = 4 \), où la droite est horizontale à \( y = 4 \).</li>
           </ul>
         `,
         answers: [
@@ -151,6 +197,41 @@ async function setupDB() {
             explanation: "Elle est fausse, car les fonctions linéaires sont représentées par des droites.",
             true: false,
           },
+          {
+            text: "Une fonction linéaire peut avoir un coefficient directeur négatif.",
+            explanation: "Elle est vraie, car \( m \) peut être inférieur à 0, ce qui rend la droite décroissante.",
+            true: true,
+          },
+          {
+            text: "L'ordonnée à l'origine est la valeur de x lorsque y = 0.",
+            explanation: "Elle est fausse, car l'ordonnée à l'origine est la valeur de y lorsque x = 0.",
+            true: false,
+          },
+          {
+            text: "Une fonction linéaire passe toujours par l'origine.",
+            explanation: "Elle est fausse, car cela n'est vrai que si \( b = 0 \).",
+            true: false,
+          },
+          {
+            text: "Une pente nulle signifie que la fonction linéaire est constante.",
+            explanation: "Elle est vraie, car si \( m = 0 \), \( f(x) \) devient une constante.",
+            true: true,
+          },
+          {
+            text: "Une fonction linéaire a toujours un domaine couvrant tous les nombres réels.",
+            explanation: "Elle est vraie, car les fonctions linéaires sont définies sur tous les réels.",
+            true: true,
+          },
+          {
+            text: "Le coefficient directeur m détermine si une droite est croissante ou décroissante.",
+            explanation: "Elle est vraie, car \( m > 0 \) implique une pente montante, tandis que \( m < 0 \) implique une pente descendante.",
+            true: true,
+          },
+          {
+            text: "La pente d'une fonction linéaire est constante sur tout son domaine.",
+            explanation: "Elle est vraie, car une fonction linéaire a une pente fixe partout.",
+            true: true,
+          }
         ],
       },
       {
@@ -160,14 +241,60 @@ async function setupDB() {
           <p>f(x) = ax² + bx + c</p>
           <ul>
             <li>a, b, et c sont des constantes réelles.</li>
-            <li>a ≠ 0 pour assurer la présence du terme en x².</li>
+            <li>a ≠ 0 pour assurer la présence du terme en x², sinon ce serait une fonction linéaire.</li>
           </ul>
+      
+          <h3>Comprendre les coefficients :</h3>
+          <ul>
+            <li><strong>a</strong> détermine l'orientation et l'étirement de la parabole :
+              <ul>
+                <li>Si \( a > 0 \), la parabole s'ouvre vers le haut.</li>
+                <li>Si \( a < 0 \), la parabole s'ouvre vers le bas.</li>
+                <li>Plus \( |a| \) est grand, plus la parabole est étroite.</li>
+                <li>Plus \( |a| \) est petit, plus la parabole est large.</li>
+              </ul>
+            </li>
+            <li><strong>b</strong> influence la position horizontale de la parabole et son inclinaison.</li>
+            <li><strong>c</strong> représente l'ordonnée à l'origine, c'est-à-dire le point où la parabole coupe l'axe des ordonnées (y).</li>
+          </ul>
+      
           <h3>Caractéristiques :</h3>
           <ul>
             <li>Le graphique d'une fonction quadratique est une parabole.</li>
-            <li>Si a > 0, la parabole s'ouvre vers le haut.</li>
-            <li>Si a < 0, la parabole s'ouvre vers le bas.</li>
-            <li>Le sommet est le point où la fonction atteint son maximum ou minimum.</li>
+            <li>Le sommet de la parabole est le point où la fonction atteint son maximum (si \( a < 0 \)) ou son minimum (si \( a > 0 \)).</li>
+            <li>L'axe de symétrie passe par le sommet, et toutes les parties de la parabole sont symétriques par rapport à cet axe.</li>
+          </ul>
+      
+          <h3>Formule pour le sommet :</h3>
+          <p>Le sommet se trouve à :
+            <ul>
+              <li>Coordonnée x : \( x = -\\frac{b}{2a} \).</li>
+              <li>Coordonnée y : Remplacer \( x \) dans l'équation pour trouver \( f(x) \).</li>
+            </ul>
+          </p>
+      
+          <h3>Exemple pratique :</h3>
+          <p>Considérons \( f(x) = 2x² - 4x + 1 \) :</p>
+          <ul>
+            <li>Coefficient \( a = 2 \) : La parabole s'ouvre vers le haut et est relativement étroite.</li>
+            <li>Coordonnée x du sommet : \( x = -\\frac{-4}{2 \\cdot 2} = 1 \).</li>
+            <li>Coordonnée y du sommet : \( f(1) = 2(1)² - 4(1) + 1 = -1 \).</li>
+            <li>Le sommet est donc \( (1, -1) \).</li>
+          </ul>
+      
+          <h3>Représentation graphique :</h3>
+          <p>Pour tracer le graphique :
+            <ul>
+              <li>Calculez quelques points en remplaçant \( x \) dans l'équation.</li>
+              <li>Identifiez le sommet et tracez l'axe de symétrie.</li>
+              <li>Reliez les points pour former une parabole.</li>
+            </ul>
+          </p>
+      
+          <h3>Cas particuliers :</h3>
+          <ul>
+            <li>Si \( b = 0 \), la parabole est symétrique par rapport à l'axe y.</li>
+            <li>Si \( c = 0 \), la parabole passe par l'origine (0, 0).</li>
           </ul>
         `,
         answers: [
@@ -192,14 +319,14 @@ async function setupDB() {
             true: true,
           },
           {
-            text: "Le graphique d'une fonction quadratique est une droite.",
-            explanation: "Elle est fausse, car une fonction quadratique produit une parabole, pas une droite.",
+            text: "Si a = 0, la fonction reste quadratique.",
+            explanation: "Elle est fausse, car si a = 0, la fonction devient linéaire.",
             true: false,
           },
           {
-            text: "Si a > 0, la parabole s'ouvre vers le bas.",
-            explanation: "Elle est fausse, car un coefficient positif rend la courbe ascendante.",
-            true: false,
+            text: "L'axe de symétrie d'une parabole passe toujours par son sommet.",
+            explanation: "Elle est vraie, car c'est une propriété fondamentale des paraboles.",
+            true: true,
           },
           {
             text: "Les fonctions quadratiques n'ont pas de sommet.",
@@ -211,6 +338,46 @@ async function setupDB() {
             explanation: "Elle est fausse, car c'est le signe de a qui détermine l'orientation de la parabole.",
             true: false,
           },
+          {
+            text: "Une parabole peut être ouverte vers le haut ou vers le bas selon le signe de a.",
+            explanation: "Elle est vraie, car c'est le coefficient a qui détermine l'orientation.",
+            true: true,
+          },
+          {
+            text: "Si c = 0, la parabole passe par l'origine.",
+            explanation: "Elle est vraie, car c est l'ordonnée à l'origine.",
+            true: true,
+          },
+          {
+            text: "Plus la valeur absolue de a est grande, plus la parabole est large.",
+            explanation: "Elle est fausse, car une grande valeur absolue de a rend la parabole plus étroite.",
+            true: false,
+          },
+          {
+            text: "Le sommet d'une parabole est toujours à (0, 0).",
+            explanation: "Elle est fausse, car les coordonnées du sommet dépendent de a, b et c.",
+            true: false,
+          },
+          {
+            text: "L'ordonnée à l'origine d'une fonction quadratique est donnée par le coefficient c.",
+            explanation: "Elle est vraie, car c est la valeur de f(x) lorsque x = 0.",
+            true: true,
+          },
+          {
+            text: "Une fonction quadratique peut avoir un ou deux points d'intersection avec l'axe x.",
+            explanation: "Elle est vraie, car cela dépend des racines de l'équation \( ax² + bx + c = 0 \).",
+            true: true,
+          },
+          {
+            text: "Si b = 0, la parabole est symétrique par rapport à l'axe y.",
+            explanation: "Elle est vraie, car l'absence du terme linéaire rend la courbe symétrique.",
+            true: true,
+          },
+          {
+            text: "Le sommet d'une parabole est un point d'inflexion.",
+            explanation: "Elle est fausse, car un point d'inflexion est une caractéristique de courbes non quadratiques.",
+            true: false,
+          }
         ],
       },
       {
@@ -220,72 +387,173 @@ async function setupDB() {
           <p>f(x) = a^x</p>
           <ul>
             <li>a est une constante positive différente de 1 (a > 0 et a ≠ 1).</li>
-            <li>x est l'exposant.</li>
+            <li>x est l'exposant et représente la variable indépendante.</li>
           </ul>
+      
           <h3>Caractéristiques :</h3>
           <ul>
-            <li>Si a > 1, la fonction est croissante.</li>
-            <li>Si 0 < a < 1, la fonction est décroissante.</li>
-            <li>Le graphique passe toujours par le point (0, 1) puisque a⁰ = 1.</li>
+            <li>Si \( a > 1 \), la fonction est croissante. Cela signifie que plus \( x \) augmente, plus \( f(x) \) devient grand.</li>
+            <li>Si \( 0 < a < 1 \), la fonction est décroissante. Plus \( x \) augmente, plus \( f(x) \) se rapproche de 0.</li>
+            <li>Le graphique d'une fonction exponentielle passe toujours par le point (0, 1), car \( a^0 = 1 \), quelle que soit la base \( a \).</li>
+          </ul>
+      
+          <h3>Exemples pratiques :</h3>
+          <ul>
+            <li>Si \( a = 2 \), alors \( f(x) = 2^x \):
+              <ul>
+                <li>f(1) = \( 2^1 = 2 \).</li>
+                <li>f(2) = \( 2^2 = 4 \).</li>
+              </ul>
+            </li>
+            <li>Si \( a = \\frac{1}{2} \), alors \( f(x) = (\\frac{1}{2})^x \):
+              <ul>
+                <li>f(1) = \( (\\frac{1}{2})^1 = \\frac{1}{2} \).</li>
+                <li>f(2) = \( (\\frac{1}{2})^2 = \\frac{1}{4} \).</li>
+              </ul>
+            </li>
+          </ul>
+      
+          <h3>Propriétés supplémentaires :</h3>
+          <ul>
+            <li>Les fonctions exponentielles n'atteignent jamais 0. Elles s'en approchent (asymptote horizontale) mais ne la touchent jamais.</li>
+            <li>Elles sont définies pour tous les nombres réels, y compris les négatifs.</li>
+            <li>Si \( x < 0 \), \( a^x \) devient une fraction (exemple : \( 2^{-2} = \\frac{1}{2^2} = \\frac{1}{4} \)).</li>
           </ul>
         `,
         answers: [
           {
             text: "Une fonction exponentielle est de la forme f(x) = a^x.",
-            explanation: "Elle est vraie, car c'est la définition d'une exponentielle.",
+            explanation: "Elle est vraie, car c'est la définition d'une fonction exponentielle.",
             true: true,
           },
           {
-            text: "Si a > 1, la fonction est croissante.",
+            text: "Si a > 1, la fonction exponentielle est croissante.",
             explanation: "Elle est vraie, car une base supérieure à 1 rend la fonction croissante.",
             true: true,
           },
           {
-            text: "Si 0 < a < 1, la fonction est décroissante.",
+            text: "Si 0 < a < 1, la fonction exponentielle est décroissante.",
             explanation: "Elle est vraie, car une base fractionnaire rend la fonction décroissante.",
             true: true,
           },
           {
-            text: "Le graphique passe toujours par le point (0, 1).",
-            explanation: "Elle est vraie, car a⁰ = 1 quelle que soit la base a.",
+            text: "Le graphique d'une fonction exponentielle passe toujours par le point (0, 1).",
+            explanation: "Elle est vraie, car \( a^0 = 1 \), quelle que soit la base \( a \).",
             true: true,
           },
           {
             text: "Les fonctions exponentielles sont toujours décroissantes.",
-            explanation: "Elle est fausse, car elles peuvent être croissantes si a > 1.",
+            explanation: "Elle est fausse, car elles peuvent être croissantes si \( a > 1 \).",
             true: false,
           },
           {
-            text: "Si a > 1, la fonction est décroissante.",
-            explanation: "Elle est fausse, car une base supérieure à 1 rend la fonction croissante.",
+            text: "Le graphique d'une fonction exponentielle peut atteindre 0.",
+            explanation: "Elle est fausse, car une fonction exponentielle ne touche jamais l'axe des x.",
             true: false,
           },
           {
-            text: "Le graphique passe toujours par l'origine (0, 0).",
-            explanation: "Elle est fausse, car il passe par (0, 1).",
+            text: "Si x < 0, alors a^x est toujours un entier positif.",
+            explanation: "Elle est fausse, car pour \( x < 0 \), a^x devient une fraction.",
             true: false,
           },
           {
-            text: "Les fonctions exponentielles n'ont pas de point commun défini.",
-            explanation: "Elle est fausse, car elles passent toutes par (0, 1).",
+            text: "Les fonctions exponentielles sont définies pour tous les nombres réels.",
+            explanation: "Elle est vraie, car la base \( a^x \) accepte toutes les valeurs de \( x \).",
+            true: true,
+          },
+          {
+            text: "Une base fractionnaire (comme 0.5) rend la fonction croissante.",
+            explanation: "Elle est fausse, car une base fractionnaire produit une fonction décroissante.",
             true: false,
           },
+          {
+            text: "Les fonctions exponentielles ont une asymptote horizontale.",
+            explanation: "Elle est vraie, car elles ne touchent jamais l'axe des x.",
+            true: true,
+          },
+          {
+            text: "La fonction exponentielle \( 2^x \) croît deux fois plus vite que \( x \).",
+            explanation: "Elle est fausse, car \( 2^x \) croît de manière exponentielle, bien plus vite que \( x \).",
+            true: false,
+          },
+          {
+            text: "Toutes les fonctions exponentielles passent par l'origine (0, 0).",
+            explanation: "Elle est fausse, car elles passent par le point (0, 1), sauf si elles sont décalées.",
+            true: false,
+          },
+          {
+            text: "Les fonctions exponentielles peuvent modéliser la croissance démographique.",
+            explanation: "Elle est vraie, car elles représentent bien les croissances rapides.",
+            true: true,
+          },
+          {
+            text: "Si \( a = 1 \), alors \( f(x) = 1 \) pour toutes les valeurs de \( x \).",
+            explanation: "Elle est vraie, car \( 1^x = 1 \), quelle que soit la valeur de \( x \).",
+            true: true,
+          },
+          {
+            text: "Le comportement asymptotique d'une fonction exponentielle dépend de la base \( a \).",
+            explanation: "Elle est vraie, car la base influence la rapidité de rapprochement vers 0 ou l'infini.",
+            true: true,
+          },
+          {
+            text: "Pour \( a > 1 \), \( f(x) \) tend vers 0 lorsque \( x \) tend vers -∞.",
+            explanation: "Elle est vraie, car \( a^x \) diminue pour \( x < 0 \).",
+            true: true,
+          }
         ],
-      },
+      },      
       {
         title: "1.3.4 Fonctions Logarithmiques",
         content: `
           <p><strong>Définition :</strong> Une fonction logarithmique est la fonction inverse d'une fonction exponentielle, de la forme :</p>
           <p>f(x) = log_a(x)</p>
           <ul>
-            <li>a est la base du logarithme (a > 0 et a ≠ 1).</li>
-            <li>La fonction est définie pour x > 0.</li>
+            <li><strong>a</strong> est la base du logarithme (a > 0 et a ≠ 1).</li>
+            <li>La fonction est définie uniquement pour x > 0.</li>
           </ul>
+      
           <h3>Caractéristiques :</h3>
           <ul>
-            <li>Si a > 1, la fonction est croissante.</li>
-            <li>Si 0 < a < 1, la fonction est décroissante.</li>
-            <li>Le graphique passe par le point (1, 0) puisque log_a(1) = 0.</li>
+            <li>Si \( a > 1 \), la fonction logarithmique est croissante.</li>
+            <li>Si \( 0 < a < 1 \), la fonction logarithmique est décroissante.</li>
+            <li>Le graphique passe toujours par le point (1, 0), car \( log_a(1) = 0 \) quelle que soit la base \( a \).</li>
+            <li>Le logarithme est défini uniquement pour les entrées positives, il n'existe pas pour \( x ≤ 0 \).</li>
+          </ul>
+      
+          <h3>Relation avec les exponentielles :</h3>
+          <p>Les logarithmes et les exponentielles sont des fonctions inverses :</p>
+          <ul>
+            <li>\( a^{log_a(x)} = x \).</li>
+            <li>\( log_a(a^y) = y \).</li>
+          </ul>
+      
+          <h3>Exemples pratiques :</h3>
+          <ul>
+            <li>Si \( a = 10 \) (logarithme décimal) :
+              <ul>
+                <li>\( log_{10}(100) = 2 \), car \( 10^2 = 100 \).</li>
+                <li>\( log_{10}(0.01) = -2 \), car \( 10^{-2} = 0.01 \).</li>
+              </ul>
+            </li>
+            <li>Si \( a = e \) (logarithme naturel) :
+              <ul>
+                <li>\( log_e(e^3) = 3 \).</li>
+                <li>\( log_e(1) = 0 \).</li>
+              </ul>
+            </li>
+          </ul>
+      
+          <h3>Propriétés des logarithmes :</h3>
+          <ul>
+            <li>\( log_a(x \cdot y) = log_a(x) + log_a(y) \) (propriété de multiplication).</li>
+            <li>\( log_a(\\frac{x}{y}) = log_a(x) - log_a(y) \) (propriété de division).</li>
+            <li>\( log_a(x^n) = n \\cdot log_a(x) \) (propriété de puissance).</li>
+          </ul>
+      
+          <h3>Applications :</h3>
+          <ul>
+            <li>Les logarithmes sont utilisés pour mesurer des phénomènes exponentiels, comme la magnitude des tremblements de terre, le pH en chimie, ou encore la croissance économique.</li>
           </ul>
         `,
         answers: [
@@ -300,13 +568,13 @@ async function setupDB() {
             true: true,
           },
           {
-            text: "Le graphique passe par le point (1, 0).",
-            explanation: "Elle est vraie, car log_a(1) = 0 quelle que soit la base a.",
+            text: "Le graphique passe toujours par le point (1, 0).",
+            explanation: "Elle est vraie, car \( log_a(1) = 0 \) quelle que soit la base \( a \).",
             true: true,
           },
           {
             text: "Une fonction logarithmique est définie pour x < 0.",
-            explanation: "Elle est fausse, car les logarithmes sont uniquement définis pour x > 0.",
+            explanation: "Elle est fausse, car les logarithmes ne sont définis que pour x > 0.",
             true: false,
           },
           {
@@ -315,12 +583,63 @@ async function setupDB() {
             true: false,
           },
           {
-            text: "Le graphique logarithmique est toujours une droite.",
-            explanation: "Elle est fausse, car une fonction logarithmique produit une courbe.",
+            text: "Le logarithme de 1 est toujours 0.",
+            explanation: "Elle est vraie, car \( log_a(1) = 0 \) quelle que soit la base.",
+            true: true,
+          },
+          {
+            text: "Les logarithmes et exponentielles sont des fonctions inverses.",
+            explanation: "Elle est vraie, car c'est leur relation fondamentale.",
+            true: true,
+          },
+          {
+            text: "Le logarithme d'un nombre négatif est défini dans les nombres réels.",
+            explanation: "Elle est fausse, car les logarithmes ne sont pas définis pour des nombres négatifs dans les réels.",
             true: false,
           },
+          {
+            text: "Le logarithme naturel utilise e comme base.",
+            explanation: "Elle est vraie, car c'est la définition du logarithme naturel.",
+            true: true,
+          },
+          {
+            text: "La propriété \( log_a(x \cdot y) = log_a(x) + log_a(y) \) est correcte.",
+            explanation: "Elle est vraie, car c'est une propriété fondamentale des logarithmes.",
+            true: true,
+          },
+          {
+            text: "Les logarithmes sont définis pour tous les nombres réels.",
+            explanation: "Elle est fausse, car ils ne sont définis que pour \( x > 0 \).",
+            true: false,
+          },
+          {
+            text: "Un logarithme peut être utilisé pour mesurer des phénomènes exponentiels.",
+            explanation: "Elle est vraie, car les logarithmes modélisent souvent ces relations.",
+            true: true,
+          },
+          {
+            text: "Le logarithme décimal a pour base 2.",
+            explanation: "Elle est fausse, car il a pour base 10.",
+            true: false,
+          },
+          {
+            text: "Le logarithme est une fonction qui peut être décroissante ou croissante selon la base.",
+            explanation: "Elle est vraie, car cela dépend si \( a > 1 \) ou \( 0 < a < 1 \).",
+            true: true,
+          },
+          {
+            text: "Si \( log_a(x) = y \), alors \( x = a^y \).",
+            explanation: "Elle est vraie, car c'est la définition inverse du logarithme.",
+            true: true,
+          },
+          {
+            text: "La base du logarithme ne peut jamais être 1.",
+            explanation: "Elle est vraie, car \( log_1(x) \) est indéfini.",
+            true: true,
+          }
         ],
-      },
+      }
+      ,
       {
         title: "1.3.5 Fonctions Trigonométriques",
         content: `

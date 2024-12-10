@@ -30,8 +30,11 @@ router.get('/:id', async (req, res) => {
 // Create a new user
 router.post('/', async (req, res) => {
     try {
-        const { name, password, level } = req.body;
-        const newUser = new User({ name, password, level });
+        const { name, password } = req.body;
+        console.log(req.body)
+        console.log("name =>" + name);
+        console.log("password =>" + password);
+        const newUser = new User({ name, password, level: 1 });
         await newUser.save();
         res.status(201).json(newUser);
     } catch (error) {

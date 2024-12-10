@@ -15,6 +15,8 @@ app.use(cors({
     credentials: true, // If you're sending cookies or other credentials, set this to true
 }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
+
 
 // MongoDB Connection
 mongoose.connect('mongodb://localhost:27017/memory_soldier', {
