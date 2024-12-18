@@ -31,8 +31,24 @@ const MapLocationSchema = new Schema({
 // Define Map Schema
 const MapSchema = new Schema({
   background: { type: String, required: true },
-  locations: [MapLocationSchema]
+  elements:
+    [{
+      type: Schema.Types.Mixed
+      }
+     ]
 });
+
+const FormSchema = new Schema({
+  elementType: {type: String},
+  questions: [
+  {
+   value : String,
+   answer: String,
+   done: Boolean
+  }
+ ]
+});
+
 
 const KnowledgeDataContainer = mongoose.model('KnowledgeData', KnowledgeDataContainerSchema);
 const KnowledgeDataChapter = mongoose.model('KnowledgeChapter', KnowledgeDataChapterSchema);

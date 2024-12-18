@@ -8,6 +8,8 @@ const cors = require('cors');
 
 const knowledgeRouter = require('./routes/knowledgeRouter'); // Adjust the path
 
+const mapRouter = require('./routes/map.js');
+
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3001', // Specify the allowed origin
@@ -31,6 +33,8 @@ app.use('/api/chapters', chapterRoutes);
 app.use('/api/challenges', challengesRoutes);
 app.use('/api/users', userRoutes); // Add the new router
 app.use('/knowledgeblocks', knowledgeRouter);
+app.use('/map', mapRouter);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

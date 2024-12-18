@@ -11,7 +11,6 @@ router.get('/dashboard', verifyToken, (req, res) => {
     res.json({ message: 'Welcome to the dashboard, ' + req.user.name });
 });
 
-
 // Predefined subjects
 const predefinedSubjects = [
     { title: 'linear algebra', map: { background: 'Linear World', learning: { learners: [] }, locations: [] }},
