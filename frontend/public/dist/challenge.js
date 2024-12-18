@@ -5027,7 +5027,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 1e3;
+    idleTimerValue = 3;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };

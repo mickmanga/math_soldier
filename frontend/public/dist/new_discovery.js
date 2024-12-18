@@ -1,0 +1,328 @@
+"use strict";
+(() => {
+  // src/new_discovery.ts
+  var MAPS = [];
+  var heroImage = document.getElementById("heroImg");
+  var stepsInSwow = document.getElementById(
+    "snow_steps_audio"
+  );
+  var windowAudio = document.getElementById("wind_audio");
+  var gameCover = document.getElementById("game_cover");
+  var extendedFormContainer = document.getElementById("extended_form_container");
+  var extendedFormContainerButton = document.getElementById("extended_form_container_close_button");
+  windowAudio.volume = 0.7;
+  stepsInSwow.volume = 0.7;
+  stepsInSwow.playbackRate = 1.2;
+  var backgroundSrc = "assets/challenge/maps/outside.png";
+  var converstationWithBardStarted = false;
+  var ANIMATION_RUNNING_VALUES = {
+    [0 /* attack */]: 0,
+    [1 /* run */]: 0,
+    [2 /* walk */]: 0,
+    [3 /* opponent_run */]: 0,
+    [4 /* camera_left_to_right */]: 0,
+    [5 /* camera_right_to_left */]: 0,
+    [6 /* character_left_to_right_move */]: 0,
+    [7 /* golem_idle */]: 0,
+    [8 /* golem_door_creation */]: 0,
+    [9 /* obelisk_idle */]: 0,
+    [10 /* obelisk_lightning */]: 0
+  };
+  var launchGolemIdleAnimation = () => {
+    const golemImage = document.getElementById("golemImage");
+    if (!golemImage) {
+      return;
+    }
+    launchAnimationAndDeclareItLaunched(
+      golemImage,
+      0,
+      "png",
+      "assets/challenge/characters/neutral/golem",
+      1,
+      8,
+      1,
+      true,
+      7 /* golem_idle */
+    );
+  };
+  var launchTutorialTalk = () => {
+    if (!converstationWithBardStarted) {
+      window.location.href = `http://localhost:3001/learningworld`;
+      return;
+    }
+    converstationWithBardStarted = true;
+    const audio = document.getElementById(`bard_tutorial_1`);
+    audio.play();
+  };
+  var createMapPalaceBlock = (left) => {
+    const block = document.createElement("div");
+    block.classList.add("mapBlock");
+    const backgroundImage = document.createElement("img");
+    backgroundImage.src = backgroundSrc;
+    block.append(backgroundImage);
+    block.style.position = "fixed";
+    block.style.left = `${left}px`;
+    block.style.top = `0px`;
+    document.getElementsByTagName("body")[0].append(block);
+    if (left === window.innerWidth) {
+      const golemImg = document.createElement("img");
+      golemImg.id = "golemImage";
+      golemImg.src = "assets/challenge/characters/neutral/golem/1.png";
+      const golemLink = document.createElement("a");
+      golemLink.onclick = launchTutorialTalk;
+      golemLink.append(golemImg);
+      const formContainer = document.createElement("div");
+      formContainer.classList.add("form_container");
+      const extendFormButton = document.createElement("button");
+      extendFormButton.onclick = () => {
+        extendedFormContainer.style.display = "flex";
+        formContainer.style.opacity = "0";
+        hiddenForm = formContainer;
+      };
+      extendFormButton.innerHTML = "extend";
+      formContainer.append(extendFormButton);
+      const golemContainer = document.createElement("div");
+      golemContainer.append(formContainer);
+      golemContainer.append(golemLink);
+      golemContainer.classList.add("golem_container");
+      golemContainer.classList.add("golem_container_closed");
+      block.append(golemContainer);
+      launchGolemIdleAnimation();
+    } else if (left === window.innerWidth * 2) {
+      const obeliskContainer = document.createElement("div");
+      obeliskContainer.id = "obeliskContainer";
+      obeliskContainer.onclick = () => window.location.href = `http://localhost:3001/challenge?mode=hard&challengeId=675066592e63c665c9bc5a0d`;
+      const obeliskLightning = document.createElement("img");
+      obeliskLightning.src = "assets/challenge/items/lightning/1.png";
+      obeliskLightning.id = "obeliskLightning";
+      obeliskContainer.append(obeliskLightning);
+      const obeliskImg = document.createElement("img");
+      obeliskImg.id = "obeliskImage";
+      obeliskImg.src = "assets/challenge/items/obelisk/1.png";
+      obeliskContainer.append(obeliskImg);
+      block.append(obeliskContainer);
+      launchObeliskAnimation();
+      setTimeout(launchObeliskLightningAnimation, 1e4);
+    }
+    return block;
+  };
+  var moveCamera = (direction, previousFrameTimestamp) => {
+    if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
+      return;
+    }
+    const currentTs = Date.now();
+    const diff = currentTs - previousFrameTimestamp;
+    if (direction === 5 /* camera_right_to_left */ && MAPS[0].getBoundingClientRect().left >= 0) {
+      ANIMATION_RUNNING_VALUES[5 /* camera_right_to_left */] = 0;
+      return;
+    }
+    if (direction === 4 /* camera_left_to_right */ && MAPS[MAPS.length - 1].getBoundingClientRect().left <= 0) {
+      ANIMATION_RUNNING_VALUES[4 /* camera_left_to_right */] = 0;
+      return;
+    }
+    MAPS.forEach(
+      (map) => map.style.left = `${map.getBoundingClientRect().left + (direction === 4 /* camera_left_to_right */ ? -1 : 1) * Math.floor(diff / 4)}px`
+    );
+    requestAnimationFrame(() => moveCamera(direction, currentTs));
+  };
+  var launchAnimationAndDeclareItLaunched = (characterElement, throttleNum, extension, spriteBase, spriteIndex, max, min, loop, animationId) => {
+    ANIMATION_RUNNING_VALUES[animationId]++;
+    launchCharacterAnimation(
+      characterElement,
+      throttleNum,
+      extension,
+      spriteBase,
+      spriteIndex,
+      max,
+      min,
+      loop,
+      animationId,
+      Date.now()
+    );
+  };
+  var launchCharacterAnimation = (characterElement, throttleNum, extension, spriteBase, spriteIndex, max, min, loop, animationId, previousExecutionTimeStamp = Date.now()) => {
+    if (!characterElement) {
+      return;
+    }
+    if (!ANIMATION_RUNNING_VALUES[animationId] || ANIMATION_RUNNING_VALUES[animationId] > 1) {
+      return;
+    }
+    const currentTimeStamp = Date.now();
+    const executionDiff = currentTimeStamp - previousExecutionTimeStamp;
+    if (executionDiff < 150) {
+      return requestAnimationFrame(
+        () => launchCharacterAnimation(
+          characterElement,
+          throttleNum,
+          extension,
+          spriteBase,
+          spriteIndex,
+          max,
+          min,
+          loop,
+          animationId,
+          previousExecutionTimeStamp
+        )
+      );
+    }
+    if (spriteIndex === max) {
+      if (loop === false) {
+        return;
+      }
+      spriteIndex = min;
+    } else {
+      spriteIndex++;
+    }
+    characterElement.src = `${spriteBase}/${spriteIndex}.${extension}`;
+    requestAnimationFrame(
+      () => launchCharacterAnimation(
+        characterElement,
+        throttleNum,
+        extension,
+        spriteBase,
+        spriteIndex,
+        max,
+        min,
+        loop,
+        animationId,
+        currentTimeStamp
+      )
+    );
+  };
+  var initAndLaunchFootStepsAudio = () => {
+    stepsInSwow.currentTime = 0;
+    stepsInSwow.play();
+  };
+  var launchCharacterMovement = () => {
+    initAndLaunchFootStepsAudio();
+    moveCamera(4 /* camera_left_to_right */, Date.now());
+    launchAnimationAndDeclareItLaunched(
+      heroImage,
+      0,
+      "png",
+      "assets/palace/hero/old_walk",
+      1,
+      6,
+      1,
+      true,
+      2 /* walk */
+    );
+  };
+  var launchCharacterMovementLeft = () => {
+    initAndLaunchFootStepsAudio();
+    moveCamera(5 /* camera_right_to_left */, Date.now());
+    launchAnimationAndDeclareItLaunched(
+      heroImage,
+      0,
+      "png",
+      "assets/palace/hero/walk_left",
+      1,
+      6,
+      1,
+      true,
+      2 /* walk */
+    );
+  };
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (!launchedGame) {
+        startGame();
+        return;
+      }
+      if (event.key === "m") {
+        windowAudio.play();
+      }
+      if (event.key === "d" && ANIMATION_RUNNING_VALUES[4 /* camera_left_to_right */] === 0) {
+        ANIMATION_RUNNING_VALUES[4 /* camera_left_to_right */]++;
+        if (!isAnimating) {
+          isAnimating = true;
+          launchCharacterMovement();
+        }
+      }
+      if (event.key === "q" && ANIMATION_RUNNING_VALUES[5 /* camera_right_to_left */] === 0) {
+        ANIMATION_RUNNING_VALUES[5 /* camera_right_to_left */]++;
+        isAnimating = true;
+        launchCharacterMovementLeft();
+      }
+    }
+  );
+  document.addEventListener("keyup", (event) => {
+    ANIMATION_RUNNING_VALUES[6 /* character_left_to_right_move */] = 0;
+    ANIMATION_RUNNING_VALUES[2 /* walk */] = 0;
+    ANIMATION_RUNNING_VALUES[4 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[5 /* camera_right_to_left */] = 0;
+    isAnimating = false;
+    if (event.key === "d" || event.key === "q") {
+      stepsInSwow.pause();
+    }
+  });
+  var launchedGame = false;
+  var startGame = () => {
+    if (launchedGame) {
+      return;
+    }
+    launchedGame = true;
+    windowAudio.play();
+    gameCover.style.display = "none";
+  };
+  var hiddenForm;
+  var initExtendedFormButtonOnclick = () => {
+    extendedFormContainerButton.onclick = () => {
+      extendedFormContainer.style.display = "none";
+      if (hiddenForm) {
+        hiddenForm.style.opacity = "1";
+        hiddenForm = null;
+      }
+    };
+  };
+  window.onload = () => {
+    if (getUrlParameter("started")) {
+      startGame();
+    }
+    initExtendedFormButtonOnclick();
+    MAPS.push(createMapPalaceBlock(0));
+    MAPS.push(createMapPalaceBlock(window.innerWidth));
+    MAPS.push(createMapPalaceBlock(window.innerWidth * 2));
+  };
+  var spriteSheet = new Image();
+  spriteSheet.src = "assets/palace/characters/premium.png";
+  var isAnimating = false;
+  var launchObeliskLightningAnimation = () => {
+    const obeliskLightning = document.getElementById(
+      "obeliskLightning"
+    );
+    launchAnimationAndDeclareItLaunched(
+      obeliskLightning,
+      0,
+      "png",
+      "assets/challenge/items/lightning",
+      1,
+      16,
+      1,
+      true,
+      10 /* obelisk_lightning */
+    );
+  };
+  var launchObeliskAnimation = () => {
+    const obeliskImage = document.getElementById(
+      "obeliskImage"
+    );
+    launchAnimationAndDeclareItLaunched(
+      obeliskImage,
+      0,
+      "png",
+      "assets/challenge/items/obelisk",
+      1,
+      13,
+      1,
+      true,
+      9 /* obelisk_idle */
+    );
+  };
+  var getUrlParameter = (name) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  };
+})();
+//# sourceMappingURL=new_discovery.js.map

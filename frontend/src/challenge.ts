@@ -3731,7 +3731,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 1000;
+  idleTimerValue = 3;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
