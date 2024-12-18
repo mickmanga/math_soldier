@@ -1,6 +1,8 @@
 import {store} from "./redux/index";
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 
+const elements = [];
+
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
 };
