@@ -3,6 +3,13 @@ import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, res
 
 const elements = [];
 
+enum GAME_MODES {
+  discovery,
+  challenge
+}
+
+let gameMode: GAME_MODES = GAME_MODES.discovery;
+
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
 };
@@ -1087,7 +1094,9 @@ const launchEndOfChallenge = () => {
 export enum ANIMATION_ID {
   hero_attack,
   hero_run,
+  hero_run_left,
   hero_walk,
+  hero_walk_left,
   hero_hurt,
   hero_death,
   hero_idle,
@@ -1147,7 +1156,9 @@ export enum ANIMATION_ID {
 export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 0,
+  [ANIMATION_ID.hero_run_left]: 0,  
   [ANIMATION_ID.hero_walk]: 0,
+  [ANIMATION_ID.hero_walk_left]: 0,
   [ANIMATION_ID.hero_death]: 0,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 0,
@@ -1208,7 +1219,9 @@ export const ANIMATION_RUNNING_VALUES = {
 export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 5,
+  [ANIMATION_ID.hero_run_left]: 0,  
   [ANIMATION_ID.hero_walk]: 5,
+  [ANIMATION_ID.hero_walk_left]: 0,
   [ANIMATION_ID.hero_death]: 5,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 20,
@@ -1487,7 +1500,8 @@ const slowTime = (multiplicator: number) => {
 const moveCamera = (
   direction: ANIMATION_ID,
   previousFrameTimestamp: number,
-  mapSetIndex: number
+  mapSetIndex: number,
+  cameraSpeed: number
 ): any => {
   if (
     ANIMATION_RUNNING_VALUES[direction] === 0 ||
@@ -1506,13 +1520,11 @@ const moveCamera = (
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * diff * ((mapSet.velocity)/20) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/20) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
-  requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex));  
-
-
+  requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
 };
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
@@ -1716,13 +1728,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_run_left || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_run_left ? 250 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2347,18 +2359,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 /*
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
-  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_right_to_left] === 0) {
-    return;
-  }
-
-  if (throttleNum < 10) {
-    throttleNum++;
-    return requestAnimationFrame(() =>
-      checkForScreenUpdateFromRightToLeft(throttleNum)
-    );
-  }
-
-  throttleNum = 0;
 
   //creation
 
@@ -2368,7 +2368,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   if (
     firstMapDomElement &&
-    firstMapDomElement.offsetLeft > -window.innerWidth
+    firstMapDomElement.offsetLeft > window.innerWidth
   ) {
     MAPS.unshift(
       createMapBlock(
@@ -2389,6 +2389,37 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
 */
 
+const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
+
+  MAP_SETS.forEach(
+
+  (mapSet, index) => {
+      
+  const firstMapDomElement = mapSet.maps[0];
+
+  if (firstMapDomElement.getBoundingClientRect().left > -window.innerWidth) {
+    console.log(firstMapDomElement.getBoundingClientRect().left);
+    mapSet.maps.unshift(
+      createMapBlock(
+        firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
+       )
+    );
+  }
+
+  const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+
+    if (
+      lastMapDomElement &&
+      lastMapDomElement.getBoundingClientRect().left > window.innerWidth
+    ) {
+         lastMapDomElement.remove();
+         mapSet.maps.pop();
+      } 
+    }
+  )
+
+  requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
+};
 
 type Animation = {
    id: ANIMATION_ID,
@@ -2447,6 +2478,18 @@ const launchAnimation = (character: CharacterInterface, animationType: Animation
   );
 }
 
+const launchHeroWalkAnimation = () => {
+
+  if (!heroIsAlive) {
+    return;
+  }
+
+  runAudio.volume = 0.7;
+
+  launchAnimation(heroCharacter, AnimationType.run_left);
+
+}
+
 const launchHeroRunAnimation = () => {
 
   if (!heroIsAlive) {
@@ -2461,7 +2504,7 @@ const launchHeroRunAnimation = () => {
 }
 
 /*
-const launchHeroRun = () => {
+const  () => {
   if (!heroIsAlive) {
     return;
   }
@@ -2502,6 +2545,7 @@ enum AnimationType {
   attack,
   specialAttack,
   run,
+  run_left,
   walk,
   hurt,
   death,
@@ -2722,7 +2766,33 @@ const heroAnimations = [
          }
        ]
       },
-
+      {
+        animationType: AnimationType.run_left,
+        animationsStatesBlocks: [
+          {
+            states: ALL_HERO_STATES,
+            animation: 
+            {
+              id: ANIMATION_ID.hero_run_left,
+              sprite:    {
+                path: "assets/challenge/characters/hero/walk_left",
+                length: 6
+            }
+            }
+           },
+           {
+            states: ALL_TRANSFORMED_HERO_STATES,
+            animation: 
+            {
+              id: ANIMATION_ID.hero_transformation_run,
+              sprite:    {
+                path: "assets/challenge/characters/transformed_hero/run",
+                length: 6
+            }
+            }
+           }
+         ]
+        },
       {
         animationType: AnimationType.secondIdle,
         animationsStatesBlocks: [
@@ -2739,18 +2809,18 @@ const heroAnimations = [
            }
          ]
         },
-      {
-        animationType: AnimationType.death,
-        animationsStatesBlocks: [
-          {
-            states: ALL_HERO_STATES,
-            animation: 
+        {
+          animationType: AnimationType.death,
+          animationsStatesBlocks: [
             {
-              id: ANIMATION_ID.hero_death,
-              sprite:    {
+             states: ALL_HERO_STATES,
+             animation: 
+              {
+               id: ANIMATION_ID.hero_death,
+               sprite:    {
                 path: "assets/challenge/characters/hero/death",
                 length: 6
-            }
+              }
             }
            }
          ]
@@ -3287,27 +3357,32 @@ const createDwarfCharacter = (): DefaultCharacter => {
   enemyViewPoint.style.left = "110vw";
   enemyViewPoint.style.display = "flex";
 
+  return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations);
 
-return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations)
+}
+
+const moveBackground = (direction: ANIMATION_ID) => {
+
+  if (ANIMATION_RUNNING_VALUES[direction] === 0) {
+    startCamera(direction);
+    for(let i=0; i < 5 ; i++){
+      moveCamera(direction, Date.now(), i, 1);
+    }
+  }
 }
 
 
-const launchHeroRun = () => {
-  if (runStopped) {
-    return;
-  }
 
+const launchHeroWalk = (direction = ANIMATION_ID.camera_right_to_left) => {
   interuptIdleTimer();
+  moveBackground(direction);
+  launchHeroWalkAnimation();
+};
 
-  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] === 0) {
-    startCamera();
-    for(let i=0; i < 5 ; i++){
-      moveCamera(ANIMATION_ID.camera_left_to_right, Date.now(), i);
-    }
-  }
-
+const launchHeroRun = (direction = ANIMATION_ID.camera_left_to_right) => {
+  interuptIdleTimer();
+  moveBackground(direction);
   launchHeroRunAnimation();
-
 };
 
 const checkForOpponentAttack = () => {
@@ -3351,6 +3426,11 @@ document.addEventListener("keydown", (event) => {
       resumeRun();
     }
   }
+  
+  if(event.key === "q"){
+    launchHeroWalk();
+  }
+
 
   if (!gameLaunched || preTransformed || heroHurt) {
     return;
@@ -3396,7 +3476,6 @@ document.addEventListener("keydown", (event) => {
   if(event.key === "z"){
     executeSuperSpeedToggle();
   }
-
 
 });
 
@@ -3840,11 +3919,11 @@ const stopCamera = () => {
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] = 0;
 };
 
-const startCamera = () => {
-  if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] > 0) {
+const startCamera = (direction: ANIMATION_ID) => {
+  if (ANIMATION_RUNNING_VALUES[direction] > 0) {
     return;
   }
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right]++;
+  ANIMATION_RUNNING_VALUES[direction]++;
 };
 
 const initHeroAnimations = () => {
@@ -3922,6 +4001,7 @@ window.onload = () => {
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
+  checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
