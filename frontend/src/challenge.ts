@@ -2359,6 +2359,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.offsetLeft < -window.innerWidth) {
+    gameMap.startIndex++;
     firstMapDomElement.remove();
     mapSet.maps.shift();
   }
@@ -2369,7 +2370,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.offsetLeft <= window.innerWidth / 10
     ) {
-   
+
+     gameMap.endIndex++;
      mapSet.maps.push(
        createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
