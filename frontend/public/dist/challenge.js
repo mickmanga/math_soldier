@@ -3935,6 +3935,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
       return;
     }
+    if (direction === 49 /* camera_right_to_left */) {
+      console.log(ANIMATION_RUNNING_VALUES[direction]);
+    }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
@@ -4078,7 +4081,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 2 /* hero_run_left */ || animationId === 7 /* hero_idle */ || animationId === 8 /* hero_second_idle */ || animationId === 58 /* lightning */ || animationId === 18 /* hammer_opponent_idle */ || animationId === 21 /* hammer_opponent_death */ || animationId === 36 /* witch_opponent_death */ || animationId === 20 /* hammer_opponent_attack */ || animationId === 38 /* orc_opponent_idle */ || animationId === 40 /* orc_opponent_attack */ || animationId === 43 /* dwarf_opponent_idle */ || animationId === 45 /* dwarf_opponent_attack */ || animationId === 23 /* golem_opponent_idle */ || animationId === 25 /* golem_opponent_attack */ || animationId === 28 /* king_opponent_idle */ || animationId === 30 /* king_opponent_attack */ || animationId === 33 /* witch_opponent_idle */ || animationId === 35 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 2 /* hero_run_left */ ? 250 : animationId === 7 /* hero_idle */ ? 225 : animationId === 8 /* hero_second_idle */ ? 400 : animationId === 21 /* hammer_opponent_death */ ? 17 : animationId === 36 /* witch_opponent_death */ ? 17 : animationId === 18 /* hammer_opponent_idle */ ? 115 : animationId === 38 /* orc_opponent_idle */ ? 115 : animationId === 23 /* golem_opponent_idle */ ? 115 : animationId === 33 /* witch_opponent_idle */ ? 120 : animationId === 35 /* witch_opponent_attack */ ? 120 : animationId === 28 /* king_opponent_idle */ ? 115 : animationId === 30 /* king_opponent_attack */ ? 120 : animationId === 43 /* dwarf_opponent_idle */ ? 80 : animationId === 20 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 2 /* hero_run_left */ ? 150 : animationId === 7 /* hero_idle */ ? 225 : animationId === 8 /* hero_second_idle */ ? 400 : animationId === 21 /* hammer_opponent_death */ ? 17 : animationId === 36 /* witch_opponent_death */ ? 17 : animationId === 18 /* hammer_opponent_idle */ ? 115 : animationId === 38 /* orc_opponent_idle */ ? 115 : animationId === 23 /* golem_opponent_idle */ ? 115 : animationId === 33 /* witch_opponent_idle */ ? 120 : animationId === 35 /* witch_opponent_attack */ ? 120 : animationId === 28 /* king_opponent_idle */ ? 115 : animationId === 30 /* king_opponent_attack */ ? 120 : animationId === 43 /* dwarf_opponent_idle */ ? 80 : animationId === 20 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4505,7 +4508,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.getBoundingClientRect().left > -window.innerWidth) {
-          console.log(firstMapDomElement.getBoundingClientRect().left);
           mapSet.maps.unshift(
             createMapBlock(
               firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
@@ -4932,6 +4934,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var interruptAnimation = (animation) => {
     ANIMATION_RUNNING_VALUES[animation] = 0;
+    if (animation === 49 /* camera_right_to_left */) {
+      console.log("camera to left interrupted");
+    }
     const appElementId = getAppIdByAnimationId(animation);
     if (!appElementId) {
       return;
@@ -5096,7 +5101,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     idleTimeoutContainer.innerHTML = idleTimerValue.toString();
   };
   var interuptIdleTimer = () => {
-    idleTimerValue = 3;
+    idleTimerValue = 1e3;
     updateIdleTimerInterface();
     idleTimeoutContainer.style.display = "none";
   };
@@ -5175,6 +5180,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var stopCamera = () => {
     ANIMATION_RUNNING_VALUES[48 /* camera_left_to_right */] = 0;
+    ANIMATION_RUNNING_VALUES[49 /* camera_right_to_left */] = 0;
   };
   var startCamera = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction] > 0) {
@@ -5208,6 +5214,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var launchIdleLoop = (loopIndex = 0) => {
     const MAX_LOOP = 0;
+    return;
     if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
       return;
     }

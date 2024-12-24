@@ -1,14 +1,32 @@
 import {store} from "./redux/index";
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 
-const elements = [];
-
 enum GAME_MODES {
   discovery,
   challenge
 }
 
 let gameMode: GAME_MODES = GAME_MODES.discovery;
+
+
+
+const gameMap = {
+  startIndex: 0,
+  endIndex: 1,
+  elements: 
+  [
+    {
+      type: 'form',
+      animations: []
+    },
+    null,
+    {
+      type: 'challenge',
+      animations: []
+    },
+  ]
+
+};
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -1094,6 +1112,7 @@ const launchEndOfChallenge = () => {
 export enum ANIMATION_ID {
   hero_attack,
   hero_run,
+  hero_run_right,
   hero_run_left,
   hero_walk,
   hero_walk_left,
@@ -1156,6 +1175,7 @@ export enum ANIMATION_ID {
 export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 0,
+  [ANIMATION_ID.hero_run_right]: 0,  
   [ANIMATION_ID.hero_run_left]: 0,  
   [ANIMATION_ID.hero_walk]: 0,
   [ANIMATION_ID.hero_walk_left]: 0,
@@ -1219,6 +1239,7 @@ export const ANIMATION_RUNNING_VALUES = {
 export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 5,
+  [ANIMATION_ID.hero_run_right]: 0,  
   [ANIMATION_ID.hero_run_left]: 0,  
   [ANIMATION_ID.hero_walk]: 5,
   [ANIMATION_ID.hero_walk_left]: 0,
@@ -1510,6 +1531,11 @@ const moveCamera = (
     return;
   }
 
+  if(direction === ANIMATION_ID.camera_right_to_left){
+    console.log(ANIMATION_RUNNING_VALUES[direction])
+  }
+
+
   const currentFrameTimeStamp = Date.now();
 
   const diff = currentFrameTimeStamp - previousFrameTimestamp;
@@ -1734,7 +1760,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_run_left ? 250 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_run_left ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2398,7 +2424,6 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
   const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.getBoundingClientRect().left > -window.innerWidth) {
-    console.log(firstMapDomElement.getBoundingClientRect().left);
     mapSet.maps.unshift(
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
@@ -2478,7 +2503,7 @@ const launchAnimation = (character: CharacterInterface, animationType: Animation
   );
 }
 
-const launchHeroWalkAnimation = () => {
+const launchHeroWalkAnimation = (direction: ANIMATION_ID) => {
 
   if (!heroIsAlive) {
     return;
@@ -2486,8 +2511,7 @@ const launchHeroWalkAnimation = () => {
 
   runAudio.volume = 0.7;
 
-  launchAnimation(heroCharacter, AnimationType.run_left);
-
+  launchAnimation(heroCharacter, direction === ANIMATION_ID.hero_run_left ? AnimationType.run_left : AnimationType.run_right);
 }
 
 const launchHeroRunAnimation = () => {
@@ -2546,6 +2570,7 @@ enum AnimationType {
   specialAttack,
   run,
   run_left,
+  run_right,
   walk,
   hurt,
   death,
@@ -3376,7 +3401,9 @@ const moveBackground = (direction: ANIMATION_ID) => {
 const launchHeroWalk = (direction = ANIMATION_ID.camera_right_to_left) => {
   interuptIdleTimer();
   moveBackground(direction);
-  launchHeroWalkAnimation();
+  if(direction === ANIMATION_ID.camera_right_to_left){
+    launchHeroWalkAnimation();
+  }
 };
 
 const launchHeroRun = (direction = ANIMATION_ID.camera_left_to_right) => {
@@ -3420,6 +3447,13 @@ const executeSuperSpeedToggle = () => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "d") {
+
+    if(gameMode === GAME_MODES.discovery){
+
+      launchHeroWalk()
+    }
+
+
     if (!gameLaunched) {
       launchGame();
     } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
@@ -3535,6 +3569,7 @@ const stopRun = () => {
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
 
+
   heroImage.src = "assets/challenge/characters/hero/idle/1.png";
 
   addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
@@ -3556,6 +3591,10 @@ const addAnimationCallbackToQueue = (
 
 const interruptAnimation = (animation: ANIMATION_ID) => {
   ANIMATION_RUNNING_VALUES[animation] = 0;
+
+  if(animation === ANIMATION_ID.camera_right_to_left){
+    console.log("camera to left interrupted");
+  }
 
   const appElementId = getAppIdByAnimationId(animation);
   if (!appElementId) {
@@ -3812,7 +3851,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 3;
+  idleTimerValue = 1000;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3959,6 +3998,8 @@ const animateLightning = () => {
  const launchIdleLoop = (loopIndex = 0) => {
 
    const MAX_LOOP = 0;
+
+   return;
 
    if(ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] !== 0){
     return;
