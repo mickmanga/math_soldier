@@ -1485,6 +1485,12 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
 
   document.getElementsByTagName("body")[0].append(block);
 
+  const newElement = document.createElement("div");
+
+  const newElementContent = gameMap.elements[gameMap.endIndex];
+
+  newElement.innerHTML = newElementContent? newElementContent.type : "nothing";
+
   return block;
 };
 
