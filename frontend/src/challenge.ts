@@ -2520,9 +2520,10 @@ const launchHeroWalkAnimation = (direction: ANIMATION_ID) => {
   runAudio.volume = 0.7;
 
   launchAnimation(heroCharacter, direction === ANIMATION_ID.hero_run_left ? AnimationType.run_left : AnimationType.run_right);
+  
 }
 
-const launchHeroRunAnimation = () => {
+const launchHeroRunAnimation = (direction = Direction.LEFT_TO_RIGHT) => {
 
   if (!heroIsAlive) {
     return;
@@ -2530,8 +2531,7 @@ const launchHeroRunAnimation = () => {
 
   runAudio.volume = 0.7;
 
-  launchAnimation(heroCharacter, AnimationType.run);
-
+  launchAnimation(heroCharacter, direction === Direction.LEFT_TO_RIGHT ? AnimationType.run : AnimationType.run_left);
 
 }
 
@@ -3404,20 +3404,19 @@ const moveBackground = (direction: ANIMATION_ID) => {
   }
 }
 
-
-
 const launchHeroWalk = (direction = ANIMATION_ID.camera_right_to_left) => {
+  runStopped = false;
   interuptIdleTimer();
   moveBackground(direction);
   if(direction === ANIMATION_ID.camera_right_to_left){
-    launchHeroWalkAnimation();
+    launchHeroWalkAnimation(ANIMATION_ID.hero_run_left);
   }
 };
 
 const launchHeroRun = (direction = ANIMATION_ID.camera_left_to_right) => {
   interuptIdleTimer();
   moveBackground(direction);
-  launchHeroRunAnimation();
+  launchHeroRunAnimation(direction);
 };
 
 const checkForOpponentAttack = () => {
@@ -3458,7 +3457,7 @@ document.addEventListener("keydown", (event) => {
 
     if(gameMode === GAME_MODES.discovery){
 
-      launchHeroWalk()
+    //  launchHeroWalk()
     }
 
 
@@ -3470,9 +3469,9 @@ document.addEventListener("keydown", (event) => {
   }
   
   if(event.key === "q"){
+    gameLaunched = true;
     launchHeroWalk();
   }
-
 
   if (!gameLaunched || preTransformed || heroHurt) {
     return;
@@ -3576,6 +3575,7 @@ const stopRun = () => {
   )
 
   interruptAnimation(ANIMATION_ID.camera_left_to_right);
+  interruptAnimation(ANIMATION_ID.camera_right_to_left);
 
 
   heroImage.src = "assets/challenge/characters/hero/idle/1.png";
