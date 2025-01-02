@@ -2478,9 +2478,7 @@ const getCharacterAnimationAccordingToType = (character: CharacterInterface, ani
        const animationStateBlock = animationBlock.states[animationBlockStateIndex];
 
         if(animationStateBlock === character.state){
-        
           return animationBlock.animation;
-
          }
       }
      }
@@ -2520,7 +2518,7 @@ const launchHeroWalkAnimation = (direction: ANIMATION_ID) => {
   runAudio.volume = 0.7;
 
   launchAnimation(heroCharacter, direction === ANIMATION_ID.hero_run_left ? AnimationType.run_left : AnimationType.run_right);
-  
+
 }
 
 const launchHeroRunAnimation = (direction = Direction.LEFT_TO_RIGHT) => {
