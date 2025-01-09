@@ -3954,14 +3954,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     THROTTLE_NUMS[18 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
   };
   var moveCamera = (direction, previousFrameTimestamp, mapSetIndex, cameraSpeed) => {
-    if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
+    const cameraAnimation = direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */;
+    if (ANIMATION_RUNNING_VALUES[cameraAnimation] === 0 || ANIMATION_RUNNING_VALUES[cameraAnimation] > 1) {
       return;
     }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 49 /* camera_left_to_right */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / 20) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / 30) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
   };
@@ -4847,28 +4848,28 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, kingAnimations);
   };
   var moveBackground = (direction) => {
-    if (ANIMATION_RUNNING_VALUES[direction] === 0) {
+    if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
       startCamera(direction);
       for (let i = 0; i < 5; i++) {
         moveCamera(direction, Date.now(), i, 1);
       }
     }
   };
-  var launchHeroWalk = (direction = 50 /* camera_right_to_left */) => {
-    runStopped = false;
-    interuptIdleTimer();
+  var launchHeroWalk = (direction = 0 /* LEFT_TO_RIGHT */) => {
     moveBackground(direction);
-    if (direction === 50 /* camera_right_to_left */) {
-      launchHeroWalkAnimation(3 /* hero_run_left */);
-    }
+    launchHeroWalkAnimation(3 /* hero_run_left */);
   };
-  var launchHeroRun = (direction = 49 /* camera_left_to_right */) => {
+  var launchHeroRun = (direction = 0 /* LEFT_TO_RIGHT */) => {
     interuptIdleTimer();
     moveBackground(direction);
     launchHeroRunAnimation(direction);
   };
   var heroInitialTop = heroContainer.getBoundingClientRect().top;
   var superSpeedOn = false;
+  var launchHeroWalk2 = (direction) => {
+    moveHero(0 /* WALK */, direction);
+    moveBackground(direction);
+  };
   var moveHero = (type, direction) => {
     launchAnimation(heroCharacter, 6 /* walk_right */);
   };
@@ -4878,6 +4879,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   document.addEventListener("keyup", (event) => {
     if (event.key === "d") {
       interruptAnimation(4 /* hero_walk_right */);
+      stopCameraMovingToRight();
     }
     if (event.key === "q") {
       interruptAnimation(3 /* hero_run_left */);
@@ -4887,7 +4889,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   document.addEventListener("keydown", (event) => {
     if (event.key === "d") {
       if (gameMode === 0 /* discovery */) {
-        moveHero(0 /* WALK */, 0 /* LEFT_TO_RIGHT */);
+        launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
         return;
       }
       if (!gameLaunched) {
@@ -4898,7 +4900,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "q") {
       gameLaunched = true;
-      launchHeroWalk();
+      launchHeroWalk(1 /* RIGHT_TO_LEFT */);
     }
     if (!gameLaunched || preTransformed || heroHurt) {
       return;
@@ -5242,10 +5244,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ANIMATION_RUNNING_VALUES[50 /* camera_right_to_left */] = 0;
   };
   var startCamera = (direction) => {
-    if (ANIMATION_RUNNING_VALUES[direction] > 0) {
+    const cameraAnimation = direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */;
+    if (ANIMATION_RUNNING_VALUES[cameraAnimation] > 0) {
       return;
     }
-    ANIMATION_RUNNING_VALUES[direction]++;
+    ANIMATION_RUNNING_VALUES[cameraAnimation]++;
   };
   var initHeroAnimations = () => {
     ANIMATION_RUNNING_VALUES[1 /* hero_run */] = 0;
@@ -5273,7 +5276,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var launchIdleLoop = (loopIndex = 0) => {
     const MAX_LOOP = 0;
-    return;
     if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] !== 0) {
       return;
     }
@@ -5312,7 +5314,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
-    launchIdleLoop();
     if (hardMode) {
       epicAudio.play();
     } else {

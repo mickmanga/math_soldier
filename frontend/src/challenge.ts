@@ -1525,35 +1525,34 @@ const slowTime = (multiplicator: number) => {
 };
 
 const moveCamera = (
-  direction: ANIMATION_ID,
+  direction: Direction,
   previousFrameTimestamp: number,
   mapSetIndex: number,
   cameraSpeed: number
 ): any => {
+  const cameraAnimation = direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left;
   if (
-    ANIMATION_RUNNING_VALUES[direction] === 0 ||
-    ANIMATION_RUNNING_VALUES[direction] > 1
+    ANIMATION_RUNNING_VALUES[cameraAnimation] === 0 ||
+    ANIMATION_RUNNING_VALUES[cameraAnimation] > 1
   ) {
     return;
   }
 
-
   const currentFrameTimeStamp = Date.now();
-
   const diff = currentFrameTimeStamp - previousFrameTimestamp;
-
   const mapSet = MAP_SETS[mapSetIndex];
 
     mapSet.maps.forEach(
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          Math.floor((direction === ANIMATION_ID.camera_left_to_right ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/20) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/30) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
   requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
 };
+
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
   good: [
@@ -3403,12 +3402,11 @@ const createDwarfCharacter = (): DefaultCharacter => {
   enemyViewPoint.style.display = "flex";
 
   return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations);
-
 }
 
-const moveBackground = (direction: ANIMATION_ID) => {
+const moveBackground = (direction: Direction) => {
 
-  if (ANIMATION_RUNNING_VALUES[direction] === 0) {
+  if (ANIMATION_RUNNING_VALUES[direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left] === 0) {
     startCamera(direction);
     for(let i=0; i < 5 ; i++){
       moveCamera(direction, Date.now(), i, 1);
@@ -3416,16 +3414,12 @@ const moveBackground = (direction: ANIMATION_ID) => {
   }
 }
 
-const launchHeroWalk = (direction = ANIMATION_ID.camera_right_to_left) => {
-  runStopped = false;
-  interuptIdleTimer();
+const launchHeroWalk = (direction = Direction.LEFT_TO_RIGHT) => {
   moveBackground(direction);
-  if(direction === ANIMATION_ID.camera_right_to_left){
-    launchHeroWalkAnimation(ANIMATION_ID.hero_run_left);
-  }
+  launchHeroWalkAnimation(ANIMATION_ID.hero_run_left);
 };
 
-const launchHeroRun = (direction = ANIMATION_ID.camera_left_to_right) => {
+const launchHeroRun = (direction = Direction.LEFT_TO_RIGHT) => {
   interuptIdleTimer();
   moveBackground(direction);
   launchHeroRunAnimation(direction);
@@ -3466,6 +3460,13 @@ enum MovementType {
   RUN  
 }
 
+const launchHeroWalk2 = (direction: Direction) => {
+
+   moveHero(MovementType.WALK, direction);
+   moveBackground(direction);
+
+}
+
 const moveHero = (type: MovementType, direction: Direction) => {
 
   launchAnimation(heroCharacter, AnimationType.walk_right);
@@ -3480,6 +3481,7 @@ document.addEventListener("keyup", (event) => {
 
   if(event.key === "d"){
     interruptAnimation(ANIMATION_ID.hero_walk_right);
+    stopCameraMovingToRight();
   }
 
   
@@ -3494,7 +3496,8 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "d") {
 
     if(gameMode === GAME_MODES.discovery){
-      moveHero(MovementType.WALK, Direction.LEFT_TO_RIGHT);
+    //  moveHero(MovementType.WALK, Direction.LEFT_TO_RIGHT);
+      launchHeroWalk2(Direction.LEFT_TO_RIGHT)
       return;
     }
 
@@ -3507,7 +3510,7 @@ document.addEventListener("keydown", (event) => {
   
   if(event.key === "q"){
     gameLaunched = true;
-    launchHeroWalk();
+    launchHeroWalk(Direction.RIGHT_TO_LEFT);
   }
 
   if (!gameLaunched || preTransformed || heroHurt) {
@@ -4010,11 +4013,14 @@ const stopCameraMovingToLeft = () => {
 
 
 
-const startCamera = (direction: ANIMATION_ID) => {
-  if (ANIMATION_RUNNING_VALUES[direction] > 0) {
+const startCamera = (direction: Direction) => {
+
+  const cameraAnimation = direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left;
+
+  if (ANIMATION_RUNNING_VALUES[cameraAnimation] > 0) {
     return;
   }
-  ANIMATION_RUNNING_VALUES[direction]++;
+  ANIMATION_RUNNING_VALUES[cameraAnimation]++;
 };
 
 const initHeroAnimations = () => {
@@ -4050,8 +4056,6 @@ const animateLightning = () => {
  const launchIdleLoop = (loopIndex = 0) => {
 
    const MAX_LOOP = 0;
-
-   return;
 
    if(ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] !== 0){
     return;
@@ -4100,7 +4104,7 @@ window.onload = () => {
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
-  launchIdleLoop();
+  //launchIdleLoop();
   
   if (hardMode) {
     epicAudio.play();
