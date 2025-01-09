@@ -73,6 +73,8 @@ let idleTimerValue = 5;
 
 let lastStopInMs: null | number = null;
 
+let heroRunning = false;
+
 const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
 // Utility function to get query parameters from the URL
@@ -1546,7 +1548,7 @@ const moveCamera = (
       (map) =>
         (map.style.left = `${
           map.offsetLeft +
-          Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/30) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/(heroRunning? 15 : 30)) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
@@ -3479,6 +3481,10 @@ const executeSuperSpeedToggle = () => {
 
 document.addEventListener("keyup", (event) => {
 
+  if(event.key === "Shift"){
+    heroRunning = false;
+  }
+
   if(event.key === "d"){
     interruptAnimation(ANIMATION_ID.hero_walk_right);
     stopCameraMovingToRight();
@@ -3490,9 +3496,15 @@ document.addEventListener("keyup", (event) => {
     stopCameraMovingToLeft();
   }
 
-})
+});
+
 
 document.addEventListener("keydown", (event) => {
+
+  if(event.key === "Shift"){
+    heroRunning = true;
+  }
+
   if (event.key === "d") {
 
     if(gameMode === GAME_MODES.discovery){

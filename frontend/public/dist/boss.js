@@ -2838,6 +2838,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroInTheRedZone = false;
   var idleTimerValue = 5;
   var lastStopInMs = null;
+  var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var getQueryParam = (param) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -3962,7 +3963,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / 30) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / (heroRunning ? 15 : 30)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
   };
@@ -4877,6 +4878,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     superSpeedOn = !superSpeedOn;
   };
   document.addEventListener("keyup", (event) => {
+    if (event.key === "Shift") {
+      heroRunning = false;
+    }
     if (event.key === "d") {
       interruptAnimation(4 /* hero_walk_right */);
       stopCameraMovingToRight();
@@ -4887,6 +4891,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Shift") {
+      heroRunning = true;
+    }
     if (event.key === "d") {
       if (gameMode === 0 /* discovery */) {
         launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
