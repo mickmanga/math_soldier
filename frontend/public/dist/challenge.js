@@ -3615,7 +3615,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ANIMATION_ID2[ANIMATION_ID2["hero_run"] = 1] = "hero_run";
     ANIMATION_ID2[ANIMATION_ID2["hero_run_right"] = 2] = "hero_run_right";
     ANIMATION_ID2[ANIMATION_ID2["hero_run_left"] = 3] = "hero_run_left";
-    ANIMATION_ID2[ANIMATION_ID2["hero_walk"] = 4] = "hero_walk";
+    ANIMATION_ID2[ANIMATION_ID2["hero_walk_right"] = 4] = "hero_walk_right";
     ANIMATION_ID2[ANIMATION_ID2["hero_walk_left"] = 5] = "hero_walk_left";
     ANIMATION_ID2[ANIMATION_ID2["hero_hurt"] = 6] = "hero_hurt";
     ANIMATION_ID2[ANIMATION_ID2["hero_death"] = 7] = "hero_death";
@@ -3678,7 +3678,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [1 /* hero_run */]: 0,
     [2 /* hero_run_right */]: 0,
     [3 /* hero_run_left */]: 0,
-    [4 /* hero_walk */]: 0,
+    [4 /* hero_walk_right */]: 0,
     [5 /* hero_walk_left */]: 0,
     [7 /* hero_death */]: 0,
     [6 /* hero_hurt */]: 0,
@@ -3740,7 +3740,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [1 /* hero_run */]: 5,
     [2 /* hero_run_right */]: 0,
     [3 /* hero_run_left */]: 0,
-    [4 /* hero_walk */]: 5,
+    [4 /* hero_walk_right */]: 0,
     [5 /* hero_walk_left */]: 0,
     [7 /* hero_death */]: 5,
     [6 /* hero_hurt */]: 0,
@@ -3957,9 +3957,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (ANIMATION_RUNNING_VALUES[direction] === 0 || ANIMATION_RUNNING_VALUES[direction] > 1) {
       return;
     }
-    if (direction === 50 /* camera_right_to_left */) {
-      console.log(ANIMATION_RUNNING_VALUES[direction]);
-    }
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
@@ -4101,9 +4098,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     }
     const newExecutionTimeStamp = Date.now();
-    if ((animationId === 1 /* hero_run */ || animationId === 3 /* hero_run_left */ || animationId === 8 /* hero_idle */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
+    if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 3 /* hero_run_left */ || animationId === 8 /* hero_idle */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 3 /* hero_run_left */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 115 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 120 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 120 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 3 /* hero_run_left */ ? 150 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 115 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 120 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 120 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4257,18 +4254,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
   var interruptOpponentRun = (enemy) => {
-    interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 8 /* idle */).id);
+    interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 10 /* idle */).id);
   };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
-    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 10 /* movement */);
+    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    launchAnimation(enemy.character, 8 /* idle */);
+    launchAnimation(enemy.character, 10 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
-    const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 10 /* movement */);
+    const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */);
     if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
       return;
     }
@@ -4393,7 +4390,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const launchExplosion = () => {
       bombAudio.play();
       bombAudio.currentTime = 0;
-      const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, 7 /* death */);
+      const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, 9 /* death */);
       launchAnimationAndDeclareItLaunched(
         enemy.character.element,
         0,
@@ -4440,7 +4437,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ennemiesOnScreen.forEach((enemyOnScreen, index) => {
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
-        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 10 /* movement */).id);
+        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id);
       }
     });
   };
@@ -4592,12 +4589,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     runAudio.volume = 0.7;
     launchAnimation(heroCharacter, direction === 3 /* hero_run_left */ ? 3 /* run_left */ : 4 /* run_right */);
   };
-  var launchHeroRunAnimation = () => {
+  var launchHeroRunAnimation = (direction = 0 /* LEFT_TO_RIGHT */) => {
     if (!heroIsAlive) {
       return;
     }
     runAudio.volume = 0.7;
-    launchAnimation(heroCharacter, 2 /* run */);
+    launchAnimation(heroCharacter, direction === 0 /* LEFT_TO_RIGHT */ ? 2 /* run */ : 3 /* run_left */);
   };
   var DefaultCharacter = class {
     constructor(element, state, animations) {
@@ -4611,7 +4608,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var ALL_KING_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
-      animationType: 8 /* idle */,
+      animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
           states: ALL_TRANSFORMED_HERO_STATES,
@@ -4676,6 +4673,21 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     },
     {
+      animationType: 6 /* walk_right */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_HERO_STATES,
+          animation: {
+            id: 4 /* hero_walk_right */,
+            sprite: {
+              path: "assets/challenge/characters/hero/walk",
+              length: 6
+            }
+          }
+        }
+      ]
+    },
+    {
       animationType: 2 /* run */,
       animationsStatesBlocks: [
         {
@@ -4726,7 +4738,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     },
     {
-      animationType: 9 /* secondIdle */,
+      animationType: 11 /* secondIdle */,
       animationsStatesBlocks: [
         {
           states: ALL_HERO_STATES,
@@ -4741,7 +4753,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     },
     {
-      animationType: 7 /* death */,
+      animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
           states: ALL_HERO_STATES,
@@ -4758,7 +4770,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   ];
   var kingAnimations = [
     {
-      animationType: 8 /* idle */,
+      animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
           states: ALL_KING_ENEMY_STATES,
@@ -4788,7 +4800,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     },
     {
-      animationType: 7 /* death */,
+      animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
           states: ALL_KING_ENEMY_STATES,
@@ -4803,7 +4815,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     },
     {
-      animationType: 10 /* movement */,
+      animationType: 12 /* movement */,
       animationsStatesBlocks: [
         {
           states: ALL_KING_ENEMY_STATES,
@@ -4853,16 +4865,30 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchHeroRun = (direction = 49 /* camera_left_to_right */) => {
     interuptIdleTimer();
     moveBackground(direction);
-    launchHeroRunAnimation();
+    launchHeroRunAnimation(direction);
   };
   var heroInitialTop = heroContainer.getBoundingClientRect().top;
   var superSpeedOn = false;
+  var moveHero = (type, direction) => {
+    launchAnimation(heroCharacter, 6 /* walk_right */);
+  };
   var executeSuperSpeedToggle = () => {
     superSpeedOn = !superSpeedOn;
   };
+  document.addEventListener("keyup", (event) => {
+    if (event.key === "d") {
+      interruptAnimation(4 /* hero_walk_right */);
+    }
+    if (event.key === "q") {
+      interruptAnimation(3 /* hero_run_left */);
+      stopCameraMovingToLeft();
+    }
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "d") {
       if (gameMode === 0 /* discovery */) {
+        moveHero(0 /* WALK */, 0 /* LEFT_TO_RIGHT */);
+        return;
       }
       if (!gameLaunched) {
         launchGame();
@@ -4946,7 +4972,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     ennemiesOnScreen.forEach(
       (enemy) => {
-        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 10 /* movement */).id] = 0;
+        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id] = 0;
       }
     );
     interruptAnimation(49 /* camera_left_to_right */);
@@ -4985,7 +5011,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     stopAndResetIdleTimer();
     launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
-      const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 10 /* movement */);
+      const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */);
       ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
       moveEnemy(enemy, 0, Date.now());
     });
@@ -5197,7 +5223,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       transformed ? 55 /* hero_transformation_hurt */ : 6 /* hero_hurt */
     );
     if (!hardMode) {
-      stopCamera();
+      stopCameraMovingToRight();
     }
     clearTimeoutAndLaunchNewOne(
       0 /* HERO */,
@@ -5209,8 +5235,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }, 500)
     );
   };
-  var stopCamera = () => {
+  var stopCameraMovingToRight = () => {
     ANIMATION_RUNNING_VALUES[49 /* camera_left_to_right */] = 0;
+  };
+  var stopCameraMovingToLeft = () => {
+    ANIMATION_RUNNING_VALUES[50 /* camera_right_to_left */] = 0;
   };
   var startCamera = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction] > 0) {
@@ -5252,7 +5281,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       loopIndex = 0;
     }
     const loops = [
-      () => launchAnimation(heroCharacter, 8 /* idle */, false)
+      () => launchAnimation(heroCharacter, 10 /* idle */, false)
     ];
     loops[loopIndex]();
     setTimeout(

@@ -25,7 +25,7 @@
   var getChapters = () => __async(void 0, null, function* () {
     try {
       const courseContainer = document.getElementById("course_container_b");
-      const response = yield fetch("http://localhost:3000/api/chapters/675066592e63c665c9bc5aef", {
+      const response = yield fetch("http://localhost:3000/api/chapters/677e814577322467895fd23e", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
