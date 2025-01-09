@@ -17,11 +17,11 @@ async function setupDB() {
     // Création d'un document "Form"
     const form = await new Form({
       elementType: "form",
-      questions: [
+      formBlocks: [
         {
-          value: "combien fait 1+1",
+          question: "combien fait 1+1",
           answer: "2",
-          done: false
+          validated: false
         }
       ]
     }).save();

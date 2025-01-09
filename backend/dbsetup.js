@@ -7,6 +7,9 @@ const { KnowledgeDataContainer, KnowledgeDataChapter } = require('./models/knowl
 const { Challenge } = require('./models/challenge');
 const Answer = require('./models/answer');
 
+const { Map, Form } = require('./models/map');
+
+
 // MongoDB connection URI
 const mongoURI = 'mongodb://localhost:27017/memory_soldier'; // Change if needed
 
@@ -18,6 +21,8 @@ async function setupDB() {
       useUnifiedTopology: true,
     });
     console.log('Connected to MongoDB');
+
+    let challenges = [];
 
     const sections = [
       {
@@ -883,6 +888,9 @@ async function setupDB() {
     ];
     
     // Iterate through sections and create KnowledgeBlocks, Answers, and Challenges
+
+
+
     const knowledgeBlocks = [];
     for (const section of sections) {
 
@@ -903,6 +911,8 @@ async function setupDB() {
         topGrade: "D",
       });
       await challenge.save();
+
+      challenges.push(challenge);
 
       // Create KnowledgeBlock
       const knowledgeBlock = new KnowledgeDataContainer({
@@ -929,12 +939,75 @@ async function setupDB() {
     });
     await calculusSubject.save();
 
+    
+
+    // Connexion à MongoDB
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+
+    // Vérifier les modèles enregistrés
+    console.log("Registered models:", mongoose.modelNames());
+
+    // Création d'un document "Form"
+  
+
+    const mapElements = [];
+
+    console.log("Challenge size =>");
+    console.log(challenges.length);
+
+     for(let i = 0; i < challenges.length ; i++ ){
+
+      const challenge = challenges[i];
+
+        mapElements.push(
+          {
+            type: "challenge",
+            ref: challenge._id
+          }
+        );
+
+        const form = await new Form({
+          elementType: "form",
+          formBlocks: [
+            {
+              question: "combien fait" + Math.floor(Math.random() * 10) + "+" + Math.floor(Math.random() * 10),
+              answer: Math.floor(Math.random() * 5),
+              validated: false
+            }
+          ]
+        }).save();
+
+       const formElement = { type: 'Form', ref: form._id };// Vérifiez que "type" correspond bien au modèle "Form"
+
+       mapElements.push(formElement);
+
+    
+
+     }
+    
+
+    // Création d'un document "Map" avec des références mixtes
+
+    const map = await new Map({
+      background: "background.png",
+      elements: [
+        ...mapElements,
+      ]
+    }).save();
+
+    console.log('Map saved:', map);
+  
     console.log('Database setup complete with new Answer model!');
     process.exit(0); // Exit the process
   } catch (error) {
     console.error('Error setting up the database:', error);
     process.exit(1); // Exit with an error code
   }
+
 }
 
 // Run the setup script

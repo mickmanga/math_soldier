@@ -7,18 +7,17 @@ const MapSchema = new Schema({
     type: { type: String, required: true }, 
     ref: {
       type: Schema.Types.ObjectId,
-      refPath: 'elements.type'
     }
   }]
 });
 
 const FormSchema = new Schema({
     elementType: {type: String},
-    questions: [
+    formBlocks: [
       {
-        value : String,
+        question : String,
         answer: String,
-        done: Boolean
+        validated: Boolean
       }
    ]
   });
