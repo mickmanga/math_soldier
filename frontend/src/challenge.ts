@@ -1341,6 +1341,9 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
     current_animation: null,
     associated_animations: [
       ANIMATION_ID.hero_run,
+      ANIMATION_ID.hero_walk_left,
+      ANIMATION_ID.hero_walk_right,
+      ANIMATION_ID.hero_run,
       ANIMATION_ID.hero_attack,
       ANIMATION_ID.hero_hurt,
       ANIMATION_ID.hero_death,
@@ -1351,7 +1354,7 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hero_transformation_pre_run,
       ANIMATION_ID.hero_transformation_run,
       ANIMATION_ID.hero_transformation_attack,
-      ANIMATION_ID.hero_idle
+      ANIMATION_ID.hero_idle,
     ],
   },
   enemy: {
@@ -1989,6 +1992,9 @@ enum Direction {
   LEFT_TO_RIGHT,
   RIGHT_TO_LEFT
 }
+
+let currentHeroDirection = Direction.LEFT_TO_RIGHT;
+let heroMoving = false;
 
 type ElementVelocity = number;
 
@@ -3479,33 +3485,45 @@ const executeSuperSpeedToggle = () => {
   superSpeedOn = !superSpeedOn;
 }
 
+
 document.addEventListener("keyup", (event) => {
 
   if(event.key === "Shift"){
     heroRunning = false;
+
+    if(heroMoving){
+      launchAnimation(heroCharacter, currentHeroDirection === Direction.LEFT_TO_RIGHT ? AnimationType.walk_right : AnimationType.walk_left);
+    }
   }
 
   if(event.key === "d"){
+    heroMoving = false;
     interruptAnimation(ANIMATION_ID.hero_walk_right);
     stopCameraMovingToRight();
   }
 
   
   if(event.key === "q"){
+    heroMoving = false;
     interruptAnimation(ANIMATION_ID.hero_run_left);
     stopCameraMovingToLeft();
   }
 
 });
 
-
+ 
 document.addEventListener("keydown", (event) => {
 
   if(event.key === "Shift"){
     heroRunning = true;
+    if(heroMoving){
+      launchAnimation(heroCharacter, currentHeroDirection === Direction.LEFT_TO_RIGHT ? AnimationType.walk_right : AnimationType.walk_left);
+    }
   }
 
   if (event.key === "d") {
+
+    heroMoving = true;
 
     if(gameMode === GAME_MODES.discovery){
     //  moveHero(MovementType.WALK, Direction.LEFT_TO_RIGHT);
@@ -3521,6 +3539,7 @@ document.addEventListener("keydown", (event) => {
   }
   
   if(event.key === "q"){
+    heroMoving = true;
     gameLaunched = true;
     launchHeroWalk(Direction.RIGHT_TO_LEFT);
   }
