@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface MapState {
+export interface MapState {
   elements: Array<{type: string, id: string}>;
   elementsOnScreen: [];
   startIndex: number,
@@ -23,8 +23,11 @@ const mapSlice = createSlice({
     setElements: (state, action: PayloadAction<MapState>) => {
       state.elements = action.payload.elements;
     },
+    increaseEndIndex: (state) => {
+      state.endIndex++;
+    }
   },
 });
 
-export const { setElements } = mapSlice.actions;
+export const { setElements, increaseEndIndex } = mapSlice.actions;
 export default mapSlice.reducer;

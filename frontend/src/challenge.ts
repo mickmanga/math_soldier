@@ -1,5 +1,7 @@
-import {store} from "./redux/index";
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
+import {increaseEndIndex} from "./redux/slices/mapSlice";
+import {store, RootState } from "./redux/index";
+import { MapState } from "./redux/slices/mapSlice";
 
 enum GAME_MODES {
   discovery,
@@ -7,26 +9,6 @@ enum GAME_MODES {
 }
 
 let gameMode: GAME_MODES = GAME_MODES.discovery;
-
-
-
-const gameMap = {
-  startIndex: 0,
-  endIndex: 1,
-  elements: 
-  [
-    {
-      type: 'form',
-      animations: []
-    },
-    null,
-    {
-      type: 'challenge',
-      animations: []
-    },
-  ]
-
-};
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -1465,18 +1447,51 @@ class MapSet {
   velocity: number;
   maps: HTMLElement[]
 
-  constructor(imagePath: string, velocity: number, zIndex: string){
+  constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ]
+    this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet ?createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
   }
 }
 
-const createMapSet = (imagePath: string, velocity: number, zIndex = "1") => {
-  MAP_SETS.push(new MapSet(imagePath, velocity, zIndex));
+const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet: boolean) => {
+  MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
 }
 
-const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
+const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
+    //ne touche pas à l'index.
+
+    const elementDiv = document.createElement("div");
+    elementDiv.innerHTML = "I'm an element";
+
+    const currentIndex = store.getState().map.currentIndex;
+
+    const element = store.getState().map.elements[currentIndex];
+
+    elementDiv.innerHTML = element.type;
+
+    return createMapBlock(0, imagePath, zIndex, elementDiv);
+};
+
+const createElementMapBlockStart = ( ) => {
+   //on decremente l'index   
+};
+
+const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
+    store.dispatch(increaseEndIndex());
+
+    const elementDiv = document.createElement("div");
+
+    const endIndex = store.getState().map.endIndex;
+
+    const element = store.getState().map.elements[endIndex];
+    elementDiv.innerHTML = element.type;
+    
+    return createMapBlock(left, imagePath, zIndex, elementDiv);
+  };
+
+const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?: HTMLDivElement) => {
+
   const block = document.createElement("div");
   block.classList.add("mapBlock");
   block.style.zIndex = zIndex;
@@ -1490,11 +1505,9 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1") => {
 
   document.getElementsByTagName("body")[0].append(block);
 
-  const newElement = document.createElement("div");
-
-  const newElementContent = gameMap.elements[gameMap.endIndex];
-
-  newElement.innerHTML = newElementContent? newElementContent.type : "nothing";
+  if(element){
+    block.append(element);
+  }
 
   return block;
 };
@@ -2368,20 +2381,36 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.offsetLeft < -window.innerWidth) {
-    gameMap.startIndex++;
     firstMapDomElement.remove();
     mapSet.maps.shift();
   }
 
   const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
 
+  const endIndex = store.getState().map.endIndex;
+  const elements = store.getState().map.elements;
+
     if (
       lastMapDomElement &&
       lastMapDomElement.offsetLeft <= window.innerWidth / 10
     ) {
 
-     gameMap.endIndex++;
+      if(index === 4){
+
+       if(endIndex >= (elements.length - 1)){
+         interruptAnimation(ANIMATION_ID.hero_walk_right);
+         stopCameraMovingToRight();
+         return;
+      }
+
+      else {
+        alert("go on and build");
+      }
+
+     }
+
      mapSet.maps.push(
+      index === 4 ? createElementMapBlockEnd(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) :
        createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
         )
@@ -4111,14 +4140,17 @@ const animateLightning = () => {
 
     for(let i=1; i <= 5; i++){
 
+      const lastSet = i === 5 ? true : false;
+      
       const velocity = i * i;
-      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`);
+      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
 
     } 
 
  }
 
 window.onload = () => {
+
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();

@@ -418,10 +418,10 @@
   function assertReducerShape(reducers) {
     Object.keys(reducers).forEach((key) => {
       const reducer = reducers[key];
-      const initialState3 = reducer(void 0, {
+      const initialState4 = reducer(void 0, {
         type: actionTypes_default.INIT
       });
-      if (typeof initialState3 === "undefined") {
+      if (typeof initialState4 === "undefined") {
         throw new Error(false ? formatProdErrorMessage(12) : `The slice reducer for key "${key}" returned undefined during initialization. If the state passed to the reducer is undefined, you must explicitly return the initial state. The initial state may not be undefined. If you don't want to set a value for this reducer, you can use null instead of undefined.`);
       }
       if (typeof reducer(void 0, {
@@ -1777,7 +1777,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   function isStateFunction(x) {
     return typeof x === "function";
   }
-  function createReducer(initialState3, mapOrBuilderCallback) {
+  function createReducer(initialState4, mapOrBuilderCallback) {
     if (true) {
       if (typeof mapOrBuilderCallback === "object") {
         throw new Error(false ? formatProdErrorMessage(8) : "The object notation for `createReducer` has been removed. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createReducer");
@@ -1785,10 +1785,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     let [actionsMap, finalActionMatchers, finalDefaultCaseReducer] = executeReducerBuilderCallback(mapOrBuilderCallback);
     let getInitialState;
-    if (isStateFunction(initialState3)) {
-      getInitialState = () => freezeDraftable(initialState3());
+    if (isStateFunction(initialState4)) {
+      getInitialState = () => freezeDraftable(initialState4());
     } else {
-      const frozenInitialState = freezeDraftable(initialState3);
+      const frozenInitialState = freezeDraftable(initialState4);
       getInitialState = () => frozenInitialState;
     }
     function reducer(state = getInitialState(), action) {
@@ -2328,39 +2328,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
   var ORIGINAL_STATE = Symbol.for("rtk-state-proxy-original");
 
-  // src/redux/slices/userSlice.ts
-  var initialState = {
-    userId: null,
-    name: null,
-    token: null
-  };
-  var userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {
-      setUser: (state, action) => {
-        state.userId = action.payload.userId;
-        state.name = action.payload.name;
-        state.token = action.payload.token;
-      },
-      clearUser: (state) => {
-        state.userId = null;
-        state.name = null;
-        state.token = null;
-      }
-    }
-  });
-  var { setUser, clearUser } = userSlice.actions;
-  var userSlice_default = userSlice.reducer;
-
   // src/redux/slices/challengeSlice.ts
-  var initialState2 = {
+  var initialState = {
     answers: [],
     currentAnswerIndex: 0
   };
   var challengeSlice = createSlice({
     name: "challengeAnswers",
-    initialState: initialState2,
+    initialState,
     reducers: {
       addAnswer: (state, action) => {
         state.answers.push(action.payload);
@@ -2386,6 +2361,54 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
   var { addAnswer, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } = challengeSlice.actions;
   var challengeSlice_default = challengeSlice.reducer;
+
+  // src/redux/slices/mapSlice.ts
+  var initialState2 = {
+    elements: [{ type: "form", id: "01" }, { type: "challenge", id: "02" }],
+    elementsOnScreen: [],
+    startIndex: 0,
+    endIndex: 0,
+    currentIndex: 0
+  };
+  var mapSlice = createSlice({
+    name: "map",
+    initialState: initialState2,
+    reducers: {
+      setElements: (state, action) => {
+        state.elements = action.payload.elements;
+      },
+      increaseEndIndex: (state) => {
+        state.endIndex++;
+      }
+    }
+  });
+  var { setElements, increaseEndIndex } = mapSlice.actions;
+  var mapSlice_default = mapSlice.reducer;
+
+  // src/redux/slices/userSlice.ts
+  var initialState3 = {
+    userId: null,
+    name: null,
+    token: null
+  };
+  var userSlice = createSlice({
+    name: "user",
+    initialState: initialState3,
+    reducers: {
+      setUser: (state, action) => {
+        state.userId = action.payload.userId;
+        state.name = action.payload.name;
+        state.token = action.payload.token;
+      },
+      clearUser: (state) => {
+        state.userId = null;
+        state.name = null;
+        state.token = null;
+      }
+    }
+  });
+  var { setUser, clearUser } = userSlice.actions;
+  var userSlice_default = userSlice.reducer;
 
   // node_modules/redux-persist/es/constants.js
   var KEY_PREFIX = "persist:";
@@ -2789,27 +2812,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var store = configureStore({
     reducer: {
       user: persistedUserReducer,
-      challenge: persistedChallengeReducer
+      challenge: persistedChallengeReducer,
+      map: mapSlice_default
     }
   });
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
-  var gameMap = {
-    startIndex: 0,
-    endIndex: 1,
-    elements: [
-      {
-        type: "form",
-        animations: []
-      },
-      null,
-      {
-        type: "challenge",
-        animations: []
-      }
-    ]
-  };
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
@@ -3810,6 +3819,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       current_animation: null,
       associated_animations: [
         1 /* hero_run */,
+        5 /* hero_walk_left */,
+        4 /* hero_walk_right */,
+        1 /* hero_run */,
         0 /* hero_attack */,
         6 /* hero_hurt */,
         7 /* hero_death */,
@@ -3919,16 +3931,32 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   var MapSet = class {
-    constructor(imagePath, velocity, zIndex) {
+    constructor(imagePath, velocity, zIndex, lastSet) {
       this.imagePath = imagePath;
       this.velocity = velocity;
-      this.maps = [createMapBlock(0, imagePath, zIndex), createMapBlock(window.innerWidth * 0.98, imagePath, zIndex)];
+      this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex)];
     }
   };
-  var createMapSet = (imagePath, velocity, zIndex = "1") => {
-    MAP_SETS.push(new MapSet(imagePath, velocity, zIndex));
+  var createMapSet = (imagePath, velocity, zIndex = "1", lastSet) => {
+    MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
   };
-  var createMapBlock = (left, imagePath, zIndex = "1") => {
+  var createElementMapBlockCenter = (left, imagePath, zIndex) => {
+    const elementDiv = document.createElement("div");
+    elementDiv.innerHTML = "I'm an element";
+    const currentIndex = store.getState().map.currentIndex;
+    const element = store.getState().map.elements[currentIndex];
+    elementDiv.innerHTML = element.type;
+    return createMapBlock(0, imagePath, zIndex, elementDiv);
+  };
+  var createElementMapBlockEnd = (left, imagePath, zIndex) => {
+    store.dispatch(increaseEndIndex());
+    const elementDiv = document.createElement("div");
+    const endIndex = store.getState().map.endIndex;
+    const element = store.getState().map.elements[endIndex];
+    elementDiv.innerHTML = element.type;
+    return createMapBlock(left, imagePath, zIndex, elementDiv);
+  };
+  var createMapBlock = (left, imagePath, zIndex = "1", element) => {
     const block = document.createElement("div");
     block.classList.add("mapBlock");
     block.style.zIndex = zIndex;
@@ -3939,9 +3967,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     block.style.left = `${left}px`;
     block.onclick = (event) => timeManipulationToggle();
     document.getElementsByTagName("body")[0].append(block);
-    const newElement = document.createElement("div");
-    const newElementContent = gameMap.elements[gameMap.endIndex];
-    newElement.innerHTML = newElementContent ? newElementContent.type : "nothing";
+    if (element) {
+      block.append(element);
+    }
     return block;
   };
   var slowTime = (multiplicator) => {
@@ -4266,6 +4294,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchAnimation(enemy.character, 10 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
+  var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
+  var heroMoving = false;
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
     const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */);
     if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
@@ -4507,15 +4537,24 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.offsetLeft < -window.innerWidth) {
-          gameMap.startIndex++;
           firstMapDomElement.remove();
           mapSet.maps.shift();
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+        const endIndex = store.getState().map.endIndex;
+        const elements = store.getState().map.elements;
         if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
-          gameMap.endIndex++;
+          if (index === 4) {
+            if (endIndex >= elements.length - 1) {
+              interruptAnimation(4 /* hero_walk_right */);
+              stopCameraMovingToRight();
+              return;
+            } else {
+              alert("go on and build");
+            }
+          }
           mapSet.maps.push(
-            createMapBlock(
+            index === 4 ? createElementMapBlockEnd(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
               lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
               mapSet.imagePath,
               `${index}`
@@ -4880,12 +4919,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   document.addEventListener("keyup", (event) => {
     if (event.key === "Shift") {
       heroRunning = false;
+      if (heroMoving) {
+        launchAnimation(heroCharacter, currentHeroDirection === 0 /* LEFT_TO_RIGHT */ ? 6 /* walk_right */ : 7 /* walk_left */);
+      }
     }
     if (event.key === "d") {
+      heroMoving = false;
       interruptAnimation(4 /* hero_walk_right */);
       stopCameraMovingToRight();
     }
     if (event.key === "q") {
+      heroMoving = false;
       interruptAnimation(3 /* hero_run_left */);
       stopCameraMovingToLeft();
     }
@@ -4893,8 +4937,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
       heroRunning = true;
+      if (heroMoving) {
+        launchAnimation(heroCharacter, currentHeroDirection === 0 /* LEFT_TO_RIGHT */ ? 6 /* walk_right */ : 7 /* walk_left */);
+      }
     }
     if (event.key === "d") {
+      heroMoving = true;
       if (gameMode === 0 /* discovery */) {
         launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
         return;
@@ -4906,6 +4954,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
     if (event.key === "q") {
+      heroMoving = true;
       gameLaunched = true;
       launchHeroWalk(1 /* RIGHT_TO_LEFT */);
     }
@@ -5300,8 +5349,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createMapSets = () => {
     for (let i = 1; i <= 5; i++) {
+      const lastSet = i === 5 ? true : false;
       const velocity = i * i;
-      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`);
+      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`, lastSet);
     }
   };
   window.onload = () => {
