@@ -4073,6 +4073,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       const animationRequestCallback = () => {
         if (APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation) {
           requestAnimationFrame(animationRequestCallback);
+          alert("r1");
           return;
         }
         APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation = animationId;
@@ -4082,6 +4083,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].request_queue.unshift(
           new AnimationRequest(animationId, animationRequestCallback)
         );
+        console.log(APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation]);
         return;
       }
       APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation = animationId;
@@ -4546,11 +4548,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
           if (index === 4) {
             if (endIndex >= elements.length - 1) {
-              interruptAnimation(4 /* hero_walk_right */);
               stopCameraMovingToRight();
               return;
-            } else {
-              alert("go on and build");
             }
           }
           mapSet.maps.push(
@@ -5057,16 +5056,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var interruptAnimation = (animation) => {
     ANIMATION_RUNNING_VALUES[animation] = 0;
-    if (animation === 50 /* camera_right_to_left */) {
-      console.log("camera to left interrupted");
-    }
     const appElementId = getAppIdByAnimationId(animation);
     if (!appElementId) {
       return;
     }
-    if (!APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation === null) {
-      APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
-    }
+    APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
   };
   var stopAndResetIdleTimer = () => {
     idleTimeoutContainer.style.display = "none";

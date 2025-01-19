@@ -1644,8 +1644,10 @@ export const launchAnimationAndDeclareItLaunched = (
     return;
   }
 
+
   ANIMATION_RUNNING_VALUES[animationId]++;
 
+  
   const animationCallback = () => {
     launchCharacterAnimation(
       gameElement,
@@ -1669,6 +1671,7 @@ export const launchAnimationAndDeclareItLaunched = (
           .current_animation
       ) {
         requestAnimationFrame(animationRequestCallback);
+        alert("r1")
         return;
       }
 
@@ -1687,9 +1690,15 @@ export const launchAnimationAndDeclareItLaunched = (
       ].request_queue.unshift(
         new AnimationRequest(animationId, animationRequestCallback)
       );
+      console.log(APP_ELEMENTS_ANIMATION_QUEUE[
+        elementAssociatedWithThisAnimation
+      ])
 
       return;
+
+  
     }
+
 
     APP_ELEMENTS_ANIMATION_QUEUE[
       elementAssociatedWithThisAnimation
@@ -1722,6 +1731,7 @@ const launchCharacterAnimation = (
   ) {
     return;
   }
+
 
 
   const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -2397,14 +2407,11 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
       if(index === 4){
 
+  
        if(endIndex >= (elements.length - 1)){
-         interruptAnimation(ANIMATION_ID.hero_walk_right);
+      // interruptAnimation(ANIMATION_ID.hero_walk_right);
          stopCameraMovingToRight();
          return;
-      }
-
-      else {
-        alert("go on and build");
       }
 
      }
@@ -2481,10 +2488,11 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
     );
+
   }
 
   const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-
+  
     if (
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth
@@ -3510,10 +3518,8 @@ enum MovementType {
 }
 
 const launchHeroWalk2 = (direction: Direction) => {
-
    moveHero(MovementType.WALK, direction);
    moveBackground(direction);
-
 }
 
 const moveHero = (type: MovementType, direction: Direction) => {
@@ -3712,18 +3718,13 @@ const addAnimationCallbackToQueue = (
 const interruptAnimation = (animation: ANIMATION_ID) => {
   ANIMATION_RUNNING_VALUES[animation] = 0;
 
-  if(animation === ANIMATION_ID.camera_right_to_left){
-    console.log("camera to left interrupted");
-  }
 
   const appElementId = getAppIdByAnimationId(animation);
   if (!appElementId) {
     return;
   }
 
-  if (!APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation === null) {
-    APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
-  }
+  APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
 };
 
 /*
