@@ -2,6 +2,7 @@ import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, res
 import {increaseEndIndex} from "./redux/slices/mapSlice";
 import {store, RootState } from "./redux/index";
 import { MapState } from "./redux/slices/mapSlice";
+import { MapElement } from "./types/map";
 
 enum GAME_MODES {
   discovery,
@@ -1459,36 +1460,31 @@ const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet
 }
 
 const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
-    //ne touche pas à l'index.
 
-    const elementDiv = document.createElement("div");
-    elementDiv.innerHTML = "I'm an element";
-
-    const currentIndex = store.getState().map.currentIndex;
-
+    const currentIndex = store.getState().map.endIndex - 1;
     const element = store.getState().map.elements[currentIndex];
-
-    elementDiv.innerHTML = element.type;
+    const elementDiv = createMapElement(element);
 
     return createMapBlock(0, imagePath, zIndex, elementDiv);
+
 };
 
+const createMapElement = (element: MapElement) => {
+  return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
+}
+
 const createElementMapBlockStart = ( ) => {
-   //on decremente l'index   
+   //on decremente l'index  
 };
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
     store.dispatch(increaseEndIndex());
-
-    const elementDiv = document.createElement("div");
-
     const endIndex = store.getState().map.endIndex;
-
     const element = store.getState().map.elements[endIndex];
-    elementDiv.innerHTML = element.type;
-    
+    const elementDiv = createMapElement(element);
+
     return createMapBlock(left, imagePath, zIndex, elementDiv);
-  };
+};
 
 const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?: HTMLDivElement) => {
 
@@ -2402,14 +2398,14 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
     if (
       lastMapDomElement &&
-      lastMapDomElement.offsetLeft <= window.innerWidth / 10
+      lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
 
       if(index === 4){
 
   
        if(endIndex >= (elements.length - 1)){
-      // interruptAnimation(ANIMATION_ID.hero_walk_right);
+        interruptAnimation(ANIMATION_ID.hero_walk_right);
          stopCameraMovingToRight();
          return;
       }
@@ -3357,6 +3353,62 @@ const createRedHammerCharacter = (): DefaultCharacter => {
     resetViewPoint();
 
  return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations);
+}
+
+
+const createChallengPilar = (element: MapElement) => {
+ 
+  //On créée une div, qui fait
+
+  const pilarBackgroundContainer = document.createElement("div");
+  pilarBackgroundContainer.style.position = "absolute";
+  pilarBackgroundContainer.style.left = "0";    
+  pilarBackgroundContainer.style.top = "0";    
+  pilarBackgroundContainer.style.width = "100vw";
+  pilarBackgroundContainer.style.height = "100vh";
+  pilarBackgroundContainer.style.zIndex = "10";
+
+  pilarBackgroundContainer.style.display = "flex";
+  pilarBackgroundContainer.style.justifyContent = "center";
+  pilarBackgroundContainer.style.alignItems = "center";
+
+  const pilarContainer = document.createElement("div");
+  pilarContainer.style.width = "10vw";
+  pilarContainer.style.height = "20vh";
+  pilarContainer.style.background = "grey";
+
+  pilarBackgroundContainer.append(pilarContainer);
+
+  return pilarBackgroundContainer;
+  
+}
+
+const createFormElement = (mapElement: MapElement) => {
+  
+    //On créée une div, qui fait
+
+    const formBackgroundContainer = document.createElement("div");
+    formBackgroundContainer.style.position = "absolute";
+    formBackgroundContainer.style.left = "0";    
+    formBackgroundContainer.style.top = "0";    
+    formBackgroundContainer.style.width = "100vw";
+    formBackgroundContainer.style.height = "100vh";
+    formBackgroundContainer.style.zIndex = "10";
+
+    formBackgroundContainer.style.display = "flex";
+    formBackgroundContainer.style.justifyContent = "center";
+    formBackgroundContainer.style.alignItems = "center";
+
+
+    const formContainer = document.createElement("div");
+    formContainer.style.width = "20vw";
+    formContainer.style.height = "20vh";
+    formContainer.style.background = "grey";
+
+    formBackgroundContainer.append(formContainer);
+
+    return formBackgroundContainer;
+
 }
 
 const createGolemCharacter = (): DefaultCharacter => {

@@ -2364,10 +2364,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "form", id: "01" }, { type: "challenge", id: "02" }],
+    elements: [{ type: "form", id: "01" }, { type: "challenge", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
     elementsOnScreen: [],
     startIndex: 0,
-    endIndex: 0,
+    endIndex: 1,
     currentIndex: 0
   };
   var mapSlice = createSlice({
@@ -3941,19 +3941,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
   };
   var createElementMapBlockCenter = (left, imagePath, zIndex) => {
-    const elementDiv = document.createElement("div");
-    elementDiv.innerHTML = "I'm an element";
-    const currentIndex = store.getState().map.currentIndex;
+    const currentIndex = store.getState().map.endIndex - 1;
     const element = store.getState().map.elements[currentIndex];
-    elementDiv.innerHTML = element.type;
+    const elementDiv = createMapElement(element);
     return createMapBlock(0, imagePath, zIndex, elementDiv);
+  };
+  var createMapElement = (element) => {
+    return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
   };
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
-    const elementDiv = document.createElement("div");
     const endIndex = store.getState().map.endIndex;
     const element = store.getState().map.elements[endIndex];
-    elementDiv.innerHTML = element.type;
+    const elementDiv = createMapElement(element);
     return createMapBlock(left, imagePath, zIndex, elementDiv);
   };
   var createMapBlock = (left, imagePath, zIndex = "1", element) => {
@@ -4545,9 +4545,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         const endIndex = store.getState().map.endIndex;
         const elements = store.getState().map.elements;
-        if (lastMapDomElement && lastMapDomElement.offsetLeft <= window.innerWidth / 10) {
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10) {
           if (index === 4) {
             if (endIndex >= elements.length - 1) {
+              interruptAnimation(4 /* hero_walk_right */);
               stopCameraMovingToRight();
               return;
             }
@@ -4883,6 +4884,42 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
+  };
+  var createChallengPilar = (element) => {
+    const pilarBackgroundContainer = document.createElement("div");
+    pilarBackgroundContainer.style.position = "absolute";
+    pilarBackgroundContainer.style.left = "0";
+    pilarBackgroundContainer.style.top = "0";
+    pilarBackgroundContainer.style.width = "100vw";
+    pilarBackgroundContainer.style.height = "100vh";
+    pilarBackgroundContainer.style.zIndex = "10";
+    pilarBackgroundContainer.style.display = "flex";
+    pilarBackgroundContainer.style.justifyContent = "center";
+    pilarBackgroundContainer.style.alignItems = "center";
+    const pilarContainer = document.createElement("div");
+    pilarContainer.style.width = "10vw";
+    pilarContainer.style.height = "20vh";
+    pilarContainer.style.background = "grey";
+    pilarBackgroundContainer.append(pilarContainer);
+    return pilarBackgroundContainer;
+  };
+  var createFormElement = (mapElement) => {
+    const formBackgroundContainer = document.createElement("div");
+    formBackgroundContainer.style.position = "absolute";
+    formBackgroundContainer.style.left = "0";
+    formBackgroundContainer.style.top = "0";
+    formBackgroundContainer.style.width = "100vw";
+    formBackgroundContainer.style.height = "100vh";
+    formBackgroundContainer.style.zIndex = "10";
+    formBackgroundContainer.style.display = "flex";
+    formBackgroundContainer.style.justifyContent = "center";
+    formBackgroundContainer.style.alignItems = "center";
+    const formContainer = document.createElement("div");
+    formContainer.style.width = "20vw";
+    formContainer.style.height = "20vh";
+    formContainer.style.background = "grey";
+    formBackgroundContainer.append(formContainer);
+    return formBackgroundContainer;
   };
   var createKingCharacter = () => {
     const newOpponentContainer = document.createElement("div");

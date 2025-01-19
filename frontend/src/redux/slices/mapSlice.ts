@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { MapElement } from '../../types/map';
 
 export interface MapState {
-  elements: Array<{type: string, id: string}>;
+  elements: Array<MapElement>;
   elementsOnScreen: [];
   startIndex: number,
   endIndex: number,
@@ -9,10 +10,10 @@ export interface MapState {
 }
 
 const initialState: MapState = {
-  elements: [{type: "form", id: "01"},{type: "challenge", id: "02"}],  
+  elements: [{type: "form", id: "01"},{type: "challenge", id: "02"}, {type: "challenge", id: "03"}, {type: "challenge", id: "04"}],  
  elementsOnScreen: [],
   startIndex: 0,
-  endIndex: 0,
+  endIndex: 1,
   currentIndex: 0
 };
 
