@@ -4568,8 +4568,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
     MAP_SETS.forEach(
       (mapSet, index) => {
+        const startIndex = store.getState().map.startIndex;
         const firstMapDomElement = mapSet.maps[0];
-        if (firstMapDomElement.getBoundingClientRect().left > -window.innerWidth) {
+        if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
+          if (index === 4) {
+            if (startIndex === 0) {
+              interruptAnimation(5 /* hero_walk_left */);
+              stopCameraMovingToLeft();
+              return;
+            }
+          }
           mapSet.maps.unshift(
             createMapBlock(
               firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
