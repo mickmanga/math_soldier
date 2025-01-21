@@ -2381,7 +2381,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         state.endIndex++;
       },
       decreaseEndIndex: (state) => {
-        state.endIndex++;
+        state.endIndex--;
       },
       increaseStartIndex: (state) => {
         state.startIndex++;
@@ -4636,7 +4636,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           );
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth) {
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 2) {
           store.dispatch(decreaseEndIndex());
           lastMapDomElement.remove();
           mapSet.maps.pop();

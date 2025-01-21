@@ -2372,7 +2372,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         state.endIndex++;
       },
       decreaseEndIndex: (state) => {
-        state.endIndex++;
+        state.endIndex--;
       },
       increaseStartIndex: (state) => {
         state.startIndex++;

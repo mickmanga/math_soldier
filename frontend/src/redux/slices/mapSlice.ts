@@ -28,7 +28,7 @@ const mapSlice = createSlice({
       state.endIndex++;
     },
     decreaseEndIndex: (state) => {
-       state.endIndex++;
+       state.endIndex--;
     },
     increaseStartIndex: (state) => {
       state.startIndex++;

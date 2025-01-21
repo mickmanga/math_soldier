@@ -1487,7 +1487,6 @@ const createElementMapBlockStart = (left:number, imagePath: string, zIndex: stri
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
 
   store.dispatch(increaseEndIndex());
-
   const endIndex = store.getState().map.endIndex
   const element = store.getState().map.elements[endIndex];
   const elementDiv = createMapElement(element);
@@ -2505,9 +2504,9 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
   
     if (
       lastMapDomElement &&
-      lastMapDomElement.getBoundingClientRect().left > window.innerWidth
+      lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-        store.dispatch(decreaseEndIndex());
+         store.dispatch(decreaseEndIndex());
          lastMapDomElement.remove();
          mapSet.maps.pop();
       } 
