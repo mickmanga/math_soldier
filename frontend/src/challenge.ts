@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {increaseEndIndex} from "./redux/slices/mapSlice";
+import {decreaseEndIndex, decreaseStartIndex, increaseCurrentIndex, increaseEndIndex, increaseStartIndex} from "./redux/slices/mapSlice";
 import {store, RootState } from "./redux/index";
 import { MapState } from "./redux/slices/mapSlice";
 import { MapElement } from "./types/map";
@@ -1473,8 +1473,15 @@ const createMapElement = (element: MapElement) => {
   return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
 }
 
-const createElementMapBlockStart = ( ) => {
+const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
    //on decremente l'index  
+   store.dispatch(decreaseStartIndex());
+
+   const startIndex = store.getState().map.startIndex;
+   const element = store.getState().map.elements[startIndex];
+   const elementDiv = createMapElement(element);
+
+   return createMapBlock(left, imagePath, zIndex, elementDiv);
 };
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
@@ -2384,11 +2391,12 @@ const detectCollision = () => {
   requestAnimationFrame(detectCollision);
 };
 
-let screenUpdateLocked = false;
+let screenUpdateLockedToRight = false;
+let screenUpdateLockedToLeft= false;
 
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
-  if(screenUpdateLocked){
+  if(screenUpdateLockedToRight){
     return;
   }
   
@@ -2399,6 +2407,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.offsetLeft < -window.innerWidth) {
+    store.dispatch(increaseStartIndex());
+    store.dispatch(increaseCurrentIndex());
     firstMapDomElement.remove();
     mapSet.maps.shift();
   }
@@ -2424,12 +2434,12 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
      };
 
      if(index === 4){
-      screenUpdateLocked = true;
+      screenUpdateLockedToRight = true;
       setTimeout(
         () => {
-        screenUpdateLocked = false;
+          screenUpdateLockedToRight = false;
         checkForScreenUpdateFromLeftToRight(0);
-        }, 2000
+        }, 500
       )
      }
      
@@ -2447,40 +2457,12 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
 };
 
-/*
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
-  //creation
-
-  //pick first map block
-
-  const firstMapDomElement = MAPS[0];
-
-  if (
-    firstMapDomElement &&
-    firstMapDomElement.offsetLeft > window.innerWidth
-  ) {
-    MAPS.unshift(
-      createMapBlock(
-        firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth
-      )
-    );
+  if(screenUpdateLockedToLeft){
+    return;
   }
-
-  const lastMapDomElement = MAPS[MAPS.length - 1];
-
-  if (lastMapDomElement && lastMapDomElement.offsetLeft > window.innerWidth) {
-    lastMapDomElement.remove();
-    MAPS.pop();
-  }
-
-  requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
-};
-
-*/
-
-const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   MAP_SETS.forEach(
 
@@ -2498,10 +2480,20 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
         stopCameraMovingToLeft();
         return;
       }
+
+      screenUpdateLockedToLeft = true;
+
+      setTimeout(
+        () => {
+          screenUpdateLockedToLeft = false;
+          checkForScreenUpdateFromRightToLeft(0);
+        }
+      )
   
     }
 
     mapSet.maps.unshift(
+      index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -2515,6 +2507,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth
     ) {
+        store.dispatch(decreaseEndIndex());
          lastMapDomElement.remove();
          mapSet.maps.pop();
       } 
@@ -4252,7 +4245,7 @@ window.onload = () => {
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
-  //checkForScreenUpdateFromRightToLeft(10);
+  checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();

@@ -2379,10 +2379,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       increaseEndIndex: (state) => {
         state.endIndex++;
+      },
+      decreaseEndIndex: (state) => {
+        state.endIndex++;
+      },
+      increaseStartIndex: (state) => {
+        state.startIndex++;
+      },
+      decreaseStartIndex: (state) => {
+        state.startIndex--;
+      },
+      increaseCurrentIndex: (state) => {
+        state.currentIndex++;
       }
     }
   });
-  var { setElements, increaseEndIndex } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, increaseCurrentIndex } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/userSlice.ts
@@ -3949,6 +3961,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var createMapElement = (element) => {
     return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
   };
+  var createElementMapBlockStart = (left, imagePath, zIndex) => {
+    store.dispatch(decreaseStartIndex());
+    const startIndex = store.getState().map.startIndex;
+    const element = store.getState().map.elements[startIndex];
+    const elementDiv = createMapElement(element);
+    return createMapBlock(left, imagePath, zIndex, elementDiv);
+  };
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
     const endIndex = store.getState().map.endIndex;
@@ -4536,15 +4555,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
     requestAnimationFrame(detectCollision);
   };
-  var screenUpdateLocked = false;
+  var screenUpdateLockedToRight = false;
+  var screenUpdateLockedToLeft = false;
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
-    if (screenUpdateLocked) {
+    if (screenUpdateLockedToRight) {
       return;
     }
     MAP_SETS.forEach(
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.offsetLeft < -window.innerWidth) {
+          store.dispatch(increaseStartIndex());
+          store.dispatch(increaseCurrentIndex());
           firstMapDomElement.remove();
           mapSet.maps.shift();
         }
@@ -4561,13 +4583,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           }
           ;
           if (index === 4) {
-            screenUpdateLocked = true;
+            screenUpdateLockedToRight = true;
             setTimeout(
               () => {
-                screenUpdateLocked = false;
+                screenUpdateLockedToRight = false;
                 checkForScreenUpdateFromLeftToRight(0);
               },
-              2e3
+              500
             );
           }
           mapSet.maps.push(
@@ -4581,6 +4603,47 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+  };
+  var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
+    if (screenUpdateLockedToLeft) {
+      return;
+    }
+    MAP_SETS.forEach(
+      (mapSet, index) => {
+        const startIndex = store.getState().map.startIndex;
+        const firstMapDomElement = mapSet.maps[0];
+        if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
+          if (index === 4) {
+            if (startIndex === 0) {
+              interruptAnimation(5 /* hero_walk_left */);
+              stopCameraMovingToLeft();
+              return;
+            }
+            screenUpdateLockedToLeft = true;
+            setTimeout(
+              () => {
+                screenUpdateLockedToLeft = false;
+                checkForScreenUpdateFromRightToLeft(0);
+              }
+            );
+          }
+          mapSet.maps.unshift(
+            index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+              firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
+              mapSet.imagePath,
+              `${index}`
+            )
+          );
+        }
+        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth) {
+          store.dispatch(decreaseEndIndex());
+          lastMapDomElement.remove();
+          mapSet.maps.pop();
+        }
+      }
+    );
+    requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
   };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
@@ -5394,6 +5457,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
+    checkForScreenUpdateFromRightToLeft(10);
     checkForOpponentsClearance();
     defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();

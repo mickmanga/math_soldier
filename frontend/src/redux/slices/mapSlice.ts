@@ -26,9 +26,21 @@ const mapSlice = createSlice({
     },
     increaseEndIndex: (state) => {
       state.endIndex++;
+    },
+    decreaseEndIndex: (state) => {
+       state.endIndex++;
+    },
+    increaseStartIndex: (state) => {
+      state.startIndex++;
+    },
+    decreaseStartIndex: (state) => {
+      state.startIndex--;
+    },
+    increaseCurrentIndex: (state) => {
+      state.currentIndex++;
     }
   },
 });
 
-export const { setElements, increaseEndIndex } = mapSlice.actions;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, increaseCurrentIndex } = mapSlice.actions;
 export default mapSlice.reducer;

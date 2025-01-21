@@ -2370,10 +2370,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       increaseEndIndex: (state) => {
         state.endIndex++;
+      },
+      decreaseEndIndex: (state) => {
+        state.endIndex++;
+      },
+      increaseStartIndex: (state) => {
+        state.startIndex++;
+      },
+      decreaseStartIndex: (state) => {
+        state.startIndex--;
+      },
+      increaseCurrentIndex: (state) => {
+        state.currentIndex++;
       }
     }
   });
-  var { setElements, increaseEndIndex } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, increaseCurrentIndex } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/challengeSlice.ts
