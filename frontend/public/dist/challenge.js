@@ -2364,10 +2364,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "form", id: "01" }, { type: "challenge", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
+    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
     elementsOnScreen: [],
     startIndex: 0,
-    endIndex: 1,
+    endIndex: 0,
     currentIndex: 0
   };
   var mapSlice = createSlice({
@@ -3941,7 +3941,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
   };
   var createElementMapBlockCenter = (left, imagePath, zIndex) => {
-    const currentIndex = store.getState().map.endIndex - 1;
+    const currentIndex = store.getState().map.currentIndex;
     const element = store.getState().map.elements[currentIndex];
     const elementDiv = createMapElement(element);
     return createMapBlock(0, imagePath, zIndex, elementDiv);
@@ -3956,7 +3956,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const elementDiv = createMapElement(element);
     return createMapBlock(left, imagePath, zIndex, elementDiv);
   };
+  var lastBlockId = 0;
   var createMapBlock = (left, imagePath, zIndex = "1", element) => {
+    lastBlockId++;
     const block = document.createElement("div");
     block.classList.add("mapBlock");
     block.style.zIndex = zIndex;
@@ -3966,6 +3968,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     block.style.position = "absolute";
     block.style.left = `${left}px`;
     block.onclick = (event) => timeManipulationToggle();
+    block.id = `${lastBlockId}`;
     document.getElementsByTagName("body")[0].append(block);
     if (element) {
       block.append(element);
@@ -4533,8 +4536,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
     requestAnimationFrame(detectCollision);
   };
+  var screenUpdateLocked = false;
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
-    throttleNum = 0;
+    if (screenUpdateLocked) {
+      return;
+    }
     MAP_SETS.forEach(
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
@@ -4553,8 +4559,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               return;
             }
           }
+          ;
+          if (index === 4) {
+            screenUpdateLocked = true;
+            setTimeout(
+              () => {
+                screenUpdateLocked = false;
+                checkForScreenUpdateFromLeftToRight(0);
+              },
+              2e3
+            );
+          }
           mapSet.maps.push(
-            index === 4 ? createElementMapBlockEnd(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+            index === 4 ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) : createMapBlock(
               lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
               mapSet.imagePath,
               `${index}`
@@ -4564,36 +4581,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
-  };
-  var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
-    MAP_SETS.forEach(
-      (mapSet, index) => {
-        const startIndex = store.getState().map.startIndex;
-        const firstMapDomElement = mapSet.maps[0];
-        if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
-          if (index === 4) {
-            if (startIndex === 0) {
-              interruptAnimation(5 /* hero_walk_left */);
-              stopCameraMovingToLeft();
-              return;
-            }
-          }
-          mapSet.maps.unshift(
-            createMapBlock(
-              firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
-              mapSet.imagePath,
-              `${index}`
-            )
-          );
-        }
-        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth) {
-          lastMapDomElement.remove();
-          mapSet.maps.pop();
-        }
-      }
-    );
-    requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
   };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
@@ -4984,6 +4971,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (heroMoving) {
         launchAnimation(heroCharacter, currentHeroDirection === 0 /* LEFT_TO_RIGHT */ ? 6 /* walk_right */ : 7 /* walk_left */);
       }
+    }
+    if (event.key === "p") {
+      checkForScreenUpdateFromLeftToRight(0);
     }
     if (event.key === "d") {
       heroMoving = true;
@@ -5404,7 +5394,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
-    checkForScreenUpdateFromRightToLeft(10);
     checkForOpponentsClearance();
     defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();

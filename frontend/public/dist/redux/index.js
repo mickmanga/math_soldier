@@ -2355,10 +2355,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "form", id: "01" }, { type: "challenge", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
+    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
     elementsOnScreen: [],
     startIndex: 0,
-    endIndex: 1,
+    endIndex: 0,
     currentIndex: 0
   };
   var mapSlice = createSlice({

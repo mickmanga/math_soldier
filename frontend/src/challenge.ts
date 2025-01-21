@@ -1461,7 +1461,7 @@ const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet
 
 const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
 
-    const currentIndex = store.getState().map.endIndex - 1;
+    const currentIndex = store.getState().map.currentIndex;
     const element = store.getState().map.elements[currentIndex];
     const elementDiv = createMapElement(element);
 
@@ -1478,15 +1478,21 @@ const createElementMapBlockStart = ( ) => {
 };
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
-    store.dispatch(increaseEndIndex());
-    const endIndex = store.getState().map.endIndex;
-    const element = store.getState().map.elements[endIndex];
-    const elementDiv = createMapElement(element);
 
-    return createMapBlock(left, imagePath, zIndex, elementDiv);
+  store.dispatch(increaseEndIndex());
+
+  const endIndex = store.getState().map.endIndex
+  const element = store.getState().map.elements[endIndex];
+  const elementDiv = createMapElement(element);
+
+  return createMapBlock(left, imagePath, zIndex, elementDiv);
 };
 
+let lastBlockId = 0
+
 const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?: HTMLDivElement) => {
+
+  lastBlockId++;
 
   const block = document.createElement("div");
   block.classList.add("mapBlock");
@@ -1498,6 +1504,7 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
   block.style.position = "absolute";
   block.style.left = `${left}px`;
   block.onclick = (event: Event) => timeManipulationToggle();
+  block.id=`${lastBlockId}`;
 
   document.getElementsByTagName("body")[0].append(block);
 
@@ -2377,9 +2384,14 @@ const detectCollision = () => {
   requestAnimationFrame(detectCollision);
 };
 
-const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
-  throttleNum = 0;
+let screenUpdateLocked = false;
 
+const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
+
+  if(screenUpdateLocked){
+    return;
+  }
+  
   MAP_SETS.forEach(
 
   (mapSet, index) => {
@@ -2400,20 +2412,29 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
-
+      
       if(index === 4){
-
   
        if(endIndex >= (elements.length - 1)){
+
         interruptAnimation(ANIMATION_ID.hero_walk_right);
          stopCameraMovingToRight();
          return;
       }
+     };
 
+     if(index === 4){
+      screenUpdateLocked = true;
+      setTimeout(
+        () => {
+        screenUpdateLocked = false;
+        checkForScreenUpdateFromLeftToRight(0);
+        }, 2000
+      )
      }
-
+     
      mapSet.maps.push(
-      index === 4 ? createElementMapBlockEnd(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) :
+      index === 4 ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) :
        createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
         )
@@ -2422,7 +2443,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     }
   )
 
-  requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+ requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+
 };
 
 /*
@@ -3620,6 +3642,10 @@ document.addEventListener("keydown", (event) => {
     }
   }
 
+  if(event.key === "p"){
+    checkForScreenUpdateFromLeftToRight(0);
+  }
+
   if (event.key === "d") {
 
     heroMoving = true;
@@ -4226,7 +4252,7 @@ window.onload = () => {
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
-  checkForScreenUpdateFromRightToLeft(10);
+  //checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
