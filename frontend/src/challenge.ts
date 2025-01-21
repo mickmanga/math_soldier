@@ -1451,7 +1451,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet ?createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
+    this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
   }
 }
 
