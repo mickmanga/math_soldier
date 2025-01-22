@@ -2391,15 +2391,11 @@ const detectCollision = () => {
 
   requestAnimationFrame(detectCollision);
 };
-
-let screenUpdateLockedToRight = false;
 let screenUpdateLockedToLeft= false;
 
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
-  if(screenUpdateLockedToRight){
-    return;
-  }
+
   
   MAP_SETS.forEach(
 
@@ -2439,16 +2435,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
          return;
       }
      };
-
-     if(index === 4){
-      screenUpdateLockedToRight = true;
-      setTimeout(
-        () => {
-          screenUpdateLockedToRight = false;
-        checkForScreenUpdateFromLeftToRight(0);
-        }, 500
-      )
-     }
      
      mapSet.maps.push(
       index === 4 ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) :
@@ -2467,10 +2453,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
-  if(screenUpdateLockedToLeft){
-    return;
-  }
-
   MAP_SETS.forEach(
 
   (mapSet, index) => {
@@ -2486,17 +2468,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
         interruptAnimation(ANIMATION_ID.hero_walk_left);
         stopCameraMovingToLeft();
         return;
-      }
-
-      screenUpdateLockedToLeft = true;
-
-      setTimeout(
-        () => {
-          screenUpdateLockedToLeft = false;
-          checkForScreenUpdateFromRightToLeft(0);
-        }
-      )
-  
+      }  
     }
 
     mapSet.maps.unshift(

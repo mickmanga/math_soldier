@@ -4556,12 +4556,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
     requestAnimationFrame(detectCollision);
   };
-  var screenUpdateLockedToRight = false;
-  var screenUpdateLockedToLeft = false;
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
-    if (screenUpdateLockedToRight) {
-      return;
-    }
     MAP_SETS.forEach(
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
@@ -4586,16 +4581,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
           }
           ;
-          if (index === 4) {
-            screenUpdateLockedToRight = true;
-            setTimeout(
-              () => {
-                screenUpdateLockedToRight = false;
-                checkForScreenUpdateFromLeftToRight(0);
-              },
-              500
-            );
-          }
           mapSet.maps.push(
             index === 4 ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) : createMapBlock(
               lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
@@ -4609,9 +4594,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
   var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
-    if (screenUpdateLockedToLeft) {
-      return;
-    }
     MAP_SETS.forEach(
       (mapSet, index) => {
         const startIndex = store.getState().map.startIndex;
@@ -4623,13 +4605,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               stopCameraMovingToLeft();
               return;
             }
-            screenUpdateLockedToLeft = true;
-            setTimeout(
-              () => {
-                screenUpdateLockedToLeft = false;
-                checkForScreenUpdateFromRightToLeft(0);
-              }
-            );
           }
           mapSet.maps.unshift(
             index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
