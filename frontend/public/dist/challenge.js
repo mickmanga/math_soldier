@@ -5022,6 +5022,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (event.key === "d") {
       heroMoving = true;
       if (gameMode === 0 /* discovery */) {
+        currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
         launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
         return;
       }
@@ -5034,6 +5035,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (event.key === "q") {
       heroMoving = true;
       gameLaunched = true;
+      currentHeroDirection = 1 /* RIGHT_TO_LEFT */;
       launchHeroWalk(1 /* RIGHT_TO_LEFT */);
     }
     if (!gameLaunched || preTransformed || heroHurt) {

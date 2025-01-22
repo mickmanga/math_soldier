@@ -3625,7 +3625,7 @@ document.addEventListener("keydown", (event) => {
     heroMoving = true;
 
     if(gameMode === GAME_MODES.discovery){
-    //  moveHero(MovementType.WALK, Direction.LEFT_TO_RIGHT);
+      currentHeroDirection=Direction.LEFT_TO_RIGHT;
       launchHeroWalk2(Direction.LEFT_TO_RIGHT)
       return;
     }
@@ -3640,6 +3640,7 @@ document.addEventListener("keydown", (event) => {
   if(event.key === "q"){
     heroMoving = true;
     gameLaunched = true;
+    currentHeroDirection=Direction.RIGHT_TO_LEFT;
     launchHeroWalk(Direction.RIGHT_TO_LEFT);
   }
 
