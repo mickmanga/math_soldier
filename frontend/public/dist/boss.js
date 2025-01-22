@@ -3963,6 +3963,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createElementMapBlockStart = (left, imagePath, zIndex) => {
     store.dispatch(decreaseStartIndex());
+    document.getElementById("startIndex").innerHTML = `${store.getState().map.startIndex}`;
     const startIndex = store.getState().map.startIndex;
     const element = store.getState().map.elements[startIndex];
     const elementDiv = createMapElement(element);
@@ -4564,11 +4565,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     MAP_SETS.forEach(
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
-        if (firstMapDomElement.offsetLeft < -window.innerWidth) {
-          store.dispatch(increaseStartIndex());
-          store.dispatch(increaseCurrentIndex());
+        if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
+          if (index === 4) {
+            store.dispatch(increaseStartIndex());
+            store.dispatch(increaseCurrentIndex());
+          }
           firstMapDomElement.remove();
           mapSet.maps.shift();
+          document.getElementById("startIndex").innerHTML = `${store.getState().map.startIndex}`;
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         const endIndex = store.getState().map.endIndex;
@@ -4636,8 +4640,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           );
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 2) {
-          store.dispatch(decreaseEndIndex());
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
+          if (index === 4) {
+            store.dispatch(decreaseEndIndex());
+          }
           lastMapDomElement.remove();
           mapSet.maps.pop();
         }

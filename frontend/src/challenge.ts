@@ -1476,6 +1476,8 @@ const createMapElement = (element: MapElement) => {
 const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
    //on decremente l'index  
    store.dispatch(decreaseStartIndex());
+   document.getElementById("startIndex")!.innerHTML = `${store.getState().map.startIndex}`;
+
 
    const startIndex = store.getState().map.startIndex;
    const element = store.getState().map.elements[startIndex];
@@ -2405,13 +2407,19 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       
   const firstMapDomElement = mapSet.maps[0];
 
-  if (firstMapDomElement.offsetLeft < -window.innerWidth) {
-    store.dispatch(increaseStartIndex());
-    store.dispatch(increaseCurrentIndex());
+  if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
+
+    if(index === 4){
+     store.dispatch(increaseStartIndex());
+     store.dispatch(increaseCurrentIndex());
+    }
+
     firstMapDomElement.remove();
     mapSet.maps.shift();
+    document.getElementById("startIndex")!.innerHTML = `${store.getState().map.startIndex}`;
   }
-
+  
+  
   const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
 
   const endIndex = store.getState().map.endIndex;
@@ -2506,7 +2514,9 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-         store.dispatch(decreaseEndIndex());
+      if(index === 4){
+        store.dispatch(decreaseEndIndex());
+      }
          lastMapDomElement.remove();
          mapSet.maps.pop();
       } 
