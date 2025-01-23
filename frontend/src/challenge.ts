@@ -1160,10 +1160,10 @@ export enum ANIMATION_ID {
 export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 0,
-  [ANIMATION_ID.hero_run_right]: 0,  
-  [ANIMATION_ID.hero_run_left]: 0,  
+  [ANIMATION_ID.hero_run_right]: 0,
+  [ANIMATION_ID.hero_run_left]: 0,
+  [ANIMATION_ID.hero_walk_left]: 0,  
   [ANIMATION_ID.hero_walk_right]: 0,
-  [ANIMATION_ID.hero_walk_left]: 0,
   [ANIMATION_ID.hero_death]: 0,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 0,
@@ -1225,9 +1225,8 @@ export const THROTTLE_NUMS = {
   [ANIMATION_ID.hero_attack]: 0,
   [ANIMATION_ID.hero_run]: 5,
   [ANIMATION_ID.hero_run_right]: 0,  
-  [ANIMATION_ID.hero_run_left]: 0,  
+  [ANIMATION_ID.hero_walk_left]: 0,  
   [ANIMATION_ID.hero_walk_right]: 0,
-  [ANIMATION_ID.hero_walk_left]: 0,
   [ANIMATION_ID.hero_death]: 5,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 20,
@@ -1794,13 +1793,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_run_left || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_run_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2561,7 +2560,7 @@ const launchHeroWalkAnimation = (direction: ANIMATION_ID) => {
 
   runAudio.volume = 0.7;
 
-  launchAnimation(heroCharacter, direction === ANIMATION_ID.hero_run_left ? AnimationType.run_left : AnimationType.run_right);
+  launchAnimation(heroCharacter, direction === ANIMATION_ID.hero_walk_left ? AnimationType.walk_left : AnimationType.run_right);
 
 }
 
@@ -2573,7 +2572,7 @@ const launchHeroRunAnimation = (direction = Direction.LEFT_TO_RIGHT) => {
 
   runAudio.volume = 0.7;
 
-  launchAnimation(heroCharacter, direction === Direction.LEFT_TO_RIGHT ? AnimationType.run : AnimationType.run_left);
+  launchAnimation(heroCharacter, direction === Direction.LEFT_TO_RIGHT ? AnimationType.run : AnimationType.walk_left);
 
 }
 
@@ -2619,8 +2618,8 @@ enum AnimationType {
   attack,
   specialAttack,
   run,
-  run_left,
   run_right,
+  run_left,
   walk,
   walk_right,
   walk_left,
@@ -2860,13 +2859,13 @@ const heroAnimations = [
        ]
       },
       {
-        animationType: AnimationType.run_left,
+        animationType: AnimationType.walk_left,
         animationsStatesBlocks: [
           {
             states: ALL_HERO_STATES,
             animation: 
             {
-              id: ANIMATION_ID.hero_run_left,
+              id: ANIMATION_ID.hero_walk_left,
               sprite:    {
                 path: "assets/challenge/characters/hero/walk_left",
                 length: 6
@@ -2886,6 +2885,33 @@ const heroAnimations = [
            }
          ]
         },
+        {
+          animationType: AnimationType.run_left,
+          animationsStatesBlocks: [
+            {
+              states: ALL_HERO_STATES,
+              animation: 
+              {
+                id: ANIMATION_ID.hero_run_left,
+                sprite:    {
+                  path: "assets/challenge/characters/hero/walk_left",
+                  length: 6
+              }
+              }
+             },
+             {
+              states: ALL_TRANSFORMED_HERO_STATES,
+              animation: 
+              {
+                id: ANIMATION_ID.hero_transformation_run,
+                sprite:    {
+                  path: "assets/challenge/characters/transformed_hero/run",
+                  length: 6
+              }
+              }
+             }
+           ]
+          },
       {
         animationType: AnimationType.secondIdle,
         animationsStatesBlocks: [
@@ -3521,7 +3547,7 @@ const moveBackground = (direction: Direction) => {
 
 const launchHeroWalk = (direction = Direction.LEFT_TO_RIGHT) => {
   moveBackground(direction);
-  launchHeroWalkAnimation(ANIMATION_ID.hero_run_left);
+  launchHeroWalkAnimation(ANIMATION_ID.hero_walk_left);
 };
 
 const launchHeroRun = (direction = Direction.LEFT_TO_RIGHT) => {
@@ -3600,7 +3626,7 @@ document.addEventListener("keyup", (event) => {
   
   if(event.key === "q"){
     heroMoving = false;
-    interruptAnimation(ANIMATION_ID.hero_run_left);
+    interruptAnimation(ANIMATION_ID.hero_walk_left);
     stopCameraMovingToLeft();
   }
 
