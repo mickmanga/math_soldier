@@ -1450,7 +1450,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
+    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
   }
 }
 
@@ -2404,7 +2404,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
 
-    if(index === 4){
+    if(index === 4 && gameMode === GAME_MODES.discovery){
      store.dispatch(increaseStartIndex());
      store.dispatch(increaseCurrentIndex());
     }
@@ -2425,7 +2425,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
       
-      if(index === 4){
+      if(index === 4 && gameMode === GAME_MODES.discovery){
   
        if(endIndex >= (elements.length - 1)){
 
@@ -2436,7 +2436,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
      };
      
      mapSet.maps.push(
-      index === 4 ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) :
        createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
         )
@@ -2461,7 +2461,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 4){
+    if(index === 4 && gameMode === GAME_MODES.discovery){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -2471,7 +2471,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -2485,7 +2485,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 4){
+      if(index === 4 && gameMode === GAME_MODES.discovery){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -3617,7 +3617,7 @@ document.addEventListener("keyup", (event) => {
     }
   }
 
-  if(event.key === "d"){
+  if(event.key === "d" && gameMode === GAME_MODES.discovery){
     heroMoving = false;
     interruptAnimation(ANIMATION_ID.hero_walk_right);
     stopCameraMovingToRight();
@@ -3644,6 +3644,10 @@ document.addEventListener("keydown", (event) => {
 
   if(event.key === "p"){
     checkForScreenUpdateFromLeftToRight(0);
+  }
+
+  if(event.key === "l"){
+    gameMode = GAME_MODES.challenge;
   }
 
   if (event.key === "d") {
