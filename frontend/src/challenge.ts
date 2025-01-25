@@ -2356,6 +2356,7 @@ const detectCollision = () => {
         getHeroLeft()
     ) {
 
+
       const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, AnimationType.attack)!;
 
       heroInTheRedZone = true;
@@ -3309,7 +3310,7 @@ const kingAnimations = [
         states: ALL_KING_ENEMY_STATES,
         animation: 
         {
-          id: ANIMATION_ID.dwarf_opponent_attack,
+          id: ANIMATION_ID.king_opponent_attack,
           sprite:    {
             path: "assets/challenge/characters/enemies/king/attack",
             length: 58

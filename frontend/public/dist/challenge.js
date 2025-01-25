@@ -4894,7 +4894,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         {
           states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 46 /* dwarf_opponent_attack */,
+            id: 31 /* king_opponent_attack */,
             sprite: {
               path: "assets/challenge/characters/enemies/king/attack",
               length: 58
