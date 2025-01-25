@@ -997,7 +997,7 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
 
 
  const enemyCreationCallbacks = [
-  createKingCharacter,
+  createRedHammerCharacter,
  ];
  
 
@@ -1799,7 +1799,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 115 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2078,7 +2078,7 @@ const moveEnemy = (
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      diff * (hardMode ? 0.7 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      diff * (hardMode ? 0.5 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
   )}px`;
 
   if (hardMode) {
@@ -3159,8 +3159,8 @@ const witchAnimations = [
       {
         id: ANIMATION_ID.witch_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/wolf/idle",
-          length: 8
+          path: "assets/challenge/characters/enemies/witch/idle",
+          length: 7
       }
       }
      }
@@ -3746,7 +3746,7 @@ const stopRun = () => {
 
   ennemiesOnScreen.forEach(
     enemy => {
-      enemy.character.element.style.opacity = '1'
+      //enemy.character.element.style.opacity = '1'
     }
   )
 

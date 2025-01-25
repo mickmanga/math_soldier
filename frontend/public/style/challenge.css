@@ -112,8 +112,8 @@ audio {
 
 */
   left: 110vw;
-  height: 45.5vh;
-  bottom: 5.75vh;
+  height: 60.5vh;
+  bottom: 0vh;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -177,9 +177,6 @@ audio {
   width: auto;
 }
 
-.hard_enemy_container img {
-  opacity: 0.9;
-}
 .enemy_container img {
   height: 90%;
   width: auto;
