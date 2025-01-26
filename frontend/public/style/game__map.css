@@ -1,0 +1,8 @@
+#mapImage {
+    height: 80vh;
+    width: 60vw;
+    position: absolute;
+    left: 10vw;
+    margin: auto;
+    top:0;
+}

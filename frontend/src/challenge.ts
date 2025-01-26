@@ -1,7 +1,7 @@
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 import {decreaseEndIndex, decreaseStartIndex, increaseCurrentIndex, increaseEndIndex, increaseStartIndex} from "./redux/slices/mapSlice";
 import {store, RootState } from "./redux/index";
-import { MapElement } from "./types/map";
+import { FormBlock, FormElement, MapElement } from "./types/map";
 
 enum GAME_MODES {
   discovery,
@@ -994,12 +994,10 @@ const buildEnemyElement = () => {
 
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
-
  const enemyCreationCallbacks = [
-  createRedHammerCharacter,
+  createKingCharacter,
  ];
  
-
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
 
  const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3287,7 +3285,17 @@ const createChallengPilar = (element: MapElement) => {
   
 }
 
-const createFormElement = (mapElement: MapElement) => {
+const setFormContent = (formHtmlContainer: HTMLElement, formBlock: FormBlock, newIndex: number) => {
+
+   //we go and look for an element of class "..."
+
+   //question => we need to find a container with a certain class, and insert the question
+
+   // const question = formBlock.question;
+
+}
+
+const createFormElement = (formElement: FormElement) => {
   
     //On créée une div, qui fait
 
@@ -3302,7 +3310,6 @@ const createFormElement = (mapElement: MapElement) => {
     formBackgroundContainer.style.display = "flex";
     formBackgroundContainer.style.justifyContent = "center";
     formBackgroundContainer.style.alignItems = "center";
-
 
     const formContainer = document.createElement("div");
     formContainer.style.width = "20vw";

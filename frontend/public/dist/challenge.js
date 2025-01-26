@@ -3560,7 +3560,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createRedHammerCharacter
+      createKingCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -4588,7 +4588,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_KING_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4776,17 +4776,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var redHammerAnimations = [
+  var kingAnimations = [
     {
       animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 19 /* hammer_opponent_idle */,
+            id: 29 /* king_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/idle",
-              length: 16
+              path: "assets/challenge/characters/enemies/king/idle",
+              length: 18
             }
           }
         }
@@ -4796,12 +4796,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 21 /* hammer_opponent_attack */,
+            id: 31 /* king_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
+              path: "assets/challenge/characters/enemies/king/attack",
+              length: 58
             }
           }
         }
@@ -4811,9 +4811,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 22 /* hammer_opponent_death */,
+            id: 32 /* king_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -4826,9 +4826,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 12 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_KING_ENEMY_STATES,
           animation: {
-            id: 23 /* hammer_opponent_move */,
+            id: 33 /* king_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4843,16 +4843,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
-  };
-  var createRedHammerCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -4889,6 +4879,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.background = "grey";
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
+  };
+  var createKingCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/king/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, kingAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
