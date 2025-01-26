@@ -3757,67 +3757,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [58 /* boss_attack */]: 0,
     [59 /* lightning */]: 0
   };
-  var THROTTLE_NUMS = {
-    [0 /* hero_attack */]: 0,
-    [1 /* hero_run */]: 5,
-    [2 /* hero_run_right */]: 0,
-    [5 /* hero_walk_left */]: 0,
-    [4 /* hero_walk_right */]: 0,
-    [7 /* hero_death */]: 5,
-    [6 /* hero_hurt */]: 0,
-    [8 /* hero_idle */]: 20,
-    [9 /* hero_second_idle */]: 0,
-    [10 /* hero_special_attack */]: 0,
-    [12 /* stop_time */]: 5,
-    [11 /* stop */]: 0,
-    [13 /* cancel_stop_time */]: 5,
-    [14 /* ghost_opponent_idle */]: 5,
-    [15 /* ghost_opponent_run */]: 5,
-    [16 /* ghost_opponent_attack */]: 0,
-    [17 /* ghost_opponent_death */]: 0,
-    [18 /* ghost_opponent_move */]: 1,
-    [19 /* hammer_opponent_idle */]: 0,
-    [20 /* hammer_opponent_run */]: 0,
-    [21 /* hammer_opponent_attack */]: 0,
-    [22 /* hammer_opponent_death */]: 0,
-    [23 /* hammer_opponent_move */]: 0,
-    [39 /* orc_opponent_idle */]: 0,
-    [40 /* orc_opponent_run */]: 0,
-    [41 /* orc_opponent_attack */]: 0,
-    [42 /* orc_opponent_death */]: 0,
-    [43 /* orc_opponent_move */]: 0,
-    [44 /* dwarf_opponent_idle */]: 0,
-    [45 /* dwarf_opponent_run */]: 0,
-    [46 /* dwarf_opponent_attack */]: 0,
-    [47 /* dwarf_opponent_death */]: 0,
-    [48 /* dwarf_opponent_move */]: 0,
-    [24 /* golem_opponent_idle */]: 0,
-    [25 /* golem_opponent_run */]: 0,
-    [26 /* golem_opponent_attack */]: 0,
-    [27 /* golem_opponent_death */]: 0,
-    [28 /* golem_opponent_move */]: 0,
-    [29 /* king_opponent_idle */]: 0,
-    [30 /* king_opponent_run */]: 0,
-    [31 /* king_opponent_attack */]: 0,
-    [32 /* king_opponent_death */]: 0,
-    [33 /* king_opponent_move */]: 0,
-    [34 /* witch_opponent_idle */]: 0,
-    [35 /* witch_opponent_run */]: 0,
-    [36 /* witch_opponent_attack */]: 0,
-    [37 /* witch_opponent_death */]: 0,
-    [38 /* witch_opponent_move */]: 0,
-    [49 /* camera_left_to_right */]: 0,
-    [50 /* camera_right_to_left */]: 0,
-    [52 /* hero_sword_slash */]: 0,
-    [51 /* character_left_to_right_move */]: 5,
-    [53 /* hero_transformation_pre_run */]: 5,
-    [54 /* hero_transformation_run */]: 5,
-    [55 /* hero_transformation_hurt */]: 0,
-    [56 /* hero_transformation_attack */]: 0,
-    [57 /* boss_idle */]: 15,
-    [58 /* boss_attack */]: 10,
-    [59 /* lightning */]: 0
-  };
   var AnimationRequest = class {
     constructor(animation, callBack) {
       this.animation = animation;
@@ -3994,16 +3933,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     return block;
   };
-  var slowTime = (multiplicator) => {
-    const runMultiplicatorBase = THROTTLE_NUMS[1 /* hero_run */] ? THROTTLE_NUMS[1 /* hero_run */] : 1;
-    THROTTLE_NUMS[1 /* hero_run */] = runMultiplicatorBase * multiplicator * 1.5 * 1.5;
-    const cameraMoveMultiplicatorBase = THROTTLE_NUMS[49 /* camera_left_to_right */] ? THROTTLE_NUMS[49 /* camera_left_to_right */] : 1;
-    THROTTLE_NUMS[49 /* camera_left_to_right */] = cameraMoveMultiplicatorBase * multiplicator * 1.5;
-    const opponentRunMultiplicatorBase = THROTTLE_NUMS[15 /* ghost_opponent_run */] ? THROTTLE_NUMS[15 /* ghost_opponent_run */] : 1;
-    THROTTLE_NUMS[15 /* ghost_opponent_run */] = opponentRunMultiplicatorBase * multiplicator;
-    const opponentMoveMultiplicatorBase = THROTTLE_NUMS[18 /* ghost_opponent_move */] ? THROTTLE_NUMS[18 /* ghost_opponent_move */] : 1;
-    THROTTLE_NUMS[18 /* ghost_opponent_move */] = opponentMoveMultiplicatorBase * multiplicator * 2;
-  };
   var moveCamera = (direction, previousFrameTimestamp, mapSetIndex, cameraSpeed) => {
     const cameraAnimation = direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */;
     if (ANIMATION_RUNNING_VALUES[cameraAnimation] === 0 || ANIMATION_RUNNING_VALUES[cameraAnimation] > 1) {
@@ -4131,25 +4060,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const firstQueueElement = requestQueue.pop();
         firstQueueElement == null ? void 0 : firstQueueElement.callBack();
       }
-    }
-    if (throttleNum < THROTTLE_NUMS[animationId]) {
-      throttleNum++;
-      return requestAnimationFrame(
-        () => launchCharacterAnimation(
-          characterElement,
-          throttleNum,
-          extension,
-          spriteBase,
-          spriteIndex,
-          max,
-          min,
-          loop,
-          animationId,
-          () => {
-          },
-          lastExecutionTimeStamp
-        )
-      );
     }
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
@@ -4327,21 +4237,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
-    if (throttleNum < THROTTLE_NUMS[18 /* ghost_opponent_move */]) {
-      throttleNum++;
-      return requestAnimationFrame(() => {
-        moveEnemy(enemy, throttleNum, currentTimeStamp);
-      });
-    }
     let hardEnemyMoveRatio = 1;
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.5 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.2 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.2 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
@@ -5087,9 +4991,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         return;
       }
       launchAttack();
-    }
-    if (event.key === "v") {
-      slowTime(10);
     }
     if (event.key === "y") {
       launchDeathAnimation();

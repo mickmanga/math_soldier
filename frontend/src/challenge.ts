@@ -1,7 +1,6 @@
 import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 import {decreaseEndIndex, decreaseStartIndex, increaseCurrentIndex, increaseEndIndex, increaseStartIndex} from "./redux/slices/mapSlice";
 import {store, RootState } from "./redux/index";
-import { MapState } from "./redux/slices/mapSlice";
 import { MapElement } from "./types/map";
 
 enum GAME_MODES {
@@ -1221,68 +1220,6 @@ export const ANIMATION_RUNNING_VALUES = {
 
 };
 
-export const THROTTLE_NUMS = {
-  [ANIMATION_ID.hero_attack]: 0,
-  [ANIMATION_ID.hero_run]: 5,
-  [ANIMATION_ID.hero_run_right]: 0,  
-  [ANIMATION_ID.hero_walk_left]: 0,  
-  [ANIMATION_ID.hero_walk_right]: 0,
-  [ANIMATION_ID.hero_death]: 5,
-  [ANIMATION_ID.hero_hurt]: 0,
-  [ANIMATION_ID.hero_idle]: 20,
-  [ANIMATION_ID.hero_second_idle]: 0,
-  [ANIMATION_ID.hero_special_attack]: 0,
-  [ANIMATION_ID.stop_time]: 5,
-  [ANIMATION_ID.stop]: 0,
-  [ANIMATION_ID.cancel_stop_time]: 5,
-  [ANIMATION_ID.ghost_opponent_idle]: 5,
-  [ANIMATION_ID.ghost_opponent_run]: 5,
-  [ANIMATION_ID.ghost_opponent_attack]: 0,
-  [ANIMATION_ID.ghost_opponent_death]: 0,
-  [ANIMATION_ID.ghost_opponent_move]: 1,
-  [ANIMATION_ID.hammer_opponent_idle]: 0, 
-  [ANIMATION_ID.hammer_opponent_run]: 0,
-  [ANIMATION_ID.hammer_opponent_attack]: 0,
-  [ANIMATION_ID.hammer_opponent_death]: 0,
-  [ANIMATION_ID.hammer_opponent_move]: 0,
-  [ANIMATION_ID.orc_opponent_idle]:0,
-  [ANIMATION_ID.orc_opponent_run]:0,
-  [ANIMATION_ID.orc_opponent_attack]:0,
-  [ANIMATION_ID.orc_opponent_death]:0,
-  [ANIMATION_ID.orc_opponent_move]:0,
-  [ANIMATION_ID.dwarf_opponent_idle]:0,
-  [ANIMATION_ID.dwarf_opponent_run]:0,
-  [ANIMATION_ID.dwarf_opponent_attack]:0,
-  [ANIMATION_ID.dwarf_opponent_death]:0,
-  [ANIMATION_ID.dwarf_opponent_move]:0,
-  [ANIMATION_ID.golem_opponent_idle]:0,
-  [ANIMATION_ID.golem_opponent_run]:0,
-  [ANIMATION_ID.golem_opponent_attack]:0,
-  [ANIMATION_ID.golem_opponent_death]:0,
-  [ANIMATION_ID.golem_opponent_move]:0,
-  [ANIMATION_ID.king_opponent_idle]:0,
-  [ANIMATION_ID.king_opponent_run]:0,
-  [ANIMATION_ID.king_opponent_attack]:0,
-  [ANIMATION_ID.king_opponent_death]:0,
-  [ANIMATION_ID.king_opponent_move]:0,
-  [ANIMATION_ID.witch_opponent_idle]:0,
-  [ANIMATION_ID.witch_opponent_run]:0,
-  [ANIMATION_ID.witch_opponent_attack]:0,
-  [ANIMATION_ID.witch_opponent_death]:0,
-  [ANIMATION_ID.witch_opponent_move]:0,  
-  [ANIMATION_ID.camera_left_to_right]: 0,
-  [ANIMATION_ID.camera_right_to_left]: 0,
-  [ANIMATION_ID.hero_sword_slash]: 0,
-  [ANIMATION_ID.character_left_to_right_move]: 5,
-  [ANIMATION_ID.hero_transformation_pre_run]: 5,
-  [ANIMATION_ID.hero_transformation_run]: 5,
-  [ANIMATION_ID.hero_transformation_hurt]: 0,
-  [ANIMATION_ID.hero_transformation_attack]: 0,
-  [ANIMATION_ID.boss_idle]: 15,
-  [ANIMATION_ID.boss_attack]: 10,
-  [ANIMATION_ID.lightning]: 0,
-};
-
 const APP_IDS = {
   hero: "hero_container",
   enemy: "enemy_container",
@@ -1522,36 +1459,6 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
   return block;
 };
 
-const slowTime = (multiplicator: number) => {
-  const runMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.hero_run]
-    ? THROTTLE_NUMS[ANIMATION_ID.hero_run]
-    : 1;
-  THROTTLE_NUMS[ANIMATION_ID.hero_run] =
-    runMultiplicatorBase * multiplicator * 1.5 * 1.5;
-
-  const cameraMoveMultiplicatorBase = THROTTLE_NUMS[
-    ANIMATION_ID.camera_left_to_right
-  ]
-    ? THROTTLE_NUMS[ANIMATION_ID.camera_left_to_right]
-    : 1;
-  THROTTLE_NUMS[ANIMATION_ID.camera_left_to_right] =
-    cameraMoveMultiplicatorBase * multiplicator * 1.5;
-
-  const opponentRunMultiplicatorBase = THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run]
-    ? THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run]
-    : 1;
-  THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_run] =
-    opponentRunMultiplicatorBase * multiplicator;
-
-  const opponentMoveMultiplicatorBase = THROTTLE_NUMS[
-    ANIMATION_ID.ghost_opponent_move
-  ]
-    ? THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move]
-    : 1;
-  THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move] =
-    opponentMoveMultiplicatorBase * multiplicator * 2;
-};
-
 const moveCamera = (
   direction: Direction,
   previousFrameTimestamp: number,
@@ -1770,26 +1677,7 @@ const launchCharacterAnimation = (
       firstQueueElement?.callBack();
     }
   }
-
-  if (throttleNum < THROTTLE_NUMS[animationId]) {
-    throttleNum++;
-    return requestAnimationFrame(() =>
-      launchCharacterAnimation(
-        characterElement,
-        throttleNum,
-        extension,
-        spriteBase,
-        spriteIndex,
-        max,
-        min,
-        loop,
-        animationId,
-        () => {},
-        lastExecutionTimeStamp
-      )
-    );
-  }
-
+  
   const newExecutionTimeStamp = Date.now();
 
   if (
@@ -2063,13 +1951,6 @@ const moveEnemy = (
 
   const diff = currentTimeStamp - previousTimeStamp;
 
-  if (throttleNum < THROTTLE_NUMS[ANIMATION_ID.ghost_opponent_move]) {
-    throttleNum++;
-    return requestAnimationFrame(() => {
-      moveEnemy(enemy, throttleNum, currentTimeStamp);
-    });
-  }
-
   let hardEnemyMoveRatio = 1;
 
   throttleNum = 0;
@@ -2078,12 +1959,12 @@ const moveEnemy = (
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      diff * (hardMode ? 0.5 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      diff * (hardMode ? 0.2 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
   )}px`;
 
   if (hardMode) {
     enemyViewPoint.style.left = `${Math.round(
-      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.2 : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
   }
 
@@ -3703,9 +3584,6 @@ document.addEventListener("keydown", (event) => {
     launchAttack();
   }
 
-  if (event.key === "v") {
-    slowTime(10);
-  }
 
   if (event.key === "y") {
     launchDeathAnimation();

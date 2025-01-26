@@ -9,7 +9,6 @@ build({
     path.join("src", "challenge_guardians.ts"),
     path.join("src", "discovery.ts"),
     path.join("src", "new_discovery.ts"),
-    path.join("src", "boss.ts"),
     path.join("src", "load.ts"),
     path.join("src", "login.ts"),
     path.join("src", "learning.ts"),

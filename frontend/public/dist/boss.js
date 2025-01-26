@@ -4132,25 +4132,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         firstQueueElement == null ? void 0 : firstQueueElement.callBack();
       }
     }
-    if (throttleNum < THROTTLE_NUMS[animationId]) {
-      throttleNum++;
-      return requestAnimationFrame(
-        () => launchCharacterAnimation(
-          characterElement,
-          throttleNum,
-          extension,
-          spriteBase,
-          spriteIndex,
-          max,
-          min,
-          loop,
-          animationId,
-          () => {
-          },
-          lastExecutionTimeStamp
-        )
-      );
-    }
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
@@ -4327,21 +4308,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
-    if (throttleNum < THROTTLE_NUMS[18 /* ghost_opponent_move */]) {
-      throttleNum++;
-      return requestAnimationFrame(() => {
-        moveEnemy(enemy, throttleNum, currentTimeStamp);
-      });
-    }
     let hardEnemyMoveRatio = 1;
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.5 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.2 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.7 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.2 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
