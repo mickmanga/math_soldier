@@ -995,7 +995,10 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createWitchCharacter,
+  createGolemCharacter,
+  createRedHammerCharacter,
+  createDwarfCharacter,
+  createOrcCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
@@ -1385,7 +1388,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex) ];
+    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
   }
 }
 
@@ -1477,7 +1480,7 @@ const moveCamera = (
     mapSet.maps.forEach(
       (map) =>
         (map.style.left = `${
-          map.offsetLeft +
+          map.getBoundingClientRect().left +
           Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/(heroRunning? 15 : 30)) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
@@ -1604,12 +1607,7 @@ export const launchAnimationAndDeclareItLaunched = (
       ].request_queue.unshift(
         new AnimationRequest(animationId, animationRequestCallback)
       );
-      console.log(APP_ELEMENTS_ANIMATION_QUEUE[
-        elementAssociatedWithThisAnimation
-      ])
-
       return;
-
   
     }
 
@@ -3066,8 +3064,8 @@ const witchAnimations = [
           states: ALL_WITCH_ENEMY_STATES,
           animation: 
           {
-            id: ANIMATION_ID.witch_opponent_attack,
-            sprite:    {
+            id: ANIMATION_ID.witch_opponent_death,
+            sprite:  {
               path: "assets/challenge/explosion",
               length: 10
           }
@@ -3136,7 +3134,7 @@ const golemAnimations = [
           animation: 
           {
             id: ANIMATION_ID.golem_opponent_death,
-            sprite:    {
+            sprite: {
               path: "assets/challenge/explosion",
               length: 10
           }
@@ -3586,7 +3584,7 @@ document.addEventListener("keydown", (event) => {
 
       return;
     }
-    launchAttack();
+    launchAttack(true);
   }
 
 

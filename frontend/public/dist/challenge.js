@@ -3571,7 +3571,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createWitchCharacter
+      createGolemCharacter,
+      createRedHammerCharacter,
+      createDwarfCharacter,
+      createOrcCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3895,7 +3898,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     constructor(imagePath, velocity, zIndex, lastSet) {
       this.imagePath = imagePath;
       this.velocity = velocity;
-      this.maps = [lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex), lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockEnd(window.innerWidth * 0.98, imagePath, zIndex) : createMapBlock(window.innerWidth * 0.98, imagePath, zIndex)];
+      this.maps = [lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
     }
   };
   var createMapSet = (imagePath, velocity, zIndex = "1", lastSet) => {
@@ -3945,7 +3948,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.offsetLeft + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / (heroRunning ? 15 : 30)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.getBoundingClientRect().left + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / (heroRunning ? 15 : 30)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
   };
@@ -4037,7 +4040,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].request_queue.unshift(
           new AnimationRequest(animationId, animationRequestCallback)
         );
-        console.log(APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation]);
         return;
       }
       APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation = animationId;
@@ -4557,7 +4559,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_WITCH_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_DWARF_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_GOLEM_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4745,17 +4750,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var witchAnimations = [
+  var redHammerAnimations = [
     {
       animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_WITCH_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 34 /* witch_opponent_idle */,
+            id: 19 /* hammer_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/witch/idle",
-              length: 7
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
             }
           }
         }
@@ -4765,12 +4770,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_WITCH_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 36 /* witch_opponent_attack */,
+            id: 21 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/wolf/attack",
-              length: 15
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
             }
           }
         }
@@ -4780,9 +4785,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_WITCH_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 36 /* witch_opponent_attack */,
+            id: 22 /* hammer_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -4795,9 +4800,195 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 12 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_WITCH_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 36 /* witch_opponent_attack */,
+            id: 23 /* hammer_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var orcAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 39 /* orc_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/orc/idle",
+              length: 42
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 41 /* orc_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/orc/attack",
+              length: 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 22 /* hammer_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 43 /* orc_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var dwarfAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: {
+            id: 44 /* dwarf_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/dwarf/idle",
+              length: 57
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: {
+            id: 46 /* dwarf_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/dwarf/attack",
+              length: 38
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: {
+            id: 47 /* dwarf_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_DWARF_ENEMY_STATES,
+          animation: {
+            id: 48 /* dwarf_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var golemAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_GOLEM_ENEMY_STATES,
+          animation: {
+            id: 24 /* golem_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/golem/idle",
+              length: 12
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_GOLEM_ENEMY_STATES,
+          animation: {
+            id: 26 /* golem_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/golem/attack",
+              length: 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_GOLEM_ENEMY_STATES,
+          animation: {
+            id: 27 /* golem_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_GOLEM_ENEMY_STATES,
+          animation: {
+            id: 28 /* golem_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4812,6 +5003,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
+  };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -4849,15 +5050,37 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
   };
-  var createWitchCharacter = () => {
+  var createGolemCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/wolf/idle/1.png";
+    newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
+  };
+  var createOrcCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    enemyViewPoint.style.left = "105vw";
+    enemyViewPoint.style.display = "flex";
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
+  };
+  var createDwarfCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    enemyViewPoint.style.left = "110vw";
+    enemyViewPoint.style.display = "flex";
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
@@ -4959,7 +5182,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         );
         return;
       }
-      launchAttack();
+      launchAttack(true);
     }
     if (event.key === "y") {
       launchDeathAnimation();

@@ -98,7 +98,7 @@ audio {
 }
 
 .hard_enemy_container {
-  position: fixed;
+  position: absolute;
   /* 
     flames : 
 
