@@ -995,7 +995,7 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter,
+  createWitchCharacter,
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
@@ -4141,7 +4141,7 @@ window.onload = () => {
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
-  checkForScreenUpdateFromRightToLeft(10);
+  //checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();

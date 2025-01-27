@@ -3571,7 +3571,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createRedHammerCharacter
+      createWitchCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3909,13 +3909,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createMapElement = (element) => {
     return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
-  };
-  var createElementMapBlockStart = (left, imagePath, zIndex) => {
-    store.dispatch(decreaseStartIndex());
-    const startIndex = store.getState().map.startIndex;
-    const element = store.getState().map.elements[startIndex];
-    const elementDiv = createMapElement(element);
-    return createMapBlock(left, imagePath, zIndex, elementDiv);
   };
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
@@ -4505,39 +4498,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
-  var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
-    MAP_SETS.forEach(
-      (mapSet, index) => {
-        const startIndex = store.getState().map.startIndex;
-        const firstMapDomElement = mapSet.maps[0];
-        if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
-            if (startIndex === 0) {
-              interruptAnimation(5 /* hero_walk_left */);
-              stopCameraMovingToLeft();
-              return;
-            }
-          }
-          mapSet.maps.unshift(
-            index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
-              firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
-              mapSet.imagePath,
-              `${index}`
-            )
-          );
-        }
-        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
-            store.dispatch(decreaseEndIndex());
-          }
-          lastMapDomElement.remove();
-          mapSet.maps.pop();
-        }
-      }
-    );
-    requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
-  };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
       const characterAnimation = character.animations[i];
@@ -4597,7 +4557,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_WITCH_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4785,17 +4745,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var redHammerAnimations = [
+  var witchAnimations = [
     {
       animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_WITCH_ENEMY_STATES,
           animation: {
-            id: 19 /* hammer_opponent_idle */,
+            id: 34 /* witch_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/idle",
-              length: 16
+              path: "assets/challenge/characters/enemies/witch/idle",
+              length: 7
             }
           }
         }
@@ -4805,12 +4765,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_WITCH_ENEMY_STATES,
           animation: {
-            id: 21 /* hammer_opponent_attack */,
+            id: 36 /* witch_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
+              path: "assets/challenge/characters/enemies/wolf/attack",
+              length: 15
             }
           }
         }
@@ -4820,9 +4780,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_WITCH_ENEMY_STATES,
           animation: {
-            id: 22 /* hammer_opponent_death */,
+            id: 36 /* witch_opponent_attack */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -4835,9 +4795,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 12 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
+          states: ALL_WITCH_ENEMY_STATES,
           animation: {
-            id: 23 /* hammer_opponent_move */,
+            id: 36 /* witch_opponent_attack */,
             sprite: {
               path: "",
               length: 0
@@ -4852,16 +4812,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
-  };
-  var createRedHammerCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -4898,6 +4848,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.background = "grey";
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
+  };
+  var createWitchCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/wolf/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
@@ -5376,7 +5336,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
-    checkForScreenUpdateFromRightToLeft(10);
     checkForOpponentsClearance();
     defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();
