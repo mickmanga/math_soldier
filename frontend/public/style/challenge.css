@@ -113,7 +113,7 @@ audio {
 */
   left: 110vw;
   height: 60.5vh;
-  bottom: 0vh;
+  bottom: 2vh;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -193,7 +193,27 @@ audio {
   width: 10vw;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-around;
+}
+
+#lifePointsContainer_a {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#lifePointsContainer_b {
+  height: 20%;
+  width: 100%;
+}
+
+#lifePointContainer_ba {
+  font-size: small;
+  display: flex;
+  flex-direction: column;
 }
 
 .lifePointContainer {
@@ -233,14 +253,14 @@ audio {
 }
 
 #answer_data_container {
-  height: 15vh;
+  height: 12.5vh;
   width: 70vw;
-  border-radius: 12px;
+  border-radius: 45px;
   background: grey;
   position: absolute;
   left: 15vw;
-  top: 85vh;
-  z-index: 3;
+  top: 86vh;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -481,6 +501,7 @@ audio {
 
 .progress {
   --progress: 0%;
+  border-radius: 20px;
 
   position: absolute;
   top: 5vh;
@@ -495,6 +516,7 @@ audio {
 }
 
 .progress .bar {
+  border-radius: 10px 0px 0px 10px ;
   width: var(--progress);
   height: 100%;
   background: linear-gradient(gold, #c85, gold);

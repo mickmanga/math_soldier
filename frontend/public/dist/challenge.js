@@ -2364,7 +2364,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02" }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
+    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02", formBlocks: [
+      {
+        question: "combien fait 1+1",
+        answer: "2",
+        validated: false
+      },
+      {
+        question: "combien fait 2+2",
+        answer: "4",
+        validated: false
+      }
+    ] }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
@@ -2830,7 +2841,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
 
   // src/challenge.ts
-  var gameMode = 0 /* discovery */;
+  var gameMode = 1 /* challenge */;
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
@@ -3560,7 +3571,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createKingCharacter
+      createRedHammerCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3901,7 +3912,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createElementMapBlockStart = (left, imagePath, zIndex) => {
     store.dispatch(decreaseStartIndex());
-    document.getElementById("startIndex").innerHTML = `${store.getState().map.startIndex}`;
     const startIndex = store.getState().map.startIndex;
     const element = store.getState().map.elements[startIndex];
     const elementDiv = createMapElement(element);
@@ -4064,7 +4074,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 120 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4241,7 +4251,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.2 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      enemyContainer.getBoundingClientRect().left - diff * (hardMode ? 0.45 * hardEnemyMoveRatio : 1.5) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
@@ -4470,7 +4480,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           }
           firstMapDomElement.remove();
           mapSet.maps.shift();
-          document.getElementById("startIndex").innerHTML = `${store.getState().map.startIndex}`;
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         const endIndex = store.getState().map.endIndex;
@@ -4588,7 +4597,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_KING_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4776,17 +4785,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var kingAnimations = [
+  var redHammerAnimations = [
     {
       animationType: 10 /* idle */,
       animationsStatesBlocks: [
         {
-          states: ALL_KING_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 29 /* king_opponent_idle */,
+            id: 19 /* hammer_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/enemies/king/idle",
-              length: 18
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
             }
           }
         }
@@ -4796,12 +4805,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 0 /* attack */,
       animationsStatesBlocks: [
         {
-          states: ALL_KING_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 31 /* king_opponent_attack */,
+            id: 21 /* hammer_opponent_attack */,
             sprite: {
-              path: "assets/challenge/characters/enemies/king/attack",
-              length: 58
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
             }
           }
         }
@@ -4811,9 +4820,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 9 /* death */,
       animationsStatesBlocks: [
         {
-          states: ALL_KING_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 32 /* king_opponent_death */,
+            id: 22 /* hammer_opponent_death */,
             sprite: {
               path: "assets/challenge/explosion",
               length: 10
@@ -4826,9 +4835,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       animationType: 12 /* movement */,
       animationsStatesBlocks: [
         {
-          states: ALL_KING_ENEMY_STATES,
+          states: ALL_RED_HAMMER_ENEMY_STATES,
           animation: {
-            id: 33 /* king_opponent_move */,
+            id: 23 /* hammer_opponent_move */,
             sprite: {
               path: "",
               length: 0
@@ -4843,6 +4852,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
+  };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -4862,7 +4881,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pilarBackgroundContainer.append(pilarContainer);
     return pilarBackgroundContainer;
   };
-  var createFormElement = (mapElement) => {
+  var createFormElement = (formElement) => {
     const formBackgroundContainer = document.createElement("div");
     formBackgroundContainer.style.position = "absolute";
     formBackgroundContainer.style.left = "0";
@@ -4879,16 +4898,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.background = "grey";
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
-  };
-  var createKingCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/king/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, kingAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
@@ -5418,6 +5427,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchGame = () => {
     runAudio.play();
     epicAudio.play();
+    heroRunning = true;
     gameLaunched = true;
     launchHeroRun();
     triggerOpponentsApparition();

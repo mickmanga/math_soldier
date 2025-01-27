@@ -8,7 +8,7 @@ enum GAME_MODES {
   challenge
 }
 
-let gameMode: GAME_MODES = GAME_MODES.discovery;
+let gameMode: GAME_MODES = GAME_MODES.challenge;
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -995,7 +995,7 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createKingCharacter,
+  createRedHammerCharacter,
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
@@ -1410,7 +1410,6 @@ const createMapElement = (element: MapElement) => {
 const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
    //on decremente l'index  
    store.dispatch(decreaseStartIndex());
-   document.getElementById("startIndex")!.innerHTML = `${store.getState().map.startIndex}`;
 
 
    const startIndex = store.getState().map.startIndex;
@@ -1685,7 +1684,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 120 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1957,7 +1956,7 @@ const moveEnemy = (
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      diff * (hardMode ? 0.2 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      diff * (hardMode ? 0.45 * hardEnemyMoveRatio : 1.5) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
   )}px`;
 
   if (hardMode) {
@@ -2291,7 +2290,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
     firstMapDomElement.remove();
     mapSet.maps.shift();
-    document.getElementById("startIndex")!.innerHTML = `${store.getState().map.startIndex}`;
   }
   
   
@@ -4214,7 +4212,8 @@ const launchGame = () => {
   
   runAudio.play();
   epicAudio.play();
-  
+
+  heroRunning = true;
   gameLaunched = true;
   launchHeroRun();
   triggerOpponentsApparition();
