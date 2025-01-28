@@ -996,9 +996,9 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
   createGolemCharacter,
-  createRedHammerCharacter,
   createDwarfCharacter,
-  createOrcCharacter
+  createOrcCharacter,
+  createRedHammerCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
@@ -1588,7 +1588,6 @@ export const launchAnimationAndDeclareItLaunched = (
           .current_animation
       ) {
         requestAnimationFrame(animationRequestCallback);
-        alert("r1")
         return;
       }
 
@@ -1641,8 +1640,15 @@ const launchCharacterAnimation = (
     !ANIMATION_RUNNING_VALUES[animationId] ||
     ANIMATION_RUNNING_VALUES[animationId] > 1
   ) {
+    if(animationId === ANIMATION_ID.golem_opponent_attack){
+
+
+    }
+
     return;
   }
+
+
 
 
 
@@ -2150,6 +2156,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
 
   const enemyDestructionAndRevivalCallback = () => {
     enemy.character.element.remove();
+
     if (!preTransformed) {
       triggerOpponentsApparition();
     }
@@ -2165,6 +2172,8 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
     if (enemy === enemyOnScreen) {
       ennemiesOnScreen.splice(index, 1);
       interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id);
+      interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.attack)!.id);
+
     }
   });
 };
@@ -2231,9 +2240,6 @@ const detectCollision = () => {
         enemyViewPoint.getBoundingClientRect().width <
         getHeroLeft()
     ) {
-
-
-      const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, AnimationType.attack)!;
 
       heroInTheRedZone = true;
 
@@ -2426,6 +2432,18 @@ const launchAnimation = (character: CharacterInterface, animationType: Animation
     loop,
     characterAnimation.id
   );
+}
+
+const initCharacterAnimations = (character: DefaultCharacter) => {
+
+  character.animations.forEach(
+    animation => {
+      animation.animationsStatesBlocks.forEach(
+        animationStateBlock => interruptAnimation(animationStateBlock.animation.id)
+      )
+    }
+  )
+
 }
 
 const launchHeroWalkAnimation = (direction: ANIMATION_ID) => {
@@ -3050,8 +3068,8 @@ const witchAnimations = [
         {
           id: ANIMATION_ID.witch_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/wolf/attack",
-            length: 15
+            path: "assets/challenge/characters/enemies/witch/attack",
+            length: 18
         }
         }
        }
@@ -3392,6 +3410,7 @@ const createOrcCharacter = (): DefaultCharacter => {
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
     newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";  
     newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-15.5vh";
 
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
 

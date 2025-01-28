@@ -3572,9 +3572,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
       createGolemCharacter,
-      createRedHammerCharacter,
       createDwarfCharacter,
-      createOrcCharacter
+      createOrcCharacter,
+      createRedHammerCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -4030,7 +4030,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       const animationRequestCallback = () => {
         if (APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation) {
           requestAnimationFrame(animationRequestCallback);
-          alert("r1");
           return;
         }
         APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation].current_animation = animationId;
@@ -4051,6 +4050,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     if (!ANIMATION_RUNNING_VALUES[animationId] || ANIMATION_RUNNING_VALUES[animationId] > 1) {
+      if (animationId === 26 /* golem_opponent_attack */) {
+      }
       return;
     }
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -4403,6 +4404,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
         interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id);
+        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 0 /* attack */).id);
       }
     });
   };
@@ -4444,7 +4446,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         enemyViewPoint.style.display = "flex";
       }
       if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
-        const attackAnimation = getCharacterAnimationAccordingToType(enemyOnScreen.character, 0 /* attack */);
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
         launchAnimation(enemyOnScreen.character, 0 /* attack */);
@@ -5067,6 +5068,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newEnnemyImg = document.createElement("img");
     newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-15.5vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
