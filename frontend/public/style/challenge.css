@@ -12,6 +12,18 @@ body {
   background: #257ec1;
 }
 
+@font-face {
+  font-family: 'CustomFont'; /* Nom de la police */
+  src: url('../fonts/Enchanted\ Land.otf') format('opentype'); /* Chemin du fichier .otf */
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'CustomFont', sans-serif; /* Applique la police au titre <h1> */
+}
+
+
 audio {
   display: none;
 }
@@ -266,7 +278,7 @@ audio {
   align-items: center;
   opacity: 0.8;
   padding-right: 20px;
-  padding-left: 20px;
+  padding-left: 10px;
 }
 
 #answer_data_container div {
@@ -287,7 +299,7 @@ audio {
 }
 
 #answer_data_container_left_logo {
-  height: 50%;
+  height: 70%;
   width: auto;
 }
 

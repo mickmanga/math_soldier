@@ -2841,7 +2841,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
 
   // src/challenge.ts
-  var gameMode = 1 /* challenge */;
+  var gameMode = 0 /* discovery */;
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
@@ -4208,7 +4208,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       0 /* HERO */,
       setTimeout(() => {
         launchHeroRunAnimation();
-      }, 200)
+      }, 350)
     );
   };
   window.launchAttack = (event) => {

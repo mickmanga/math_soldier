@@ -8,7 +8,7 @@ enum GAME_MODES {
   challenge
 }
 
-let gameMode: GAME_MODES = GAME_MODES.challenge;
+let gameMode: GAME_MODES = GAME_MODES.discovery;
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -1860,7 +1860,7 @@ const launchAttack = (special = false) => {
     TimeoutId.HERO,
     setTimeout(() => {
       launchHeroRunAnimation();
-    }, 200)
+    }, 350)
   );
 };
 
