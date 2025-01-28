@@ -4250,7 +4250,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     )}px`;
     if (hardMode) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.2 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.45 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
