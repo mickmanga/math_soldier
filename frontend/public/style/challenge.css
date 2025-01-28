@@ -285,7 +285,7 @@ audio {
   height: 100%;
   display: flex;
   align-items: center;
-  font-size: x-large;
+  font-size: xx-large;
 }
 
 #answer_data_value {

@@ -3325,6 +3325,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-4.5vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -3409,6 +3410,7 @@ const createDwarfCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-15vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
