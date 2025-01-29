@@ -70,7 +70,7 @@ let answers = null;
 // Fetch a challenge by ID from the backend
 const fetchChallengeById = async (challengeId: string): Promise<void> => {
   try {
-      const response = await fetch(`http://localhost:3000/api/challenges/${challengeId}`);
+      const response = await fetch(`192.168.57.54:3000/api/challenges/${challengeId}`);
       if (!response.ok) {
           throw new Error(`Error fetching challenge: ${response.statusText}`);
       }
@@ -79,10 +79,34 @@ const fetchChallengeById = async (challengeId: string): Promise<void> => {
 
       const challengeData = await response.json();
 
+      alert(challengeData)
+
       sortAndStoreAnswers(challengeData.answers);
 
   } catch (error) {
       console.error('Error:', error);
+
+      sortAndStoreAnswers([{
+      explanation: "",
+      text: "Combien fait quoi quoicoubeh",
+      true: true,
+      _id: "1"  
+      }, 
+      {
+        explanation: "",
+        text: "Combien fait quoi quoicoubeh",
+        true: true,
+        _id: "1"  
+        },  
+        {
+          explanation: "",
+          text: "Combien fait quoi quoicoubeh",
+          true: true,
+          _id: "1"  
+          }, 
+
+      ]);
+
   }
 };
 
@@ -367,7 +391,6 @@ const findNextAnswer = () => {
   const answers = challenge.answers;
 
   if(currentAnswerIndex >= answers.length){
-        
     return "done";
   }
 
@@ -376,7 +399,6 @@ const findNextAnswer = () => {
   store.dispatch(incrementAnswerIndex());
 
   return data;
-
 }
 
 
@@ -3670,6 +3692,10 @@ const animateLightning = () => {
 
 window.onload = () => {
 
+  setTimeout(
+    launchGame, 2000
+  )
+
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();
@@ -3687,6 +3713,8 @@ window.onload = () => {
   updateTransformationProgressBarDisplay();
   animateLightning();
   //launchIdleLoop();
+
+  
   
   if (hardMode) {
     epicAudio.play();

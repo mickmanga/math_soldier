@@ -2879,15 +2879,36 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var answers = null;
   var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
     try {
-      const response = yield fetch(`http://localhost:3000/api/challenges/${challengeId}`);
+      const response = yield fetch(`192.168.57.54:3000/api/challenges/${challengeId}`);
       if (!response.ok) {
         throw new Error(`Error fetching challenge: ${response.statusText}`);
       }
       answers = response;
       const challengeData = yield response.json();
+      alert(challengeData);
       sortAndStoreAnswers(challengeData.answers);
     } catch (error) {
       console.error("Error:", error);
+      sortAndStoreAnswers([
+        {
+          explanation: "",
+          text: "Combien fait quoi quoicoubeh",
+          true: true,
+          _id: "1"
+        },
+        {
+          explanation: "",
+          text: "Combien fait quoi quoicoubeh",
+          true: true,
+          _id: "1"
+        },
+        {
+          explanation: "",
+          text: "Combien fait quoi quoicoubeh",
+          true: true,
+          _id: "1"
+        }
+      ]);
     }
   });
   var initializeChallengePage = () => __async(void 0, null, function* () {
@@ -4871,6 +4892,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   window.onload = () => {
+    setTimeout(
+      launchGame,
+      2e3
+    );
     setupListeners();
     setInitialGameVolume();
     launchHardModeToggle();
