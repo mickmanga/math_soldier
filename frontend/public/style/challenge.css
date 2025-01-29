@@ -331,7 +331,7 @@ audio {
   display: none;
   flex-direction: column;
   z-index: 10;
-  font-size: large;
+  font-size: xx-large;
   color: green;
 }
 
@@ -356,6 +356,7 @@ audio {
 }
 
 #sound_effect_img_container img {
+  opacity: 0;
   height: 100%;
   width: auto;
 }
