@@ -3016,478 +3016,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [0 /* HERO */]: [],
     [1 /* ENEMY */]: []
   };
-  var STATS = {
-    title: "statistics",
-    good: [
-      new Answer(
-        "L'\xE9tendue est obtenue en soustrayant la valeur minimale de la valeur maximale dans un jeu de donn\xE9es.",
-        true
-      ),
-      new Answer(
-        "Dans un ensemble de donn\xE9es, le mode est la valeur la plus fr\xE9quente.",
-        true
-      ),
-      new Answer(
-        "La variance montre la dispersion des valeurs autour de la moyenne d'un ensemble de donn\xE9es.",
-        true
-      ),
-      new Answer("L'\xE9cart type est d\xE9fini comme la racine carr\xE9e de la variance.", true),
-      new Answer(
-        "Les statistiques descriptives servent \xE0 r\xE9sumer et \xE0 pr\xE9senter les donn\xE9es de mani\xE8re compr\xE9hensible.",
-        true
-      ),
-      new Answer(
-        "Les statistiques inf\xE9rentielles permettent de tirer des conclusions et de faire des pr\xE9visions sur une population enti\xE8re \xE0 partir d'un \xE9chantillon.",
-        true
-      ),
-      new Answer(
-        "Un ensemble de donn\xE9es peut contenir un ou plusieurs modes, en fonction de sa distribution.",
-        true
-      ),
-      new Answer("Un jeu de donn\xE9es peut ne pr\xE9senter aucun mode.", true),
-      new Answer(
-        "Les statistiques sont souvent divis\xE9es en statistiques descriptives et inf\xE9rentielles.",
-        true
-      ),
-      new Answer(
-        "Le mode peut \xEAtre utile pour identifier les valeurs dominantes dans des donn\xE9es cat\xE9gorielles.",
-        true
-      ),
-      new Answer(
-        "La m\xE9diane d'un ensemble de donn\xE9es est la valeur centrale lorsqu'elles sont tri\xE9es par ordre croissant ou d\xE9croissant.",
-        true
-      ),
-      new Answer(
-        "La moyenne arithm\xE9tique est obtenue en additionnant toutes les valeurs et en divisant par le nombre de donn\xE9es.",
-        true
-      ),
-      new Answer(
-        "Les quartiles divisent un ensemble de donn\xE9es en quatre parts \xE9gales.",
-        true
-      ),
-      new Answer(
-        "L'\xE9cart interquartile est la diff\xE9rence entre le troisi\xE8me et le premier quartile, mesurant la dispersion des valeurs.",
-        true
-      )
-    ],
-    bad: [
-      new Answer("L'\xE9tendue est simplement la valeur minimale d'un ensemble de donn\xE9es.", false),
-      new Answer(
-        "Le mode est la valeur la moins fr\xE9quente dans un ensemble de donn\xE9es.",
-        false
-      ),
-      new Answer(
-        "La variance est le simple \xE9cart entre deux valeurs choisies au hasard.",
-        false
-      ),
-      new Answer(
-        "L'\xE9cart type est la diff\xE9rence entre la premi\xE8re et la derni\xE8re valeur d'un jeu de donn\xE9es.",
-        false
-      ),
-      new Answer(
-        "Les statistiques cumulatives sont une des deux cat\xE9gories principales des statistiques.",
-        false
-      ),
-      new Answer(
-        "Les statistiques descriptives n'existent pas dans la classification statistique.",
-        false
-      ),
-      new Answer(
-        "Les statistiques inf\xE9rentielles d\xE9crivent simplement les caract\xE9ristiques d'un ensemble de donn\xE9es.",
-        false
-      ),
-      new Answer(
-        "La m\xE9diane est toujours identique au mode pour un ensemble de donn\xE9es.",
-        false
-      ),
-      new Answer("Un ensemble de donn\xE9es ne peut avoir qu'un seul mode.", false),
-      new Answer("Un jeu de donn\xE9es ne peut pas avoir de quartiles.", false),
-      new Answer(
-        "La moyenne arithm\xE9tique et la m\xE9diane sont toujours \xE9gales pour tout ensemble de donn\xE9es.",
-        false
-      )
-    ]
-  };
-  var TYPES_DE_FONCTIONS_COURANTES = {
-    title: "Types de Fonctions Courantes",
-    good: [
-      new Answer("Une fonction lin\xE9aire a la forme f(x) = m x + b.", true),
-      new Answer("Le graphique d'une fonction lin\xE9aire est une droite.", true),
-      new Answer("Dans une fonction lin\xE9aire, m repr\xE9sente la pente de la droite.", true),
-      new Answer("Si m > 0, la droite monte de la gauche vers la droite.", true),
-      new Answer("Une fonction quadratique a la forme f(x) = a x\xB2 + b x + c.", true),
-      new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
-      new Answer("Si a > 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", true),
-      new Answer("Le sommet d'une parabole est le point o\xF9 la fonction atteint son maximum ou minimum.", true),
-      new Answer("Une fonction exponentielle a la forme f(x) = a^x avec a > 0 et a \u2260 1.", true),
-      new Answer("Si a > 1, la fonction exponentielle est croissante.", true),
-      new Answer("Les fonctions exponentielles passent par le point (0, 1) car a^0 = 1.", true),
-      new Answer("Une fonction logarithmique est la fonction inverse d'une fonction exponentielle.", true),
-      new Answer("Une fonction logarithmique a la forme f(x) = log_a x avec x > 0.", true),
-      new Answer("Les fonctions logarithmiques passent par le point (1, 0) puisque log_a 1 = 0.", true),
-      new Answer("Les fonctions trigonom\xE9triques comme sin(x) et cos(x) sont p\xE9riodiques.", true),
-      new Answer("La fonction sin(x) a une p\xE9riode de 2\u03C0.", true),
-      new Answer("La fonction valeur absolue est d\xE9finie par f(x) = |x|.", true),
-      new Answer("Le graphique de la fonction valeur absolue a la forme d'un 'V'.", true),
-      new Answer("Une fonction racine carr\xE9e est d\xE9finie par f(x) = \u221Ax avec x \u2265 0.", true),
-      new Answer("Les fonctions racines carr\xE9es commencent \xE0 x = 0 et augmentent lentement.", true),
-      new Answer("Une fonction polynomiale est une somme de termes de la forme a_n x^n.", true),
-      new Answer("Le degr\xE9 d'un polyn\xF4me est le plus grand exposant de x avec un coefficient non nul.", true),
-      new Answer("Une fonction rationnelle est le quotient de deux polyn\xF4mes.", true),
-      new Answer("Les fonctions rationnelles peuvent avoir des asymptotes verticales l\xE0 o\xF9 le d\xE9nominateur est z\xE9ro.", true),
-      new Answer("Les fonctions racines cubiques sont d\xE9finies pour tout x.", true),
-      new Answer("La fonction racine cubique f(x) = \u221Bx est sym\xE9trique par rapport \xE0 l'origine.", true),
-      new Answer("Les fonctions r\xE9ciproques 'annulent' l'effet d'une autre fonction.", true),
-      new Answer("Si f(x) est bijective, sa r\xE9ciproque f\u207B\xB9(x) satisfait f\u207B\xB9(f(x)) = x.", true),
-      new Answer("La fonction exponentielle f(x) = e^x a pour r\xE9ciproque la fonction logarithme naturel f\u207B\xB9(x) = ln x.", true),
-      new Answer("La fonction carr\xE9 f(x) = x\xB2 pour x \u2265 0 a pour r\xE9ciproque la fonction racine carr\xE9e f\u207B\xB9(x) = \u221Ax.", true)
-    ],
-    bad: [
-      new Answer("Le graphique d'une fonction lin\xE9aire est toujours une parabole.", false),
-      new Answer("Dans une fonction lin\xE9aire, b repr\xE9sente la pente de la droite.", false),
-      new Answer("Si m = 0 dans une fonction lin\xE9aire, la droite est verticale.", false),
-      new Answer("Une fonction quadratique a toujours la forme f(x) = ax + b.", false),
-      new Answer("Le graphique d'une fonction quadratique est une droite.", false),
-      new Answer("Si a < 0 dans une fonction quadratique, la parabole s'ouvre vers le haut.", false),
-      new Answer("Le sommet d'une parabole est toujours \xE0 l'origine (0,0).", false),
-      new Answer("Une fonction exponentielle peut \xEAtre \xE9crite comme f(x) = x^a.", false),
-      new Answer("Les fonctions exponentielles passent toujours par le point (1, 0).", false),
-      new Answer("Une fonction logarithmique est d\xE9finie pour tous les nombres r\xE9els x.", false),
-      new Answer("Les fonctions logarithmiques ne sont jamais l'inverse des fonctions exponentielles.", false),
-      new Answer("Les fonctions trigonom\xE9triques comme sin(x) sont des droites.", false),
-      new Answer("La fonction valeur absolue f(x) = |x| est toujours n\xE9gative.", false),
-      new Answer("Une fonction racine carr\xE9e est d\xE9finie pour tous les x, y compris les n\xE9gatifs.", false),
-      new Answer("Les fonctions polynomiales ne contiennent jamais de termes avec x^n.", false),
-      new Answer("Une fonction rationnelle est toujours un polyn\xF4me.", false),
-      new Answer("Les fonctions racines cubiques ne sont jamais d\xE9finies pour x n\xE9gatif.", false),
-      new Answer("Les fonctions r\xE9ciproques n'existent pas pour les fonctions bijectives.", false),
-      new Answer("La fonction exponentielle f(x) = e^x n'a pas de fonction r\xE9ciproque.", false),
-      new Answer("Le graphique de la fonction f(x) = |x| est une courbe lisse sans angles.", false),
-      new Answer("Les fonctions racines carr\xE9es diminuent \xE0 mesure que x augmente.", false),
-      new Answer("Le degr\xE9 d'un polyn\xF4me est toujours \xE9gal \xE0 1.", false),
-      new Answer("Les fonctions rationnelles n'ont jamais d'asymptotes.", false),
-      new Answer("La fonction sin(x) a une p\xE9riode de \u03C0.", false),
-      new Answer("Les fonctions exponentielles sont toujours d\xE9croissantes.", false),
-      new Answer("Les fonctions logarithmiques passent toujours par le point (0, 0).", false)
-    ]
-  };
-  var FONCTIONS_LIN\u00C9AIRES = {
-    title: "Fonctions Lin\xE9aires",
-    good: [
-      new Answer("Une fonction lin\xE9aire est une fonction de la forme f(x) = m x + b.", true),
-      new Answer("Le graphique d'une fonction lin\xE9aire est une droite.", true),
-      new Answer("Le coefficient m dans une fonction lin\xE9aire repr\xE9sente la pente de la droite.", true),
-      new Answer("Si m > 0, la droite est croissante et monte de la gauche vers la droite.", true),
-      new Answer("Si m < 0, la droite est d\xE9croissante et descend de la gauche vers la droite.", true)
-    ],
-    bad: [
-      new Answer("Le graphique d'une fonction lin\xE9aire est une courbe non lin\xE9aire.", false),
-      new Answer("Dans une fonction lin\xE9aire, le coefficient m n'affecte pas l'inclinaison de la droite.", false),
-      new Answer("Une fonction lin\xE9aire ne peut pas \xEAtre constante.", false),
-      new Answer("Si m = 0, la droite est verticale.", false),
-      new Answer("Le terme b dans une fonction lin\xE9aire est appel\xE9 coefficient directeur.", false)
-    ]
-  };
-  var FONCTIONS_QUADRATIQUES = {
-    title: "Fonctions Quadratiques",
-    good: [
-      new Answer("Une fonction quadratique est de la forme f(x) = a x\xB2 + b x + c avec a \u2260 0.", true),
-      new Answer("Le graphique d'une fonction quadratique est une parabole.", true),
-      new Answer("Si a > 0, la parabole d'une fonction quadratique s'ouvre vers le haut.", true),
-      new Answer("Le sommet d'une parabole est le point o\xF9 la fonction atteint son maximum ou minimum.", true),
-      new Answer("Dans l'exemple f(x) = x\xB2 - 4x + 3, le sommet est au point (2, -1).", true)
-    ],
-    bad: [
-      new Answer("Une fonction quadratique est de la forme f(x) = a x + b.", false),
-      new Answer("Le graphique d'une fonction quadratique est toujours une droite.", false),
-      new Answer("Si a > 0, la parabole s'ouvre vers le bas.", false),
-      new Answer("Le sommet d'une parabole est toujours \xE0 l'origine (0, 0).", false),
-      new Answer("Dans l'exemple f(x) = x\xB2 - 4x + 3, le sommet est au point (0, 3).", false)
-    ]
-  };
-  var VECTORS = {
-    title: "Additions",
-    good: [
-      new Answer("un vecteur est not\xE9 AB -> ou u ->", true),
-      new Answer(
-        "La norme d'un vecteur, not\xE9e ||AB->|| est la longueur du vecteur AB -> autrement dit, la distance entre les points A et B.",
-        true
-      ),
-      new Answer(
-        "Le point d'origine du vecteur AB -> (ici le point A) est le point de d\xE9part qui en caract\xE9rise le sens",
-        true
-      ),
-      new Answer(
-        "Le point d'extr\xE9mit\xE9 de AB -> est le point d'arriv\xE9e  (ici le point B) qui en caract\xE9rise le sens",
-        true
-      ),
-      new Answer("Le vecteur oppos\xE9 du vecteur AB > est BA -> ou -AB -> ", true),
-      new Answer(
-        "lorsque deux points AB sont confondus, on dit que AB -> est un vecteur nul",
-        true
-      )
-    ],
-    bad: [
-      new Answer(
-        "Sens, et direction sont synonymes lorsqu'on parle de vecteurs",
-        false
-      ),
-      new Answer(
-        "Le point d'extremit\xE9 est toujours \xE9gal au point d'arriv\xE9e d'un vecteur",
-        false
-      ),
-      new Answer(
-        "Le point d'extremit\xE9 represente le point de d\xE9part du vecteur",
-        false
-      ),
-      new Answer(
-        "Un vecteur ne peut pas \xEAtre nul, sinon ce n'est pas un vecteur",
-        false
-      )
-    ]
-  };
-  var charlotte_memories = {
-    title: "Arithmetic",
-    good: [
-      new Answer("(27/07) j'ai \xE9t\xE9 au march\xE9", true),
-      new Answer("(27/07) ,  mon oncle m'a d\xE9pos\xE9 en voiture", true),
-      new Answer("(samedi 27/07) j'ai souhait\xE9 bon anniversaire \xE0 Michael", true),
-      new Answer("(samedi 27/07) Je suis sorti me faire coiffer", true),
-      new Answer("(samedi 27/07) Je suis sorti \xE0 une r\xE9union", true),
-      new Answer("(samedi 27/07) Je suis rentr\xE9e \xE0 3h du matin", true),
-      new Answer("(samedi 27/07) J'ai bu un peu de champagne", true),
-      new Answer("(samedi 27/07) j'ai mang\xE9 un peu d'ekoki/poisson", true),
-      new Answer(
-        "(samedi 27/07) J'\xE9tais habill\xE9e en pantalon bleu/blanc, sac bleu",
-        true
-      ),
-      new Answer("(27/07) Mon oncle m'a d\xE9pos\xE9e en voiture", true)
-    ],
-    bad: [
-      new Answer("(27/07) Je suis all\xE9 au restaurant chez Julie", false),
-      new Answer("(samedi 27/07) Maxime est venu \xE0 la maison", false),
-      new Answer("(samedi 27/07) Je suis all\xE9 voir ma soeur ", false),
-      new Answer("(samedi 27/07) J'ai regard\xE9 un reportage sur Poutine", false),
-      new Answer("(samedi 27/07) j'ai mang\xE9 des myrtilles", false),
-      new Answer("(samedi 27/07) J'ai bu du whisky avec du coca", false),
-      new Answer(
-        "(samedi 27/07) Des ouvriers sont venus changer les vitres",
-        false
-      )
-    ]
-  };
-  var Mike_memory = {
-    title: "Arithmetic",
-    good: [
-      new Answer(
-        "(26/07) Tu as regard\xE9 une interview de l'adjoint de Pierre Sage",
-        true
-      ),
-      new Answer("(26/07) Tu as pris un caf\xE9 dans une tasse blanche", true),
-      new Answer("(26/07) Tu as flipp\xE9 sur ta peau oendant des heures", true),
-      new Answer("(26/07) Tu as trouv\xE9 une bouteille de spray", true),
-      new Answer("(26/07) Tu as chang\xE9 tes draps", true),
-      new Answer("(26/07) Tu as nettoy\xE9 le sol de la cuisine", true),
-      new Answer(
-        "(26/07) Tu as regard\xE9 une interview de l'adjoint de Pierre Sage",
-        true
-      ),
-      new Answer("(26/07) Tu t'es fait retirer les fils la veille", true),
-      new Answer("(26/07) Tu as lu un mail d'AMELI", true)
-    ],
-    bad: [
-      new Answer(
-        "(26/07) Tu as regard\xE9 une interview de l'adjoint de Pierre Sage",
-        false
-      ),
-      new Answer("(26/07) Tu as pris un th\xE9", false),
-      new Answer("(26/07) Tu as mang\xE9 mcdo", false),
-      new Answer("(26/07) Tu as bu du whisky", false),
-      new Answer("(26/07) Tu as regard\xE9 l'interview de Moussa Niakhat\xE9", false),
-      new Answer("(26/07) Tu as appel\xE9 max", false),
-      new Answer("(26/07) Tu n'es pas all\xE9 sur twitter", false),
-      new Answer("(26/07) Tu t'es fait retirer les fils il y'a 2 jours", false)
-    ]
-  };
-  var ALGEBRA_INTRO = {
-    title: "Algebra Introduction",
-    good: [
-      new Answer("The equation 3x + 2 = 11 can be solved by first subtracting 2 from both sides to get 3x = 9, and then dividing by 3 to find that x = 3.", true),
-      new Answer("The factorization of the quadratic equation x^2 - 5x + 6 is (x - 2)(x - 3), because multiplying these factors back out gives the original expression.", true),
-      new Answer("To solve 2x + 5 = 17, first subtract 5 from both sides to get 2x = 12, and then divide both sides by 2 to get x = 6.", true),
-      new Answer("If x - 4 = 9, you can solve for x by adding 4 to both sides, which gives you the solution x = 13.", true),
-      new Answer("The equation 2x - 1 = 7 can be solved by adding 1 to both sides to get 2x = 8, then dividing by 2 to find that x = 4.", true),
-      new Answer("The degree of the polynomial 4x^3 + 2x is 3 because the highest exponent of the variable x is 3, making this a cubic polynomial.", true),
-      new Answer("The linear function f(x) = 2x + 3 has a slope of 2 and a y-intercept of 3, which means its graph is a straight line with a constant rate of change.", true),
-      new Answer("Using the distributive property, we know that (a + b)^2 expands to a^2 + 2ab + b^2, which can be verified by multiplying (a + b)(a + b).", true),
-      new Answer("When you add 5x and 3x, you combine the like terms to get 8x, because both terms have the same variable raised to the same power.", true),
-      new Answer("The expression (x + 4)(x - 4) is an example of the difference of squares, which simplifies to x^2 - 16 according to the formula a^2 - b^2 = (a + b)(a - b).", true),
-      new Answer("The quadratic expression x^2 - 9 is a difference of squares, which factors into (x + 3)(x - 3) because the square root of 9 is 3.", true),
-      new Answer("To solve the equation 2x + 4 = 10, first subtract 4 from both sides to get 2x = 6, then divide by 2 to find that x = 3.", true),
-      new Answer("A polynomial of degree 3, such as 4x^3 - 3x + 2, is called a cubic polynomial because the highest power of the variable x is 3.", true),
-      new Answer("In the linear equation y = mx + b, the value of m represents the slope of the line, which is the rate at which y changes with respect to x.", true),
-      new Answer("A quadratic function, such as f(x) = x^2, graphs as a parabola and is defined by having the highest power of x being 2.", true),
-      new Answer("The quadratic expression x^2 + 2x + 1 can be factored as (x + 1)^2 because it represents a perfect square trinomial.", true),
-      new Answer("The greatest common factor (GCF) of 12x and 8 is 4, because 4 is the largest number that divides evenly into both 12 and 8.", true),
-      new Answer("To solve the system of equations 2x + 3y = 12 and x - y = 2, you can use substitution or elimination to find that x = 4 and y = 2.", true),
-      new Answer("The function f(x) = 3x + 5 is linear, meaning that as x increases by 1, f(x) increases by 3. The graph of this function is a straight line with a slope of 3.", true),
-      new Answer("The solution to the equation 5x = 15 is x = 3, which is found by dividing both sides of the equation by 5 to isolate x.", true),
-      new Answer("When solving for x in the equation (x + 2)(x - 5) = 0, the solutions are x = -2 and x = 5, because these values make each factor equal to zero.", true)
-    ],
-    bad: [
-      new Answer("The equation 3x + 2 = 11 can be solved by dividing both sides by 3 first, then subtracting 2 to get x = 2.", false),
-      new Answer("The factorization of x^2 - 5x + 6 is (x + 2)(x + 3), because adding 2 and 3 gives 5.", false),
-      new Answer("If x - 4 = 9, the solution is x = 5 because 9 minus 4 equals 5.", false),
-      new Answer("In the polynomial 4x^3 + 2x, the degree is 2 because the highest variable term is 2x.", false),
-      new Answer("The linear function f(x) = 2x + 3 has a slope of 3 and y-intercept of 2, which means the slope is always the second number.", false),
-      new Answer("(a + b)^2 equals a^2 + b^2 because you simply square each term inside the parentheses individually.", false),
-      new Answer("When you add 5x and 3x, you get 5x + 3x, because they are different terms that cannot be combined.", false),
-      new Answer("The expression (x + 4)(x - 4) simplifies to x^2 + 16 because you add the terms together.", false),
-      new Answer("The solution to the equation 2x + 4 = 10 is x = 8, because dividing by 2 gives you 8.", false),
-      new Answer("In the equation y = mx + b, b represents the slope of the line because it comes after the x term.", false),
-      new Answer("A quadratic function like f(x) = x^2 has no slope, because it is a horizontal line.", false),
-      new Answer("The greatest common factor of 12x and 8 is 2, because 2 divides both 12 and 8 evenly.", false),
-      new Answer("The system of equations 2x + 3y = 12 and x - y = 2 can be solved by adding both equations to get x + y = 14.", false),
-      new Answer("The solution to 5x = 15 is x = 5, because dividing 15 by 5 gives you 5.", false),
-      new Answer("When solving (x + 2)(x - 5) = 0, there is only one solution, x = 0, because multiplying them gives zero.", false),
-      new Answer("In the equation x^2 - 9 = 0, there are no solutions because there is no number that makes x^2 equal to 9.", false),
-      new Answer("To solve the equation 3x + 5 = 20, you can subtract 5 from 20 to get x = 15.", false),
-      new Answer("The function f(x) = 2x + 3 is not linear because it involves adding 3 to the x term.", false),
-      new Answer("In a quadratic function like f(x) = x^2 + 3x, the graph is always a straight line because it contains only one variable.", false)
-    ]
-  };
-  var AUTHOR_INFO = {
-    title: "About the Author - David C. Lay",
-    good: [
-      new Answer("David C. Lay holds a B.A. from Aurora University and an M.A. and Ph.D. from UCLA.", true),
-      new Answer("David Lay has been an educator and research mathematician since 1966.", true),
-      new Answer("He has published more than 30 research articles on functional analysis and linear algebra.", true),
-      new Answer("David Lay is a founding member of the NSF-sponsored Linear Algebra Curriculum Study Group.", true),
-      new Answer("He received the title of Distinguished Scholar\u2013Teacher of the University of Maryland in 1996.", true),
-      new Answer("In 1994, he was awarded for Distinguished College or University Teaching of Mathematics by the Mathematical Association of America.", true),
-      new Answer("David Lay has served as a visiting professor at the University of Kaiserslautern, Germany.", true),
-      new Answer("He is a member of the American Mathematical Society and the International Linear Algebra Society.", true),
-      new Answer("David Lay has co-authored several mathematics texts, including 'Introduction to Functional Analysis.'", true),
-      new Answer("He has contributed to modernizing the linear algebra curriculum.", true),
-      new Answer("David Lay has been an educator mostly at the University of Maryland, College Park.", true),
-      new Answer("He has also worked at the Free University in Amsterdam.", true),
-      new Answer("David Lay has been involved in the Association of Christians in the Mathematical Sciences since 1992.", true),
-      new Answer("He has received four university awards for teaching excellence.", true),
-      new Answer("David Lay has served on the national board of the Association of Christians in the Mathematical Sciences.", true)
-    ],
-    bad: [
-      new Answer("David C. Lay holds a B.A. from Yale University and an M.A. from Harvard University.", false),
-      new Answer("He has published over 100 research articles on number theory.", false),
-      new Answer("David Lay has never been a professor at any university.", false),
-      new Answer("He was awarded the title of Distinguished Scholar\u2013Teacher of Harvard University in 1996.", false),
-      new Answer("David Lay has no involvement with any mathematics societies.", false),
-      new Answer("He has only taught mathematics since 1990.", false),
-      new Answer("David Lay is known for his work exclusively in geometry.", false),
-      new Answer("He received the Outstanding Alumnus award from Stanford University.", false),
-      new Answer("David Lay is a founding member of the National Mathematics Society.", false),
-      new Answer("He has never published any research articles on linear algebra.", false),
-      new Answer("David Lay has only worked in the field of applied mathematics.", false),
-      new Answer("He has not been recognized for his teaching excellence at any institution.", false),
-      new Answer("David Lay served as a visiting professor in the United Kingdom only.", false),
-      new Answer("He has authored a textbook solely on calculus.", false),
-      new Answer("David Lay's contributions are limited to the field of statistics.", false)
-    ]
-  };
-  var LINEAR_ALGEBRA_CHAPTER_1 = {
-    title: "Understanding Vectors",
-    good: [
-      new Answer("A vector is a mathematical entity with direction and magnitude (or length).", true),
-      new Answer("Vectors can represent elements like the speed of an object or the direction in which it moves.", true),
-      new Answer("In two-dimensional space, a vector can be written as (x, y), where x and y are its components.", true),
-      new Answer("The x component of a vector represents distance traveled horizontally, and the y component represents distance vertically.", true),
-      new Answer("Vectors can be visualized as arrows on a graph, where the arrow's length represents the vector\u2019s magnitude.", true),
-      new Answer("Adding vectors allows us to combine different directions and lengths.", true),
-      new Answer("For example, if a boat moves north and then east, the final direction can be found by adding the two vector movements.", true),
-      new Answer("Vectors are commonly used in algebra to represent both magnitude and direction in two-dimensional or three-dimensional space.", true)
-    ],
-    bad: [
-      new Answer("A vector is just a single number with no direction.", false),
-      new Answer("The components of a vector don't indicate direction or distance.", false),
-      new Answer("Adding vectors has no practical application.", false),
-      new Answer("A vector is always a single point without length or direction.", false),
-      new Answer("A vector in two-dimensional space is represented by only one component.", false),
-      new Answer("The x and y components of a vector have no specific meaning or relation to direction.", false),
-      new Answer("Vectors cannot be visualized on a graph.", false),
-      new Answer("The length of a vector tells you nothing about its direction.", false)
-    ]
-  };
-  var LINEAR_ALGEBRA_BASICS = {
-    title: "Understanding Lines and Intercepts",
-    good: [
-      new Answer("The y-intercept is where a line crosses the vertical axis (the y-axis).", true),
-      new Answer("The slope tells you how steep a line is, describing how much it rises or falls as you move along the x-axis.", true),
-      new Answer("A two-variable equation creates a straight line when graphed.", true),
-      new Answer("To find the y-intercept, set the x-variable to 0 and see where the line meets the y-axis.", true),
-      new Answer("In slope-intercept form, the y-intercept is the number at the end (without an x).", true),
-      new Answer("The slope is the number in front of x and shows how the line rises or falls as you move to the right.", true),
-      new Answer("A slope of 0 means the line is flat and doesn\u2019t rise or fall.", true),
-      new Answer("If the y-intercept is positive, the line crosses above the origin.", true),
-      new Answer("A negative slope means the line falls as you move to the right.", true),
-      new Answer("When x is zero, the value of y gives you the y-intercept.", true),
-      new Answer("Linear equations describe straight lines because the variables have no exponents.", true),
-      new Answer("The slope can be thought of as rise over run, describing how much y changes for each change in x.", true),
-      new Answer("A slope of 1 means the line rises one unit for each unit you move to the right.", true),
-      new Answer("The y-intercept is the point (0, b) in the equation y = mx + b.", true),
-      new Answer("The slope can be found by picking two points on the line and dividing the change in y by the change in x.", true)
-    ],
-    bad: [
-      new Answer("The y-intercept is where the line crosses the x-axis.", false),
-      new Answer("A two-variable equation always creates a curve, like a parabola.", false),
-      new Answer("The slope only tells you where the line starts, not how it moves.", false),
-      new Answer("The y-intercept can only be found by solving for x, not by looking at the equation.", false),
-      new Answer("The slope is always 1, and all lines are equally steep.", false),
-      new Answer("In slope-intercept form, the y-intercept is always the number attached to x.", false),
-      new Answer("A negative y-intercept means the line never crosses the y-axis.", false),
-      new Answer("The y-intercept changes based on where the line crosses the x-axis.", false),
-      new Answer("A slope of zero means the line falls straight down.", false),
-      new Answer("The y-intercept cannot be found from a graph.", false),
-      new Answer("The slope is measured by how high the line starts.", false),
-      new Answer("If the slope is negative, the line doesn\u2019t cross the y-axis.", false),
-      new Answer("The y-intercept is always a positive number.", false),
-      new Answer("All lines have the same y-intercept, regardless of the equation.", false),
-      new Answer("The slope only matters for vertical lines, not diagonal ones.", false),
-      new Answer("A two-variable equation can describe any shape, even circles and triangles.", false)
-    ]
-  };
-  var FUNCTION_BASICS = {
-    title: "Understanding Functions",
-    good: [
-      new Answer("A function connects each input to exactly one output.", true),
-      new Answer("In a function, each x value gives only one y value.", true),
-      new Answer("You can think of a function like a machine: put in a number, get a result.", true),
-      new Answer("When we write f(x), it means the output from the function f when you use x as input.", true),
-      new Answer("Changing the input (x) in a function changes the output (y).", true)
-    ],
-    bad: [
-      new Answer("A function can have multiple outputs for the same input.", false),
-      new Answer("A function\u2019s output doesn\u2019t depend on its input.", false),
-      new Answer("Writing f(x) just shows the input x, not the output.", false),
-      new Answer("A function always gives the same output, no matter the input.", false),
-      new Answer("A function allows each input to have more than one output.", false)
-    ]
-  };
-  var NOTATION_ET_REPRESENTATION_DES_FONCTIONS = {
-    title: "Notation et Repr\xE9sentation des Fonctions",
-    good: [
-      new Answer("La notation f(x) signifie la fonction f \xE9valu\xE9e en x.", true),
-      new Answer("Dans une fonction, x est la variable ind\xE9pendante (l'entr\xE9e) et y = f(x) est la variable d\xE9pendante (la sortie).", true),
-      new Answer("Les fonctions peuvent \xEAtre repr\xE9sent\xE9es graphiquement en tra\xE7ant des points (x, y) sur un plan cart\xE9sien.", true),
-      new Answer("Repr\xE9senter une fonction sur un graphique nous permet de visualiser comment la fonction se comporte.", true),
-      new Answer("Pour la fonction f(x) = x\xB2, on peut tracer les points (-2, 4), (0, 0) et (2, 4).", true)
-    ],
-    bad: [
-      new Answer("La notation f(x) signifie qu'on multiplie f par x.", false),
-      new Answer("Dans une fonction, y est la variable ind\xE9pendante et x est la variable d\xE9pendante.", false),
-      new Answer("Les fonctions ne peuvent pas \xEAtre repr\xE9sent\xE9es graphiquement.", false),
-      new Answer("Tracer des points (x, y) sur un plan cart\xE9sien ne nous aide pas \xE0 visualiser le comportement de la fonction.", false),
-      new Answer("Pour la fonction f(x) = x\xB2, les points (-2, 4), (0, 0) et (2, 4) ne sont pas sur son graphe.", false)
-    ]
-  };
   var MATHS_ARITHMETIC = {
     title: "Intermediate Arithmetic Challenge",
     good: [
@@ -3571,9 +3099,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createGolemCharacter,
-      createDwarfCharacter,
-      createOrcCharacter,
       createRedHammerCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
@@ -3586,8 +3111,26 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ennemiesOnScreen.push(enemy);
     return enemy;
   };
+  var initEnemyAnimations = (enemy) => {
+    const enemyAnimations = enemy.character.animations;
+    enemyAnimations.forEach(
+      (animation) => {
+        animation.animationsStatesBlocks.forEach(
+          (animationBlock) => {
+            ANIMATION_RUNNING_VALUES[animationBlock.animation.id] = 0;
+          }
+        );
+      }
+    );
+    const appElementId = getAppIdByAnimationId(enemy.character.animations[0].animationsStatesBlocks[0].animation.id);
+    if (!appElementId) {
+      return;
+    }
+    APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
+  };
   var buildAndLaunchEnemy = (answer) => {
     const enemy = buildEnemy(answer);
+    initEnemyAnimations(enemy);
     if (!enemy) {
       return;
     }
@@ -4050,8 +3593,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     if (!ANIMATION_RUNNING_VALUES[animationId] || ANIMATION_RUNNING_VALUES[animationId] > 1) {
-      if (animationId === 26 /* golem_opponent_attack */) {
-      }
       return;
     }
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -4403,8 +3944,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ennemiesOnScreen.forEach((enemyOnScreen, index) => {
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
-        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id);
-        interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 0 /* attack */).id);
+        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id] = 0;
       }
     });
   };
@@ -4421,6 +3961,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroHurt = true;
     lifePoints.value--;
     checkForHerosDeath();
+    hurtAudio.play();
+    hurtAudio.currentTime = 0;
     updateLifePointsDisplay();
     launchHeroHurtAnimation();
     displayMalus("Malus! You were hurt!");
@@ -4561,9 +4103,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
   var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_DWARF_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_GOLEM_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4813,192 +4352,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var orcAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 39 /* orc_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/orc/idle",
-              length: 42
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 41 /* orc_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/orc/attack",
-              length: 50
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 22 /* hammer_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 43 /* orc_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
-  var dwarfAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 44 /* dwarf_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/idle",
-              length: 57
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 46 /* dwarf_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/attack",
-              length: 38
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 47 /* dwarf_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 48 /* dwarf_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
-  var golemAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_GOLEM_ENEMY_STATES,
-          animation: {
-            id: 24 /* golem_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/golem/idle",
-              length: 12
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_GOLEM_ENEMY_STATES,
-          animation: {
-            id: 26 /* golem_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/golem/attack",
-              length: 16
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_GOLEM_ENEMY_STATES,
-          animation: {
-            id: 27 /* golem_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_GOLEM_ENEMY_STATES,
-          animation: {
-            id: 28 /* golem_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var resetViewPoint = () => {
     enemyViewPoint.style.left = "105vw";
@@ -5050,41 +4403,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.background = "grey";
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
-  };
-  var createGolemCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-4.5vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
-  };
-  var createOrcCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15.5vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "105vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
-  };
-  var createDwarfCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "110vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
