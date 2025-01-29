@@ -1,6 +1,6 @@
-import { addAnswer, ChallengeAnswerData, clearAnswers, incrementAnswerIndex, resetAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
+import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 import {decreaseEndIndex, decreaseStartIndex, increaseCurrentIndex, increaseEndIndex, increaseStartIndex} from "./redux/slices/mapSlice";
-import {store, RootState } from "./redux/index";
+import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 
 enum GAME_MODES {
@@ -144,9 +144,9 @@ const updateEnemyViewPointDisplay = () => {
         : "rgba(40, 108, 204, 0.514)")
   );
 
-  enemyViewPointLogo.src = `assets/challenge/millescaneous/${
-    heroInTheRedZone ? "careful" : "vision"
-  }.png`;
+  enemyViewPointLogo.src = `${
+    heroInTheRedZone ? "assets/challenge/millescaneous/careful.png" : "assets/challenge/items/swords.gif"
+  }`;
 };
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
@@ -3126,7 +3126,7 @@ document.addEventListener("keydown", (event) => {
 
       return;
     }
-    launchAttack(true);
+    launchAttack();
   }
 
 

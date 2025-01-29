@@ -2933,7 +2933,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     viewPointTiles.forEach(
       (tile) => tile.style.background = heroInTheRedZone ? "rgba(204, 40, 40, 0.514)" : "rgba(40, 108, 204, 0.514)"
     );
-    enemyViewPointLogo.src = `assets/challenge/millescaneous/${heroInTheRedZone ? "careful" : "vision"}.png`;
+    enemyViewPointLogo.src = `${heroInTheRedZone ? "assets/challenge/millescaneous/careful.png" : "assets/challenge/items/swords.gif"}`;
   };
   var runAudio = document.getElementById("run_audio");
   var swordAudio = document.getElementById("sword_audio");
@@ -4504,7 +4504,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         );
         return;
       }
-      launchAttack(true);
+      launchAttack();
     }
     if (event.key === "y") {
       launchDeathAnimation();
