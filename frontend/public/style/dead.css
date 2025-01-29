@@ -176,6 +176,21 @@ li {
   align-items: center;
 }
 
+#actionsButtonsContainer {
+  position: fixed;
+  top: 80vh;
+  width: 40vw;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}
+
+#actionsButtonsContainer button {
+  height: 80%;
+  width: 40%;
+  background: grey;
+  border-radius: 12px;
+}
 
 #challenge_info_container {
   width: 40%;

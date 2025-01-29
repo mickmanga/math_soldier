@@ -82,7 +82,7 @@ const fetchChallengeById = async (challengeId: string): Promise<void> => {
       sortAndStoreAnswers(challengeData.answers);
 
   } catch (error) {
-      console.error('Error:', error);
+    console.error('Error:', error);
   }
 };
 
