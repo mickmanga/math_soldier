@@ -186,10 +186,7 @@ li {
 }
 
 #actionsButtonsContainer button {
-  height: 80%;
-  width: 40%;
   background: grey;
-  border-radius: 12px;
 }
 
 #challenge_info_container {

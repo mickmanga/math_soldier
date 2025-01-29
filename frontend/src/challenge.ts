@@ -8,7 +8,7 @@ enum GAME_MODES {
   challenge
 }
 
-let gameMode: GAME_MODES = GAME_MODES.discovery;
+let gameMode: GAME_MODES = GAME_MODES.challenge;
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;

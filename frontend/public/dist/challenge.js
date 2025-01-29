@@ -2841,7 +2841,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
 
   // src/challenge.ts
-  var gameMode = 0 /* discovery */;
+  var gameMode = 1 /* challenge */;
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
