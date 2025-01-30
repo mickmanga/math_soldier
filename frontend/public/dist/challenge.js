@@ -2841,7 +2841,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
 
   // src/challenge.ts
-  var gameMode = 1 /* challenge */;
+  var gameMode = 0 /* discovery */;
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
@@ -3099,10 +3099,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createRedHammerCharacter,
-      createGolemCharacter,
-      createDwarfCharacter,
-      createWitchCharacter
+      createGolemCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3760,7 +3757,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       0 /* HERO */,
       setTimeout(() => {
         launchHeroRunAnimation();
-      }, 660)
+      }, special ? 660 : 350)
     );
   };
   window.launchAttack = (event) => {
@@ -3908,6 +3905,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       bombAudio.play();
       bombAudio.currentTime = 0;
       const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, 9 /* death */);
+      enemy.character.element.parentElement.style.bottom = "20vh";
+      enemy.character.element.style.height = "30vh";
       launchAnimationAndDeclareItLaunched(
         enemy.character.element,
         0,
@@ -4112,10 +4111,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
-  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_DWARF_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var ALL_GOLEM_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_WITCH_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4303,192 +4299,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var redHammerAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
-          animation: {
-            id: 19 /* hammer_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/hard/idle",
-              length: 16
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
-          animation: {
-            id: 21 /* hammer_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/hard/attack",
-              length: 30
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
-          animation: {
-            id: 22 /* hammer_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_RED_HAMMER_ENEMY_STATES,
-          animation: {
-            id: 23 /* hammer_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
-  var dwarfAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 44 /* dwarf_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/idle",
-              length: 57
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 46 /* dwarf_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/attack",
-              length: 38
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 47 /* dwarf_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 48 /* dwarf_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
-  var witchAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_WITCH_ENEMY_STATES,
-          animation: {
-            id: 34 /* witch_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/witch/idle",
-              length: 7
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_WITCH_ENEMY_STATES,
-          animation: {
-            id: 36 /* witch_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/witch/attack",
-              length: 18
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_WITCH_ENEMY_STATES,
-          animation: {
-            id: 37 /* witch_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 10
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_WITCH_ENEMY_STATES,
-          animation: {
-            id: 36 /* witch_opponent_attack */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
   var golemAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4557,16 +4367,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createRedHammerCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
-  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -4613,29 +4413,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
-  };
-  var createWitchCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/wolf/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-4vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);
-  };
-  var createDwarfCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "110vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
@@ -4696,6 +4473,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "l") {
       gameMode = 1 /* challenge */;
+      lightningImg.style.opacity = "1";
     }
     if (event.key === "d") {
       heroMoving = true;
@@ -4729,15 +4507,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (event.key === "m") {
       if (rewardStreak === 5 || rewardStreak === 10) {
         launchAttack(true);
-        const lightningImg2 = document.getElementById("lightning_img");
-        lightningImg2.style.display = "none";
-        setTimeout(
-          () => lightningImg2.style.display = "block",
-          2e3
-        );
         return;
       }
-      launchAttack(true);
+      launchAttack();
     }
     if (event.key === "y") {
       launchDeathAnimation();
@@ -5071,9 +4843,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       lightningImg,
       0,
       "png",
-      `assets/challenge/items/sparks`,
+      `assets/challenge/items/lightning`,
       1,
-      6,
+      17,
       1,
       true,
       59 /* lightning */,
@@ -5200,6 +4972,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setTimeout(() => {
       superSpeedOn = false;
       lightningImg.style.opacity = "1";
+      lightningImg.style.left = "10%";
       launchAnimationAndDeclareItLaunched(
         lightningImg,
         0,
@@ -5219,6 +4992,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           setTimeout(
             () => {
               lightningImg.style.opacity = "1";
+              lightningImg.style.left = "10%";
               launchAnimationAndDeclareItLaunched(
                 lightningImg,
                 0,

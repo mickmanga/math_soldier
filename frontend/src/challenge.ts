@@ -8,7 +8,7 @@ enum GAME_MODES {
   challenge
 }
 
-let gameMode: GAME_MODES = GAME_MODES.challenge;
+let gameMode: GAME_MODES = GAME_MODES.discovery;
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -510,7 +510,6 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
  const enemyCreationCallbacks = [
   createRedHammerCharacter,
   createGolemCharacter,
-  createDwarfCharacter,
   createWitchCharacter
  ];
  
@@ -1400,7 +1399,7 @@ const launchAttack = (special = false) => {
     TimeoutId.HERO,
     setTimeout(() => {
       launchHeroRunAnimation();
-    }, 660)
+    }, special ? 660 : 350)
   );
 };
 
@@ -3085,6 +3084,7 @@ document.addEventListener("keydown", (event) => {
 
   if(event.key === "l"){
     gameMode = GAME_MODES.challenge;
+    lightningImg.style.opacity = "1";
   }
 
   if (event.key === "d") {
@@ -3125,18 +3125,9 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "m") {
     if(rewardStreak === 5 ||  rewardStreak === 10){
       launchAttack(true);
-
-      const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
-
-      lightningImg.style.display = "none";
-
-      setTimeout(
-        () => lightningImg.style.display = "block", 2000
-      )
-
       return;
     }
-    launchAttack(true);
+    launchAttack();
   }
 
 
@@ -3634,9 +3625,9 @@ const animateLightning = () => {
     lightningImg,
     0,
     "png",
-    `assets/challenge/items/sparks`,
+    `assets/challenge/items/lightning`,
     1,
-    6,
+    17,
     1,
     true,
     ANIMATION_ID.lightning,
@@ -3808,7 +3799,8 @@ const launchHeroLightningSpeedAnimation = () => {
   
   setTimeout(() =>{
     superSpeedOn = false;
-      lightningImg.style.opacity = "1";
+    lightningImg.style.opacity = "1";
+    lightningImg.style.left = "10%";
 
     launchAnimationAndDeclareItLaunched(
       lightningImg,
@@ -3831,6 +3823,7 @@ const launchHeroLightningSpeedAnimation = () => {
         setTimeout(
           () => {
             lightningImg.style.opacity = "1";
+            lightningImg.style.left = "10%";
 
             launchAnimationAndDeclareItLaunched(
               lightningImg,

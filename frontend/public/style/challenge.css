@@ -74,7 +74,7 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 62vh;
+  top: 60vh;
   left: 20vw;
   height: 25vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
@@ -82,11 +82,6 @@ audio {
   display: flex;
   justify-content: flex-start;
   opacity: 0.85;
-}
-
-.explosion_container {
-
-  
 }
 
 .enemy_container {
@@ -610,10 +605,11 @@ audio {
 
 #lightning_img {
   position: absolute;
-  left: 10%;
+  left: 0;
   top: 10%;
   display: none;
   height: 100% !important;
+  opacity: 0;
 }
 
 html, body {
