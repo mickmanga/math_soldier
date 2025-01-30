@@ -3730,6 +3730,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     } else {
       launchAnimation(heroCharacter, 1 /* specialAttack */, false);
       specialMoveIndicator.style.display = "none";
+      lightningImg.style.opacity = "0.6";
+      setTimeout(
+        () => {
+          lightningImg.style.opacity = "1";
+        },
+        660
+      );
     }
     const enemyCanBeHit = (enemy) => {
       const enemyContainer = enemy.character.element.parentElement;
@@ -3753,7 +3760,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       0 /* HERO */,
       setTimeout(() => {
         launchHeroRunAnimation();
-      }, 350)
+      }, 660)
     );
   };
   window.launchAttack = (event) => {

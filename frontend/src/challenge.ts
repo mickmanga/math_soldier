@@ -1355,6 +1355,14 @@ const launchAttack = (special = false) => {
   } else {
      launchAnimation(heroCharacter, AnimationType.specialAttack, false);
      specialMoveIndicator.style.display = "none";
+
+     lightningImg.style.opacity = "0.6";
+
+     setTimeout(
+      () => {
+        lightningImg.style.opacity = "1";
+      }, 660
+     )
   }
  
   const enemyCanBeHit = (enemy: EnemyInterface) => {
@@ -1392,7 +1400,7 @@ const launchAttack = (special = false) => {
     TimeoutId.HERO,
     setTimeout(() => {
       launchHeroRunAnimation();
-    }, 350)
+    }, 660)
   );
 };
 
