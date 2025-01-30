@@ -508,10 +508,13 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter
+  createRedHammerCharacter,
+  createGolemCharacter,
+  createDwarfCharacter,
+  createWitchCharacter
  ];
  
- const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1))
+ const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
 
  const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
 
@@ -1205,13 +1208,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 40 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2223,8 +2226,8 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_special_attack ,
             sprite:    {
-              path: "assets/challenge/characters/hero/flames/new",
-              length: 22
+              path: "assets/challenge/characters/hero/flames",
+              length: 14
           }
           }
          }
@@ -2891,10 +2894,8 @@ const createKingCharacter = (): DefaultCharacter => {
 
   resetViewPoint();
 
- return new DefaultCharacter(newEnnemyImg, KingEnemyCharacterStates.idle, kingAnimations);
- 
+ return new DefaultCharacter(newEnnemyImg, KingEnemyCharacterStates.idle, kingAnimations); 
 }
-
 
 const createWitchCharacter = (): DefaultCharacter => {
 
@@ -2903,6 +2904,7 @@ const createWitchCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/wolf/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-4vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -3110,7 +3112,7 @@ document.addEventListener("keydown", (event) => {
       launchHeroLightningSpeedAnimation();
       return;
     }
-    launchInvisibilityToggle();
+    launchHeroLightningSpeedAnimation();
   }
   if (event.key === "m") {
     if(rewardStreak === 5 ||  rewardStreak === 10){
@@ -3126,7 +3128,7 @@ document.addEventListener("keydown", (event) => {
 
       return;
     }
-    launchAttack();
+    launchAttack(true);
   }
 
 
@@ -3302,7 +3304,11 @@ const checkForOpponentsClearance = () => {
   requestAnimationFrame(checkForOpponentsClearance);
 };
 
-const launchInvisibilityToggle = () => {
+const launchInvisibilityToggleFromDom = () => {
+  launchInvisibilityToggle();
+}
+
+const launchInvisibilityToggle = (superSpeed = false) => {
   invisible = !invisible;
 
   heroContainer.style.opacity = invisible ? "0.3" : "1";
@@ -3318,11 +3324,10 @@ const launchInvisibilityToggle = () => {
   if (!invisible) {
     return;
   }
-
-  setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS);
+  setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS/(superSpeed ?  CAMERA_SUPER_SPEED_MULTIPLICATOR : 1));
 };
 
-window.launchInvisibilityToggle = launchInvisibilityToggle;
+window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;
 
 const launchTransformation = () => {
   if (runStopped || hardMode) {
@@ -3479,7 +3484,7 @@ const updateIdleTimerInterface = () => {
 }
 
 const interuptIdleTimer = () => {
-  idleTimerValue = 1000;
+  idleTimerValue = 5;
   updateIdleTimerInterface();
   idleTimeoutContainer.style.display = "none";
 }
@@ -3609,9 +3614,11 @@ const initHeroAnimations = () => {
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
 };
 
+const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
+
+
 const animateLightning = () => {
 
-  const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
 
   lightningImg.style.display = "block";
 
@@ -3619,9 +3626,9 @@ const animateLightning = () => {
     lightningImg,
     0,
     "png",
-    `assets/challenge/items/lightning`,
+    `assets/challenge/items/sparks`,
     1,
-    17,
+    6,
     1,
     true,
     ANIMATION_ID.lightning,
@@ -3787,9 +3794,25 @@ const launchHeroLightningSpeedAnimation = () => {
   heroImage.style.display = 'none';
   specialMoveIndicator.style.display = "none";
 
-  launchInvisibilityToggle();
+  launchInvisibilityToggle(true);
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.lightning] = 0;
+  lightningImg.style.opacity = "0";
+  
   setTimeout(() =>{
     superSpeedOn = false;
+      lightningImg.style.opacity = "1";
+
+    launchAnimationAndDeclareItLaunched(
+      lightningImg,
+      0,
+      "png",
+      `assets/challenge/items/purple_lightning`,
+      1,
+      8,
+      1,
+      true,
+      ANIMATION_ID.lightning
+    );
     heroImage.style.display = 'flex';
   }, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
 

@@ -74,13 +74,14 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 60vh;
+  top: 62vh;
   left: 20vw;
   height: 25vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
-  z-index: 100;
+  z-index: 1011;
   display: flex;
   justify-content: flex-start;
+  opacity: 0.85;
 }
 
 .explosion_container {
@@ -271,11 +272,11 @@ audio {
   position: absolute;
   left: 15vw;
   top: 86vh;
-  z-index: 1000;
+  z-index: 1020;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  opacity: 0.8;
+  opacity: 1;
   padding-right: 20px;
   padding-left: 10px;
 }
@@ -309,7 +310,7 @@ audio {
   top: 0;
   height: 100vh;
   width: 100vw;
-  z-index: 4;
+  z-index: 1010;
   display: none;
 }
 
@@ -609,9 +610,10 @@ audio {
 
 #lightning_img {
   position: absolute;
-  left: 0;
-  top:0;
+  left: 10%;
+  top: 10%;
   display: none;
+  height: 100% !important;
 }
 
 html, body {
