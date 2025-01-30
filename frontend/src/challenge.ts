@@ -3822,6 +3822,35 @@ const launchHeroLightningSpeedAnimation = () => {
       ANIMATION_ID.lightning
     );
     heroImage.style.display = 'flex';
+
+    setTimeout(
+      () => {
+        ANIMATION_RUNNING_VALUES[ANIMATION_ID.lightning] = 0;
+        lightningImg.style.opacity = "0";
+
+        setTimeout(
+          () => {
+            lightningImg.style.opacity = "1";
+
+            launchAnimationAndDeclareItLaunched(
+              lightningImg,
+              0,
+              "png",
+              `assets/challenge/items/sparks`,
+              1,
+              6,
+              1,
+              true,
+              ANIMATION_ID.lightning
+            );
+
+          }, 800
+        )
+
+      }, 800
+    )
+
+
   }, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
 
 }

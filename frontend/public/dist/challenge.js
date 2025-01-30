@@ -5212,6 +5212,30 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         59 /* lightning */
       );
       heroImage.style.display = "flex";
+      setTimeout(
+        () => {
+          ANIMATION_RUNNING_VALUES[59 /* lightning */] = 0;
+          lightningImg.style.opacity = "0";
+          setTimeout(
+            () => {
+              lightningImg.style.opacity = "1";
+              launchAnimationAndDeclareItLaunched(
+                lightningImg,
+                0,
+                "png",
+                `assets/challenge/items/sparks`,
+                1,
+                6,
+                1,
+                true,
+                59 /* lightning */
+              );
+            },
+            800
+          );
+        },
+        800
+      );
     }, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
   };
 })();
