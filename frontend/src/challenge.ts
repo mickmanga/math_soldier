@@ -508,9 +508,7 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter,
   createGolemCharacter,
-  createWitchCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
@@ -1639,6 +1637,9 @@ const killEnemy = (enemy: EnemyInterface) => {
     bombAudio.currentTime = 0;
 
     const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.death)!;
+
+    enemy.character.element.parentElement!.style.bottom = "20vh";
+    enemy.character.element.style.height = "30vh";
 
     launchAnimationAndDeclareItLaunched(
       enemy.character.element,
