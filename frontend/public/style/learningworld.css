@@ -2,17 +2,27 @@ html {
     background-color: #212121;
 }
 
+
+@font-face {
+  font-family: 'CustomFont'; /* Nom de la police */
+  src: url('../fonts/Y224.ttf') format('opentype'); /* Chemin du fichier .otf */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 body {
     background-color: #212121;
     color: #ffffff;
     line-height: 1.6;
     padding: 20px;
     overflow: overlay;
-    font-family: "MedievalSharp", cursive;
+    font-family: "CustomFont", cursive;
     font-weight: 400;
     font-style: normal;
 
   }
+
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -28,23 +38,24 @@ body {
   }
   
   h1, h2, h3 {
-    color: #5d00ff;
+    color: #2aced7;
   }
   h1 {
-    font-size: 24px;
+    font-size: 19px;
     margin-bottom: 10px;
   }
   h2 {
-    font-size: 20px;
+    font-size: 15px;
     margin-bottom: 10px;
   }
   h3 {
-    font-size: 18px;
+    font-size: 12px;
     margin-bottom: 10px;
   }
   p {
     margin-bottom: 15px;
     padding: 30px;
+    font-size: 6px;
   }
   ul {
     margin-left: 20px;
@@ -92,6 +103,9 @@ body {
     border-radius: 15px;
     opacity: 0;
     transition: opacity 1s ease-in-out; /* Transition sur l'opacité, durée de 1 seconde */
+    border: 1px solid #fff;
+    padding: 9px 7px;
+    box-shadow: 0 0 10px #aaaaaae8;
 }
 
 #interface_container_a {

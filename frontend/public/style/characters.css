@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 1200px) {
+   #charactersBackground{
+      height: 100vh;
+      width: 100vw;
+      background: red;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+    }
+    #charactersBackground_a{  
+        height: 40%;
+        width: 100%;
+        background: grey;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #charactersBackground_aa {
+        width: 70%;
+        height: 80%;
+        border-radius: 15px;
+        background: brown;
+    }
+    #charactersBackground_b{
+        height: 10%;
+        width: 100%;
+        background: black;        
+    }
+    #charactersBackground_c{
+        height: 60%;
+        width: 100%;
+        background: blue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #charactersBackground_ca{
+        height: 70%;
+        width: 100%;
+        background: purple;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #charactersBackground_caa{
+        height: 70%;
+        width: 40%;
+        background: blue;
+    }
+    #charactersBackground_cb{
+        position: relative;
+        height: 30%;
+        width: 100%;
+        background: green;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+    }
+    
+    #charactersBackground_cba {
+        height: 70%;
+        width: 70%;
+        background: grey;
+        border-radius: 10px;
+    }
+
+    #charactersBackground_cbb {
+        height: 70%;
+        width: 10%;
+        background: orange;
+        border-radius: 10px;
+    }
+}
