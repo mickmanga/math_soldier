@@ -119,7 +119,7 @@ audio {
     bottom: 21vh;
 
 */
-  left: 110vw;
+  left: 125vw;
   height: 60.5vh;
   bottom: 2vh;
   z-index: 100;
@@ -245,7 +245,7 @@ audio {
   width: 7vw;
   z-index: 3;
   font-size: medium;
-  display: flex;
+  display: none;
   justify-content: space-around;
   align-items: center;
 }
@@ -269,7 +269,7 @@ audio {
   left: 15vw;
   top: 86vh;
   z-index: 1020;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   opacity: 1;
@@ -658,6 +658,33 @@ audio {
   height: 100%;
   overflow: hidden;
 }
+
+#map_container {
+   position: absolute;
+   top: 90%;
+   left: 5%;
+   z-index: 1010;
+   background: rgba(255, 0, 0, 0.24);
+   width: 5%;
+   height: 5%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-radius: 20px;
+  }
+
+  #end_of_challenge_container {
+    position: absolute;
+    top: 10%;
+    left: 35%;
+    z-index: 1010;
+    width: 30%;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+  }
 
 .layer {
   position: absolute;

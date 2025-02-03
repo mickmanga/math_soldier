@@ -29,7 +29,8 @@ const swordSlashImg = document.getElementById(
   "sword_slash"
 )! as HTMLImageElement;
 
-const scoreContainer = document.getElementById("score_value")!;
+const scoreContainer = document.getElementById("score")!;
+const scoreValue = document.getElementById("score_value")!;
 
 const answerDataContainer = document.getElementById("answer_data_container")!;
 const answerDataValue = document.getElementById("answer_data_value")!;
@@ -509,6 +510,9 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
   createGolemCharacter,
+  createRedHammerCharacter,
+  createWitchCharacter,
+  createOrcCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
@@ -579,9 +583,15 @@ const triggerOpponentsApparition = () => {
   );
 };
 
+const endOfChallengeContainer = document.getElementById("end_of_challenge_container")!;
+
 const launchEndOfChallenge = () => {
 
-  window.location.href = "http://localhost:3001/dead_hard";
+  //window.location.href = "http://localhost:3001/dead_hard";
+
+  endOfChallengeContainer.innerHTML = "Record battu...";
+
+  stopRun(true);
 
   return; 
 
@@ -1211,7 +1221,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 40 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.golem_opponent_death ? 30 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 40 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 17 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 17 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1547,7 +1557,7 @@ const rewardHero = () => {
 };
 
 const updateScoreDisplay = () => {
-  scoreContainer.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
+  scoreValue.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
 };
 
 const killWrongEnemy = (enemy: EnemyInterface) => {
@@ -1638,8 +1648,8 @@ const killEnemy = (enemy: EnemyInterface) => {
 
     const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.death)!;
 
-    enemy.character.element.parentElement!.style.bottom = "20vh";
-    enemy.character.element.style.height = "30vh";
+   // enemy.character.element.parentElement!.style.bottom = "20vh";
+   // enemy.character.element.style.height = "30vh";
 
     launchAnimationAndDeclareItLaunched(
       enemy.character.element,
@@ -1697,7 +1707,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
   }
 
   if(delay){
-    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 600 : 600);
+    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 1680 : 1680);
   } else {
     enemyDestructionAndRevivalCallback();
   }
@@ -1705,7 +1715,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
   ennemiesOnScreen.forEach((enemyOnScreen, index) => {
     if (enemy === enemyOnScreen) {
       ennemiesOnScreen.splice(index, 1);
-      ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id] = 0;
+     // ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id] = 0;
     }
   });
 };
@@ -1727,7 +1737,7 @@ const hurtHero = () => {
   lifePoints.value--;
   checkForHerosDeath();
 
-   hurtAudio.play();
+  // hurtAudio.play();
    hurtAudio.currentTime = 0;
 
   updateLifePointsDisplay();
@@ -2685,8 +2695,8 @@ const golemAnimations = [
           {
             id: ANIMATION_ID.golem_opponent_death,
             sprite: {
-              path: "assets/challenge/explosion",
-              length: 11
+              path: "assets/challenge/characters/enemies/golem/death",
+              length: 28
           }
           }
          }
@@ -3069,6 +3079,13 @@ document.addEventListener("keyup", (event) => {
 
 });
 
+
+const launchChallenge = () => {
+  gameMode = GAME_MODES.challenge;
+  lightningImg.style.opacity = "1";
+  answerDataContainer.style.display = "flex";
+  scoreContainer.style.display = "flex";
+}
  
 document.addEventListener("keydown", (event) => {
 
@@ -3084,8 +3101,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if(event.key === "l"){
-    gameMode = GAME_MODES.challenge;
-    lightningImg.style.opacity = "1";
+    launchChallenge()
   }
 
   if (event.key === "d") {
@@ -3162,18 +3178,12 @@ const stopSuperSpeed = () => {
 }
 
 
-const stopRun = () => {
+const stopRun = (definitiveStop = false) => {
   if (heroInTheRedZone) {
     return;
   }
   
   const currentTime = Date.now();
-
-  ennemiesOnScreen.forEach(
-    enemy => {
-      //enemy.character.element.style.opacity = '1'
-    }
-  )
 
   if(lastStopInMs && (currentTime - lastStopInMs ) < 1000){
     return;
@@ -3181,7 +3191,10 @@ const stopRun = () => {
 
   runStopped = true;
 
-  launchIdleTimeout();
+  if(!definitiveStop){
+    launchIdleTimeout();
+  }
+
 
   runAudio.volume = 0;
 
@@ -3235,39 +3248,6 @@ const interruptAnimation = (animation: ANIMATION_ID) => {
 
   APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
 };
-
-/*
-const stopTime = () => {
-  runAudio.volume = 0;
-
-  runStopped = true;
-
-  clearGameTimeouts();
-
-  if (enemiesComingTimeout) {
-    clearTimeout(enemiesComingTimeout);
-  }
-
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_run] = 0;
-  APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.ghost_opponent_move] = 0;
-  ANIMATION_RUNNING_VALUES[ANIMATION_ID.camera_left_to_right] = 0;
-
-  launchAnimationAndDeclareItLaunched(
-    heroImage,
-    0,
-    "png",
-    "assets/challenge/characters/hero/stop_time",
-    1,
-    4,
-    1,
-    false,
-    ANIMATION_ID.stop_time
-  );
-};
-
-*/
 
 const stopAndResetIdleTimer = () => {
   idleTimeoutContainer.style.display = "none";

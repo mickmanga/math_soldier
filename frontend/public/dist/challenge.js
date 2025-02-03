@@ -2855,7 +2855,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var swordSlashImg = document.getElementById(
     "sword_slash"
   );
-  var scoreContainer = document.getElementById("score_value");
+  var scoreContainer = document.getElementById("score");
+  var scoreValue = document.getElementById("score_value");
   var answerDataContainer = document.getElementById("answer_data_container");
   var answerDataValue = document.getElementById("answer_data_value");
   var scoreMalusContainer = document.getElementById("score_malus_container");
@@ -3099,7 +3100,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createGolemCharacter
+      createGolemCharacter,
+      createRedHammerCharacter,
+      createWitchCharacter,
+      createOrcCharacter
     ];
     const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
     const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
@@ -3151,8 +3155,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       Math.random() > 0.5 ? 10 : 50
     );
   };
+  var endOfChallengeContainer = document.getElementById("end_of_challenge_container");
   var launchEndOfChallenge = () => {
-    window.location.href = "http://localhost:3001/dead_hard";
+    endOfChallengeContainer.innerHTML = "Record battu...";
+    stopRun(true);
     return;
     gameFinished = true;
     document.getElementById("endOfGameInterface").style.display = "flex";
@@ -3611,7 +3617,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 27 /* golem_opponent_death */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 59 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 40 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 27 /* golem_opponent_death */ ? 30 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 59 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 40 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 17 : animationId === 27 /* golem_opponent_death */ ? 80 : animationId === 37 /* witch_opponent_death */ ? 17 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 115 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -3838,7 +3844,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   var updateScoreDisplay = () => {
-    scoreContainer.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
+    scoreValue.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
   };
   var killWrongEnemy = (enemy) => {
     scoreMalusContainer.style.display = "flex";
@@ -3905,8 +3911,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       bombAudio.play();
       bombAudio.currentTime = 0;
       const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, 9 /* death */);
-      enemy.character.element.parentElement.style.bottom = "20vh";
-      enemy.character.element.style.height = "30vh";
       launchAnimationAndDeclareItLaunched(
         enemy.character.element,
         0,
@@ -3946,14 +3950,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     };
     if (delay) {
-      setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4 ? 600 : 600);
+      setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4 ? 1680 : 1680);
     } else {
       enemyDestructionAndRevivalCallback();
     }
     ennemiesOnScreen.forEach((enemyOnScreen, index) => {
       if (enemy === enemyOnScreen) {
         ennemiesOnScreen.splice(index, 1);
-        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id] = 0;
       }
     });
   };
@@ -3970,7 +3973,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroHurt = true;
     lifePoints.value--;
     checkForHerosDeath();
-    hurtAudio.play();
     hurtAudio.currentTime = 0;
     updateLifePointsDisplay();
     launchHeroHurtAnimation();
@@ -4111,7 +4113,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
+  var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var ALL_GOLEM_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
+  var ALL_WITCH_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4299,6 +4304,192 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
+  var redHammerAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 19 /* hammer_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/hard/idle",
+              length: 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 21 /* hammer_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/hard/attack",
+              length: 30
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 22 /* hammer_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 11
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_RED_HAMMER_ENEMY_STATES,
+          animation: {
+            id: 23 /* hammer_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var orcAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 39 /* orc_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/orc/idle",
+              length: 42
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 41 /* orc_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/orc/attack",
+              length: 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 22 /* hammer_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 11
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_ORC_ENEMY_STATES,
+          animation: {
+            id: 43 /* orc_opponent_move */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
+  var witchAnimations = [
+    {
+      animationType: 10 /* idle */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_WITCH_ENEMY_STATES,
+          animation: {
+            id: 34 /* witch_opponent_idle */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/witch/idle",
+              length: 7
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 0 /* attack */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_WITCH_ENEMY_STATES,
+          animation: {
+            id: 36 /* witch_opponent_attack */,
+            sprite: {
+              path: "assets/challenge/characters/enemies/witch/attack",
+              length: 18
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 9 /* death */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_WITCH_ENEMY_STATES,
+          animation: {
+            id: 37 /* witch_opponent_death */,
+            sprite: {
+              path: "assets/challenge/explosion",
+              length: 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      animationType: 12 /* movement */,
+      animationsStatesBlocks: [
+        {
+          states: ALL_WITCH_ENEMY_STATES,
+          animation: {
+            id: 36 /* witch_opponent_attack */,
+            sprite: {
+              path: "",
+              length: 0
+            }
+          }
+        }
+      ]
+    }
+  ];
   var golemAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4338,8 +4529,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 27 /* golem_opponent_death */,
             sprite: {
-              path: "assets/challenge/explosion",
-              length: 11
+              path: "assets/challenge/characters/enemies/golem/death",
+              length: 28
             }
           }
         }
@@ -4366,6 +4557,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.left = "105vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
+  };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -4414,6 +4615,29 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
+  var createWitchCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/wolf/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-4vh";
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);
+  };
+  var createOrcCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-15.5vh";
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    enemyViewPoint.style.left = "105vw";
+    enemyViewPoint.style.display = "flex";
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
+  };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
       startCamera(direction);
@@ -4461,6 +4685,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       stopCameraMovingToLeft();
     }
   });
+  var launchChallenge = () => {
+    gameMode = 1 /* challenge */;
+    lightningImg.style.opacity = "1";
+    answerDataContainer.style.display = "flex";
+    scoreContainer.style.display = "flex";
+  };
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
       heroRunning = true;
@@ -4472,8 +4702,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       checkForScreenUpdateFromLeftToRight(0);
     }
     if (event.key === "l") {
-      gameMode = 1 /* challenge */;
-      lightningImg.style.opacity = "1";
+      launchChallenge();
     }
     if (event.key === "d") {
       heroMoving = true;
@@ -4533,20 +4762,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var stopSuperSpeed = () => {
     superSpeedOn = false;
   };
-  var stopRun = () => {
+  var stopRun = (definitiveStop = false) => {
     if (heroInTheRedZone) {
       return;
     }
     const currentTime = Date.now();
-    ennemiesOnScreen.forEach(
-      (enemy) => {
-      }
-    );
     if (lastStopInMs && currentTime - lastStopInMs < 1e3) {
       return;
     }
     runStopped = true;
-    launchIdleTimeout();
+    if (!definitiveStop) {
+      launchIdleTimeout();
+    }
     runAudio.volume = 0;
     lastStopInMs = currentTime;
     stopSuperSpeed();
