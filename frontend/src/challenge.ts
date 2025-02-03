@@ -510,9 +510,6 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
   createGolemCharacter,
-  createRedHammerCharacter,
-  createWitchCharacter,
-  createOrcCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
@@ -591,7 +588,7 @@ const launchEndOfChallenge = () => {
 
   endOfChallengeContainer.innerHTML = "Record battu...";
 
-  stopRun(true);
+  setTimeout( () => stopRun(true), 4000);
 
   return; 
 
@@ -2792,7 +2789,7 @@ const kingAnimations = [
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
-  enemyViewPoint.style.left = "105vw";
+  enemyViewPoint.style.left = "155vw";
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
@@ -2957,7 +2954,7 @@ const createOrcCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    enemyViewPoint.style.left = "105vw";
+    enemyViewPoint.style.left = "155vw";
     enemyViewPoint.style.display = "flex";
 
  return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
@@ -2976,7 +2973,7 @@ const createDwarfCharacter = (): DefaultCharacter => {
 
   //init view point
 
-  enemyViewPoint.style.left = "110vw";
+  enemyViewPoint.style.left = "155vw";
   enemyViewPoint.style.display = "flex";
 
   return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations);
