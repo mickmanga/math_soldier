@@ -47,12 +47,18 @@
         </div>
 
       <div id="score">
-           <div class="main">
-             <div class="circle"></div>
-           </div> 
-            <div id="score_value"></div>
+        <div class="main">
+          <div class="circle"></div>
+        </div> 
+          <div id="score_value">D</div>
         </div>
-
+        <div id="top_score_value">
+          <div id="top_score_value_a">
+             <img src="assets/challenge/items/up-arrow.png" alt="up-arrow"/>
+          </div>
+           <div id="top_score_value_b">B+</div>
+        </div>
+        
         <div id="answer_data_container">
             <div id="answer_data_container_left_logo_container">
                 <img id="answer_data_container_left_logo" src="assets/challenge/items/gifs/weapon.gif" alt="">
@@ -127,17 +133,16 @@
         </div>
 
         <div id="special_move_indicator">Arcane move</div>
-
-
         <div id="idle_timeout_container">5</div>
-
         <div id="map_container">=></div>
-
         <div id="end_of_challenge_container"></div>
 
-         
       <audio id="fire_background_audio" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls loop>
         <source src="assets/audio/fire.mp3" type="audio/mpeg">
+      </audio>
+
+      <audio id="monster_hurt_audio" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls>
+        <source src="assets/audio/monster_hurt.mp3" type="audio/mpeg">
       </audio>
 
       <audio id="bass_audio" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls>

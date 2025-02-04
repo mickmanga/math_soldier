@@ -119,7 +119,7 @@ audio {
     bottom: 21vh;
 
 */
-  left: 125vw;
+  left: 105vw;
   height: 60.5vh;
   bottom: 2vh;
   z-index: 100;
@@ -243,12 +243,46 @@ audio {
   left: 88vw;
   height: 10vh;
   width: 7vw;
-  z-index: 3;
   font-size: medium;
-  display: none;
+  display: flex;
   justify-content: space-around;
   align-items: center;
+  transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */
+  opacity: 0;
+  z-index: 1011;
 }
+#top_score_value {
+  position: absolute;
+  top: 10vh;
+  left: 89.5vw;
+  height: 10vh;
+  width: 4.5vw;
+  z-index: 1011;
+  color: rgb(0, 255, 255);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */  
+}
+
+#top_score_value_a, #top_score_value_b{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#top_score_value_b {
+  font-size: x-large;
+}
+#top_score_value_a img{
+  height: 27%;
+  width: auto;
+}
+
+
 
 #score img {
   height: 70%;
@@ -269,7 +303,7 @@ audio {
   left: 15vw;
   top: 86vh;
   z-index: 1020;
-  display: none;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   opacity: 1;
@@ -278,6 +312,8 @@ audio {
   border: 1px solid #fff;
   padding: 9px 7px;
   box-shadow: 0 0 10px #aaa;
+  transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */
+  opacity: 0;
 }
 
 #answer_data_container div {
