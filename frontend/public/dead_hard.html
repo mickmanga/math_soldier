@@ -307,9 +307,19 @@
     </div>
 
     <div id="actionsButtonsContainer">
-      <a href="http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c"><button>Continuer</button></a>
-      <a href="http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c"><button>Recommencer</button></a>
+      <button onclick="tryAgain(event)">Continuer</button>
+      <button onclick="tryAgain(event)">Recommencer</button>
     </div>
 
   </body>
 </html>
+
+
+<script>
+
+  const tryAgain = () => {
+    window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+  }
+
+
+</script>

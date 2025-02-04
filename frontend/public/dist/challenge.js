@@ -3946,7 +3946,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     };
     if (delay) {
-      setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4 ? 2e3 : 2e3);
+      setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4 ? 2500 : 2500);
     } else {
       enemyDestructionAndRevivalCallback();
     }
@@ -4337,7 +4337,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             id: 37 /* witch_opponent_death */,
             sprite: {
               path: "assets/challenge/characters/enemies/witch/death",
-              length: 13
+              length: 12
             }
           }
         }
@@ -4476,6 +4476,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (event.key === "p") {
       checkForScreenUpdateFromLeftToRight(0);
     }
+    if (event.key === "r") {
+      window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+    }
     if (event.key === "l") {
       launchChallenge();
     }
@@ -4537,7 +4540,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var stopSuperSpeed = () => {
     superSpeedOn = false;
   };
-  var stopRun = (definitiveStop = false) => {
+  var stopRun = (definitiveStop = true) => {
     if (heroInTheRedZone) {
       return;
     }
@@ -4720,11 +4723,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
   };
   var lightUpAnswerDataContainer = () => {
-    answerDataContainer.style.opacity = "1";
+    answerDataValue.style.opacity = "1";
   };
   var clearAndHideAnswerDataContainer = () => {
-    answerDataContainer.style.opacity = "1";
-    answerDataValue.innerHTML = "";
+    answerDataValue.style.opacity = "0";
   };
   var launchSwordSlash = () => {
     ANIMATION_RUNNING_VALUES[52 /* hero_sword_slash */]++;
@@ -4892,6 +4894,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
+    launchChallenge();
     checkForOpponentsClearance();
     defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();

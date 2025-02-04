@@ -1706,7 +1706,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
   }
 
   if(delay){
-    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 2000 : 2000);
+    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 2500 : 2500);
   } else {
     enemyDestructionAndRevivalCallback();
   }
@@ -2626,7 +2626,7 @@ const witchAnimations = [
             id: ANIMATION_ID.witch_opponent_death,
             sprite:  {
               path: "assets/challenge/characters/enemies/witch/death",
-              length: 13
+              length: 12
           }
           }
          }
@@ -3100,6 +3100,10 @@ document.addEventListener("keydown", (event) => {
     checkForScreenUpdateFromLeftToRight(0);
   }
 
+  if(event.key === "r"){
+    window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+  }
+
   if(event.key === "l"){
     launchChallenge()
   }
@@ -3178,7 +3182,7 @@ const stopSuperSpeed = () => {
 }
 
 
-const stopRun = (definitiveStop = false) => {
+const stopRun = (definitiveStop = true) => {
   if (heroInTheRedZone) {
     return;
   }
@@ -3433,12 +3437,11 @@ const clearEnemiesInstantly = () => {
 };
 
 const lightUpAnswerDataContainer = () => {
-  answerDataContainer.style.opacity = "1";
+  answerDataValue.style.opacity = "1";
 };
 
 const clearAndHideAnswerDataContainer = () => {
-  answerDataContainer.style.opacity = "1";
-  answerDataValue.innerHTML = "";
+  answerDataValue.style.opacity = "0";
 };
 
 const launchSwordSlash = () => {
@@ -3670,6 +3673,7 @@ window.onload = () => {
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
   //checkForScreenUpdateFromRightToLeft(10);
+  launchChallenge();
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
