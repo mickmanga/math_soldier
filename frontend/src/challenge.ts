@@ -34,6 +34,7 @@ const scoreValue = document.getElementById("score_value")!;
 const topScoreContainer = document.getElementById("top_score_value")!;
 
 
+
 const answerDataContainer = document.getElementById("answer_data_container")!;
 const answerDataValue = document.getElementById("answer_data_value")!;
 
@@ -153,6 +154,14 @@ const updateEnemyViewPointDisplay = () => {
 };
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
+
+const stepsInSwow = document.getElementById(
+  "snow_steps_audio"
+)! as HTMLAudioElement;
+
+stepsInSwow.volume = 0.7;
+stepsInSwow.playbackRate = 1.2;
+
 const swordAudio = document.getElementById("sword_audio")! as HTMLAudioElement;
 const laserdAudio = document.getElementById("laser_audio")! as HTMLAudioElement;
 let epicAudio = document.getElementById(
@@ -197,6 +206,12 @@ const setInitialGameVolume = () => {
   runAudio.volume = 0;
 
 }
+
+
+const initAndLaunchFootStepsAudio = () => {
+  stepsInSwow.currentTime = 0;
+  stepsInSwow.play();
+};
 
 
 let currentSubject: Subject | null = null;
@@ -627,6 +642,7 @@ const launchEndOfChallenge = () => {
   )
 
   runAudio.pause();
+  stepsInSwow.pause();
   //transitionAudio.play();
   
   setTimeout( () => {
@@ -3037,6 +3053,9 @@ const moveBackground = (direction: Direction) => {
 const launchHeroWalk = (direction = Direction.LEFT_TO_RIGHT) => {
   moveBackground(direction);
   launchHeroWalkAnimation(ANIMATION_ID.hero_walk_left);
+  if(gameMode === GAME_MODES.discovery){
+    stepsInSwow.play();
+  }
 };
 
 const launchHeroRun = (direction = Direction.LEFT_TO_RIGHT) => {
@@ -3083,7 +3102,8 @@ enum MovementType {
 const launchHeroWalk2 = (direction: Direction) => {
    moveHero(MovementType.WALK, direction);
    moveBackground(direction);
-}
+  stepsInSwow.play();
+  }
 
 const moveHero = (type: MovementType, direction: Direction) => {
 
@@ -3110,6 +3130,7 @@ document.addEventListener("keyup", (event) => {
     heroMoving = false;
     interruptAnimation(ANIMATION_ID.hero_walk_right);
     stopCameraMovingToRight();
+    stepsInSwow.pause();
   }
 
   
@@ -3117,12 +3138,16 @@ document.addEventListener("keyup", (event) => {
     heroMoving = false;
     interruptAnimation(ANIMATION_ID.hero_walk_left);
     stopCameraMovingToLeft();
+    if(gameMode === GAME_MODES.discovery){
+      stepsInSwow.pause();
+    }
   }
 
 });
 
 
 const launchChallenge = () => {
+  breathAudio.play();
   gameMode = GAME_MODES.challenge;
   lightningImg.style.opacity = "1";
   answerDataContainer.style.opacity = "1";
@@ -3148,7 +3173,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if(event.key === "l"){
-    launchChallenge()
+    launchChallenge();
   }
 
   if (event.key === "d") {
@@ -3243,7 +3268,7 @@ const stopRun = (definitiveStop = true) => {
   }
 
 
-  runAudio.volume = 0;
+  runAudio.pause();
 
   lastStopInMs = currentTime;
 
@@ -3304,6 +3329,7 @@ const stopAndResetIdleTimer = () => {
 const resumeRun = () => {
   runStopped = false;
   stopAndResetIdleTimer();
+  runAudio.play();
 
   launchHeroRun();
   ennemiesOnScreen.forEach((enemy) => {
@@ -3715,8 +3741,7 @@ window.onload = () => {
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);
-  //checkForScreenUpdateFromRightToLeft(10);
-  launchChallenge();
+  checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
   defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();

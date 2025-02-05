@@ -2938,6 +2938,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPointLogo.src = `${heroInTheRedZone ? "assets/challenge/millescaneous/careful.png" : "assets/challenge/items/lightning/11.png"}`;
   };
   var runAudio = document.getElementById("run_audio");
+  var stepsInSwow = document.getElementById(
+    "snow_steps_audio"
+  );
+  stepsInSwow.volume = 0.7;
+  stepsInSwow.playbackRate = 1.2;
   var swordAudio = document.getElementById("sword_audio");
   var laserdAudio = document.getElementById("laser_audio");
   var epicAudio = document.getElementById(
@@ -3186,6 +3191,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       3e3
     );
     runAudio.pause();
+    stepsInSwow.pause();
     setTimeout(
       () => {
         transitionAudio.play();
@@ -3493,6 +3499,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createMapElement = (element) => {
     return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
+  };
+  var createElementMapBlockStart = (left, imagePath, zIndex) => {
+    store.dispatch(decreaseStartIndex());
+    const startIndex = store.getState().map.startIndex;
+    const element = store.getState().map.elements[startIndex];
+    const elementDiv = createMapElement(element);
+    return createMapBlock(left, imagePath, zIndex, elementDiv);
   };
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
@@ -4085,6 +4098,39 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
+  var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
+    MAP_SETS.forEach(
+      (mapSet, index) => {
+        const startIndex = store.getState().map.startIndex;
+        const firstMapDomElement = mapSet.maps[0];
+        if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
+          if (index === 4 && gameMode === 0 /* discovery */) {
+            if (startIndex === 0) {
+              interruptAnimation(5 /* hero_walk_left */);
+              stopCameraMovingToLeft();
+              return;
+            }
+          }
+          mapSet.maps.unshift(
+            index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+              firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
+              mapSet.imagePath,
+              `${index}`
+            )
+          );
+        }
+        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
+          if (index === 4 && gameMode === 0 /* discovery */) {
+            store.dispatch(decreaseEndIndex());
+          }
+          lastMapDomElement.remove();
+          mapSet.maps.pop();
+        }
+      }
+    );
+    requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
+  };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
       const characterAnimation = character.animations[i];
@@ -4458,6 +4504,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchHeroWalk = (direction = 0 /* LEFT_TO_RIGHT */) => {
     moveBackground(direction);
     launchHeroWalkAnimation(5 /* hero_walk_left */);
+    if (gameMode === 0 /* discovery */) {
+      stepsInSwow.play();
+    }
   };
   var launchHeroRun = (direction = 0 /* LEFT_TO_RIGHT */) => {
     interuptIdleTimer();
@@ -4469,6 +4518,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchHeroWalk2 = (direction) => {
     moveHero(0 /* WALK */, direction);
     moveBackground(direction);
+    stepsInSwow.play();
   };
   var moveHero = (type, direction) => {
     launchAnimation(heroCharacter, 6 /* walk_right */);
@@ -4487,14 +4537,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       heroMoving = false;
       interruptAnimation(4 /* hero_walk_right */);
       stopCameraMovingToRight();
+      stepsInSwow.pause();
     }
     if (event.key === "q") {
       heroMoving = false;
       interruptAnimation(5 /* hero_walk_left */);
       stopCameraMovingToLeft();
+      if (gameMode === 0 /* discovery */) {
+        stepsInSwow.pause();
+      }
     }
   });
   var launchChallenge = () => {
+    breathAudio.play();
     gameMode = 1 /* challenge */;
     lightningImg.style.opacity = "1";
     answerDataContainer.style.opacity = "1";
@@ -4587,7 +4642,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (!definitiveStop) {
       launchIdleTimeout();
     }
-    runAudio.volume = 0;
+    runAudio.pause();
     lastStopInMs = currentTime;
     stopSuperSpeed();
     if (enemiesComingTimeout) {
@@ -4628,6 +4683,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var resumeRun = () => {
     runStopped = false;
     stopAndResetIdleTimer();
+    runAudio.play();
     launchHeroRun();
     ennemiesOnScreen.forEach((enemy) => {
       const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */);
@@ -4929,7 +4985,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
-    launchChallenge();
+    checkForScreenUpdateFromRightToLeft(10);
     checkForOpponentsClearance();
     defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();

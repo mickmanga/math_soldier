@@ -1,3 +1,24 @@
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+#top_map_container {
+    height: 400px;
+    width: 550px;
+    background: red;
+    position: absolute;
+    top: 50px;
+    right: 80px;
+    border-radius: 15px;
+    background: url("../assets/challenge/items/ice.webp");
+    background-size: cover;
+}
+
 #mapBackground {
     position: absolute;
     top: 10vh;
@@ -5,14 +26,15 @@
     height: 90vh;
     width: 60vw;
     overflow: auto;
-    background: red;
+    padding-bottom: 100px;
+    margin-top: 350px;
 }
 
 .mapBackground_a {
     height: 20vh;
     width: 100%;
-    background: purple;
     display: flex;
+    margin-top: 100px;
 }
 
 .mapBackground_aa {
@@ -24,19 +46,19 @@
 }
 
 .mapBackground_aaa {
-    height: 80px;
-    width: 80px;
+    height: 125px;
+    width: 125px;
     border-radius: 50%;
     background: red;
+    cursor: pointer;
 }
 
 .mapBackground_aa1 {
-    background: pink;
 }
 
 .mapBackground_aa2 {
     background: green;
-
+    border-radius: 15px;
 }
 
 .mapBackground_ab {
