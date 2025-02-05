@@ -3186,10 +3186,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       3e3
     );
     runAudio.pause();
-    transitionAudio.play();
     setTimeout(
       () => {
-        breathAudio.play();
+        transitionAudio.play();
         endOfChallengeContainer.style.opacity = "1";
         endOfChallengeContainer.innerHTML = "Note : D, acc\xE8se refus\xE9...";
       },
@@ -4542,10 +4541,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === " " && !invisible) {
       if (rewardStreak === 5 || rewardStreak === 10) {
-        launchInvisibilityToggle();
+        launchHeroLightningSpeedAnimation();
         return;
       }
-      launchHeroLightningSpeedAnimation();
+      launchInvisibilityToggle();
     }
     if (event.key === "m") {
       if (rewardStreak === 5 || rewardStreak === 10) {

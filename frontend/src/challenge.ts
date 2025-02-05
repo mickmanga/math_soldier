@@ -627,11 +627,12 @@ const launchEndOfChallenge = () => {
   )
 
   runAudio.pause();
-  transitionAudio.play();
+  //transitionAudio.play();
   
   setTimeout( () => {
    // levelUpAudio.play();
-    breathAudio.play();
+   // breathAudio.play();
+   transitionAudio.play();
     endOfChallengeContainer.style.opacity = "1";
     endOfChallengeContainer.innerHTML = "Note : D, accèse refusé...";
   }
@@ -3180,10 +3181,10 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === " " && !invisible) {
     if(rewardStreak === 5 ||  rewardStreak === 10){
-      launchInvisibilityToggle();
+      launchHeroLightningSpeedAnimation();
       return;
     }
-    launchHeroLightningSpeedAnimation();
+    launchInvisibilityToggle();
   }
   if (event.key === "m") {
     if(rewardStreak === 5 ||  rewardStreak === 10){
