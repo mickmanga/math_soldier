@@ -374,6 +374,26 @@ const findNextAnswer = () => {
     return "done";
   }
 
+  if(currentAnswerIndex === answers.length - 1){
+    endOfChallengeContainer.style.opacity = "1";
+    endOfChallengeContainer.innerHTML = "Dernier ennemi...";
+    setTimeout(() => {
+      endOfChallengeContainer.style.opacity = "0";
+      endOfChallengeContainer.innerHTML = "";
+    }, 1000);
+  }
+
+  
+  if(currentAnswerIndex === answers.length - 3){
+    endOfChallengeContainer.style.opacity = "1";
+    endOfChallengeContainer.innerHTML = "3 derniers ennemis...";
+    setTimeout(() => {
+      endOfChallengeContainer.style.opacity = "0";
+      endOfChallengeContainer.innerHTML = "";
+    }, 1000);
+  }
+
+
   const data = answers[store.getState().challenge.currentAnswerIndex].data;
 
   store.dispatch(incrementAnswerIndex());
@@ -584,13 +604,38 @@ const triggerOpponentsApparition = () => {
 
 const endOfChallengeContainer = document.getElementById("end_of_challenge_container")!;
 
+const transitionAudio = document.getElementById("transition_audio")! as HTMLAudioElement;
+transitionAudio.volume = 0.15;
+
+
+const levelUpAudio = document.getElementById(
+  "levelup_audio"
+)! as HTMLAudioElement;
+
+const breathAudio = document.getElementById("breath_audio")! as HTMLAudioElement;
+
+levelUpAudio.volume = 1;
+
 const launchEndOfChallenge = () => {
+  endOfChallengeContainer.style.opacity = "1";
+  endOfChallengeContainer.innerHTML = "Arrivée à la porte gelée...";
 
-  //window.location.href = "http://localhost:3001/dead_hard";
+  setTimeout(
+    () => {
+      endOfChallengeContainer.style.opacity = "0";
+    }, 3000
+  )
 
-  endOfChallengeContainer.innerHTML = "Record battu...";
-
-  setTimeout( () => stopRun(true), 4000);
+  runAudio.pause();
+  transitionAudio.play();
+  
+  setTimeout( () => {
+   // levelUpAudio.play();
+    breathAudio.play();
+    endOfChallengeContainer.style.opacity = "1";
+    endOfChallengeContainer.innerHTML = "Note : D, accèse refusé...";
+  }
+    , 4000);
 
   return;
 
@@ -603,9 +648,6 @@ const launchEndOfChallenge = () => {
 
   const grade = getChallengeGrade();
 
-  const levelUpAudio = document.getElementById(
-    "levelup_audio"
-  )! as HTMLAudioElement;
   const endOfChallengeButton = document.getElementById(
     "challengesuccessButton"
   )!;

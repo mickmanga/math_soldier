@@ -3069,6 +3069,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (currentAnswerIndex >= answers2.length) {
       return "done";
     }
+    if (currentAnswerIndex === answers2.length - 1) {
+      endOfChallengeContainer.style.opacity = "1";
+      endOfChallengeContainer.innerHTML = "Dernier ennemi...";
+      setTimeout(() => {
+        endOfChallengeContainer.style.opacity = "0";
+        endOfChallengeContainer.innerHTML = "";
+      }, 1e3);
+    }
+    if (currentAnswerIndex === answers2.length - 3) {
+      endOfChallengeContainer.style.opacity = "1";
+      endOfChallengeContainer.innerHTML = "3 derniers ennemis...";
+      setTimeout(() => {
+        endOfChallengeContainer.style.opacity = "0";
+        endOfChallengeContainer.innerHTML = "";
+      }, 1e3);
+    }
     const data = answers2[store.getState().challenge.currentAnswerIndex].data;
     store.dispatch(incrementAnswerIndex());
     return data;
@@ -3153,9 +3169,32 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var endOfChallengeContainer = document.getElementById("end_of_challenge_container");
+  var transitionAudio = document.getElementById("transition_audio");
+  transitionAudio.volume = 0.15;
+  var levelUpAudio = document.getElementById(
+    "levelup_audio"
+  );
+  var breathAudio = document.getElementById("breath_audio");
+  levelUpAudio.volume = 1;
   var launchEndOfChallenge = () => {
-    endOfChallengeContainer.innerHTML = "Record battu...";
-    setTimeout(() => stopRun(true), 4e3);
+    endOfChallengeContainer.style.opacity = "1";
+    endOfChallengeContainer.innerHTML = "Arriv\xE9e \xE0 la porte gel\xE9e...";
+    setTimeout(
+      () => {
+        endOfChallengeContainer.style.opacity = "0";
+      },
+      3e3
+    );
+    runAudio.pause();
+    transitionAudio.play();
+    setTimeout(
+      () => {
+        breathAudio.play();
+        endOfChallengeContainer.style.opacity = "1";
+        endOfChallengeContainer.innerHTML = "Note : D, acc\xE8se refus\xE9...";
+      },
+      4e3
+    );
     return;
     gameFinished = true;
     document.getElementById("endOfGameInterface").style.display = "flex";
@@ -3164,9 +3203,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroImage.src = "assets/challenge/characters/hero/run/1.png";
     document.getElementById("transformation_background").style.display = "none";
     const grade = getChallengeGrade();
-    const levelUpAudio = document.getElementById(
-      "levelup_audio"
-    );
     const endOfChallengeButton = document.getElementById(
       "challengesuccessButton"
     );
