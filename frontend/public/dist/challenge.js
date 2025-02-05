@@ -4721,7 +4721,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS / (superSpeed ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1));
   };
+  var openMap = (event) => {
+    window.location.replace("http://localhost:3001/world");
+  };
   window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;
+  window.openMap = openMap;
   var launchTransformation = () => {
     if (runStopped || hardMode) {
       return;

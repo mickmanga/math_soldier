@@ -33,8 +33,6 @@ const scoreContainer = document.getElementById("score")!;
 const scoreValue = document.getElementById("score_value")!;
 const topScoreContainer = document.getElementById("top_score_value")!;
 
-
-
 const answerDataContainer = document.getElementById("answer_data_container")!;
 const answerDataValue = document.getElementById("answer_data_value")!;
 
@@ -301,6 +299,7 @@ declare global {
   interface Window {
     launchAttack: (event: Event) => void;
     launchInvisibilityToggle: (event: Event) => void;
+    openMap: (event: Event) => void;
   }
 }
 
@@ -3380,7 +3379,15 @@ const launchInvisibilityToggle = (superSpeed = false) => {
   setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS/(superSpeed ?  CAMERA_SUPER_SPEED_MULTIPLICATOR : 1));
 };
 
+
+const openMap = (event: Event) => {
+  window.location.replace("http://localhost:3001/world");
+} 
+
 window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;
+
+window.openMap = openMap;
+
 
 const launchTransformation = () => {
   if (runStopped || hardMode) {
