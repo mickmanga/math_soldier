@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flèche de Localisation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="location-arrow"></div>
+
+</body>
+</html>
+
+
+<style>
+
+/* Conteneur principal de la flèche */
+.location-arrow {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background-color: blue;
+  clip-path: polygon(50% 0%, 100% 100%, 50% 80%, 0% 100%);
+  transform: rotate(90deg); /* Pour pointer vers le haut par défaut */
+}
+
+
+</style>

@@ -4542,7 +4542,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === " " && !invisible) {
       if (rewardStreak === 5 || rewardStreak === 10) {
-        launchHeroLightningSpeedAnimation();
+        launchInvisibilityToggle();
         return;
       }
       launchHeroLightningSpeedAnimation();

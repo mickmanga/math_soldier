@@ -1,0 +1,50 @@
+#mapBackground {
+    position: absolute;
+    top: 10vh;
+    left: 20vw;
+    height: 90vh;
+    width: 60vw;
+    overflow: auto;
+    background: red;
+}
+
+.mapBackground_a {
+    height: 20vh;
+    width: 100%;
+    background: purple;
+    display: flex;
+}
+
+.mapBackground_aa {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mapBackground_aaa {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background: red;
+}
+
+.mapBackground_aa1 {
+    background: pink;
+}
+
+.mapBackground_aa2 {
+    background: green;
+
+}
+
+.mapBackground_ab {
+    height: 20vh;
+    width: 100%;
+    background: purple;
+    display: flex;
+}
+
+
+

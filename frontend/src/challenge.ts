@@ -3180,7 +3180,7 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === " " && !invisible) {
     if(rewardStreak === 5 ||  rewardStreak === 10){
-      launchHeroLightningSpeedAnimation();
+      launchInvisibilityToggle();
       return;
     }
     launchHeroLightningSpeedAnimation();
