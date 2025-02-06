@@ -9,18 +9,40 @@
 <body>
     <div id="charactersBackground">
         <div id="charactersBackground_a">
-            <div id="charactersBackground_aa"></div>
+            <div id="charactersBackground_aa">
+                <div id="charactersBackground_aaa">
+                </div>
+                <div id="charactersBackground_aab">
+                    Progression
+                </div>
+            </div>
         </div>
-        <div id="charactersBackground_b"></div>
+        <div id="charactersBackground_b">
+            <button onclick="goToMap(event)" id="mapLink">Voir la carte de Stormgrad</button>
+        </div>
         <div id="charactersBackground_c">
            <div id="charactersBackground_ca">
-            <div id="charactersBackground_caa"></div>
+            <div id="charactersBackground_caa">
+                <img src="assets/challenge/characters/hero/idle_gif/hero.gif" alt="">
+            </div>
            </div>
            <div id="charactersBackground_cb">
-            <div id="charactersBackground_cba"></div>
+            <div id="charactersBackground_cba">
+                <div id="charactersBackground_cbaa"></div>
+                <div id="charactersBackground_cbab">
+                    Aradas
+                </div>
+
+            </div>
             <div id="charactersBackground_cbb"></div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
+<script>
+    const goToMap = (event) => {
+    window.location.replace("http://localhost:3001/game_map");
+}
+</script>

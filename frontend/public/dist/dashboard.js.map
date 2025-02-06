@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/dashboard.ts"],
+  "sourcesContent": ["interface Window {\r\n  goToMaP: (event: Event) => void\r\n}\r\n\r\nconst goToMap = (event: Event) => {\r\n    window.location.replace(\"http://localhost:3001/game_map\");\r\n}\r\n\r\nwindow.goToMaP = goToMap;"],
+  "mappings": ";;;AAIA,MAAM,UAAU,CAAC,UAAiB;AAC9B,WAAO,SAAS,QAAQ,gCAAgC;AAAA,EAC5D;AAEA,SAAO,UAAU;",
+  "names": []
+}

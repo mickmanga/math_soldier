@@ -14,6 +14,7 @@ build({
     path.join("src", "learning.ts"),
     path.join("src", "register.ts"),
     path.join("src", "world.ts"),
+    path.join("src", "dashboard.ts"),
     path.join("src/redux", "index.ts"),
   ],
   bundle: true,

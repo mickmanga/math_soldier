@@ -547,7 +547,9 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createWitchCharacter
+  createWitchCharacter,
+  createGolemCharacter,
+  createRedHammerCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
