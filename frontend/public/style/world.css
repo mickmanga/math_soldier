@@ -8,15 +8,29 @@ html {
 }
 
 #top_map_container {
-    height: 400px;
-    width: 550px;
-    background: red;
-    position: absolute;
-    top: 50px;
-    right: 80px;
-    border-radius: 15px;
-    background: url("../assets/challenge/items/ice.webp");
-    background-size: cover;
+    height: 500px;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#top_map_container_a {
+    height: 100%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 2s ease, visibility 2s ease; /* Animate opacity over 1 second */
+}
+
+#ice {
+    height: 100%;
+    width: auto;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 2s ease, visibility 2s ease; /* Animate opacity over 1 second */
 }
 
 #mapBackground {

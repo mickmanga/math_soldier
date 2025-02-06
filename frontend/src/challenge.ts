@@ -10,6 +10,8 @@ enum GAME_MODES {
 
 let gameMode: GAME_MODES = GAME_MODES.discovery;
 
+const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
+
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
 };
@@ -3737,6 +3739,8 @@ const animateLightning = () => {
 window.onload = () => {
 
   epicAudio.volume = 0;
+
+  windAudio.volume=0.4;
 
   setupListeners();
   setInitialGameVolume();

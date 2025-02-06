@@ -2842,6 +2842,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
+  var windAudio = document.getElementById("wind_audio");
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
   };
@@ -4979,6 +4980,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   window.onload = () => {
     epicAudio.volume = 0;
+    windAudio.volume = 0.4;
     setupListeners();
     setInitialGameVolume();
     launchHardModeToggle();

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/world.ts"],
+  "sourcesContent": ["const topTextContainer = document.getElementById(\"top_map_container_a\")!;\r\nconst worldImageContainer = document.getElementById(\"ice\")!;\r\n\r\nwindow.onload = () => {\r\n\r\n  worldImageContainer.style.opacity = \"1\"; \r\n topTextContainer.style.opacity = \"1\";\r\n  \r\n}"],
+  "mappings": ";;;AAAA,MAAM,mBAAmB,SAAS,eAAe,qBAAqB;AACtE,MAAM,sBAAsB,SAAS,eAAe,KAAK;AAEzD,SAAO,SAAS,MAAM;AAEpB,wBAAoB,MAAM,UAAU;AACrC,qBAAiB,MAAM,UAAU;AAAA,EAElC;",
+  "names": []
+}
