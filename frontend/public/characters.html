@@ -9,7 +9,7 @@
 <body>
     <div id="charactersBackground">
         <div id="charactersBackground_a">
-            <div class="charactersBackground_aa" id="charactersBackground_aa1">
+            <div class="charactersBackground_aa" id="charactersBackground_aa1" onclick="goToStatsPage(event)">
                 <div id="charactersBackground_aaa">
                 </div>
                 <div id="charactersBackground_aab">
@@ -61,7 +61,12 @@
 </body>
 </html>
 <script>
+    
+    const goToStatsPage = (event) => {
+      window.location.replace("http://localhost:3001/progression");
+    }
     const goToMap = (event) => {
     window.location.replace("http://localhost:3001/game_map");
+
 }
 </script>

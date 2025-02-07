@@ -6,6 +6,7 @@
  </head>
   <body>
     <div id="progression_container">
+        <button id="backButton" onclick="goBackToDashboard(event)"><</button>
         <div class="progression_container_a">
             <div class="progression_container_aa">
             </div>
@@ -40,3 +41,9 @@
     </div>
   </body>
 </html>
+
+<script>
+    const goBackToDashboard = (event) => {
+        window.location.replace("http://localhost:3001/characters");
+    }
+</script>

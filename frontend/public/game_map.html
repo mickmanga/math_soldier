@@ -4,22 +4,27 @@
     <link rel="stylesheet" href="style/game__map.css">
   </head>
   <body>
-    <img id="mapImage" src="assets/challenge/maps/game_map.webp" alt="">
+
+    <button id="backButton" onclick="goBackToDashboard(event)"><</button>
+
+    <img  id="mapImage" src="assets/challenge/maps/game_map.webp" alt="">
     
     <audio style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls autoplay>
       <source src="assets/audio/page.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="tarkPoint"></div>
-
+    <div onclick="goToTark(event)" id="tarkPoint"></div>
   </body>
 </html>
 
 <script>
 
- document.addEventListener("click", (event) => {
-
-  window.location.href = "http://localhost:3001/world"
- })
+ const goToTark = (event) => {
+   window.location.href = "http://localhost:3001/world"
+ }
+ 
+ const goBackToDashboard = (event) => {
+    window.location.replace("http://localhost:3001/characters");
+  }
 
 </script>
