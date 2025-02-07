@@ -7,6 +7,7 @@ button {
     cursor: pointer;
     border-radius: 15px;
     border: none;
+    margin-right: 5%;
 }
 
 #charactersBackground{
@@ -20,7 +21,7 @@ button {
   #charactersBackground_a{  
       height: 40%;
       width: 100%;
-      background: grey;
+      background: black;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -47,17 +48,16 @@ button {
 
  #charactersBackground_aa2a {
     height: 20%;
-    width: 100%;
-    background: pink;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: solid 1px;
 }
 
  #charactersBackground_aa2b {
     height: 80%;
     width: 100%;
-    background: rgb(32, 8, 86);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,23 +65,42 @@ button {
 
  .charactersBackground_aa2ba {
     height: 33.33%;
-    width: 100%;
-    background: green;
+    width: 90%;
     display: flex;
     justify-content: space-between;
     align-items: center;
  }
 
+ .charactersBackground_aa2baa {
+    height: 65%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background: blue;
+    margin-left: 10px;
+ }
+
+ .charactersBackground_aa2bab {
+    height: 80%;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+    
+    
+
+
   #charactersBackground_aaa {
-      height: 80%;
-      width: 100%;
-      background: green;
+    height: 80%;
+    width: 80%;
+    background: green;
+    border-radius: 15px;
+      
   }
 
   #charactersBackground_aab {
       height: 10%;
       width: 100%;
-      background: orange;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -91,7 +110,7 @@ button {
   #charactersBackground_b{
       height: 10%;
       width: 100%;
-      background: grey;
+      background: black;
       display: flex;
       justify-content: flex-end;      
   }
@@ -106,7 +125,7 @@ button {
   #charactersBackground_ca{
       height: 70%;
       width: 100%;
-      background: purple;
+      background: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -114,7 +133,7 @@ button {
   #charactersBackground_caa{
       height: 70%;
       width: 40%;
-      background: blue;
+      background: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -129,10 +148,10 @@ button {
       position: relative;
       height: 30%;
       width: 100%;
-      background: green;
       display: flex;
       align-items: center;
       justify-content: space-around;
+      background: black;
 
   }
   
