@@ -1,5 +1,83 @@
 #progression_container {
-    height: 100vh;
     width: 100vw;
-    background: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: overlay;
+    background: black;
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(90, 90, 90);
+    border-radius: 15px;
+  }
+  
+
+.progression_container_a {
+    height: 65vh;
+    width: 80%;
+    border-bottom: 1px solid;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.progression_container_aa {
+    height: 80%;
+    width: 50%;
+    background: purple;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progression_container_ab {
+    height: 80%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.progression_container_aba {
+    height: 40%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.progression_container_abb {
+    height: 40%;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progression_container_abb button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+}
+
+.progression_container_abba {
+    height: 30%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
