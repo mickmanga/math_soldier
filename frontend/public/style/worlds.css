@@ -3,6 +3,7 @@ html, * {
     width: 0;
 }
 
+
 #game_container {
     height: 100vh;
     width: 100vw;

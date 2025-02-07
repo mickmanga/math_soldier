@@ -1,10 +1,14 @@
+body {
+    background: black;
+}
+
 #mapImage {
     height: 90vh;
     width: 80vw;
     position: absolute;
     left: 10vw;
     margin: auto;
-    top:0;
+    top:5vh;
 }
 
 .large_map_point {
