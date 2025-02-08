@@ -119,10 +119,9 @@ audio {
     bottom: 21vh;
 
 */
-opacity: 0.75;
   left: 105vw;
-  height: 35.5vh;
-  bottom: 12.5vh;
+  height: 20.5vh;
+  bottom: 15vh;
   z-index: 1000;
   display: flex;
   justify-content: center;
