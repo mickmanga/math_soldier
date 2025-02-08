@@ -3,7 +3,7 @@ import { MapElement } from '../../types/map';
 
 export interface MapState {
   elements: Array<MapElement>;
-  elementsOnScreen: [];
+  elementsOnScreen: Array<MapElement>;
   startIndex: number,
   endIndex: number,
   currentIndex: number
@@ -47,11 +47,11 @@ const mapSlice = createSlice({
     decreaseStartIndex: (state) => {
       state.startIndex--;
     },
-    increaseCurrentIndex: (state) => {
-      state.currentIndex++;
+    updateCurrentIndex: (state, action: PayloadAction<number>) => {
+      state.currentIndex = action.payload;
     }
   },
 });
 
-export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, increaseCurrentIndex } = mapSlice.actions;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex } = mapSlice.actions;
 export default mapSlice.reducer;

@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {decreaseEndIndex, decreaseStartIndex, increaseCurrentIndex, increaseEndIndex, increaseStartIndex} from "./redux/slices/mapSlice";
+import {decreaseEndIndex, decreaseStartIndex, increaseStartIndex, updateCurrentIndex} from "./redux/slices/mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 
@@ -994,6 +994,30 @@ class MapSet {
   }
 }
 
+const checkForCurrentMapElementUpdate = () => {
+  const heroLeft = getHeroLeft();
+
+  const mapElementsOnScreen = store.getState().map.elementsOnScreen;
+
+  mapElementsOnScreen.forEach(
+    element => {
+      const elementId = element.id;
+      const foundElement = document.getElementById(elementId);
+
+      if(foundElement){
+        const foundElementLeft = foundElement.getBoundingClientRect().left;
+        if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) ){
+          store.dispatch(updateCurrentIndex(10));
+          alert("element updated");
+        }
+      }
+
+    }
+  )
+
+  requestAnimationFrame(checkForCurrentMapElementUpdate);
+}
+
 const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet: boolean) => {
   MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
 }
@@ -1026,7 +1050,6 @@ const createElementMapBlockStart = (left:number, imagePath: string, zIndex: stri
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
 
-  store.dispatch(increaseEndIndex());
   const endIndex = store.getState().map.endIndex
   const element = store.getState().map.elements[endIndex];
   const elementDiv = createMapElement(element);
@@ -1089,6 +1112,7 @@ const moveCamera = (
 
   requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
 };
+
 
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
@@ -1902,7 +1926,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
     if(index === 4 && gameMode === GAME_MODES.discovery){
      store.dispatch(increaseStartIndex());
-     store.dispatch(increaseCurrentIndex());
     }
 
     firstMapDomElement.remove();
