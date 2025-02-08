@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {decreaseEndIndex, decreaseStartIndex, increaseStartIndex, updateCurrentIndex} from "./redux/slices/mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, updateCurrentIndex} from "./redux/slices/mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 
@@ -1023,8 +1023,8 @@ const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet
 }
 
 const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
-
     const currentIndex = store.getState().map.currentIndex;
+    store.dispatch(addElementOnScreen(currentIndex));
     const element = store.getState().map.elements[currentIndex];
     const elementDiv = createMapElement(element);
 
@@ -1037,11 +1037,10 @@ const createMapElement = (element: MapElement) => {
 }
 
 const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
-   //on decremente l'index  
    store.dispatch(decreaseStartIndex());
-
-
    const startIndex = store.getState().map.startIndex;
+   store.dispatch(addElementOnScreen(startIndex));
+
    const element = store.getState().map.elements[startIndex];
    const elementDiv = createMapElement(element);
 
@@ -1049,8 +1048,9 @@ const createElementMapBlockStart = (left:number, imagePath: string, zIndex: stri
 };
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
-
-  const endIndex = store.getState().map.endIndex
+  store.dispatch(increaseEndIndex());
+  const endIndex = store.getState().map.endIndex;
+  store.dispatch(addElementOnScreen(endIndex));
   const element = store.getState().map.elements[endIndex];
   const elementDiv = createMapElement(element);
 
@@ -1925,6 +1925,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
 
     if(index === 4 && gameMode === GAME_MODES.discovery){
+     store.dispatch(removeElementFromElementsOnScreen(store.getState().map.startIndex)) 
      store.dispatch(increaseStartIndex());
     }
 
@@ -2965,7 +2966,8 @@ const createFormElement = (formElement: MapElement) => {
     formContainer.style.width = "20vw";
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
-
+    
+    formContainer.id = `mapElement_${formElement.id}`;
     formBackgroundContainer.append(formContainer);
 
     return formBackgroundContainer;

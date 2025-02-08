@@ -49,9 +49,25 @@ const mapSlice = createSlice({
     },
     updateCurrentIndex: (state, action: PayloadAction<number>) => {
       state.currentIndex = action.payload;
+    },
+    addElementOnScreen: (state, action: PayloadAction<number>) => {
+      const elementIndex = action.payload;
+      if(elementIndex > state.elementsOnScreen.length - 1 || elementIndex < 0){
+        return;
+      }
+      state.elementsOnScreen.push(state.elements[elementIndex]);
+    },
+    removeElementFromElementsOnScreen: (state, action: PayloadAction<number>) => {
+      const removedElementIndex = action.payload;
+
+      if(removedElementIndex > state.elementsOnScreen.length - 1 || removedElementIndex < 0){
+        return;
+      }
+      state.elementsOnScreen.splice(removedElementIndex, 1);
+
     }
   },
 });
 
-export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex } = mapSlice.actions;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen } = mapSlice.actions;
 export default mapSlice.reducer;
