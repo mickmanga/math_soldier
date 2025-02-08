@@ -2396,14 +2396,21 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       addElementOnScreen: (state, action) => {
         const elementIndex = action.payload;
-        if (elementIndex > state.elementsOnScreen.length - 1) {
+        if (elementIndex > state.elements.length - 1 || elementIndex < 0) {
           return;
         }
         state.elementsOnScreen.push(state.elements[elementIndex]);
+      },
+      removeElementFromElementsOnScreen: (state, action) => {
+        const removedElementIndex = action.payload;
+        if (removedElementIndex > state.elementsOnScreen.length - 1 || removedElementIndex < 0) {
+          return;
+        }
+        state.elementsOnScreen.splice(removedElementIndex, 1);
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/challengeSlice.ts

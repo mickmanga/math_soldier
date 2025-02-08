@@ -2405,14 +2405,21 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       addElementOnScreen: (state, action) => {
         const elementIndex = action.payload;
-        if (elementIndex > state.elementsOnScreen.length - 1) {
+        if (elementIndex > state.elements.length - 1 || elementIndex < 0) {
           return;
         }
         state.elementsOnScreen.push(state.elements[elementIndex]);
+      },
+      removeElementFromElementsOnScreen: (state, action) => {
+        const removedElementIndex = action.payload;
+        if (removedElementIndex > state.elementsOnScreen.length - 1 || removedElementIndex < 0) {
+          return;
+        }
+        state.elementsOnScreen.splice(removedElementIndex, 1);
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/userSlice.ts
@@ -3496,11 +3503,31 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       this.maps = [lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
     }
   };
+  var lastElementUpdated = null;
+  var checkForCurrentMapElementUpdate = () => {
+    const heroLeft = getHeroLeft();
+    const mapElementsOnScreen = store.getState().map.elementsOnScreen;
+    mapElementsOnScreen.forEach(
+      (element) => {
+        const elementId = element.id;
+        const foundElement = document.getElementById(`mapElement_${elementId}`);
+        if (foundElement) {
+          const foundElementLeft = foundElement.getBoundingClientRect().left;
+          if (foundElementLeft > heroLeft && foundElementLeft < heroLeft + window.innerWidth * 0.1 && element !== lastElementUpdated) {
+            lastElementUpdated = element;
+            alert("element updated");
+          }
+        }
+      }
+    );
+    requestAnimationFrame(checkForCurrentMapElementUpdate);
+  };
   var createMapSet = (imagePath, velocity, zIndex = "1", lastSet) => {
     MAP_SETS.push(new MapSet(imagePath, velocity, zIndex, lastSet));
   };
   var createElementMapBlockCenter = (left, imagePath, zIndex) => {
     const currentIndex = store.getState().map.currentIndex;
+    store.dispatch(addElementOnScreen(currentIndex));
     const element = store.getState().map.elements[currentIndex];
     const elementDiv = createMapElement(element);
     return createMapBlock(0, imagePath, zIndex, elementDiv);
@@ -3519,6 +3546,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
     const endIndex = store.getState().map.endIndex;
+    store.dispatch(addElementOnScreen(endIndex));
     const element = store.getState().map.elements[endIndex];
     const elementDiv = createMapElement(element);
     return createMapBlock(left, imagePath, zIndex, elementDiv);
@@ -4077,6 +4105,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
           if (index === 4 && gameMode === 0 /* discovery */) {
+            store.dispatch(removeElementFromElementsOnScreen(store.getState().map.startIndex));
             store.dispatch(increaseStartIndex());
           }
           firstMapDomElement.remove();
@@ -4469,6 +4498,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pilarContainer.style.width = "10vw";
     pilarContainer.style.height = "20vh";
     pilarContainer.style.background = "grey";
+    pilarContainer.id = `mapElement_${element.id}`;
     pilarBackgroundContainer.append(pilarContainer);
     return pilarBackgroundContainer;
   };
@@ -4487,6 +4517,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.width = "20vw";
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
+    formContainer.id = `mapElement_${formElement.id}`;
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
   };
@@ -4987,6 +5018,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   window.onload = () => {
     epicAudio.volume = 0;
     windAudio.volume = 0.4;
+    checkForCurrentMapElementUpdate();
     setupListeners();
     setInitialGameVolume();
     launchHardModeToggle();

@@ -52,7 +52,7 @@ const mapSlice = createSlice({
     },
     addElementOnScreen: (state, action: PayloadAction<number>) => {
       const elementIndex = action.payload;
-      if(elementIndex > state.elementsOnScreen.length - 1 || elementIndex < 0){
+      if(elementIndex > state.elements.length - 1 || elementIndex < 0){
         return;
       }
       state.elementsOnScreen.push(state.elements[elementIndex]);

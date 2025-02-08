@@ -994,6 +994,8 @@ class MapSet {
   }
 }
 
+let lastElementUpdated: null | MapElement = null;
+
 const checkForCurrentMapElementUpdate = () => {
   const heroLeft = getHeroLeft();
 
@@ -1002,14 +1004,15 @@ const checkForCurrentMapElementUpdate = () => {
   mapElementsOnScreen.forEach(
     element => {
       const elementId = element.id;
-      const foundElement = document.getElementById(elementId);
+      const foundElement = document.getElementById(`mapElement_${elementId}`);
 
       if(foundElement){
         const foundElementLeft = foundElement.getBoundingClientRect().left;
-        if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) ){
-          store.dispatch(updateCurrentIndex(10));
+        if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) && element !== lastElementUpdated){
+        //  store.dispatch(updateCurrentIndex(2));
+          lastElementUpdated = element;
           alert("element updated");
-        }
+        } 
       }
 
     }
@@ -2929,6 +2932,8 @@ const createChallengPilar = (element: MapElement) => {
   pilarContainer.style.width = "10vw";
   pilarContainer.style.height = "20vh";
   pilarContainer.style.background = "grey";
+  pilarContainer.id = `mapElement_${element.id}`;
+
 
   pilarBackgroundContainer.append(pilarContainer);
 
@@ -3775,9 +3780,9 @@ const animateLightning = () => {
 window.onload = () => {
 
   epicAudio.volume = 0;
+  windAudio.volume = 0.4;
 
-  windAudio.volume=0.4;
-
+  checkForCurrentMapElementUpdate();
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();
