@@ -547,9 +547,7 @@ const buildEnemyElement = () => {
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createWitchCharacter,
   createGolemCharacter,
-  createRedHammerCharacter
  ];
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
@@ -1282,7 +1280,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 40 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 115 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 40 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 150 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1505,10 +1503,22 @@ const launchOpponent = (enemy: EnemyInterface) => {
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
 
-  launchAnimation(enemy.character, AnimationType.idle);
+  //launchAnimation(enemy.character, AnimationType.idle);
+
+  launchIdleProcess(enemy.character);
 
   moveEnemy(enemy, 0, Date.now());
 };
+
+const launchIdleProcess = (character: CharacterInterface) => {
+
+  launchAnimation(character, AnimationType.idle, false);
+
+  setTimeout(
+   () => launchIdleProcess(character), 6000
+  );
+
+}
 
 interface ElementInterface extends HTMLImageElement {};
 
@@ -2724,8 +2734,8 @@ const golemAnimations = [
       {
         id: ANIMATION_ID.golem_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/golem/idle",
-          length: 12
+          path: "assets/challenge/characters/neutral/golem2",
+          length: 14
       }
       }
      }
@@ -2912,7 +2922,7 @@ const setFormContent = (formHtmlContainer: HTMLElement, formBlock: FormBlock, ne
 
 }
 
-const createFormElement = (formElement: FormElement) => {
+const createFormElement = (formElement: MapElement) => {
   
     //On créée une div, qui fait
 
@@ -2946,7 +2956,6 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "-4.5vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 

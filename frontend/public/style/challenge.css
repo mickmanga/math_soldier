@@ -120,8 +120,8 @@ audio {
 
 */
   left: 105vw;
-  height: 60.5vh;
-  bottom: 2vh;
+  height: 20.5vh;
+  bottom: 15vh;
   z-index: 1000;
   display: flex;
   justify-content: center;
