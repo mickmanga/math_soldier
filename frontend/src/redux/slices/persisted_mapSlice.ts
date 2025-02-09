@@ -42,7 +42,7 @@ const initialState: MapState = {
   currentIndex: 1
 };
 
-const mapSlice = createSlice({
+const persistedMapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
@@ -88,5 +88,5 @@ const mapSlice = createSlice({
   },
 });
 
-export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = mapSlice.actions;
-export default mapSlice.reducer;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+export default persistedMapSlice.reducer;

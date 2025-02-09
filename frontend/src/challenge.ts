@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 
@@ -1009,7 +1009,7 @@ let lastElementUpdated: null | MapElement = null;
 const checkForCurrentMapElementUpdate = () => {
   const heroLeft = getHeroLeft();
 
-  const mapElementsOnScreen = store.getState().map.elementsOnScreen;
+  const mapElementsOnScreen = store.getState().persistedMap.elementsOnScreen;
 
   mapElementsOnScreen.forEach(
     element => {
@@ -1034,9 +1034,9 @@ const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet
 }
 
 const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
-  const currentIndex = store.getState().map.currentIndex;
+  const currentIndex = store.getState().persistedMap.currentIndex;
   store.dispatch(addElementOnScreen(currentIndex));
-  const element = store.getState().map.elements[currentIndex];
+  const element = store.getState().persistedMap.elements[currentIndex];
   const elementDiv = createMapElement(element);
 
   return createMapBlock(0, imagePath, zIndex, elementDiv);
@@ -1048,10 +1048,10 @@ const createMapElement = (element: MapElement) => {
 
 const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
    store.dispatch(decreaseStartIndex());
-   const startIndex = store.getState().map.startIndex;
+   const startIndex = store.getState().persistedMap.startIndex;
    store.dispatch(addElementOnScreen(startIndex));
 
-   const element = store.getState().map.elements[startIndex];
+   const element = store.getState().persistedMap.elements[startIndex];
    const elementDiv = createMapElement(element);
 
    return createMapBlock(left, imagePath, zIndex, elementDiv);
@@ -1059,9 +1059,9 @@ const createElementMapBlockStart = (left:number, imagePath: string, zIndex: stri
 
 const createElementMapBlockEnd = (left:number, imagePath: string, zIndex: string) => {
   store.dispatch(increaseEndIndex());
-  const endIndex = store.getState().map.endIndex;
+  const endIndex = store.getState().persistedMap.endIndex;
   store.dispatch(addElementOnScreen(endIndex));
-  const element = store.getState().map.elements[endIndex];
+  const element = store.getState().persistedMap.elements[endIndex];
   const elementDiv = createMapElement(element);
 
   return createMapBlock(left, imagePath, zIndex, elementDiv);
@@ -1933,7 +1933,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
 
     if(index === 4 && gameMode === GAME_MODES.discovery){
-     store.dispatch(removeElementFromElementsOnScreen(store.getState().map.startIndex)) 
+     store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
      store.dispatch(increaseStartIndex());
     }
 
@@ -1944,8 +1944,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   
   const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
 
-  const endIndex = store.getState().map.endIndex;
-  const elements = store.getState().map.elements;
+  const endIndex = store.getState().persistedMap.endIndex;
+  const elements = store.getState().persistedMap.elements;
 
     if (
       lastMapDomElement &&
@@ -1989,7 +1989,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   (mapSet, index) => {
 
-   const startIndex = store.getState().map.startIndex;
+   const startIndex = store.getState().persistedMap.startIndex;
    const firstMapDomElement = mapSet.maps[0];
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
@@ -3185,7 +3185,6 @@ document.addEventListener("keyup", (event) => {
     if(response){
       window.location.replace(window.location.href)
     }
-
   }
 
   if(event.key === "Shift"){
@@ -3223,7 +3222,7 @@ const findMapElement = (elementId: string) => {
 
 const launchChallenge = (pillarId: string) => {
 
-  store.getState().map.elementsOnScreen.forEach(
+  store.getState().persistedMap.elementsOnScreen.forEach(
     element => {
       if(element.id !== pillarId){
         const mapElement = findMapElement(element.id);
@@ -3822,7 +3821,7 @@ const animateLightning = () => {
  }
 
  const initElementsIndexes = () => {
-  const currentIndex = store.getState().map.currentIndex;
+  const currentIndex = store.getState().persistedMap.currentIndex;
 
    store.dispatch(setStartIndex(currentIndex));
    store.dispatch(setEndIndex(currentIndex));

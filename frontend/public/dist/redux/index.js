@@ -418,10 +418,10 @@
   function assertReducerShape(reducers) {
     Object.keys(reducers).forEach((key) => {
       const reducer = reducers[key];
-      const initialState4 = reducer(void 0, {
+      const initialState5 = reducer(void 0, {
         type: actionTypes_default.INIT
       });
-      if (typeof initialState4 === "undefined") {
+      if (typeof initialState5 === "undefined") {
         throw new Error(false ? formatProdErrorMessage(12) : `The slice reducer for key "${key}" returned undefined during initialization. If the state passed to the reducer is undefined, you must explicitly return the initial state. The initial state may not be undefined. If you don't want to set a value for this reducer, you can use null instead of undefined.`);
       }
       if (typeof reducer(void 0, {
@@ -1777,7 +1777,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   function isStateFunction(x) {
     return typeof x === "function";
   }
-  function createReducer(initialState4, mapOrBuilderCallback) {
+  function createReducer(initialState5, mapOrBuilderCallback) {
     if (true) {
       if (typeof mapOrBuilderCallback === "object") {
         throw new Error(false ? formatProdErrorMessage(8) : "The object notation for `createReducer` has been removed. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createReducer");
@@ -1785,10 +1785,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     let [actionsMap, finalActionMatchers, finalDefaultCaseReducer] = executeReducerBuilderCallback(mapOrBuilderCallback);
     let getInitialState;
-    if (isStateFunction(initialState4)) {
-      getInitialState = () => freezeDraftable(initialState4());
+    if (isStateFunction(initialState5)) {
+      getInitialState = () => freezeDraftable(initialState5());
     } else {
-      const frozenInitialState = freezeDraftable(initialState4);
+      const frozenInitialState = freezeDraftable(initialState5);
       getInitialState = () => frozenInitialState;
     }
     function reducer(state = getInitialState(), action) {
@@ -2353,7 +2353,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var { setUser, clearUser } = userSlice.actions;
   var userSlice_default = userSlice.reducer;
 
-  // src/redux/slices/mapSlice.ts
+  // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
       { type: "form", id: "01", formBlocks: [
@@ -2388,7 +2388,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     endIndex: 0,
     currentIndex: 1
   };
-  var mapSlice = createSlice({
+  var persistedMapSlice = createSlice({
     name: "map",
     initialState: initialState2,
     reducers: {
@@ -2432,17 +2432,33 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = mapSlice.actions;
-  var mapSlice_default = mapSlice.reducer;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+  var persisted_mapSlice_default = persistedMapSlice.reducer;
+
+  // src/redux/slices/unpersisted_mapSlice.ts
+  var initialState3 = {
+    currentlyFinishingChallenge: false
+  };
+  var unpersistedMapSlice = createSlice({
+    name: "map",
+    initialState: initialState3,
+    reducers: {
+      setCurrentlyFinishingChallenge: (state, action) => {
+        state.currentlyFinishingChallenge = action.payload;
+      }
+    }
+  });
+  var { setCurrentlyFinishingChallenge } = unpersistedMapSlice.actions;
+  var unpersisted_mapSlice_default = unpersistedMapSlice.reducer;
 
   // src/redux/slices/challengeSlice.ts
-  var initialState3 = {
+  var initialState4 = {
     answers: [],
     currentAnswerIndex: 0
   };
   var challengeSlice = createSlice({
     name: "challengeAnswers",
-    initialState: initialState3,
+    initialState: initialState4,
     reducers: {
       addAnswer: (state, action) => {
         state.answers.push(action.payload);
@@ -2868,11 +2884,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var persistedUserReducer = persistReducer(persistConfig, userSlice_default);
   var persistedChallengeReducer = persistReducer(persistConfig, challengeSlice_default);
+  var persistedMapReducer = persistReducer(persistConfig, persisted_mapSlice_default);
   var store = configureStore({
     reducer: {
       user: persistedUserReducer,
       challenge: persistedChallengeReducer,
-      map: mapSlice_default
+      persistedMap: persistedMapReducer,
+      unpersistedMapReducer: unpersisted_mapSlice_default
     }
   });
 })();
