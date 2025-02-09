@@ -544,15 +544,27 @@ const buildEnemyElement = () => {
   return newOpponentContainer;
 };
 
+let lastEnemyIndex = 0;
+
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
+  createRedHammerCharacter,
   createGolemCharacter,
+  createWitchCharacter,
+  createDwarfCharacter,
+  createOrcCharacter
  ];
+
+ lastEnemyIndex++;
+
+ if(lastEnemyIndex === enemyCreationCallbacks.length){
+  lastEnemyIndex = 0;
+ }
  
  const enemyIndex = Math.floor(Math.random() * (enemyCreationCallbacks.length - 1));
 
- const enemyCharacter = enemyCreationCallbacks[enemyIndex]();
+ const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
 
   if (!enemyCharacter) {
     return;
