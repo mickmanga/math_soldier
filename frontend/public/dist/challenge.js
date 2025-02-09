@@ -3249,6 +3249,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setTimeout(
       () => {
         endOfChallengeContainer.style.opacity = "0";
+        store.dispatch(setCurrentlyFinishingChallenge(true));
       },
       3e3
     );
@@ -4161,25 +4162,55 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const endIndex = store.getState().persistedMap.endIndex;
         const elements = store.getState().persistedMap.elements;
         if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
-            if (endIndex >= elements.length - 1) {
+          if (index === 4) {
+            if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
               interruptAnimation(4 /* hero_walk_right */);
               stopCameraMovingToRight();
               return;
             }
+            if (store.getState().unpersistedMapReducer.currentlyFinishingChallenge) {
+              store.dispatch(setCurrentlyFinishingChallenge(false));
+            }
           }
           ;
-          mapSet.maps.push(
-            index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+          if (index === 4) {
+            if (gameMode === 0 /* discovery */) {
+              mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+            } else {
+              mapSet.maps.push(store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+                lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
+                mapSet.imagePath,
+                `${index}`
+              ));
+            }
+          } else {
+            mapSet.maps.push(createMapBlock(
               lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
               mapSet.imagePath,
               `${index}`
-            )
-          );
+            ));
+          }
         }
       }
     );
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+  };
+  var buildEndOfChallengeElement = () => {
+    const endOfChallengeContainer2 = document.createElement("div");
+    endOfChallengeContainer2.style.position = "absolute";
+    endOfChallengeContainer2.style.zIndex = "1500";
+    endOfChallengeContainer2.style.left = "40vw";
+    endOfChallengeContainer2.style.top = "30vh";
+    endOfChallengeContainer2.style.height = "30vh";
+    endOfChallengeContainer2.style.width = "40vw";
+    endOfChallengeContainer2.style.background = "blue";
+    return endOfChallengeContainer2;
+  };
+  var createEndOfChallengeMapBlock = (left, imagePath, zIndex) => {
+    alert("creating end of chal block");
+    store.dispatch(setCurrentlyFinishingChallenge(false));
+    const endOfChallengeElement = buildEndOfChallengeElement();
+    return createMapBlock(left, imagePath, zIndex, endOfChallengeElement);
   };
   var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
     if (gameMode === 1 /* challenge */) {
@@ -4769,7 +4800,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     superSpeedOn = !superSpeedOn;
   };
   document.addEventListener("keyup", (event) => {
-    if (event.key === "Escape") {
+    if (event.key === "a") {
       const response = confirm("voulez vous interrompre ce challenge?");
       if (response) {
         window.location.replace(window.location.href);

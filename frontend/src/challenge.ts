@@ -2,6 +2,7 @@ import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex }
 import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
+import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
 
 enum GAME_MODES {
   discovery,
@@ -633,7 +634,6 @@ const endOfChallengeContainer = document.getElementById("end_of_challenge_contai
 const transitionAudio = document.getElementById("transition_audio")! as HTMLAudioElement;
 transitionAudio.volume = 0.15;
 
-
 const levelUpAudio = document.getElementById(
   "levelup_audio"
 )! as HTMLAudioElement;
@@ -646,9 +646,12 @@ const launchEndOfChallenge = () => {
   endOfChallengeContainer.style.opacity = "1";
   endOfChallengeContainer.innerHTML = "Arrivée à la porte gelée...";
 
+  
+
   setTimeout(
     () => {
       endOfChallengeContainer.style.opacity = "0";
+      store.dispatch(setCurrentlyFinishingChallenge(true));
     }, 3000
   )
 
@@ -1041,6 +1044,15 @@ const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: str
 
   return createMapBlock(0, imagePath, zIndex, elementDiv);
 };
+
+type ChallengeEnd = {type: "ChallengeEnd"};
+
+type ExtendedMapElement = MapElement | ChallengeEnd;
+
+
+const createMapElement2 = (mapElement: ExtendedMapElement) => {
+  return mapElement.type === "form" ? createFormElement(mapElement) : createChallengPilar(mapElement);
+}
 
 const createMapElement = (element: MapElement) => {
   return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
@@ -1940,10 +1952,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     firstMapDomElement.remove();
     mapSet.maps.shift();
   }
-  
-  
-  const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
 
+  const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
   const endIndex = store.getState().persistedMap.endIndex;
   const elements = store.getState().persistedMap.elements;
 
@@ -1952,38 +1962,69 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
       
-      if(index === 4 && gameMode === GAME_MODES.discovery){
-  
-       if(endIndex >= (elements.length - 1)){
+      if(index === 4){
+        if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
+          interruptAnimation(ANIMATION_ID.hero_walk_right);
+          stopCameraMovingToRight();
+           return;
+         }
 
-        interruptAnimation(ANIMATION_ID.hero_walk_right);
-         stopCameraMovingToRight();
-         return;
+      if(store.getState().unpersistedMapReducer.currentlyFinishingChallenge){
+        store.dispatch(setCurrentlyFinishingChallenge(false));
       }
      };
-     
-     mapSet.maps.push(
-      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`) :
-       createMapBlock(
+
+     if(index === 4){
+
+      if(gameMode === GAME_MODES.discovery){
+        mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+      } else {
+          mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+            lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
+          ))
+      }
+    } else {
+      mapSet.maps.push(createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
-        )
-      );
-      } 
+       ));
     }
+    } 
+   }
   )
-
  requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
-
 };
+
+const buildEndOfChallengeElement = () => {
+
+  const endOfChallengeContainer = document.createElement("div");
+  endOfChallengeContainer.style.position = "absolute";
+  endOfChallengeContainer.style.zIndex = "1500";
+  endOfChallengeContainer.style.left = "40vw";
+  endOfChallengeContainer.style.top = "30vh";
+  endOfChallengeContainer.style.height = "30vh";
+  endOfChallengeContainer.style.width = "40vw";
+  endOfChallengeContainer.style.background = "blue";
+
+  return endOfChallengeContainer;
+}
+
+
+const createEndOfChallengeMapBlock = (left:number, imagePath: string, zIndex: string) => {
+  alert("creating end of chal block")
+
+   store.dispatch(setCurrentlyFinishingChallenge(false));
+
+   const endOfChallengeElement = buildEndOfChallengeElement();
+
+   return createMapBlock(left, imagePath, zIndex, endOfChallengeElement);
+}
 
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
-  
   if(gameMode === GAME_MODES.challenge){
     return;
   }
-
 
   MAP_SETS.forEach(
 
@@ -3180,7 +3221,7 @@ const executeSuperSpeedToggle = () => {
 
 document.addEventListener("keyup", (event) => {
 
-  if(event.key === "Escape"){
+  if(event.key === "a"){
     const response = confirm("voulez vous interrompre ce challenge?");
     if(response){
       window.location.replace(window.location.href)
