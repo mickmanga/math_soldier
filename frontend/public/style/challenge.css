@@ -122,7 +122,7 @@ audio {
   left: 105vw;
   height: 60.5vh;
   bottom: 2vh;
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: flex-end;

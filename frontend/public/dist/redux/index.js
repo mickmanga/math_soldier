@@ -2355,22 +2355,27 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02", formBlocks: [
-      {
-        question: "combien fait 1+1",
-        answer: "2",
-        validated: false
-      },
-      {
-        question: "combien fait 2+2",
-        answer: "4",
-        validated: false
-      }
-    ] }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
+    elements: [
+      { type: "challenge", id: "01" },
+      { type: "form", id: "02", formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      { type: "challenge", id: "03" },
+      { type: "challenge", id: "04" }
+    ],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 0
+    currentIndex: 2
   };
   var mapSlice = createSlice({
     name: "map",
@@ -2379,11 +2384,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       setElements: (state, action) => {
         state.elements = action.payload.elements;
       },
+      setEndIndex: (state, action) => {
+        state.endIndex = action.payload;
+      },
       increaseEndIndex: (state) => {
         state.endIndex++;
       },
       decreaseEndIndex: (state) => {
         state.endIndex--;
+      },
+      setStartIndex: (state, action) => {
+        state.startIndex = action.payload;
       },
       increaseStartIndex: (state) => {
         state.startIndex++;
@@ -2410,7 +2421,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/challengeSlice.ts

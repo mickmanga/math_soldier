@@ -2364,22 +2364,27 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
-    elements: [{ type: "challenge", id: "01" }, { type: "form", id: "02", formBlocks: [
-      {
-        question: "combien fait 1+1",
-        answer: "2",
-        validated: false
-      },
-      {
-        question: "combien fait 2+2",
-        answer: "4",
-        validated: false
-      }
-    ] }, { type: "challenge", id: "03" }, { type: "challenge", id: "04" }],
+    elements: [
+      { type: "challenge", id: "01" },
+      { type: "form", id: "02", formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      { type: "challenge", id: "03" },
+      { type: "challenge", id: "04" }
+    ],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 0
+    currentIndex: 2
   };
   var mapSlice = createSlice({
     name: "map",
@@ -2388,11 +2393,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       setElements: (state, action) => {
         state.elements = action.payload.elements;
       },
+      setEndIndex: (state, action) => {
+        state.endIndex = action.payload;
+      },
       increaseEndIndex: (state) => {
         state.endIndex++;
       },
       decreaseEndIndex: (state) => {
         state.endIndex--;
+      },
+      setStartIndex: (state, action) => {
+        state.startIndex = action.payload;
       },
       increaseStartIndex: (state) => {
         state.startIndex++;
@@ -2419,7 +2430,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen } = mapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = mapSlice.actions;
   var mapSlice_default = mapSlice.reducer;
 
   // src/redux/slices/userSlice.ts
@@ -3137,11 +3148,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createRedHammerCharacter,
       createGolemCharacter,
-      createWitchCharacter,
-      createDwarfCharacter,
-      createOrcCharacter
+      createRedHammerCharacter,
+      createWitchCharacter
     ];
     lastEnemyIndex++;
     if (lastEnemyIndex === enemyCreationCallbacks.length) {
@@ -4239,8 +4248,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var ALL_HERO_STATES = [0 /* idle */, 2 /* attacking */, 3 /* dead */, 1 /* running */];
   var ALL_TRANSFORMED_HERO_STATES = [4 /* transformed_idle */, 6 /* transformed_attacking */, 5 /* transformed_running */, 7 /* transformed_dead */];
   var ALL_RED_HAMMER_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_ORC_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
-  var ALL_DWARF_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var ALL_GOLEM_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var ALL_WITCH_ENEMY_STATES = [0 /* idle */, 1 /* running */, 2 /* attacking */, 3 /* dead */];
   var heroAnimations = [
@@ -4492,130 +4499,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var orcAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 39 /* orc_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/orc/idle",
-              length: 42
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 41 /* orc_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/orc/attack",
-              length: 50
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 22 /* hammer_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 11
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_ORC_ENEMY_STATES,
-          animation: {
-            id: 43 /* orc_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
-  var dwarfAnimations = [
-    {
-      animationType: 10 /* idle */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 44 /* dwarf_opponent_idle */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/idle",
-              length: 57
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 0 /* attack */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 46 /* dwarf_opponent_attack */,
-            sprite: {
-              path: "assets/challenge/characters/enemies/dwarf/attack",
-              length: 38
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 9 /* death */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 47 /* dwarf_opponent_death */,
-            sprite: {
-              path: "assets/challenge/explosion",
-              length: 11
-            }
-          }
-        }
-      ]
-    },
-    {
-      animationType: 12 /* movement */,
-      animationsStatesBlocks: [
-        {
-          states: ALL_DWARF_ENEMY_STATES,
-          animation: {
-            id: 48 /* dwarf_opponent_move */,
-            sprite: {
-              path: "",
-              length: 0
-            }
-          }
-        }
-      ]
-    }
-  ];
   var witchAnimations = [
     {
       animationType: 10 /* idle */,
@@ -4822,30 +4705,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);
-  };
-  var createOrcCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15.5vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "105vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
-  };
-  var createDwarfCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "105vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 49 /* camera_left_to_right */ : 50 /* camera_right_to_left */] === 0) {
@@ -5344,6 +5203,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`, lastSet);
     }
   };
+  var initElementsIndexes = () => {
+    const currentIndex = store.getState().map.currentIndex;
+    store.dispatch(setStartIndex(currentIndex));
+    store.dispatch(setEndIndex(currentIndex));
+  };
   window.onload = () => {
     epicAudio.volume = 0;
     windAudio.volume = 0.4;
@@ -5352,6 +5216,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setInitialGameVolume();
     launchHardModeToggle();
     setHeroClass();
+    initElementsIndexes();
     createMapSets();
     createGameAccordingToMode();
     updateLifePointsDisplay();

@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, updateCurrentIndex} from "./redux/slices/mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 
@@ -549,11 +549,9 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter,
   createGolemCharacter,
-  createWitchCharacter,
-  createDwarfCharacter,
-  createOrcCharacter
+  createRedHammerCharacter,
+  createWitchCharacter
  ];
 
  lastEnemyIndex++;
@@ -1025,7 +1023,6 @@ const checkForCurrentMapElementUpdate = () => {
           lastElementUpdated = element;
         } 
       }
-
     }
   )
 
@@ -1037,13 +1034,12 @@ const createMapSet = (imagePath: string, velocity: number, zIndex = "1", lastSet
 }
 
 const createElementMapBlockCenter = (left:number, imagePath: string, zIndex: string) => {
-    const currentIndex = store.getState().map.currentIndex;
-    store.dispatch(addElementOnScreen(currentIndex));
-    const element = store.getState().map.elements[currentIndex];
-    const elementDiv = createMapElement(element);
+  const currentIndex = store.getState().map.currentIndex;
+  store.dispatch(addElementOnScreen(currentIndex));
+  const element = store.getState().map.elements[currentIndex];
+  const elementDiv = createMapElement(element);
 
-    return createMapBlock(0, imagePath, zIndex, elementDiv);
-
+  return createMapBlock(0, imagePath, zIndex, elementDiv);
 };
 
 const createMapElement = (element: MapElement) => {
@@ -3017,7 +3013,7 @@ const createGolemCharacter = (): DefaultCharacter => {
 
   resetViewPoint();
 
- return new DefaultCharacter(newEnnemyImg, GolemEnemyCharacterStates.idle, golemAnimations);
+  return new DefaultCharacter(newEnnemyImg, GolemEnemyCharacterStates.idle, golemAnimations);
  
 }
 
@@ -3817,6 +3813,13 @@ const animateLightning = () => {
 
  }
 
+ const initElementsIndexes = () => {
+  const currentIndex = store.getState().map.currentIndex;
+
+   store.dispatch(setStartIndex(currentIndex));
+   store.dispatch(setEndIndex(currentIndex));
+ }
+
 window.onload = () => {
 
   epicAudio.volume = 0;
@@ -3827,6 +3830,7 @@ window.onload = () => {
   setInitialGameVolume();
   launchHardModeToggle();
   setHeroClass();
+  initElementsIndexes();
   createMapSets();
   createGameAccordingToMode();
   updateLifePointsDisplay();
