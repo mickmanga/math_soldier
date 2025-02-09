@@ -2764,8 +2764,8 @@ const golemAnimations = [
       {
         id: ANIMATION_ID.golem_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/neutral/golem2",
-          length: 14
+          path: "assets/challenge/characters/enemies/golem/idle",
+          length: 12
       }
       }
      }
@@ -2997,6 +2997,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-4.5vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 

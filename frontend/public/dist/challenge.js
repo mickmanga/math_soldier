@@ -4426,8 +4426,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 24 /* golem_opponent_idle */,
             sprite: {
-              path: "assets/challenge/characters/neutral/golem2",
-              length: 14
+              path: "assets/challenge/characters/enemies/golem/idle",
+              length: 12
             }
           }
         }
@@ -4536,6 +4536,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newEnnemyImg = document.createElement("img");
     newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-4.5vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
