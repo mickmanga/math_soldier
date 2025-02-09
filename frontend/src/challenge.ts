@@ -3180,6 +3180,14 @@ const executeSuperSpeedToggle = () => {
 
 document.addEventListener("keyup", (event) => {
 
+  if(event.key === "Escape"){
+    const response = confirm("voulez vous interrompre ce challenge?");
+    if(response){
+      window.location.replace(window.location.href)
+    }
+
+  }
+
   if(event.key === "Shift"){
     heroRunning = false;
 

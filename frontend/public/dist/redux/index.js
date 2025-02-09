@@ -2356,8 +2356,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/mapSlice.ts
   var initialState2 = {
     elements: [
-      { type: "challenge", id: "01" },
-      { type: "form", id: "02", formBlocks: [
+      { type: "form", id: "01", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2369,13 +2368,25 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
+      { type: "challenge", id: "02" },
       { type: "challenge", id: "03" },
-      { type: "challenge", id: "04" }
+      { type: "form", id: "04", formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] }
     ],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 2
+    currentIndex: 1
   };
   var mapSlice = createSlice({
     name: "map",
