@@ -3510,12 +3510,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     mapElementsOnScreen.forEach(
       (element) => {
         const elementId = element.id;
-        const foundElement = document.getElementById(`mapElement_${elementId}`);
+        const foundElement = document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
         if (foundElement) {
           const foundElementLeft = foundElement.getBoundingClientRect().left;
           if (foundElementLeft > heroLeft && foundElementLeft < heroLeft + window.innerWidth * 0.1 && element !== lastElementUpdated) {
             lastElementUpdated = element;
-            alert("element updated");
           }
         }
       }
@@ -4136,6 +4135,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
   };
   var checkForScreenUpdateFromRightToLeft = (throttleNum) => {
+    if (gameMode === 1 /* challenge */) {
+      return;
+    }
     MAP_SETS.forEach(
       (mapSet, index) => {
         const startIndex = store.getState().map.startIndex;
@@ -4494,12 +4496,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pilarBackgroundContainer.style.display = "flex";
     pilarBackgroundContainer.style.justifyContent = "center";
     pilarBackgroundContainer.style.alignItems = "center";
-    const pilarContainer = document.createElement("div");
-    pilarContainer.style.width = "10vw";
-    pilarContainer.style.height = "20vh";
-    pilarContainer.style.background = "grey";
-    pilarContainer.id = `mapElement_${element.id}`;
-    pilarBackgroundContainer.append(pilarContainer);
+    const pillarcontainer = document.createElement("div");
+    pillarcontainer.style.width = "5vw";
+    pillarcontainer.style.height = "20vh";
+    pillarcontainer.style.background = "grey";
+    pillarcontainer.id = `${MAP_ELEMENT_PREFIX}${element.id}`;
+    pillarcontainer.style.cursor = "pointer";
+    pillarcontainer.onclick = (event) => {
+      const response = confirm("voulez vous lancer le challenge?");
+      if (response) {
+        launchChallenge(element.id);
+      }
+    };
+    pilarBackgroundContainer.append(pillarcontainer);
     return pilarBackgroundContainer;
   };
   var createFormElement = (formElement) => {
@@ -4517,7 +4526,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.width = "20vw";
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
-    formContainer.id = `mapElement_${formElement.id}`;
+    formContainer.id = `${MAP_ELEMENT_PREFIX}${formElement.id}`;
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
   };
@@ -4586,7 +4595,23 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var launchChallenge = () => {
+  var MAP_ELEMENT_PREFIX = "mapElement_";
+  var findMapElement = (elementId) => {
+    return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+  };
+  var launchChallenge = (pillarId) => {
+    store.getState().map.elementsOnScreen.forEach(
+      (element) => {
+        if (element.id !== pillarId) {
+          const mapElement = findMapElement(element.id);
+          if (!mapElement) {
+            return;
+          }
+          mapElement.remove();
+          store.dispatch(removeElementFromElementsOnScreen(parseInt(element.id)));
+        }
+      }
+    );
     breathAudio.play();
     gameMode = 1 /* challenge */;
     lightningImg.style.opacity = "1";
@@ -4606,9 +4631,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "r") {
       window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
-    }
-    if (event.key === "l") {
-      launchChallenge();
     }
     if (event.key === "d") {
       heroMoving = true;

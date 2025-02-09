@@ -6,7 +6,7 @@ export interface MapState {
   elementsOnScreen: Array<MapElement>;
   startIndex: number,
   endIndex: number,
-  currentIndex: number
+  currentIndex: number,
 }
 
 const initialState: MapState = {

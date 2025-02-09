@@ -1004,14 +1004,13 @@ const checkForCurrentMapElementUpdate = () => {
   mapElementsOnScreen.forEach(
     element => {
       const elementId = element.id;
-      const foundElement = document.getElementById(`mapElement_${elementId}`);
+      const foundElement = document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
 
       if(foundElement){
         const foundElementLeft = foundElement.getBoundingClientRect().left;
         if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) && element !== lastElementUpdated){
         //  store.dispatch(updateCurrentIndex(2));
           lastElementUpdated = element;
-          alert("element updated");
         } 
       }
 
@@ -1916,8 +1915,6 @@ const detectCollision = () => {
 let screenUpdateLockedToLeft= false;
 
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
-
-
   
   MAP_SETS.forEach(
 
@@ -1973,6 +1970,12 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
+
+  
+  if(gameMode === GAME_MODES.challenge){
+    return;
+  }
+
 
   MAP_SETS.forEach(
 
@@ -2928,18 +2931,26 @@ const createChallengPilar = (element: MapElement) => {
   pilarBackgroundContainer.style.justifyContent = "center";
   pilarBackgroundContainer.style.alignItems = "center";
 
-  const pilarContainer = document.createElement("div");
-  pilarContainer.style.width = "10vw";
-  pilarContainer.style.height = "20vh";
-  pilarContainer.style.background = "grey";
-  pilarContainer.id = `mapElement_${element.id}`;
+  const pillarcontainer = document.createElement("div");
+  pillarcontainer.style.width = "5vw";
+  pillarcontainer.style.height = "20vh";
+  pillarcontainer.style.background = "grey";
+  pillarcontainer.id = `${MAP_ELEMENT_PREFIX}${element.id}`;
+  pillarcontainer.style.cursor = "pointer";
+  pillarcontainer.onclick = (event) => {
+    const response = confirm("voulez vous lancer le challenge?");
+    if(response){
+      launchChallenge(element.id);
+    }
+  }
 
 
-  pilarBackgroundContainer.append(pilarContainer);
+  pilarBackgroundContainer.append(pillarcontainer);
 
   return pilarBackgroundContainer;
-  
+ 
 }
+
 
 const setFormContent = (formHtmlContainer: HTMLElement, formBlock: FormBlock, newIndex: number) => {
 
@@ -2972,7 +2983,7 @@ const createFormElement = (formElement: MapElement) => {
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
     
-    formContainer.id = `mapElement_${formElement.id}`;
+    formContainer.id = `${MAP_ELEMENT_PREFIX}${formElement.id}`;
     formBackgroundContainer.append(formContainer);
 
     return formBackgroundContainer;
@@ -3187,8 +3198,28 @@ document.addEventListener("keyup", (event) => {
 
 });
 
+const MAP_ELEMENT_PREFIX = "mapElement_";
 
-const launchChallenge = () => {
+const findMapElement = (elementId: string) => {
+  return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+}
+
+const launchChallenge = (pillarId: string) => {
+
+  store.getState().map.elementsOnScreen.forEach(
+    element => {
+      if(element.id !== pillarId){
+        const mapElement = findMapElement(element.id);
+        if(!mapElement){
+          return;
+        }
+          mapElement.remove();
+          store.dispatch(removeElementFromElementsOnScreen(parseInt(element.id)));
+        
+      }
+    }
+  )
+
   breathAudio.play();
   gameMode = GAME_MODES.challenge;
   lightningImg.style.opacity = "1";
@@ -3212,10 +3243,6 @@ document.addEventListener("keydown", (event) => {
 
   if(event.key === "r"){
     window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
-  }
-
-  if(event.key === "l"){
-    launchChallenge();
   }
 
   if (event.key === "d") {

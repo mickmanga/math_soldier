@@ -120,12 +120,16 @@ audio {
 
 */
   left: 105vw;
-  height: 20.5vh;
-  bottom: 15vh;
+  height: 60.5vh;
+  bottom: 2vh;
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+
+.challengePillar {
+  cursor: pointer;
 }
 
 .gradeBlock {
