@@ -20,9 +20,7 @@ body {
     font-family: "CustomFont", cursive;
     font-weight: 400;
     font-style: normal;
-
   }
-
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -90,6 +88,11 @@ body {
    height: 10vh;
    width: 10vw;
    top: 88vh;
+}
+
+#master_container img {
+  height: 100%;
+  width: auto;
 }
 
 #interface_container{

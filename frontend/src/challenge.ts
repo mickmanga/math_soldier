@@ -28,6 +28,8 @@ const MAP_SETS: MapSet[] = [];
 const heroContainer = document.getElementById("hero_container")!;
 const heroImage = document.getElementById("heroImg")! as HTMLImageElement;
 
+const deadInterfaceContainer = document.getElementById("interface_container")!;
+
 const swordSlashImg = document.getElementById(
   "sword_slash"
 )! as HTMLImageElement;
@@ -303,6 +305,7 @@ declare global {
     launchAttack: (event: Event) => void;
     launchInvisibilityToggle: (event: Event) => void;
     openMap: (event: Event) => void;
+    tryAgain: (event: Event) => void;
   }
 }
 
@@ -642,14 +645,26 @@ const breathAudio = document.getElementById("breath_audio")! as HTMLAudioElement
 
 levelUpAudio.volume = 1;
 
+const tryAgain = () => {
+  window.location.replace(window.location.href);
+}
+
 const launchEndOfChallenge = () => {
   endOfChallengeContainer.style.opacity = "1";
   endOfChallengeContainer.innerHTML = "Arrivée à la porte gelée...";
+  hideChallengeDisplay();
 
     setTimeout(
     () => {
       endOfChallengeContainer.style.opacity = "0";
       store.dispatch(setCurrentlyFinishingChallenge(true));
+      deadInterfaceContainer.style.display = "flex";
+      if(heroIsAlive){ 
+       setTimeout(
+         stopRun,
+         3000
+       )
+      }
     }, 3000
   )
 
@@ -1516,6 +1531,8 @@ const launchAttack = (special = false) => {
     }, special ? 660 : 350)
   );
 };
+
+window.tryAgain = tryAgain;
 
 window.launchAttack = (event: Event) => {
   if (!gameLaunched) {
@@ -3265,6 +3282,13 @@ const findMapElement = (elementId: string) => {
   return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
 }
 
+const hideChallengeDisplay = () => {
+  lightningImg.style.opacity = "0";
+  answerDataContainer.style.opacity = "0";
+  scoreContainer.style.opacity = "0";
+  topScoreContainer.style.opacity = "0";
+}
+
 const launchChallenge = (pillarId: string) => {
 
   store.getState().persistedMap.elementsOnScreen.forEach(
@@ -3303,7 +3327,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if(event.key === "r"){
-    window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+    window.location.replace(window.location.href);
   }
 
   if (event.key === "d") {
@@ -3732,12 +3756,19 @@ const launchDeathAnimation = () => {
 
     clearGameTimeouts();
 
+    if (enemiesComingTimeout) {
+      clearTimeout(enemiesComingTimeout);
+      enemiesComingTimeout = null;
+    }
+  
+    ennemiesOnScreen.forEach(
+      (enemy) => {
+        ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!.id] = 0;
+      }
+    )
+
     setTimeout(
-      () =>
-        (window.location.href = hardMode
-          ? "http://localhost:3001/dead_hard"
-          : "http://localhost:3001/dead"),
-      1000
+      launchEndOfChallenge
     );
   };
 

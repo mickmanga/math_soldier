@@ -2907,6 +2907,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var MAP_SETS = [];
   var heroContainer = document.getElementById("hero_container");
   var heroImage = document.getElementById("heroImg");
+  var deadInterfaceContainer = document.getElementById("interface_container");
   var swordSlashImg = document.getElementById(
     "sword_slash"
   );
@@ -3243,13 +3244,24 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   );
   var breathAudio = document.getElementById("breath_audio");
   levelUpAudio.volume = 1;
+  var tryAgain = () => {
+    window.location.replace(window.location.href);
+  };
   var launchEndOfChallenge = () => {
     endOfChallengeContainer.style.opacity = "1";
     endOfChallengeContainer.innerHTML = "Arriv\xE9e \xE0 la porte gel\xE9e...";
+    hideChallengeDisplay();
     setTimeout(
       () => {
         endOfChallengeContainer.style.opacity = "0";
         store.dispatch(setCurrentlyFinishingChallenge(true));
+        deadInterfaceContainer.style.display = "flex";
+        if (heroIsAlive) {
+          setTimeout(
+            stopRun,
+            3e3
+          );
+        }
       },
       3e3
     );
@@ -3896,6 +3908,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }, special ? 660 : 350)
     );
   };
+  window.tryAgain = tryAgain;
   window.launchAttack = (event) => {
     if (!gameLaunched) {
       launchGame();
@@ -4834,6 +4847,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var findMapElement = (elementId) => {
     return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
   };
+  var hideChallengeDisplay = () => {
+    lightningImg.style.opacity = "0";
+    answerDataContainer.style.opacity = "0";
+    scoreContainer.style.opacity = "0";
+    topScoreContainer.style.opacity = "0";
+  };
   var launchChallenge = (pillarId) => {
     store.getState().persistedMap.elementsOnScreen.forEach(
       (element) => {
@@ -4865,7 +4884,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       checkForScreenUpdateFromLeftToRight(0);
     }
     if (event.key === "r") {
-      window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+      window.location.replace(window.location.href);
     }
     if (event.key === "d") {
       heroMoving = true;
@@ -5179,9 +5198,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         7 /* hero_death */
       );
       clearGameTimeouts();
+      if (enemiesComingTimeout) {
+        clearTimeout(enemiesComingTimeout);
+        enemiesComingTimeout = null;
+      }
+      ennemiesOnScreen.forEach(
+        (enemy) => {
+          ANIMATION_RUNNING_VALUES[getCharacterAnimationAccordingToType(enemy.character, 12 /* movement */).id] = 0;
+        }
+      );
       setTimeout(
-        () => window.location.href = hardMode ? "http://localhost:3001/dead_hard" : "http://localhost:3001/dead",
-        1e3
+        launchEndOfChallenge
       );
     };
     if (transformed) {

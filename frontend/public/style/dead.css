@@ -3,16 +3,16 @@ html {
   margin: 0;
   padding: 0;
 }
-
+/*
 body {
   font-family: Arial, sans-serif;
-  background-color: #1e1e1e;
-  color: #ffffff;
+  color: #fffbfb;
   line-height: 1.6;
   font-family: "MedievalSharp", cursive;
   font-weight: 400;
   font-style: normal;
 }
+*/
 h1, h2, h3 {
   color: #ffcc00;
 }
@@ -54,6 +54,8 @@ li {
   width: 100%;
 }
 
+/*
+
 #hero_container {
   position: absolute;
   left: 8vw;
@@ -64,6 +66,8 @@ li {
   width: 10vw;
   top: 85vh;
 }
+
+*/
 
 #master_container {
  position: absolute;
@@ -77,16 +81,24 @@ li {
 }
 
 #interface_container{
+  font-family: Arial, sans-serif;
+  color: #fffbfb;
+  line-height: 1.6;
+  font-family: "MedievalSharp", cursive;
+  font-weight: 400;
+  font-style: normal;
   position: absolute;
   top: 2.5vh;
-  left: 10vw;
-  width: 80vw;
-  height: 80vh;
+  left: 5vw;
+  width: 90vw;
+  height: 90vh;
   display: flex;
   border: solid 1px;
   border-radius: 15px;
-  background-color:rgba(0, 0, 0, 0.5);
+  background-color:rgba(0, 0, 0, 0.7);
   overflow: overlay;
+  display: none;
+  z-index: 5000;
 }
 
 ::-webkit-scrollbar {
