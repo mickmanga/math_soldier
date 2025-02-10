@@ -646,9 +646,7 @@ const launchEndOfChallenge = () => {
   endOfChallengeContainer.style.opacity = "1";
   endOfChallengeContainer.innerHTML = "Arrivée à la porte gelée...";
 
-  
-
-  setTimeout(
+    setTimeout(
     () => {
       endOfChallengeContainer.style.opacity = "0";
       store.dispatch(setCurrentlyFinishingChallenge(true));
@@ -1979,6 +1977,9 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       if(gameMode === GAME_MODES.discovery){
         mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
       } else {
+         console.log("check >");
+         console.log(store.getState().unpersistedMapReducer.currentlyFinishingChallenge);
+
           mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
             lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
           ))
@@ -3320,6 +3321,9 @@ document.addEventListener("keydown", (event) => {
   }
   
   if(event.key === "q"){
+    if(gameMode === GAME_MODES.challenge){
+      return;
+    }
     heroMoving = true;
     gameLaunched = true;
     currentHeroDirection=Direction.RIGHT_TO_LEFT;

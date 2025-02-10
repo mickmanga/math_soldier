@@ -4177,6 +4177,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             if (gameMode === 0 /* discovery */) {
               mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
             } else {
+              console.log("check >");
+              console.log(store.getState().unpersistedMapReducer.currentlyFinishingChallenge);
               mapSet.maps.push(store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
                 lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
                 mapSet.imagePath,
@@ -4878,6 +4880,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
     if (event.key === "q") {
+      if (gameMode === 1 /* challenge */) {
+        return;
+      }
       heroMoving = true;
       gameLaunched = true;
       currentHeroDirection = 1 /* RIGHT_TO_LEFT */;
