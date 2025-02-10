@@ -40,7 +40,6 @@
         (data) => {
           console.log(data);
           courseContainer.innerHTML = (courseContainer == null ? void 0 : courseContainer.innerHTML) + data.data;
-          courseContainer.innerHTML += "</n> <a href='http://localhost:3001/challenge?mode=hard&challengeId=" + data.challenge + "'><button>Lancer un challenge </b> </n></a>";
         }
       );
     } catch (error) {

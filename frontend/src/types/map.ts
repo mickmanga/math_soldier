@@ -15,4 +15,5 @@ export type FormBlock = {
 export type ChallengeElement = {
    type: string;
    id: string;
+   topScore: string
 };

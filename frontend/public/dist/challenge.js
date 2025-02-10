@@ -2377,8 +2377,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", id: "02" },
-      { type: "challenge", id: "03" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd15c" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd17e" },
       { type: "form", id: "04", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2390,7 +2390,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           answer: "4",
           validated: false
         }
-      ] }
+      ] },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1a2" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1c6" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1ea" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1fa" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd20a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd21a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd22a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
     startIndex: 0,
@@ -2930,10 +2938,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastStopInMs = null;
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
-  var getQueryParam = (param) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  };
   var answers = null;
   var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
     try {
@@ -2948,15 +2952,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       console.error("Error:", error);
     }
   });
-  var initializeChallengePage = () => __async(void 0, null, function* () {
-    const challengeId = getQueryParam("challengeId");
+  var initializeChallengePage = (challengeId) => __async(void 0, null, function* () {
     if (challengeId) {
       const challenge = yield fetchChallengeById(challengeId);
     } else {
       console.error("No challengeId provided in the URL.");
     }
   });
-  document.addEventListener("DOMContentLoaded", initializeChallengePage);
   var getHeroLeft = () => {
     if (!heroContainer) {
       console.log("we cant get the hero left, the hero container was not initialized yet");
@@ -3564,6 +3566,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   var lastElementUpdated = null;
+  var getElementIndexFromId = (elementId) => {
+    const elements = store.getState().persistedMap.elements;
+    for (let i = 0; elements.length; i++) {
+      const loopedOnElement = elements[i];
+      if (loopedOnElement.id === elementId) {
+        return i;
+      }
+    }
+    return null;
+  };
   var checkForCurrentMapElementUpdate = () => {
     const heroLeft = getHeroLeft();
     const mapElementsOnScreen = store.getState().persistedMap.elementsOnScreen;
@@ -3574,6 +3586,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         if (foundElement) {
           const foundElementLeft = foundElement.getBoundingClientRect().left;
           if (foundElementLeft > heroLeft && foundElementLeft < heroLeft + window.innerWidth * 0.1 && element !== lastElementUpdated) {
+            const elementIndex = getElementIndexFromId(foundElement.id);
+            if (elementIndex) {
+              alert("index updated");
+              store.dispatch(updateCurrentIndex(elementIndex));
+            }
             lastElementUpdated = element;
           }
         }
@@ -4866,8 +4883,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       }
     );
+    setupChallengeDisplay();
     breathAudio.play();
     gameMode = 1 /* challenge */;
+    initializeChallengePage(pillarId);
+  };
+  var setupChallengeDisplay = () => {
     lightningImg.style.opacity = "1";
     answerDataContainer.style.opacity = "1";
     scoreContainer.style.opacity = "1";

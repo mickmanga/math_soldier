@@ -2368,8 +2368,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", id: "02" },
-      { type: "challenge", id: "03" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd15c" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd17e" },
       { type: "form", id: "04", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2381,7 +2381,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           answer: "4",
           validated: false
         }
-      ] }
+      ] },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1a2" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1c6" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1ea" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd1fa" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd20a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd21a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd22a" },
+      { type: "challenge", topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
     startIndex: 0,

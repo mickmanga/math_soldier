@@ -47,9 +47,6 @@ const getChapters = async () => {
             data => {
                 console.log(data);
                 courseContainer.innerHTML = courseContainer?.innerHTML + data.data;
-
-                courseContainer.innerHTML += "</n> <a href='http://localhost:3001/challenge?mode=hard&challengeId=" + data.challenge + "'><button>Lancer un challenge </b> </n></a>"
-
             }
         )
     

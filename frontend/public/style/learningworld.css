@@ -5,7 +5,7 @@ html {
 
 @font-face {
   font-family: 'CustomFont'; /* Nom de la police */
-  src: url('../fonts/Y224.ttf') format('opentype'); /* Chemin du fichier .otf */
+  src: url('../fonts/Enchanted\ Land.otf') format('opentype'); /* Chemin du fichier .otf */
   font-weight: normal;
   font-style: normal;
 }
@@ -20,6 +20,7 @@ body {
     font-family: "CustomFont", cursive;
     font-weight: 400;
     font-style: normal;
+    font-size: large;
   }
 
   ::-webkit-scrollbar {
@@ -37,30 +38,31 @@ body {
   
   h1, h2, h3 {
     color: #2aced7;
+    font-size: xx-large;
   }
   h1 {
-    font-size: 19px;
     margin-bottom: 10px;
   }
   h2 {
-    font-size: 15px;
     margin-bottom: 10px;
   }
   h3 {
-    font-size: 12px;
     margin-bottom: 10px;
   }
   p {
     margin-bottom: 15px;
     padding: 30px;
-    font-size: 6px;
+    font-size: 25px;
   }
   ul {
     margin-left: 20px;
     margin-bottom: 15px;
+    font-size: xx-large;
   }
   li {
     margin-bottom: 8px;
+    font-size: xx-large;
+
   }
 
 .characterImg {

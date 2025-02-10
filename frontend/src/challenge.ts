@@ -94,8 +94,7 @@ const fetchChallengeById = async (challengeId: string): Promise<void> => {
 };
 
 // On page load, get the challengeId from the URL and fetch the challenge
-const initializeChallengePage = async () => {
-  const challengeId = getQueryParam('challengeId');
+const initializeChallengePage = async (challengeId: string) => {
   if (challengeId) {
     const challenge = await fetchChallengeById(challengeId);
 
@@ -104,7 +103,7 @@ const initializeChallengePage = async () => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', initializeChallengePage);
+//document.addEventListener('DOMContentLoaded', initializeChallengePage);
 
 const getHeroLeft = () => {
 
@@ -1022,6 +1021,20 @@ class MapSet {
 
 let lastElementUpdated: null | MapElement = null;
 
+const getElementIndexFromId = (elementId:string) => {
+  const elements = store.getState().persistedMap.elements;
+
+  for(let i=0; elements.length; i++){
+     const loopedOnElement = elements[i];
+
+     if(loopedOnElement.id === elementId){
+       return i;
+     }
+  }
+
+  return null;
+}
+
 const checkForCurrentMapElementUpdate = () => {
   const heroLeft = getHeroLeft();
 
@@ -1035,7 +1048,14 @@ const checkForCurrentMapElementUpdate = () => {
       if(foundElement){
         const foundElementLeft = foundElement.getBoundingClientRect().left;
         if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) && element !== lastElementUpdated){
-        //  store.dispatch(updateCurrentIndex(2));
+
+          const elementIndex = getElementIndexFromId(foundElement.id);
+          
+          if(elementIndex){
+            alert("index updated")
+            store.dispatch(updateCurrentIndex(elementIndex));
+          }
+
           lastElementUpdated = element;
         } 
       }
@@ -3305,14 +3325,21 @@ const launchChallenge = (pillarId: string) => {
     }
   )
 
+  setupChallengeDisplay();
   breathAudio.play();
   gameMode = GAME_MODES.challenge;
+  initializeChallengePage(pillarId);
+
+}
+
+const setupChallengeDisplay = () => {
   lightningImg.style.opacity = "1";
   answerDataContainer.style.opacity = "1";
   scoreContainer.style.opacity = "1";
   topScoreContainer.style.opacity = "1";
 }
  
+
 document.addEventListener("keydown", (event) => {
 
   if(event.key === "Shift"){
