@@ -3625,8 +3625,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const currentFrameTimeStamp = Date.now();
     const diff = currentFrameTimeStamp - previousFrameTimestamp;
     const mapSet = MAP_SETS[mapSetIndex];
+    let multiplicator = mapSetIndex * 6;
     mapSet.maps.forEach(
-      (map) => map.style.left = `${map.getBoundingClientRect().left + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * diff * (mapSet.velocity / (heroRunning ? 15 : 30)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
+      (map) => map.style.left = `${map.getBoundingClientRect().left + Math.floor((direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * multiplicator * diff * (mapSet.velocity / (heroRunning ? 400 : 500)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3}px`
     );
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
   };
@@ -4903,7 +4904,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         launchAttack(true);
         return;
       }
-      launchAttack(true);
+      launchAttack();
     }
     if (event.key === "y") {
       launchDeathAnimation();
@@ -5006,6 +5007,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchInvisibilityToggle = (superSpeed = false) => {
     invisible = !invisible;
     heroContainer.style.opacity = invisible ? "0.3" : "1";
+    heroContainer.style.zIndex = invisible ? "1000" : "3000";
     if (invisible) {
       const teleportAudio = document.getElementById(
         "teleport_audio"

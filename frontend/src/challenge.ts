@@ -1110,6 +1110,7 @@ const moveCamera = (
   mapSetIndex: number,
   cameraSpeed: number
 ): any => {
+
   const cameraAnimation = direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left;
   if (
     ANIMATION_RUNNING_VALUES[cameraAnimation] === 0 ||
@@ -1122,11 +1123,13 @@ const moveCamera = (
   const diff = currentFrameTimeStamp - previousFrameTimestamp;
   const mapSet = MAP_SETS[mapSetIndex];
 
+  let multiplicator = mapSetIndex*6;
+
     mapSet.maps.forEach(
       (map) =>
         (map.style.left = `${
           map.getBoundingClientRect().left +
-          Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * diff * ((mapSet.velocity)/(heroRunning? 15 : 30)) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
+          Math.floor((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) * cameraSpeed * multiplicator * diff * ((mapSet.velocity)/(heroRunning? 400 : 500)) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) ) / 3
        }px`)
      );
 
@@ -3346,7 +3349,7 @@ document.addEventListener("keydown", (event) => {
       launchAttack(true);
       return;
     }
-    launchAttack(true);
+    launchAttack();
   }
 
 
@@ -3495,6 +3498,7 @@ const launchInvisibilityToggle = (superSpeed = false) => {
   invisible = !invisible;
 
   heroContainer.style.opacity = invisible ? "0.3" : "1";
+  heroContainer.style.zIndex = invisible ? "1000" : "3000";
 
   if (invisible) {
     const teleportAudio = document.getElementById(
