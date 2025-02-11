@@ -7,6 +7,7 @@ export interface MapState {
   startIndex: number,
   endIndex: number,
   currentIndex: number,
+  currentChallengeAnsweredQuestions: number
 }
 
 const initialState: MapState = {
@@ -48,7 +49,8 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 1
+  currentIndex: 0,
+  currentChallengeAnsweredQuestions: 0
 };
 
 const persistedMapSlice = createSlice({
@@ -94,8 +96,11 @@ const persistedMapSlice = createSlice({
       }
       state.elementsOnScreen.splice(removedElementIndex, 1);
     },
+    setCurrentChallengeAnsweredQuestions: (state, action: PayloadAction<number>) => {
+      state.currentChallengeAnsweredQuestions = action.payload;
+    }
   },
 });
 
-export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setCurrentChallengeAnsweredQuestions } = persistedMapSlice.actions;
 export default persistedMapSlice.reducer;

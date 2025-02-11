@@ -3568,8 +3568,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastElementUpdated = null;
   var getElementIndexFromId = (elementId) => {
     const elements = store.getState().persistedMap.elements;
-    for (let i = 0; elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
       const loopedOnElement = elements[i];
+      console.log(loopedOnElement);
       if (loopedOnElement.id === elementId) {
         return i;
       }
@@ -3582,13 +3583,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     mapElementsOnScreen.forEach(
       (element) => {
         const elementId = element.id;
-        const foundElement = document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+        const foundElement = document.getElementById(`${elementId}`);
         if (foundElement) {
           const foundElementLeft = foundElement.getBoundingClientRect().left;
           if (foundElementLeft > heroLeft && foundElementLeft < heroLeft + window.innerWidth * 0.1 && element !== lastElementUpdated) {
             const elementIndex = getElementIndexFromId(foundElement.id);
             if (elementIndex) {
-              alert("index updated");
               store.dispatch(updateCurrentIndex(elementIndex));
             }
             lastElementUpdated = element;
@@ -4747,7 +4747,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pillarcontainer.style.width = "5vw";
     pillarcontainer.style.height = "20vh";
     pillarcontainer.style.background = "grey";
-    pillarcontainer.id = `${MAP_ELEMENT_PREFIX}${element.id}`;
+    pillarcontainer.id = `${element.id}`;
     pillarcontainer.style.cursor = "pointer";
     pillarcontainer.onclick = (event) => {
       const response = confirm("voulez vous lancer le challenge?");
@@ -4773,7 +4773,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formContainer.style.width = "20vw";
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
-    formContainer.id = `${MAP_ELEMENT_PREFIX}${formElement.id}`;
+    formContainer.id = `${formElement.id}`;
     formBackgroundContainer.append(formContainer);
     return formBackgroundContainer;
   };
@@ -4860,9 +4860,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var MAP_ELEMENT_PREFIX = "mapElement_";
   var findMapElement = (elementId) => {
-    return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+    return document.getElementById(`${elementId}`);
   };
   var hideChallengeDisplay = () => {
     lightningImg.style.opacity = "0";

@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setCurrentChallengeAnsweredQuestions, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
@@ -12,6 +12,19 @@ enum GAME_MODES {
 let gameMode: GAME_MODES = GAME_MODES.discovery;
 
 const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
+
+
+//selectors
+
+
+const getCurrentChallengeAnsweredQuestions = () => {
+  return store.getState().persistedMap.currentChallengeAnsweredQuestions;
+}
+
+
+
+
+//selectors end
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -217,8 +230,6 @@ const initAndLaunchFootStepsAudio = () => {
 
 
 let currentSubject: Subject | null = null;
-
-let currentSubjectTotal = 0;
 
 let swordReach = window.innerWidth * 0.6;
 
@@ -502,7 +513,7 @@ const getChallengeGrade = () => {
     return;
   }
 
-  const grade = Math.round((score / currentSubjectTotal) * 20);
+  const grade = Math.round((score / getCurrentChallengeAnsweredQuestions()) * 20);
 
   return Grades.D.includes(grade)
     ? "D"
@@ -1024,8 +1035,12 @@ let lastElementUpdated: null | MapElement = null;
 const getElementIndexFromId = (elementId:string) => {
   const elements = store.getState().persistedMap.elements;
 
-  for(let i=0; elements.length; i++){
+
+  for(let i=0; i < elements.length; i++){
      const loopedOnElement = elements[i];
+
+     console.log(loopedOnElement);
+
 
      if(loopedOnElement.id === elementId){
        return i;
@@ -1043,16 +1058,15 @@ const checkForCurrentMapElementUpdate = () => {
   mapElementsOnScreen.forEach(
     element => {
       const elementId = element.id;
-      const foundElement = document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+      const foundElement = document.getElementById(`${elementId}`);
 
       if(foundElement){
         const foundElementLeft = foundElement.getBoundingClientRect().left;
         if(foundElementLeft > heroLeft && foundElementLeft < ( heroLeft + (window.innerWidth * 0.1) ) && element !== lastElementUpdated){
 
           const elementIndex = getElementIndexFromId(foundElement.id);
-          
+                    
           if(elementIndex){
-            alert("index updated")
             store.dispatch(updateCurrentIndex(elementIndex));
           }
 
@@ -1533,6 +1547,7 @@ const launchAttack = (special = false) => {
     if (!enemyCanBeHit(enemy)) {
       return;
     }
+    store.dispatch(setCurrentChallengeAnsweredQuestions(getCurrentChallengeAnsweredQuestions()+1));
     if (!enemy.answer.true) {
       killWrongEnemy(enemy);
     } else {
@@ -1958,6 +1973,8 @@ const detectCollision = () => {
       enemyOnScreen.collideable
     ) {
       enemyOnScreen.collideable = false;
+
+      store.dispatch(setCurrentChallengeAnsweredQuestions(getCurrentChallengeAnsweredQuestions()+1));
 
       if (!invisible || enemyOnScreen.answer.good) {
         hurtHero();
@@ -3025,7 +3042,7 @@ const createChallengPilar = (element: MapElement) => {
   pillarcontainer.style.width = "5vw";
   pillarcontainer.style.height = "20vh";
   pillarcontainer.style.background = "grey";
-  pillarcontainer.id = `${MAP_ELEMENT_PREFIX}${element.id}`;
+  pillarcontainer.id = `${element.id}`;
   pillarcontainer.style.cursor = "pointer";
   pillarcontainer.onclick = (event) => {
     const response = confirm("voulez vous lancer le challenge?");
@@ -3073,7 +3090,7 @@ const createFormElement = (formElement: MapElement) => {
     formContainer.style.height = "20vh";
     formContainer.style.background = "grey";
     
-    formContainer.id = `${MAP_ELEMENT_PREFIX}${formElement.id}`;
+    formContainer.id = `${formElement.id}`;
     formBackgroundContainer.append(formContainer);
 
     return formBackgroundContainer;
@@ -3296,10 +3313,8 @@ document.addEventListener("keyup", (event) => {
 
 });
 
-const MAP_ELEMENT_PREFIX = "mapElement_";
-
 const findMapElement = (elementId: string) => {
-  return document.getElementById(`${MAP_ELEMENT_PREFIX}${elementId}`);
+  return document.getElementById(`${elementId}`);
 }
 
 const hideChallengeDisplay = () => {
@@ -4031,7 +4046,6 @@ const launchGame = () => {
 
 const defineCurrentSubject = (subject: Subject) => {
   currentSubject = subject;
-  currentSubjectTotal = currentSubject.good.length + currentSubject.bad.length;
 };
 
 const killAllAudios = () => {
