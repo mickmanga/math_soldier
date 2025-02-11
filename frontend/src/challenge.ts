@@ -58,7 +58,7 @@ const heroContactPointContainerRatio = 0.3;
 
 let heroInTheRedZone = false;
 
-let idleTimerValue = 5;
+let idleTimerValue = 3;
 
 let lastStopInMs: null | number = null;
 
@@ -428,7 +428,7 @@ const Grades = {
 
 const getChallengeGrade = () => {
 
-  const grade = Math.round((score === 0 ? 0 :  score/currentChallengeLength/2) * 20);
+  const grade = Math.round((score === 0 ? 0 :  score/currentChallengeLength) * 20);
   
   return Grades.D.includes(grade)
     ? "D"
@@ -1894,7 +1894,6 @@ const detectCollision = () => {
       if (!invisible || enemyOnScreen.answer.true) {
         hurtHero();
       } else if (invisible && !enemyOnScreen.answer.true) {
-        score++;
         rewardHero();
         transformIfRequired();
       }
@@ -3360,7 +3359,7 @@ const stopSuperSpeed = () => {
 }
 
 
-const stopRun = (definitiveStop = true) => {
+const stopRun = (definitiveStop = false) => {
   if (heroInTheRedZone) {
     return;
   }
@@ -3863,7 +3862,7 @@ const animateLightning = () => {
 window.onload = () => {
 
   epicAudio.volume = 0;
-  windAudio.volume = 0.05;
+  windAudio.volume = 0.3;
   stepsInSwow.volume = 0.1;
 
   checkForCurrentMapElementUpdate();

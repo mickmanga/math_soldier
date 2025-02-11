@@ -2934,7 +2934,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
   var heroContactPointContainerRatio = 0.3;
   var heroInTheRedZone = false;
-  var idleTimerValue = 5;
+  var idleTimerValue = 3;
   var lastStopInMs = null;
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
@@ -3161,7 +3161,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     S: [18, 19, 20]
   };
   var getChallengeGrade = () => {
-    const grade = Math.round((score === 0 ? 0 : score / currentChallengeLength / 2) * 20);
+    const grade = Math.round((score === 0 ? 0 : score / currentChallengeLength) * 20);
     return Grades.D.includes(grade) ? "D" : Grades.C.includes(grade) ? "C" : Grades.B.includes(grade) ? "B" : Grades.A.includes(grade) ? "A" : "S";
   };
   var updateLifePointsDisplay = () => {
@@ -4172,7 +4172,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         if (!invisible || enemyOnScreen.answer.true) {
           hurtHero();
         } else if (invisible && !enemyOnScreen.answer.true) {
-          score++;
           rewardHero();
           transformIfRequired();
         }
@@ -4967,7 +4966,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var stopSuperSpeed = () => {
     superSpeedOn = false;
   };
-  var stopRun = (definitiveStop = true) => {
+  var stopRun = (definitiveStop = false) => {
     if (heroInTheRedZone) {
       return;
     }
@@ -5330,7 +5329,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   window.onload = () => {
     epicAudio.volume = 0;
-    windAudio.volume = 0.05;
+    windAudio.volume = 0.3;
     stepsInSwow.volume = 0.1;
     checkForCurrentMapElementUpdate();
     setupListeners();
