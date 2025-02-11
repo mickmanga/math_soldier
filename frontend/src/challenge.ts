@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setCurrentChallengeAnsweredQuestions, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { FormBlock, FormElement, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
@@ -12,19 +12,6 @@ enum GAME_MODES {
 let gameMode: GAME_MODES = GAME_MODES.discovery;
 
 const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
-
-
-//selectors
-
-
-const getCurrentChallengeAnsweredQuestions = () => {
-  return store.getState().persistedMap.currentChallengeAnsweredQuestions;
-}
-
-
-
-
-//selectors end
 
 const goBackToMountain = (event: Event) => {
   window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -230,6 +217,8 @@ const initAndLaunchFootStepsAudio = () => {
 
 
 let currentSubject: Subject | null = null;
+
+let currentSubjectTotal = 0;
 
 let swordReach = window.innerWidth * 0.6;
 
@@ -513,7 +502,7 @@ const getChallengeGrade = () => {
     return;
   }
 
-  const grade = Math.round((score / getCurrentChallengeAnsweredQuestions()) * 20);
+  const grade = Math.round((score / currentSubjectTotal) * 20);
 
   return Grades.D.includes(grade)
     ? "D"
@@ -1547,7 +1536,6 @@ const launchAttack = (special = false) => {
     if (!enemyCanBeHit(enemy)) {
       return;
     }
-    store.dispatch(setCurrentChallengeAnsweredQuestions(getCurrentChallengeAnsweredQuestions()+1));
     if (!enemy.answer.true) {
       killWrongEnemy(enemy);
     } else {
@@ -1728,6 +1716,10 @@ const rewardHero = () => {
 
 const updateScoreDisplay = () => {
   //scoreValue.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
+  const grade = getChallengeGrade();
+  if(grade){
+    scoreValue.innerHTML = grade;
+  }
 };
 
 const killWrongEnemy = (enemy: EnemyInterface) => {
@@ -1974,8 +1966,6 @@ const detectCollision = () => {
     ) {
       enemyOnScreen.collideable = false;
 
-      store.dispatch(setCurrentChallengeAnsweredQuestions(getCurrentChallengeAnsweredQuestions()+1));
-
       if (!invisible || enemyOnScreen.answer.good) {
         hurtHero();
       } else if (invisible && !enemyOnScreen.answer.good) {
@@ -2034,9 +2024,6 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       if(gameMode === GAME_MODES.discovery){
         mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
       } else {
-         console.log("check >");
-         console.log(store.getState().unpersistedMapReducer.currentlyFinishingChallenge);
-
           mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
             lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
           ))
@@ -4046,6 +4033,7 @@ const launchGame = () => {
 
 const defineCurrentSubject = (subject: Subject) => {
   currentSubject = subject;
+  currentSubjectTotal = currentSubject.good.length + currentSubject.bad.length;
 };
 
 const killAllAudios = () => {
