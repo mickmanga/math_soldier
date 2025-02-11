@@ -2939,6 +2939,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var answers = null;
+  var currentChallengeLength = 0;
   var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
     try {
       const response = yield fetch(`http://localhost:3000/api/challenges/${challengeId}`);
@@ -2948,6 +2949,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       answers = response;
       const challengeData = yield response.json();
       sortAndStoreAnswers(challengeData.answers);
+      currentChallengeLength = challengeData.answers.length;
     } catch (error) {
       console.error("Error:", error);
     }
@@ -3037,7 +3039,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     hurtAudio.volume = 0.025;
     runAudio.volume = 0;
   };
-  var currentSubject = null;
   var currentSubjectTotal = 0;
   var swordReach = window.innerWidth * 0.6;
   var gameLaunched = false;
@@ -3160,10 +3161,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     S: [18, 19, 20]
   };
   var getChallengeGrade = () => {
-    if (!currentSubject) {
-      return;
-    }
-    const grade = Math.round(score / currentSubjectTotal * 20);
+    const grade = Math.round((score === 0 ? 0 : score / currentChallengeLength / 2) * 20);
     return Grades.D.includes(grade) ? "D" : Grades.C.includes(grade) ? "C" : Grades.B.includes(grade) ? "B" : Grades.A.includes(grade) ? "A" : "S";
   };
   var updateLifePointsDisplay = () => {
@@ -4171,9 +4169,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
       if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable) {
         enemyOnScreen.collideable = false;
-        if (!invisible || enemyOnScreen.answer.good) {
+        if (!invisible || enemyOnScreen.answer.true) {
           hurtHero();
-        } else if (invisible && !enemyOnScreen.answer.good) {
+        } else if (invisible && !enemyOnScreen.answer.true) {
+          score++;
           rewardHero();
           transformIfRequired();
         }
@@ -4242,7 +4241,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return endOfChallengeContainer2;
   };
   var createEndOfChallengeMapBlock = (left, imagePath, zIndex) => {
-    alert("creating end of chal block");
     store.dispatch(setCurrentlyFinishingChallenge(false));
     const endOfChallengeElement = buildEndOfChallengeElement();
     return createMapBlock(left, imagePath, zIndex, endOfChallengeElement);
@@ -5332,7 +5330,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   window.onload = () => {
     epicAudio.volume = 0;
-    windAudio.volume = 0.4;
+    windAudio.volume = 0.05;
+    stepsInSwow.volume = 0.1;
     checkForCurrentMapElementUpdate();
     setupListeners();
     setInitialGameVolume();

@@ -74,6 +74,8 @@ const getQueryParam = (param: string): string | null => {
 
 let answers = null;
 
+let currentChallengeLength = 0;
+
 // Fetch a challenge by ID from the backend
 const fetchChallengeById = async (challengeId: string): Promise<void> => {
   try {
@@ -87,6 +89,8 @@ const fetchChallengeById = async (challengeId: string): Promise<void> => {
       const challengeData = await response.json();
 
       sortAndStoreAnswers(challengeData.answers);
+
+      currentChallengeLength = challengeData.answers.length;
 
   } catch (error) {
     console.error('Error:', error);
@@ -215,8 +219,6 @@ const initAndLaunchFootStepsAudio = () => {
   stepsInSwow.play();
 };
 
-
-let currentSubject: Subject | null = null;
 
 let currentSubjectTotal = 0;
 
@@ -377,8 +379,6 @@ const sortAndStoreAnswers = (challengeData: Array<ChallengeAnswerData>) => {
     }
   )
 
-
-
 }
 
 
@@ -401,7 +401,6 @@ const findNextAnswer = () => {
       endOfChallengeContainer.innerHTML = "";
     }, 1000);
   }
-
   
   if(currentAnswerIndex === answers.length - 3){
     endOfChallengeContainer.style.opacity = "1";
@@ -412,66 +411,12 @@ const findNextAnswer = () => {
     }, 1000);
   }
 
-
   const data = answers[store.getState().challenge.currentAnswerIndex].data;
-
   store.dispatch(incrementAnswerIndex());
 
   return data;
 
 }
-
-
-const getNextAnswer = () => {
-  const randVal = Math.random() > 0.5;
-
-  if (!currentSubject) {
-    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
-  }
-
-  const getAndRemoveSubject: any = (index: number, list: Array<any>) => {
-    let foundElement = null;
-    for (let elementIndex = 0; elementIndex < list.length; elementIndex++) {
-      let element = list[elementIndex];
-      if (elementIndex === index) {
-        list.splice(elementIndex, 1);
-        foundElement = element;
-        break;
-      }
-    }
-    if (foundElement === null) {
-      console.log("error => we couldnt find an element in the answers list");
-    }
-
-    return foundElement;
-  };
-
-  if (randVal) {
-    return currentSubject?.good.length
-      ? getAndRemoveSubject(
-          Math.round(Math.random() * (currentSubject.good.length - 1)),
-          currentSubject.good
-        )
-      : currentSubject?.bad.length
-      ? getAndRemoveSubject(
-          Math.round(Math.random() * (currentSubject.bad.length - 1)),
-          currentSubject.bad
-        )
-      : "done";
-  } else {
-    return currentSubject?.bad.length
-      ? getAndRemoveSubject(
-          Math.round(Math.random() * (currentSubject.bad.length - 1)),
-          currentSubject.bad
-        )
-      : currentSubject?.good.length
-      ? getAndRemoveSubject(
-          Math.round(Math.random() * (currentSubject.good.length - 1)),
-          currentSubject.good
-        )
-      : "done";
-  }
-};
 
 const Grades = {
   D: [0, 1, 2, 3, 4, 5],
@@ -481,29 +426,10 @@ const Grades = {
   S: [18, 19, 20],
 };
 
-/*
-
 const getChallengeGrade = () => {
-  return Grades.D.includes(score)
-    ? "D"
-    : Grades.C.includes(score)
-    ? "C"
-    : Grades.B.includes(score)
-    ? "B"
-    : Grades.A.includes(score)
-    ? "A"
-    : "S";
-};
 
-*/
-
-const getChallengeGrade = () => {
-  if (!currentSubject) {
-    return;
-  }
-
-  const grade = Math.round((score / currentSubjectTotal) * 20);
-
+  const grade = Math.round((score === 0 ? 0 :  score/currentChallengeLength/2) * 20);
+  
   return Grades.D.includes(grade)
     ? "D"
     : Grades.C.includes(grade)
@@ -1715,7 +1641,6 @@ const rewardHero = () => {
 };
 
 const updateScoreDisplay = () => {
-  //scoreValue.innerHTML = (score * KILLED_ENEMY_REWARD).toString();
   const grade = getChallengeGrade();
   if(grade){
     scoreValue.innerHTML = grade;
@@ -1966,9 +1891,10 @@ const detectCollision = () => {
     ) {
       enemyOnScreen.collideable = false;
 
-      if (!invisible || enemyOnScreen.answer.good) {
+      if (!invisible || enemyOnScreen.answer.true) {
         hurtHero();
-      } else if (invisible && !enemyOnScreen.answer.good) {
+      } else if (invisible && !enemyOnScreen.answer.true) {
+        score++;
         rewardHero();
         transformIfRequired();
       }
@@ -2055,8 +1981,6 @@ const buildEndOfChallengeElement = () => {
 
 
 const createEndOfChallengeMapBlock = (left:number, imagePath: string, zIndex: string) => {
-  alert("creating end of chal block")
-
    store.dispatch(setCurrentlyFinishingChallenge(false));
 
    const endOfChallengeElement = buildEndOfChallengeElement();
@@ -3939,7 +3863,8 @@ const animateLightning = () => {
 window.onload = () => {
 
   epicAudio.volume = 0;
-  windAudio.volume = 0.4;
+  windAudio.volume = 0.05;
+  stepsInSwow.volume = 0.1;
 
   checkForCurrentMapElementUpdate();
   setupListeners();
