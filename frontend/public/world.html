@@ -11,6 +11,7 @@
          <div id="top_map_container_a">
             Tark est une terre gelée, depuis que Braun, le dieu du firmament l'a maudit pour l'éternité.</br>
             Elle est peuplée de différentes espèces du nord, comme les golems de neiges, ou les muses ailées.
+            <button id="learnButton" onclick="goToLearning(event)">Learn</button>
          </div>
          <img id="ice" src="assets/challenge/items/ice.webp">
       </div>
@@ -64,6 +65,10 @@
    
  const goBackToDashboard = (event) => {
     window.location.replace("http://localhost:3001/game_map");
+  }
+
+  const goToLearning = (event) => {
+   window.location.replace("http://localhost:3001/learningworld");
   }
 
 </script>

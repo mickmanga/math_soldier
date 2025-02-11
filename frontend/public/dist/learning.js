@@ -22,6 +22,10 @@
   };
 
   // src/learning.ts
+  var openMap = (event) => {
+    window.location.replace("http://localhost:3001/world");
+  };
+  window.openMap = openMap;
   var getChapters = () => __async(void 0, null, function* () {
     try {
       const courseContainer = document.getElementById("course_container_b");
@@ -57,5 +61,13 @@
   window.onload = () => {
     getChapters();
   };
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "l") {
+      const response = confirm("voulez vous quitter le monde de Gor, le dieu des Lys?");
+      if (response) {
+        window.location.replace("http://localhost:3001/world");
+      }
+    }
+  });
 })();
 //# sourceMappingURL=learning.js.map

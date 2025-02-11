@@ -21,6 +21,14 @@ html {
     cursor: pointer;
 }
 
+#learnButton {
+    position: absolute;
+    top: 55vh;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+}
+
 #top_map_container {
     height: 500px;
     width: 100vw;

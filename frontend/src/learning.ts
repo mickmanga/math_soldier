@@ -1,5 +1,13 @@
 
+interface Window {
+  openMap: (event: Event) => void;
+}
 
+const openMap = (event: Event) => {
+    window.location.replace("http://localhost:3001/world");
+}
+
+window.openMap = openMap;
 
 const getUser = async (userId: string) => {
     try {
@@ -67,3 +75,17 @@ document.addEventListener("keydown",
 window.onload = () => {
     getChapters();
 }
+
+
+
+document.addEventListener('keydown', (event) => {
+
+    if(event.key === "l"){
+        const response = confirm("voulez vous quitter le monde de Gor, le dieu des Lys?");
+
+        if(response){
+           window.location.replace("http://localhost:3001/world");
+        }
+    }
+
+})
