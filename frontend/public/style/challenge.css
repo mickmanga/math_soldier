@@ -723,6 +723,22 @@ audio {
    cursor: pointer;
 }
 
+#dragon_container {
+  height: 3%;
+  width: 10%;
+  z-index: 2000;
+  position: absolute;
+  left: 40%;
+  top: 5%;
+  opacity: 0.9;
+}
+
+#dragon_container img {
+  height: 100%;
+  width: auto;
+}
+
+
 #location_description {
   display: flex;
   justify-content: center;

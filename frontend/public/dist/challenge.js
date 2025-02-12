@@ -2403,7 +2403,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 1
+    currentIndex: 2
   };
   var persistedMapSlice = createSlice({
     name: "map",
@@ -3039,7 +3039,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     hurtAudio.volume = 0.025;
     runAudio.volume = 0;
   };
-  var currentSubjectTotal = 0;
   var swordReach = window.innerWidth * 0.6;
   var gameLaunched = false;
   var TRANSFORMED_BONUS_RATIO = 1;
@@ -3774,7 +3773,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 59 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 27 /* golem_opponent_death */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 59 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 27 /* golem_opponent_death */ ? 80 : animationId === 37 /* witch_opponent_death */ ? 60 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 150 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 59 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 27 /* golem_opponent_death */ ? 80 : animationId === 37 /* witch_opponent_death */ ? 60 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 200 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4831,12 +4830,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var executeSuperSpeedToggle = () => {
     superSpeedOn = !superSpeedOn;
   };
+  var quitChallenge = () => {
+    const response = confirm("voulez vous interrompre ce challenge?");
+    if (response) {
+      window.location.replace(window.location.href);
+    }
+  };
   document.addEventListener("keyup", (event) => {
     if (event.key === "a") {
-      const response = confirm("voulez vous interrompre ce challenge?");
-      if (response) {
-        window.location.replace(window.location.href);
-      }
+      quitChallenge();
     }
     if (event.key === "Shift") {
       heroRunning = false;
@@ -4975,6 +4977,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     runStopped = true;
+    launchAnimation(heroCharacter, 10 /* idle */, false);
     if (!definitiveStop) {
       launchIdleTimeout();
     }
@@ -5058,7 +5061,20 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS / (superSpeed ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1));
   };
+  var quitChallengeFromMapClick = () => {
+    runAudio.pause();
+    const response = confirm("Vous \xEAtes sur un chemin p\xE9rilleux, vous ne pouvez pas regarder la carte. Voulez vous quitter le chemin perilleux et revenir au dernier point de sauvegarde? ");
+    if (response) {
+      window.location.replace(window.location.href);
+    } else {
+      runAudio.play();
+    }
+  };
   var openMap = (event) => {
+    if (gameMode === 1 /* challenge */) {
+      quitChallengeFromMapClick();
+      return;
+    }
     window.location.replace("http://localhost:3001/world");
   };
   window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;
@@ -5345,10 +5361,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     checkForScreenUpdateFromLeftToRight(10);
     checkForScreenUpdateFromRightToLeft(10);
     checkForOpponentsClearance();
-    defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
+    launchAnimation(heroCharacter, 10 /* idle */, false);
+    launchDragon();
     if (hardMode) {
       epicAudio.play();
     } else {
@@ -5399,14 +5416,35 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchHeroRun();
     triggerOpponentsApparition();
   };
-  var defineCurrentSubject = (subject) => {
-    currentSubject = subject;
-    currentSubjectTotal = currentSubject.good.length + currentSubject.bad.length;
-  };
   var killAllAudios = () => {
     runAudio.pause();
     epicAudio.pause();
     transformedEpicAudio.pause();
+  };
+  var dragonImage = document.getElementById("dragon_img");
+  var dragonContainer = document.getElementById("dragon_container");
+  var moveDragon = (lastExecutionTimeStamp) => {
+    const newExecutionTimeStamp = Date.now();
+    const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
+    if (diff < 200) {
+      return requestAnimationFrame(() => moveDragon(lastExecutionTimeStamp));
+    }
+    dragonContainer.style.left = `${dragonContainer.getBoundingClientRect().left - 10}px`;
+    requestAnimationFrame(() => moveDragon(newExecutionTimeStamp));
+  };
+  var launchDragon = () => {
+    launchAnimationAndDeclareItLaunched(
+      dragonImage,
+      0,
+      "png",
+      "assets/challenge/characters/neutral/dragons/red/rightToLeft",
+      1,
+      3,
+      1,
+      true,
+      24 /* golem_opponent_idle */
+    );
+    moveDragon(Date.now());
   };
   var soundEffectImage = document.getElementById("sound_effect_img_container");
   var displaySoundEffectImage = () => {

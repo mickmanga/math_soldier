@@ -219,9 +219,6 @@ const initAndLaunchFootStepsAudio = () => {
   stepsInSwow.play();
 };
 
-
-let currentSubjectTotal = 0;
-
 let swordReach = window.innerWidth * 0.6;
 
 let gameLaunched = false;
@@ -1291,7 +1288,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 150 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -3186,14 +3183,17 @@ const executeSuperSpeedToggle = () => {
   superSpeedOn = !superSpeedOn;
 }
 
+const quitChallenge = () => {
+  const response = confirm("voulez vous interrompre ce challenge?");
+  if(response){
+    window.location.replace(window.location.href)
+  }
+}
 
 document.addEventListener("keyup", (event) => {
 
   if(event.key === "a"){
-    const response = confirm("voulez vous interrompre ce challenge?");
-    if(response){
-      window.location.replace(window.location.href)
-    }
+    quitChallenge();
   }
 
   if(event.key === "Shift"){
@@ -3372,6 +3372,8 @@ const stopRun = (definitiveStop = false) => {
 
   runStopped = true;
 
+  launchAnimation(heroCharacter, AnimationType.idle, false);
+
   if(!definitiveStop){
     launchIdleTimeout();
   }
@@ -3490,8 +3492,22 @@ const launchInvisibilityToggle = (superSpeed = false) => {
   setTimeout(launchInvisibilityToggle, INVISIBILITY_DURATION_IN_MILLISECONDS/(superSpeed ?  CAMERA_SUPER_SPEED_MULTIPLICATOR : 1));
 };
 
+const quitChallengeFromMapClick = () => {
+  runAudio.pause();
+  const response = confirm("Vous êtes sur un chemin périlleux, vous ne pouvez pas regarder la carte. Voulez vous quitter le chemin perilleux et revenir au dernier point de sauvegarde? ")
+
+  if(response){
+    window.location.replace(window.location.href);
+  } else {
+    runAudio.play();
+  }
+}
 
 const openMap = (event: Event) => {
+  if(gameMode === GAME_MODES.challenge){
+    quitChallengeFromMapClick();
+    return;
+  }
   window.location.replace("http://localhost:3001/world");
 } 
 
@@ -3879,12 +3895,12 @@ window.onload = () => {
   checkForScreenUpdateFromLeftToRight(10);
   checkForScreenUpdateFromRightToLeft(10);
   checkForOpponentsClearance();
-  defineCurrentSubject(hardMode ? MATHS_ARITHMETIC : MATHS_ARITHMETIC);
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
-  //launchIdleLoop();
-  
+  launchAnimation(heroCharacter, AnimationType.idle, false);
+  launchDragon();
+
   if (hardMode) {
     epicAudio.play();
   } else {
@@ -3955,16 +3971,49 @@ const launchGame = () => {
   triggerOpponentsApparition();
 };
 
-const defineCurrentSubject = (subject: Subject) => {
-  currentSubject = subject;
-  currentSubjectTotal = currentSubject.good.length + currentSubject.bad.length;
-};
 
 const killAllAudios = () => {
   runAudio.pause();
   epicAudio.pause();
   transformedEpicAudio.pause();
 };
+
+const dragonImage = document.getElementById("dragon_img") as HTMLImageElement;
+const dragonContainer = document.getElementById("dragon_container")!;
+
+const moveDragon = (lastExecutionTimeStamp: number) => {
+
+  const newExecutionTimeStamp = Date.now();
+
+  const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
+
+  if(diff < 200){
+   return requestAnimationFrame(() => moveDragon(lastExecutionTimeStamp));
+  }
+
+  dragonContainer.style.left = `${dragonContainer.getBoundingClientRect().left - 10}px`;
+
+  requestAnimationFrame(() => moveDragon(newExecutionTimeStamp))
+
+}
+
+const launchDragon = () => {
+
+  launchAnimationAndDeclareItLaunched(
+    dragonImage,
+    0,
+    "png",
+    "assets/challenge/characters/neutral/dragons/red/rightToLeft",
+    1,
+    3,
+    1,
+    true,
+    ANIMATION_ID.golem_opponent_idle
+  );
+
+  moveDragon(Date.now());
+
+}
 
 const soundEffectImage = document.getElementById("sound_effect_img_container")!;
 

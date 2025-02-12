@@ -48,7 +48,7 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 1,
+  currentIndex: 2,
 };
 
 const persistedMapSlice = createSlice({
