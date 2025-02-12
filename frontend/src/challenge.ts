@@ -449,12 +449,6 @@ const updateLifePointsDisplay = () => {
   }
 };
 
-const setHeroClass = () => {
-  heroContainer.classList.add(
-    hardMode ? "hero_container_hard" : "hero_container_easy"
-  );
-};
-
 const buildEnemyElement = () => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add(
@@ -952,12 +946,8 @@ let lastElementUpdated: null | MapElement = null;
 const getElementIndexFromId = (elementId:string) => {
   const elements = store.getState().persistedMap.elements;
 
-
   for(let i=0; i < elements.length; i++){
      const loopedOnElement = elements[i];
-
-     console.log(loopedOnElement);
-
 
      if(loopedOnElement.id === elementId){
        return i;
@@ -1293,7 +1283,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 30 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2746,7 +2736,7 @@ const witchAnimations = [
           {
             id: ANIMATION_ID.witch_opponent_death,
             sprite:  {
-              path: "assets/challenge/characters/enemies/witch/death",
+              path: "assets/challenge/explosion",
               length: 12
           }
           }
@@ -3882,6 +3872,9 @@ const animateLightning = () => {
 
 window.onload = () => {
 
+  initElementsIndexes();
+  createMapSets();
+
   epicAudio.volume = 0;
   windAudio.volume = 0.3;
   stepsInSwow.volume = 0.1;
@@ -3890,9 +3883,7 @@ window.onload = () => {
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();
-  setHeroClass();
-  initElementsIndexes();
-  createMapSets();
+
   createGameAccordingToMode();
   updateLifePointsDisplay();
   updateScoreDisplay();
