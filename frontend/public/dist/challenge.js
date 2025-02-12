@@ -3771,7 +3771,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 61 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 37 /* witch_opponent_death */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 39 /* orc_opponent_idle */ || animationId === 41 /* orc_opponent_attack */ || animationId === 44 /* dwarf_opponent_idle */ || animationId === 46 /* dwarf_opponent_attack */ || animationId === 24 /* golem_opponent_idle */ || animationId === 26 /* golem_opponent_attack */ || animationId === 27 /* golem_opponent_death */ || animationId === 29 /* king_opponent_idle */ || animationId === 31 /* king_opponent_attack */ || animationId === 34 /* witch_opponent_idle */ || animationId === 36 /* witch_opponent_attack */ || animationId === 49 /* dragon_fly_right */ || animationId === 50 /* dragon_fly_left */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 61 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 40 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 27 /* golem_opponent_death */ ? 80 : animationId === 37 /* witch_opponent_death */ ? 60 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 200 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 50 /* dragon_fly_left */ ? 150 : animationId === 49 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 61 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 27 /* golem_opponent_death */ ? 80 : animationId === 37 /* witch_opponent_death */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 39 /* orc_opponent_idle */ ? 80 : animationId === 24 /* golem_opponent_idle */ ? 200 : animationId === 34 /* witch_opponent_idle */ ? 90 : animationId === 36 /* witch_opponent_attack */ ? 120 : animationId === 29 /* king_opponent_idle */ ? 115 : animationId === 31 /* king_opponent_attack */ ? 50 : animationId === 44 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 50 /* dragon_fly_left */ ? 150 : animationId === 49 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -3896,8 +3896,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     }
     const enemyCanBeHit = (enemy) => {
-      const enemyContainer = enemy.character.element.parentElement;
-      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemy) * 1.2 : enemyContainer.getBoundingClientRect().left;
+      const enemyLeft = getHardModeEnemyRealLeft(enemy) * (special ? 1.1 : 1.2);
       return enemyLeft > getHeroLeft() && enemyLeft < getHeroLeft() + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
@@ -3905,9 +3904,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         return;
       }
       if (!enemy.answer.true) {
-        killWrongEnemy(enemy);
+        killWrongEnemy(enemy, special);
       } else {
-        killRightEnemyAndUpdateScore(enemy);
+        killRightEnemyAndUpdateScore(enemy, special);
       }
     });
     if (preTransformed || !heroIsAlive) {
@@ -3974,8 +3973,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   };
-  var killRightEnemyAndUpdateScore = (enemy) => {
-    killEnemy(enemy);
+  var killRightEnemyAndUpdateScore = (enemy, fromSpecialAttack) => {
+    killEnemy(enemy, fromSpecialAttack);
     rewardHero();
     transformIfRequired();
   };
@@ -4004,7 +4003,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       scoreValue.innerHTML = grade;
     }
   };
-  var killWrongEnemy = (enemy) => {
+  var killWrongEnemy = (enemy, fromSpecialAttack) => {
     scoreMalusContainer.style.display = "flex";
     store.dispatch(setFoundAtIndex({ index: store.getState().challenge.currentAnswerIndex - 1, found: false }));
     lifePoints.value--;
@@ -4013,7 +4012,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     rewardStreak = 0;
     specialMoveIndicator.style.display = "none";
     updateTransformationProgressBarDisplay();
-    killEnemy(enemy);
+    killEnemy(enemy, fromSpecialAttack);
     displayMalus("MALUS! Wrong enemy killed!");
   };
   var displayMalus = (content) => {
@@ -4064,12 +4063,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var hideReward = () => {
   };
-  var killEnemy = (enemy) => {
+  var killEnemy = (enemy, fromSpecialAttack) => {
     const launchExplosion = () => {
       bombAudio.play();
       bombAudio.currentTime = 0;
+      if (fromSpecialAttack) {
+        const hardEnemyContainer = enemy.character.element.parentElement;
+        hardEnemyContainer.style.height = "28.5vh";
+        hardEnemyContainer.style.bottom = "17vh";
+      }
       const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, 9 /* death */);
-      enemy.character.element.style.zIndex = "4000";
       launchAnimationAndDeclareItLaunched(
         enemy.character.element,
         0,
@@ -4397,7 +4400,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 10 /* hero_special_attack */,
             sprite: {
-              path: "assets/challenge/characters/hero/flames",
+              path: "assets/challenge/characters/hero/flames/new",
               length: 14
             }
           }
@@ -4644,7 +4647,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newEnnemyImg = document.createElement("img");
     newEnnemyImg.src = "assets/challenge/characters/enemies/witch/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-4vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, witchAnimations);

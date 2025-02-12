@@ -82,7 +82,6 @@ audio {
   display: flex;
   justify-content: flex-start;
   opacity: 0.85;
-  background: blue;
 }
 
 .enemy_container {
@@ -122,8 +121,8 @@ audio {
 */
   left: 105vw;
   height: 60.5vh;
-  bottom: 2vh;
-  z-index: 10000;
+  bottom: -4vh;
+  z-index: 3000;
   display: flex;
   justify-content: center;
   align-items: flex-end;
