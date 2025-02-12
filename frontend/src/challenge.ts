@@ -160,6 +160,8 @@ const updateEnemyViewPointDisplay = () => {
 };
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
+const dragonAudio = document.getElementById("dragon_audio")! as HTMLAudioElement;
+dragonAudio.volume = 0.05;
 
 const stepsInSwow = document.getElementById(
   "snow_steps_audio"
@@ -475,7 +477,6 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createGolemCharacter,
   createRedHammerCharacter,
   createWitchCharacter
  ];
@@ -694,6 +695,8 @@ export enum ANIMATION_ID {
   dwarf_opponent_attack,
   dwarf_opponent_death,
   dwarf_opponent_move,
+  dragon_fly_right,
+  dragon_fly_left,
   camera_left_to_right,
   camera_right_to_left,
   character_left_to_right_move,
@@ -742,6 +745,8 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.dwarf_opponent_attack]:0,
   [ANIMATION_ID.dwarf_opponent_death]:0,
   [ANIMATION_ID.dwarf_opponent_move]:0,
+  [ANIMATION_ID.dragon_fly_right]:0,
+  [ANIMATION_ID.dragon_fly_left]:0,
   [ANIMATION_ID.golem_opponent_idle]:0,
   [ANIMATION_ID.golem_opponent_run]:0,
   [ANIMATION_ID.golem_opponent_attack]:0,
@@ -1283,12 +1288,12 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack || animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 60 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -3987,17 +3992,23 @@ const moveDragon = (lastExecutionTimeStamp: number) => {
 
   const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-  if(diff < 200){
+  if(diff < 100){
    return requestAnimationFrame(() => moveDragon(lastExecutionTimeStamp));
   }
 
-  dragonContainer.style.left = `${dragonContainer.getBoundingClientRect().left - 10}px`;
+  dragonContainer.style.left = `${dragonContainer.getBoundingClientRect().left - 4}px`;
+
+  if(dragonContainer.getBoundingClientRect().left < (-(window.innerWidth * 0.1))){
+    dragonContainer.style.left = `${window.innerWidth * 1.2}px`;
+  }
 
   requestAnimationFrame(() => moveDragon(newExecutionTimeStamp))
 
 }
 
 const launchDragon = () => {
+
+  dragonAudio.play();
 
   launchAnimationAndDeclareItLaunched(
     dragonImage,
@@ -4008,7 +4019,7 @@ const launchDragon = () => {
     3,
     1,
     true,
-    ANIMATION_ID.golem_opponent_idle
+    ANIMATION_ID.dragon_fly_left
   );
 
   moveDragon(Date.now());
