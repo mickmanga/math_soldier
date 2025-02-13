@@ -121,8 +121,8 @@ audio {
 */
   left: 105vw;
   height: 60.5vh;
-  bottom: -4vh;
-  z-index: 3000;
+  bottom: 2vh;
+  z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: flex-end;

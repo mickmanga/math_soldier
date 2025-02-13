@@ -646,11 +646,13 @@ export enum ANIMATION_ID {
   hammer_opponent_run,
   hammer_opponent_attack,
   hammer_opponent_death,
+  hammer_opponent_death_from_special_attack,
   hammer_opponent_move,
   golem_opponent_idle,
   golem_opponent_run,
   golem_opponent_attack,
   golem_opponent_death,
+  golem_opponent_death_from_special_attack,
   golem_opponent_move,
   king_opponent_idle,
   king_opponent_run,
@@ -661,6 +663,7 @@ export enum ANIMATION_ID {
   witch_opponent_run,
   witch_opponent_attack,
   witch_opponent_death,
+  witch_opponent_death_from_special_attack,
   witch_opponent_move,
   orc_opponent_idle,
   orc_opponent_run,
@@ -876,7 +879,8 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.witch_opponent_idle,
       ANIMATION_ID.witch_opponent_attack,
       ANIMATION_ID.witch_opponent_run,
-      ANIMATION_ID.witch_opponent_death  
+      ANIMATION_ID.witch_opponent_death,
+      ANIMATION_ID.witch_opponent_death_from_special_attack
     ]
   }
 };
@@ -1261,12 +1265,12 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack || animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack || animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 45 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1449,7 +1453,7 @@ const launchAttack = (special = false) => {
     TimeoutId.HERO,
     setTimeout(() => {
       launchHeroRunAnimation();
-    }, special ? 660 : 350)
+    }, special ? 500 : 350)
   );
 };
 
@@ -1708,11 +1712,11 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
 
     if(fromSpecialAttack){
       const hardEnemyContainer = enemy.character.element.parentElement as HTMLElement;
-      hardEnemyContainer.style.height = "28.5vh";
+      hardEnemyContainer.style.height = "25.5vh";
       hardEnemyContainer.style.bottom = "17vh";
     }
 
-    const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.death)!;
+    const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, fromSpecialAttack ? AnimationType.death_from_special_attack : AnimationType.death)!;
 
 
     launchAnimationAndDeclareItLaunched(
@@ -2156,6 +2160,7 @@ enum AnimationType {
   walk_left,
   hurt,
   death,
+  death_from_special_attack,
   idle,
   secondIdle,
   movement,
@@ -2340,7 +2345,7 @@ const heroAnimations = [
             id: ANIMATION_ID.hero_special_attack ,
             sprite:    {
               path: "assets/challenge/characters/hero/flames/new",
-              length: 14
+              length: 15
           }
           }
          }
@@ -2721,16 +2726,32 @@ const witchAnimations = [
           {
             id: ANIMATION_ID.witch_opponent_death,
             sprite:  {
-              path: "assets/challenge/explosion",
+              path: "assets/challenge/characters/enemies/witch/death",
               length: 12
           }
           }
          }
        ]
       },
-    {
-      animationType: AnimationType.movement,
-      animationsStatesBlocks: [
+      {
+        animationType: AnimationType.death_from_special_attack,
+        animationsStatesBlocks: [
+          {
+            states: ALL_WITCH_ENEMY_STATES,
+            animation: 
+            {
+              id: ANIMATION_ID.witch_opponent_death_from_special_attack,
+              sprite:  {
+                path: "assets/challenge/explosion",
+                length: 12
+            }
+            }
+           }
+         ]
+      },   
+     {
+       animationType: AnimationType.movement,
+       animationsStatesBlocks: [
         {
           states: ALL_WITCH_ENEMY_STATES,
           animation: 
@@ -3028,7 +3049,7 @@ const createWitchCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = "assets/challenge/characters/enemies/witch/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
-  //newOpponentContainer.style.bottom = "-4vh";
+  newOpponentContainer.style.bottom = "-4vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -3164,10 +3185,7 @@ const executeSuperSpeedToggle = () => {
 }
 
 const quitChallenge = () => {
-  const response = confirm("voulez vous interrompre ce challenge?");
-  if(response){
-    window.location.replace(window.location.href)
-  }
+  window.location.replace(window.location.href)
 }
 
 document.addEventListener("keyup", (event) => {
@@ -3231,7 +3249,7 @@ const launchChallenge = (pillarId: string) => {
   )
 
   setupChallengeDisplay();
-  breathAudio.play();
+  //breathAudio.play();
   gameMode = GAME_MODES.challenge;
   initializeChallengePage(pillarId);
 
@@ -3880,6 +3898,7 @@ window.onload = () => {
   animateLightning();
   launchAnimation(heroCharacter, AnimationType.idle, false);
   launchDragon();
+  launchChallenge(store.getState().persistedMap.elements[1].id)
 
   if (hardMode) {
     epicAudio.play();
