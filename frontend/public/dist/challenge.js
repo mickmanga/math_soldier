@@ -2403,7 +2403,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 2
+    currentIndex: 1,
+    heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
     name: "map",
@@ -2446,10 +2447,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           return;
         }
         state.elementsOnScreen.splice(removedElementIndex, 1);
+      },
+      setHeroMode: (state, action) => {
+        state.heroMode = action.payload;
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
   var persisted_mapSlice_default = persistedMapSlice.reducer;
 
   // src/redux/slices/userSlice.ts
@@ -2907,13 +2911,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var flameThrowerAudio = document.getElementById("flame_thrower");
   flameThrowerAudio.volume = 0.6;
   var windAudio = document.getElementById("wind_audio");
-  var goBackToMountain = (event) => {
-    window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
-  };
-  var getUrlParameter = (name) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-  };
   var MAP_SETS = [];
   var heroContainer = document.getElementById("hero_container");
   var heroImage = document.getElementById("heroImg");
@@ -2931,6 +2928,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var scoreRewardContainer = document.getElementById("score_reward_container");
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var specialMoveIndicator = document.getElementById("special_move_indicator");
+  var specialMoveTimer = document.getElementById("special_move_timer");
+  var lightningImg = document.getElementById("lightning_img");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 80;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
   var CAMERA_SUPER_SPEED_MULTIPLICATOR = 4;
@@ -2940,8 +2939,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastStopInMs = null;
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
-  var answers = null;
+  var SPECIAL_MODE_MAX_VALUE = 10;
   var currentChallengeLength = 0;
+  var answers = null;
+  var getHeroMode = () => {
+    return store.getState().persistedMap.heroMode;
+  };
+  var goBackToMountain = (event) => {
+    window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
+  };
+  var getUrlParameter = (name) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  };
   var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
     try {
       const response = yield fetch(`http://localhost:3000/api/challenges/${challengeId}`);
@@ -3777,7 +3787,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 64 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 39 /* witch_opponent_death */ || animationId === 40 /* witch_opponent_death_from_special_attack */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 42 /* orc_opponent_idle */ || animationId === 44 /* orc_opponent_attack */ || animationId === 47 /* dwarf_opponent_idle */ || animationId === 49 /* dwarf_opponent_attack */ || animationId === 25 /* golem_opponent_idle */ || animationId === 27 /* golem_opponent_attack */ || animationId === 28 /* golem_opponent_death */ || animationId === 31 /* king_opponent_idle */ || animationId === 33 /* king_opponent_attack */ || animationId === 36 /* witch_opponent_idle */ || animationId === 38 /* witch_opponent_attack */ || animationId === 52 /* dragon_fly_right */ || animationId === 53 /* dragon_fly_left */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 200 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 150 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -3987,14 +3997,47 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     rewardHero();
     transformIfRequired();
   };
+  var turnHeroSpecialModeOff = () => {
+    store.dispatch(setHeroMode(0 /* normal */));
+    specialMoveIndicator.style.display = "none";
+    if (specialMoveTimer) {
+      specialMoveTimer.style.display = "none";
+    }
+  };
+  var updateSpecialModeDisplay = (value) => {
+    if (!specialMoveTimer) {
+      return;
+    }
+    specialMoveTimer.innerHTML = value.toString();
+  };
+  var switchToSpecialModeAndLaunchSpecialModeTimeout = () => {
+    specialMoveIndicator.style.display = "flex";
+    store.dispatch(setHeroMode(1 /* special */));
+    if (specialMoveTimer) {
+      specialMoveTimer.style.display = "flex";
+    }
+    launchHeroSpecialTimeout(SPECIAL_MODE_MAX_VALUE);
+  };
+  var launchHeroSpecialTimeout = (timerValue) => {
+    timerValue--;
+    if (timerValue === 0) {
+      turnHeroSpecialModeOff();
+      return;
+    }
+    updateSpecialModeDisplay(timerValue);
+    setTimeout(
+      () => launchHeroSpecialTimeout(timerValue),
+      1e3
+    );
+  };
   var rewardHero = () => {
     const bonus_ratio = transformed ? TRANSFORMED_BONUS_RATIO : 1;
     store.dispatch(setFoundAtIndex({ index: store.getState().challenge.currentAnswerIndex - 1, found: true }));
     if (!transformed) {
       rewardStreak++;
       updateTransformationProgressBarDisplay();
-      if (rewardStreak === 5 || rewardStreak === 10) {
-        specialMoveIndicator.style.display = "flex";
+      if (rewardStreak === 2) {
+        switchToSpecialModeAndLaunchSpecialModeTimeout();
       }
     }
     score += bonus_ratio * REWARD_UNIT;
@@ -4811,14 +4854,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     if (event.key === " " && !invisible) {
-      if (rewardStreak === 5 || rewardStreak === 10) {
+      if (getHeroMode() === 1 /* special */) {
         launchHeroLightningSpeedAnimation();
         return;
       }
       launchInvisibilityToggle();
     }
     if (event.key === "m") {
-      if (rewardStreak === 5 || rewardStreak === 10) {
+      if (getHeroMode() === 1 /* special */) {
         launchAttack(true);
         return;
       }
@@ -5174,7 +5217,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     ANIMATION_RUNNING_VALUES[59 /* hero_transformation_run */] = 0;
     ANIMATION_RUNNING_VALUES[6 /* hero_hurt */] = 0;
   };
-  var lightningImg = document.getElementById("lightning_img");
   var animateLightning = () => {
     lightningImg.style.display = "block";
     launchAnimationAndDeclareItLaunched(
@@ -5366,14 +5408,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           setTimeout(
             () => {
               lightningImg.style.opacity = "1";
-              lightningImg.style.left = "10%";
+              lightningImg.style.left = "0";
               launchAnimationAndDeclareItLaunched(
                 lightningImg,
                 0,
                 "png",
-                `assets/challenge/items/sparks`,
+                `assets/challenge/items/lightning`,
                 1,
-                6,
+                17,
                 1,
                 true,
                 64 /* lightning */

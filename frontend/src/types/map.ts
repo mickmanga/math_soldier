@@ -17,3 +17,8 @@ export type ChallengeElement = {
    id: string;
    topScore: string
 };
+
+export enum HERO_MODES {
+   normal,
+   special
+}

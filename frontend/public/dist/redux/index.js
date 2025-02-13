@@ -2394,7 +2394,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 2
+    currentIndex: 1,
+    heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
     name: "map",
@@ -2437,10 +2438,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           return;
         }
         state.elementsOnScreen.splice(removedElementIndex, 1);
+      },
+      setHeroMode: (state, action) => {
+        state.heroMode = action.payload;
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
   var persisted_mapSlice_default = persistedMapSlice.reducer;
 
   // src/redux/slices/unpersisted_mapSlice.ts

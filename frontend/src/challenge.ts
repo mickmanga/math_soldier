@@ -1,7 +1,7 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
-import { FormBlock, FormElement, MapElement } from "./types/map";
+import { FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
 
 enum GAME_MODES {
@@ -15,15 +15,6 @@ const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioE
 flameThrowerAudio.volume = 0.6;
 
 const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
-
-const goBackToMountain = (event: Event) => {
-  window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
-};
-
-const getUrlParameter = (name: string): string | null => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(name);
-};
 
 const MAPS: HTMLElement[] = [];
 const MAP_SETS: MapSet[] = [];
@@ -46,6 +37,9 @@ const scoreMalusDetail = document.getElementById("score_malus_detail")!;
 const scoreRewardContainer = document.getElementById("score_reward_container")!;
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 const specialMoveIndicator = document.getElementById("special_move_indicator")!;
+const specialMoveTimer = document.getElementById("special_move_timer");
+
+const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
 
 const ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 80;
 const ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
@@ -59,15 +53,30 @@ let heroRunning = false;
 
 const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
-// Utility function to get query parameters from the URL
-const getQueryParam = (param: string): string | null => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param);
-};
+const SPECIAL_MODE_MAX_VALUE = 10;
+
+
+let currentChallengeLength = 0;
 
 let answers = null;
 
-let currentChallengeLength = 0;
+//selectors
+
+const getHeroMode = () => {
+ return store.getState().persistedMap.heroMode;
+}
+
+
+
+
+const goBackToMountain = (event: Event) => {
+  window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
+};
+
+const getUrlParameter = (name: string): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+};
 
 // Fetch a challenge by ID from the backend
 const fetchChallengeById = async (challengeId: string): Promise<void> => {
@@ -1272,7 +1281,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 150 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1595,6 +1604,101 @@ const killRightEnemyAndUpdateScore = (enemy: EnemyInterface, fromSpecialAttack: 
   transformIfRequired();
 };
 
+
+const turnHeroSpecialModeOff = () => {
+  store.dispatch(setHeroMode(HERO_MODES.normal));
+  specialMoveIndicator.style.display = "none";
+  if(specialMoveTimer){
+    specialMoveTimer.style.display="none";
+  }
+ // switchToNormalHeroEnergy();
+}
+
+
+const updateSpecialModeDisplay = (value: number) => {
+
+  if(!specialMoveTimer){
+    return;
+  }
+
+  specialMoveTimer.innerHTML = value.toString();
+}
+
+const switchToSpecialHeroEnergy = () => {
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.lightning] = 0;
+  lightningImg.style.opacity = "0";
+
+  setTimeout(
+    () => {
+      lightningImg.style.opacity = "1";
+      lightningImg.style.left = "10%";
+
+      launchAnimationAndDeclareItLaunched(
+        lightningImg,
+        0,
+        "png",
+        `assets/challenge/items/sparks`,
+        1,
+        6,
+        1,
+        true,
+        ANIMATION_ID.lightning
+      );
+
+    }, 300
+  )
+}
+
+const switchToNormalHeroEnergy = () => {
+  ANIMATION_RUNNING_VALUES[ANIMATION_ID.lightning] = 0;
+  lightningImg.style.opacity = "0";
+
+  setTimeout(
+    () => {
+      lightningImg.style.opacity = "1";
+      lightningImg.style.left = "0";
+
+      launchAnimationAndDeclareItLaunched(
+        lightningImg,
+        0,
+        "png",
+        `assets/challenge/items/lightning`,
+        1,
+        17,
+        1,
+        true,
+        ANIMATION_ID.lightning
+      );
+
+    }, 300
+  )
+}
+const switchToSpecialModeAndLaunchSpecialModeTimeout = () => {
+  specialMoveIndicator.style.display = "flex";
+  store.dispatch(setHeroMode(HERO_MODES.special));
+  if(specialMoveTimer){
+    specialMoveTimer.style.display="flex";
+  }
+  //switchToSpecialHeroEnergy();
+  launchHeroSpecialTimeout(SPECIAL_MODE_MAX_VALUE);
+}
+
+const launchHeroSpecialTimeout = (timerValue: number) => {
+   
+   timerValue--;
+   if(timerValue === 0){
+    turnHeroSpecialModeOff();
+      return;
+   }
+
+   updateSpecialModeDisplay(timerValue);
+  
+   setTimeout(
+    () => launchHeroSpecialTimeout(timerValue), 1000
+   )
+   
+}
+
 const rewardHero = () => {
   const bonus_ratio = transformed ? TRANSFORMED_BONUS_RATIO : 1;
 
@@ -1604,8 +1708,8 @@ const rewardHero = () => {
     rewardStreak++;
     updateTransformationProgressBarDisplay();
 
-    if(rewardStreak === 5 ||  rewardStreak === 10){
-      specialMoveIndicator.style.display = "flex";
+    if(rewardStreak === 2){
+      switchToSpecialModeAndLaunchSpecialModeTimeout();
     }
   }
 
@@ -3319,7 +3423,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === " " && !invisible) {
-    if(rewardStreak === 5 ||  rewardStreak === 10){
+    if(getHeroMode() === HERO_MODES.special){
       launchHeroLightningSpeedAnimation();
       return;
     }
@@ -3327,7 +3431,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "m") {
-    if(rewardStreak === 5 ||  rewardStreak === 10){
+    if(getHeroMode() === HERO_MODES.special){
       launchAttack(true);
       return;
     }
@@ -3812,7 +3916,6 @@ const initHeroAnimations = () => {
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
 };
 
-const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
 
 
 const animateLightning = () => {
@@ -4076,15 +4179,16 @@ const launchHeroLightningSpeedAnimation = () => {
         setTimeout(
           () => {
             lightningImg.style.opacity = "1";
-            lightningImg.style.left = "10%";
+            lightningImg.style.left = "0";
+
 
             launchAnimationAndDeclareItLaunched(
               lightningImg,
               0,
               "png",
-              `assets/challenge/items/sparks`,
+              `assets/challenge/items/lightning`,
               1,
-              6,
+              17,
               1,
               true,
               ANIMATION_ID.lightning
@@ -4100,3 +4204,4 @@ const launchHeroLightningSpeedAnimation = () => {
   }, INVISIBILITY_DURATION_IN_MILLISECONDS/CAMERA_SUPER_SPEED_MULTIPLICATOR);
 
 }
+

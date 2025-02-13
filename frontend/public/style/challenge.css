@@ -53,6 +53,15 @@ audio {
  display: none;
 }
 
+#special_move_timer {
+  position: absolute;
+  top: 14vh;
+  z-index: 100;
+  color: red;
+  left: 3vw;
+  display: none;
+}
+
 
 #idle_timeout_container {
   position: absolute;

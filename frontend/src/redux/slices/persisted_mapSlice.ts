@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MapElement } from '../../types/map';
+import { HERO_MODES, MapElement } from '../../types/map';
 
 export interface MapState {
   elements: Array<MapElement>;
@@ -7,6 +7,7 @@ export interface MapState {
   startIndex: number,
   endIndex: number,
   currentIndex: number,
+  heroMode: HERO_MODES
 }
 
 const initialState: MapState = {
@@ -48,7 +49,8 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 2,
+  currentIndex: 1,
+  heroMode: HERO_MODES.normal
 };
 
 const persistedMapSlice = createSlice({
@@ -94,8 +96,11 @@ const persistedMapSlice = createSlice({
       }
       state.elementsOnScreen.splice(removedElementIndex, 1);
     },
+    setHeroMode: (state, action: PayloadAction<HERO_MODES>) => {
+      state.heroMode = action.payload;
+    } 
   },
 });
 
-export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex } = persistedMapSlice.actions;
+export const { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
 export default persistedMapSlice.reducer;
