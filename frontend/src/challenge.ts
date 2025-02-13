@@ -11,6 +11,9 @@ enum GAME_MODES {
 
 let gameMode: GAME_MODES = GAME_MODES.discovery;
 
+const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioElement;
+flameThrowerAudio.volume = 0.6;
+
 const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
 
 const goBackToMountain = (event: Event) => {
@@ -574,7 +577,6 @@ const launchEndOfChallenge = () => {
   
   setTimeout( () => {
    // levelUpAudio.play();
-   // breathAudio.play();
    transitionAudio.play();
     endOfChallengeContainer.style.opacity = "1";
     endOfChallengeContainer.innerHTML = "Note : D, accèse refusé...";
@@ -1270,7 +1272,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 45 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 200 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1400,8 +1402,11 @@ const launchAttack = (special = false) => {
   if (transformed) {
     laserdAudio.play();
     laserdAudio.currentTime = 0;
-  } else if (!special) {
-    swordAudio.play();
+  } else if (special) {
+    flameThrowerAudio.play();
+    flameThrowerAudio.currentTime = 0;
+  } else {
+       swordAudio.play();
     swordAudio.currentTime = 0;
   }
 
@@ -1712,7 +1717,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
 
     if(fromSpecialAttack){
       const hardEnemyContainer = enemy.character.element.parentElement as HTMLElement;
-      hardEnemyContainer.style.height = "25.5vh";
+      hardEnemyContainer.style.height = "28.5vh";
       hardEnemyContainer.style.bottom = "17vh";
     }
 
@@ -2950,6 +2955,7 @@ const createChallengPilar = (element: MapElement) => {
   pillarcontainer.style.width = "5vw";
   pillarcontainer.style.height = "20vh";
   pillarcontainer.style.background = "grey";
+  pillarcontainer.style.borderRadius = "15px";
   pillarcontainer.id = `${element.id}`;
   pillarcontainer.style.cursor = "pointer";
   pillarcontainer.onclick = (event) => {
@@ -2988,6 +2994,8 @@ const createFormElement = (formElement: MapElement) => {
     formBackgroundContainer.style.width = "100vw";
     formBackgroundContainer.style.height = "100vh";
     formBackgroundContainer.style.zIndex = "10";
+    formBackgroundContainer.style.borderRadius = "15px";
+
 
     formBackgroundContainer.style.display = "flex";
     formBackgroundContainer.style.justifyContent = "center";
@@ -3249,7 +3257,7 @@ const launchChallenge = (pillarId: string) => {
   )
 
   setupChallengeDisplay();
-  //breathAudio.play();
+  breathAudio.play();
   gameMode = GAME_MODES.challenge;
   initializeChallengePage(pillarId);
 
@@ -3323,7 +3331,7 @@ document.addEventListener("keydown", (event) => {
       launchAttack(true);
       return;
     }
-    launchAttack(true);
+    launchAttack();
   }
 
   if (event.key === "y") {
@@ -3898,7 +3906,7 @@ window.onload = () => {
   animateLightning();
   launchAnimation(heroCharacter, AnimationType.idle, false);
   launchDragon();
-  launchChallenge(store.getState().persistedMap.elements[1].id)
+  //launchChallenge(store.getState().persistedMap.elements[1].id)
 
   if (hardMode) {
     epicAudio.play();

@@ -2904,6 +2904,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
+  var flameThrowerAudio = document.getElementById("flame_thrower");
+  flameThrowerAudio.volume = 0.6;
   var windAudio = document.getElementById("wind_audio");
   var goBackToMountain = (event) => {
     window.location.href = `/discovery${hardMode ? "?started=true" : ""}`;
@@ -3775,7 +3777,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 64 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 39 /* witch_opponent_death */ || animationId === 40 /* witch_opponent_death_from_special_attack */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 42 /* orc_opponent_idle */ || animationId === 44 /* orc_opponent_attack */ || animationId === 47 /* dwarf_opponent_idle */ || animationId === 49 /* dwarf_opponent_attack */ || animationId === 25 /* golem_opponent_idle */ || animationId === 27 /* golem_opponent_attack */ || animationId === 28 /* golem_opponent_death */ || animationId === 31 /* king_opponent_idle */ || animationId === 33 /* king_opponent_attack */ || animationId === 36 /* witch_opponent_idle */ || animationId === 38 /* witch_opponent_attack */ || animationId === 52 /* dragon_fly_right */ || animationId === 53 /* dragon_fly_left */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 45 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 200 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 200 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -3881,7 +3883,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (transformed) {
       laserdAudio.play();
       laserdAudio.currentTime = 0;
-    } else if (!special) {
+    } else if (special) {
+      flameThrowerAudio.play();
+      flameThrowerAudio.currentTime = 0;
+    } else {
       swordAudio.play();
       swordAudio.currentTime = 0;
     }
@@ -4073,7 +4078,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       bombAudio.currentTime = 0;
       if (fromSpecialAttack) {
         const hardEnemyContainer = enemy.character.element.parentElement;
-        hardEnemyContainer.style.height = "25.5vh";
+        hardEnemyContainer.style.height = "28.5vh";
         hardEnemyContainer.style.bottom = "17vh";
       }
       const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, fromSpecialAttack ? 10 /* death_from_special_attack */ : 9 /* death */);
@@ -4630,6 +4635,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pillarcontainer.style.width = "5vw";
     pillarcontainer.style.height = "20vh";
     pillarcontainer.style.background = "grey";
+    pillarcontainer.style.borderRadius = "15px";
     pillarcontainer.id = `${element.id}`;
     pillarcontainer.style.cursor = "pointer";
     pillarcontainer.onclick = (event) => {
@@ -4649,6 +4655,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.style.width = "100vw";
     formBackgroundContainer.style.height = "100vh";
     formBackgroundContainer.style.zIndex = "10";
+    formBackgroundContainer.style.borderRadius = "15px";
     formBackgroundContainer.style.display = "flex";
     formBackgroundContainer.style.justifyContent = "center";
     formBackgroundContainer.style.alignItems = "center";
@@ -4755,6 +4762,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     );
     setupChallengeDisplay();
+    breathAudio.play();
     gameMode = 1 /* challenge */;
     initializeChallengePage(pillarId);
   };
@@ -4814,7 +4822,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         launchAttack(true);
         return;
       }
-      launchAttack(true);
+      launchAttack();
     }
     if (event.key === "y") {
       launchDeathAnimation();
@@ -5235,7 +5243,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     animateLightning();
     launchAnimation(heroCharacter, 11 /* idle */, false);
     launchDragon();
-    launchChallenge(store.getState().persistedMap.elements[1].id);
     if (hardMode) {
       epicAudio.play();
     } else {
