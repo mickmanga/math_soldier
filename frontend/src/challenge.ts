@@ -3122,34 +3122,51 @@ const setFormContent = (formHtmlContainer: HTMLElement, formBlock: FormBlock, ne
 
 }
 
+let lastGolemVal = 0;
+
+
 const createFormElement = (formElement: MapElement) => {
   
     //On créée une div, qui fait
 
     const formBackgroundContainer = document.createElement("div");
     formBackgroundContainer.style.position = "absolute";
-    formBackgroundContainer.style.left = "0";    
-    formBackgroundContainer.style.top = "0";    
-    formBackgroundContainer.style.width = "100vw";
-    formBackgroundContainer.style.height = "100vh";
+    formBackgroundContainer.style.left = "35vw";    
+    formBackgroundContainer.style.top = "40vh";    
+    formBackgroundContainer.style.width = "30vw";
+    formBackgroundContainer.style.height = "50vh";
     formBackgroundContainer.style.zIndex = "10";
     formBackgroundContainer.style.borderRadius = "15px";
-
-
     formBackgroundContainer.style.display = "flex";
-    formBackgroundContainer.style.justifyContent = "center";
+    formBackgroundContainer.style.justifyContent = "space-between";
     formBackgroundContainer.style.alignItems = "center";
+    formBackgroundContainer.style.flexDirection = "column";
+
 
     const formContainer = document.createElement("div");
-    formContainer.style.width = "20vw";
-    formContainer.style.height = "20vh";
+    formContainer.style.width = "70%";
+    formContainer.style.height = "45%";
     formContainer.style.background = "grey";
+    formContainer.style.borderRadius = "15px";
     
     formContainer.id = `${formElement.id}`;
     formBackgroundContainer.append(formContainer);
 
-    return formBackgroundContainer;
+    const golemContainer = document.createElement("div");
+    golemContainer.style.height = "50%";
 
+
+    const golemImg = document.createElement("img") as HTMLImageElement;
+    golemImg.style.height = lastGolemVal === 0 ? "100%" : "80%";
+    golemImg.style.width = "auto";
+    golemImg.src= `assets/challenge/characters/neutral/${lastGolemVal === 0? "golem" : "golem2"}/gif/golem.gif`;
+    golemContainer.append(golemImg);
+
+    formBackgroundContainer.append(golemContainer);
+
+    lastGolemVal = lastGolemVal === 0 ? 1 : 0; 
+
+    return formBackgroundContainer;
 }
 
 const createGolemCharacter = (): DefaultCharacter => {

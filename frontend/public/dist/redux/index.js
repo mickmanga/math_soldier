@@ -2368,6 +2368,30 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
+      { type: "form", id: "2334", formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      { type: "form", id: "1234ER", formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
       { type: "challenge", topScore: "D", id: "677e814577322467895fd15c" },
       { type: "challenge", topScore: "D", id: "677e814577322467895fd17e" },
       { type: "form", id: "04", formBlocks: [
@@ -2394,7 +2418,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 1,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
