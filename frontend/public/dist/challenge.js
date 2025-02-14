@@ -4796,6 +4796,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return pilarBackgroundContainer;
   };
   var lastGolemVal = 0;
+  var golemAudioIndex = 0;
+  var launchGolemTalk = () => {
+    const needSomethingAudio = document.getElementById("need_something");
+    const byeAudio = document.getElementById("bye");
+    if (golemAudioIndex === 0) {
+      needSomethingAudio.play();
+    } else {
+      byeAudio.play();
+    }
+    golemAudioIndex = golemAudioIndex === 0 ? 1 : 0;
+  };
   var createFormElement = (formElement) => {
     const formBackgroundContainer = document.createElement("div");
     formBackgroundContainer.style.position = "absolute";
@@ -4810,10 +4821,36 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.style.alignItems = "center";
     formBackgroundContainer.style.flexDirection = "column";
     const formContainer = document.createElement("div");
+    formContainer.style.position = "relative";
     formContainer.style.width = "70%";
     formContainer.style.height = "45%";
     formContainer.style.background = "grey";
     formContainer.style.borderRadius = "15px";
+    const validatedPoint = document.createElement("div");
+    validatedPoint.style.position = "absolute";
+    validatedPoint.style.background = "#007480";
+    validatedPoint.style.borderRadius = "50%";
+    validatedPoint.style.height = "5%";
+    validatedPoint.style.aspectRatio = "1/1";
+    validatedPoint.style.top = "10px";
+    validatedPoint.style.right = "10px";
+    const extendButton = document.createElement("button");
+    extendButton.style.cursor = "pointer";
+    extendButton.style.bottom = "10%";
+    extendButton.style.right = "25%";
+    extendButton.style.position = "absolute";
+    extendButton.style.width = "50%";
+    extendButton.style.height = "20%";
+    extendButton.style.borderRadius = "10px";
+    extendButton.style.border = "none";
+    extendButton.style.display = "flex";
+    extendButton.style.justifyContent = "center";
+    extendButton.style.alignItems = "center";
+    extendButton.style.background = "#726e6e";
+    extendButton.innerHTML = "Extend";
+    extendButton.onclick = launchGolemTalk;
+    formContainer.append(validatedPoint);
+    formContainer.append(extendButton);
     formContainer.id = `${formElement.id}`;
     formBackgroundContainer.append(formContainer);
     const golemContainer = document.createElement("div");
