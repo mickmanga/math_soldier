@@ -469,7 +469,6 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
  const enemyCreationCallbacks = [
   createWitchCharacter,
   createGolemCharacter,
-  createRedHammerCharacter
  ];
 
  lastEnemyIndex++;
@@ -1712,7 +1711,7 @@ const rewardHero = () => {
     rewardStreak++;
     updateTransformationProgressBarDisplay();
 
-    if(rewardStreak === 2){
+    if(rewardStreak === 5){
       switchToSpecialModeAndLaunchSpecialModeTimeout();
     }
   }

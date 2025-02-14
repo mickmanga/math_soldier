@@ -1,0 +1,23 @@
+.challengePoint {
+   margin-top: 250px;
+}
+
+.top_course_container {
+    height: 40vh;
+    width: 30vw;
+    background: red;
+    margin-left: 7.5vw;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.top_course_container_a {
+    height: 20%;
+    width: 70%;
+    background: green;
+    justify-content: space-around;
+    align-items: center;
+}

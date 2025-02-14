@@ -50,7 +50,7 @@ const initialState: MapState = {
   startIndex: 0,
   endIndex: 0,
   currentIndex: 1,
-  heroMode: HERO_MODES.special
+  heroMode: HERO_MODES.normal
 };
 
 const persistedMapSlice = createSlice({
@@ -97,7 +97,7 @@ const persistedMapSlice = createSlice({
       state.elementsOnScreen.splice(removedElementIndex, 1);
     },
     setHeroMode: (state, action: PayloadAction<HERO_MODES>) => {
-      //state.heroMode = action.payload;
+      state.heroMode = action.payload;
     } 
   },
 });

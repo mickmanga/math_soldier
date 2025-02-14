@@ -14,7 +14,8 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Endpoint to list all files in the assets directory
+/*
+/ Endpoint to list all files in the assets directory
 app.get("/assets-list", (req, res) => {
   const assetsDirectory = path.join(__dirname, "../public/assets");
 
@@ -25,6 +26,8 @@ app.get("/assets-list", (req, res) => {
     res.json(files);
   });
 });
+
+*/
 
 // Route to serve HTML files based on the requested path
 app.get("/:path", (req, res) => {

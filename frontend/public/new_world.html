@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="style/world.css">
+       <link rel="stylesheet" href="style/new_world.css">
+    </head>
+    <body>
+      <button id="backButton" onclick="goBackToDashboard(event)"><</button>
+      
+
+      <div id="top_map_container">
+         <div id="top_map_container_a">
+            Tark est une terre gelée, depuis que Braun, le dieu du firmament l'a maudit pour l'éternité.</br>
+            Elle est peuplée de différentes espèces du nord, comme les golems de neiges, ou les muses ailées.
+            <button id="learnButton" onclick="goToLearning(event)">Learn</button>
+         </div>
+         <img id="ice" src="assets/challenge/items/ice.webp">
+      </div>
+      <div class="top_course_container">
+         <div class="top_course_container_a"></div>
+         <div class="top_course_container_a"></div>
+         <div class="top_course_container_a"></div>
+         <div class="top_course_container_a"></div>
+      </div>
+
+      <div id="mapBackground">
+         <div class="mapBackground_a">
+            <div class="mapBackground_aa mapBackground_aa1 ">
+               <div class="mapBackground_aaa" onclick="play()"></div>
+            </div>
+            <div class="mapBackground_aa mapBackground_aa2 "></div>
+          </div>
+          <div class="mapBackground_a">
+            <div class="mapBackground_aa mapBackground_aa1 ">
+               <div class="mapBackground_aaa"></div>
+            </div>
+            <div class="mapBackground_aa mapBackground_aa2 "></div>
+          </div>
+          <div class="mapBackground_a">
+            <div class="mapBackground_aa mapBackground_aa1 ">
+               <div class="mapBackground_aaa"></div>
+            </div>
+            <div class="mapBackground_aa mapBackground_aa2 "></div>
+          </div>
+
+          <div class="mapBackground_a challengePoint">
+            <div class="mapBackground_aa mapBackground_aa1 ">
+               <div class="mapBackground_aaa"></div>
+            </div>
+            <div class="mapBackground_aa mapBackground_aa2 "></div>
+          </div>
+
+
+   
+
+      </div>
+      <script src="dist/world.js"></script>
+    </body>
+</html>
+
+<script>
+   const play = () => {
+      window.location.replace("http://localhost:3001/challenge?mode=hard&challengeId=677e814577322467895fd15c");
+   }
+   
+ const goBackToDashboard = (event) => {
+    window.location.replace("http://localhost:3001/game_map");
+  }
+
+  const goToLearning = (event) => {
+   window.location.replace("http://localhost:3001/learningworld");
+  }
+
+</script>
+

@@ -58,7 +58,7 @@ html {
 
 #mapBackground {
     position: absolute;
-    top: 10vh;
+    top: 50vh;
     left: 20vw;
     height: 90vh;
     width: 60vw;
@@ -104,6 +104,3 @@ html {
     background: purple;
     display: flex;
 }
-
-
-
