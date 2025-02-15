@@ -86,7 +86,7 @@ html {
     height: 125px;
     width: 125px;
     border-radius: 50%;
-    background: red;
+    background: rgb(0, 191, 255);
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@ html {
 }
 
 .mapBackground_aa2 {
-    background: green;
+    background: rgb(109, 111, 109);
     border-radius: 15px;
 }
 

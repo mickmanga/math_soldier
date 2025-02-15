@@ -3714,7 +3714,7 @@ const openMap = (event: Event) => {
     quitChallengeFromMapClick();
     return;
   }
-  window.location.replace("http://localhost:3001/world");
+  window.location.replace("http://localhost:3001/new_world");
 } 
 
 window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;

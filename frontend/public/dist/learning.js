@@ -23,9 +23,23 @@
 
   // src/learning.ts
   var openMap = (event) => {
-    window.location.replace("http://localhost:3001/world");
+    window.location.replace("http://localhost:3001/new_world");
+  };
+  var hideSideBar = (event) => {
+    document.getElementById("course_container_ab_back_left_button").style.display = "flex";
+    document.getElementById("course_container_ab_wrapper").style.display = "none";
+    document.getElementById("course_container_a").style.width = "0";
+    document.getElementById("course_container_aa").style.display = "none";
+  };
+  var displaySideBar = (event) => {
+    document.getElementById("course_container_ab_back_left_button").style.display = "none";
+    document.getElementById("course_container_ab_wrapper").style.display = "flex";
+    document.getElementById("course_container_a").style.width = "50%";
+    document.getElementById("course_container_aa").style.display = "flex";
   };
   window.openMap = openMap;
+  window.hideSideBar = hideSideBar;
+  window.displaySideBar = displaySideBar;
   var getChapters = () => __async(void 0, null, function* () {
     try {
       const courseContainer = document.getElementById("course_container_b");

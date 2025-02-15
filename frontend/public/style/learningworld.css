@@ -185,18 +185,83 @@ body {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 #course_container_a {
-    height: 20%;
-    width: 100%;
+    height: 100%;
+    width: 50%;
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     font-size: large;
     font-weight: bold;
+    background: #80808078;
+    border-radius: 15px;
 }
+
+#course_container_aa {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px;
+}
+
+.course_container_ab {
+  position: relative;
+  height: 90%;
+  width: 100%;
+}
+
+#course_container_ab_wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+}
+
+#course_container_ab_back_right_button {
+  position: absolute;
+  top: 45%;
+  right: 0;
+  height: 10%;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#course_container_ab_back_left_button {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  height: 10%;
+  width: 10%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.course_container_aba {
+  margin-top: 20px;
+  height: 10vh;
+  width: 80%;
+  background: grey;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 #course_container_b {
     overflow: auto;
@@ -204,7 +269,6 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-
 }
 
 #challenge_container_a {

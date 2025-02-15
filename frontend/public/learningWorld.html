@@ -23,13 +23,25 @@
       <div id="interface_container_a"></div>
 
       <div id="interface_container_b">
-
           <div id="course_container">
-            <div id="course_container_a"></div>
-            <div id="course_container_b">
+            <div id="course_container_a" class="slide-out">
+              <div id="course_container_aa">Algèbre linéaire</div>
+              <div class="course_container_ab">
+                <button onclick="displaySideBar(event)" id="course_container_ab_back_left_button">></button>
+                <div id="course_container_ab_wrapper">
+                  <button onclick="hideSideBar(event)" id="course_container_ab_back_right_button"><</button>
+                  <div class="course_container_aba">Qu'est ce qu'un vecteur?</div>
+                  <div class="course_container_aba">Couplets, triplets, n-uplets de réels</div>
+                  <div class="course_container_aba">Construire le vecteur somme</div>
+                  <div class="course_container_aba">Multiplication vecteur/scalaire</div>
+                  <div class="course_container_aba">Exemples de vecteurs</div>
+                </div>
+              </div>
+            </div>
 
+            <div id="course_container_b">
           </div>
-          </div>
+         </div>
 
           <div id="challenge_container">
             <div id="challenge_container_a">
@@ -164,3 +176,4 @@
     <script src="dist/learning.js"></script>
   </body>
 </html>
+

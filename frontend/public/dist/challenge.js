@@ -5161,7 +5161,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       quitChallengeFromMapClick();
       return;
     }
-    window.location.replace("http://localhost:3001/world");
+    window.location.replace("http://localhost:3001/new_world");
   };
   window.launchInvisibilityToggle = launchInvisibilityToggleFromDom;
   window.openMap = openMap;

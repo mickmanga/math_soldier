@@ -1,13 +1,31 @@
 
 interface Window {
   openMap: (event: Event) => void;
+  hideSideBar: (event: Event) => void;
+  displaySideBar: (event: Event) => void;
 }
 
 const openMap = (event: Event) => {
-    window.location.replace("http://localhost:3001/world");
+  window.location.replace("http://localhost:3001/new_world");
+}
+
+const hideSideBar = (event: Event) => {
+  document.getElementById("course_container_ab_back_left_button")!.style.display = "flex";
+  document.getElementById("course_container_ab_wrapper")!.style.display = "none";
+  document.getElementById("course_container_a")!.style.width = "0";
+  document.getElementById("course_container_aa")!.style.display = "none";
+}
+
+const displaySideBar = (event: Event) => {
+  document.getElementById("course_container_ab_back_left_button")!.style.display = "none";
+  document.getElementById("course_container_ab_wrapper")!.style.display = "flex";
+  document.getElementById("course_container_a")!.style.width = "50%";
+  document.getElementById("course_container_aa")!.style.display = "flex";
 }
 
 window.openMap = openMap;
+window.hideSideBar = hideSideBar;
+window.displaySideBar = displaySideBar;
 
 const getUser = async (userId: string) => {
     try {
