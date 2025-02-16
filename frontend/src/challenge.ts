@@ -56,9 +56,13 @@ const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 const SPECIAL_MODE_MAX_VALUE = 10;
 
 
+const ASSETS_PATH_BASE = "assets/challenge";
+
+
 let currentChallengeLength = 0;
 
 let answers = null;
+
 
 //selectors
 
@@ -150,9 +154,12 @@ const updateEnemyViewPointDisplay = () => {
         : "rgba(40, 108, 204, 0.514)")
   );
 
+  /*
+
   enemyViewPointLogo.src = `${
-    heroInTheRedZone ? "assets/challenge/millescaneous/careful.png" : "assets/challenge/items/lightning/11.png"
+   ASSETS_PATH_BASE + heroInTheRedZone ? "/millescaneous/careful.png" :  "/items/lightning/11.png"
   }`;
+  */
 };
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
@@ -201,16 +208,13 @@ const progressBar = document.getElementsByClassName(
 const bombAudio = document.getElementById("bomb_audio")! as HTMLAudioElement;
 
 const setInitialGameVolume = () => {
-  
   swordAudio.volume = 0.65;
   bombAudio.volume = 0.12;
   electricityAudio.volume = 0.7;
   transformationScreamAudio.volume = 0.25;
   hurtAudio.volume = 0.025;
   runAudio.volume = 0;
-
 }
-
 
 const initAndLaunchFootStepsAudio = () => {
   stepsInSwow.currentTime = 0;
@@ -452,8 +456,8 @@ const buildEnemyElement = () => {
   );
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = hardMode
-    ? "assets/challenge/characters/enemies/hard/attack/1.png"
-    : "assets/challenge/characters/enemies/black_spirit/run/1.png";
+    ? ASSETS_PATH_BASE + "/characters/enemies/hard/attack/1.png"
+    : ASSETS_PATH_BASE + "/characters/enemies/black_spirit/run/1.png";
 
   newOpponentContainer.append(newEnnemyImg);
 
@@ -467,8 +471,8 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createWitchCharacter,
-  createGolemCharacter,
+  createOrcCharacter,
+  createDwarfCharacter
  ];
 
  lastEnemyIndex++;
@@ -486,9 +490,7 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
   }
 
   document.getElementsByTagName("body")[0].append();
-
   const enemy = new Enemy(enemyCharacter, answer);
-
   ennemiesOnScreen.push(enemy);
 
   return enemy;
@@ -512,7 +514,6 @@ const initEnemyAnimations = (enemy: Enemy) => {
       return;
       }
       APP_ELEMENTS_ANIMATION_QUEUE[appElementId].current_animation = null;
-
 }
 
 const buildAndLaunchEnemy = (answer: ChallengeAnswerData) => {
@@ -525,7 +526,6 @@ const buildAndLaunchEnemy = (answer: ChallengeAnswerData) => {
   }
 
   lightUpAnswerDataContainer();
-
   answerDataValue.innerHTML = enemy.answer.text;
 
   launchOpponent(enemy);
@@ -599,7 +599,7 @@ const launchEndOfChallenge = () => {
   document.getElementById("endOfGameInterface")!.style.display = "flex";
   clearGameTimeouts();
   initAllAnimations();
-  heroImage.src = "assets/challenge/characters/hero/run/1.png";
+  heroImage.src = ASSETS_PATH_BASE + "/characters/hero/run/1.png";
   document.getElementById("transformation_background")!.style.display = "none";
 
   const grade = getChallengeGrade();
@@ -852,7 +852,7 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.orc_opponent_idle,
       ANIMATION_ID.orc_opponent_run,
       ANIMATION_ID.orc_opponent_attack,
-      ANIMATION_ID.orc_opponent_death   
+      ANIMATION_ID.orc_opponent_death
     ]
   },
   dwarf_enemy: {
@@ -1279,7 +1279,7 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left ) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left ) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
@@ -1517,13 +1517,11 @@ const launchOpponent = (enemy: EnemyInterface) => {
 };
 
 const launchIdleProcess = (character: CharacterInterface) => {
-
   launchAnimation(character, AnimationType.idle, false);
 
   setTimeout(
    () => launchIdleProcess(character), 6000
   );
-
 }
 
 interface ElementInterface extends HTMLImageElement {};
@@ -1553,27 +1551,22 @@ const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocit
    requestAnimationFrame( () => moveElement(element, animation, velocityPerMs, direction));
 }
 
-
 const moveEnemy = (
   enemy: Enemy,
   throttleNum = 0,
   previousTimeStamp: number
 ): any => {
-
-  const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!; 
+  const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
 
   if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1) {
     return;
   }
 
   const currentTimeStamp = Date.now();
-
   const diff = currentTimeStamp - previousTimeStamp;
-
   let hardEnemyMoveRatio = 1;
 
   throttleNum = 0;
-
   const enemyContainer = enemy.character.element.parentElement!;
 
   enemyContainer.style.left = `${Math.round(
@@ -1588,6 +1581,7 @@ const moveEnemy = (
   }
 
   requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
+
 };
 
 const transformIfRequired = () => {
@@ -2402,7 +2396,7 @@ const heroAnimations = [
       {
         id: ANIMATION_ID.hero_transformation_pre_run ,
         sprite:    {
-          path: "assets/challenge/characters/transformed_hero/pre_run",
+          path: ASSETS_PATH_BASE + "/characters/transformed_hero/pre_run",
           length: 9
       }
       }
@@ -2413,7 +2407,7 @@ const heroAnimations = [
       {
         id: ANIMATION_ID.hero_idle ,
         sprite:    {
-          path: "assets/challenge/characters/hero/idle",
+          path: ASSETS_PATH_BASE + "/characters/hero/idle",
           length: 7
       }
       }
@@ -2429,7 +2423,7 @@ const heroAnimations = [
         {
           id: ANIMATION_ID.hero_attack ,
           sprite:    {
-            path: "assets/challenge/characters/hero/attack",
+            path: ASSETS_PATH_BASE + "/characters/hero/attack",
             length: 4
         }
         }
@@ -2440,7 +2434,7 @@ const heroAnimations = [
         {
           id:ANIMATION_ID.hero_transformation_attack,
           sprite:    {
-            path: "assets/challenge/characters/transformed_hero/attack",
+            path: ASSETS_PATH_BASE + "/characters/transformed_hero/attack",
             length: 12
         }
         }
@@ -2456,7 +2450,7 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_special_attack ,
             sprite:    {
-              path: "assets/challenge/characters/hero/flames/new",
+              path: ASSETS_PATH_BASE + "/characters/hero/flames/new",
               length: 15
           }
           }
@@ -2472,7 +2466,7 @@ const heroAnimations = [
             {
               id: ANIMATION_ID.hero_walk_right,
               sprite:    {
-                path: "assets/challenge/characters/hero/walk",
+                path: ASSETS_PATH_BASE + "/characters/hero/walk",
                 length: 6
             }
             }
@@ -2488,7 +2482,7 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_run,
             sprite:    {
-              path: "assets/challenge/characters/hero/run",
+              path: ASSETS_PATH_BASE + "/characters/hero/run",
               length: 8
           }
           }
@@ -2499,7 +2493,7 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_transformation_run,
             sprite:    {
-              path: "assets/challenge/characters/transformed_hero/run",
+              path: ASSETS_PATH_BASE + "/characters/transformed_hero/run",
               length: 6
           }
           }
@@ -2515,7 +2509,7 @@ const heroAnimations = [
             {
               id: ANIMATION_ID.hero_walk_left,
               sprite:    {
-                path: "assets/challenge/characters/hero/walk_left",
+                path: ASSETS_PATH_BASE + "/characters/hero/walk_left",
                 length: 6
             }
             }
@@ -2526,7 +2520,7 @@ const heroAnimations = [
             {
               id: ANIMATION_ID.hero_transformation_run,
               sprite:    {
-                path: "assets/challenge/characters/transformed_hero/run",
+                path: ASSETS_PATH_BASE + "/characters/transformed_hero/run",
                 length: 6
             }
             }
@@ -2542,7 +2536,7 @@ const heroAnimations = [
               {
                 id: ANIMATION_ID.hero_run_left,
                 sprite:    {
-                  path: "assets/challenge/characters/hero/walk_left",
+                  path: ASSETS_PATH_BASE + "/characters/hero/walk_left",
                   length: 6
               }
               }
@@ -2553,7 +2547,7 @@ const heroAnimations = [
               {
                 id: ANIMATION_ID.hero_transformation_run,
                 sprite:    {
-                  path: "assets/challenge/characters/transformed_hero/run",
+                  path: ASSETS_PATH_BASE + "/characters/transformed_hero/run",
                   length: 6
               }
               }
@@ -2569,7 +2563,7 @@ const heroAnimations = [
             {
               id: ANIMATION_ID.hero_second_idle,
               sprite:    {
-                path: "assets/challenge/characters/hero/second_idle",
+                path: ASSETS_PATH_BASE + "/characters/hero/second_idle",
                 length: 6
             }
             }
@@ -2585,7 +2579,7 @@ const heroAnimations = [
               {
                id: ANIMATION_ID.hero_death,
                sprite:    {
-                path: "assets/challenge/characters/hero/death",
+                path: ASSETS_PATH_BASE + "/characters/hero/death",
                 length: 6
               }
             }
@@ -2604,7 +2598,7 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/hard/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle",
           length: 16
       }
       }
@@ -2620,7 +2614,7 @@ const redHammerAnimations = [
         {
           id: ANIMATION_ID.hammer_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/hard/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack",
             length: 30
         }
         }
@@ -2636,7 +2630,7 @@ const redHammerAnimations = [
           {
             id: ANIMATION_ID.hammer_opponent_death,
             sprite:    {
-              path: "assets/challenge/characters/enemies/hard/death",
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
               length: 41
           }
           }
@@ -2652,7 +2646,7 @@ const redHammerAnimations = [
             {
               id: ANIMATION_ID.hammer_opponent_death_from_special_attack,
               sprite:  {
-                path: "assets/challenge/explosion",
+                path: ASSETS_PATH_BASE + "/explosion",
                 length: 12
             }
             }
@@ -2687,7 +2681,7 @@ const orcAnimations = [
       {
         id: ANIMATION_ID.orc_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/orc/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/orc/idle",
           length: 42
       }
       }
@@ -2703,7 +2697,7 @@ const orcAnimations = [
         {
           id: ANIMATION_ID.orc_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/orc/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/orc/attack",
             length: 50
         }
         }
@@ -2717,10 +2711,10 @@ const orcAnimations = [
           states: ALL_ORC_ENEMY_STATES,
           animation: 
           {
-            id: ANIMATION_ID.hammer_opponent_death,
+            id: ANIMATION_ID.orc_opponent_death,
             sprite:    {
-              path: "assets/challenge/explosion",
-              length: 11
+              path: ASSETS_PATH_BASE + "/characters/enemies/orc/death",
+              length: 36
           }
           }
          }
@@ -2754,7 +2748,7 @@ const dwarfAnimations = [
       {
         id: ANIMATION_ID.dwarf_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/dwarf/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/dwarf/idle",
           length: 57
       }
       }
@@ -2770,7 +2764,7 @@ const dwarfAnimations = [
         {
           id: ANIMATION_ID.dwarf_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/dwarf/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/dwarf/attack",
             length: 38
         }
         }
@@ -2786,8 +2780,8 @@ const dwarfAnimations = [
           {
             id: ANIMATION_ID.dwarf_opponent_death,
             sprite:    {
-              path: "assets/challenge/explosion",
-              length: 11
+              path: ASSETS_PATH_BASE + "/characters/enemies/dwarf/death",
+              length: 38
           }
           }
          }
@@ -2822,7 +2816,7 @@ const witchAnimations = [
       {
         id: ANIMATION_ID.witch_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/witch/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/witch/idle",
           length: 7
       }
       }
@@ -2838,7 +2832,7 @@ const witchAnimations = [
         {
           id: ANIMATION_ID.witch_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/witch/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/witch/attack",
             length: 18
         }
         }
@@ -2854,7 +2848,7 @@ const witchAnimations = [
           {
             id: ANIMATION_ID.witch_opponent_death,
             sprite:  {
-              path: "assets/challenge/characters/enemies/witch/death",
+              path: ASSETS_PATH_BASE + "/characters/enemies/witch/death",
               length: 12
           }
           }
@@ -2870,7 +2864,7 @@ const witchAnimations = [
             {
               id: ANIMATION_ID.witch_opponent_death_from_special_attack,
               sprite:  {
-                path: "assets/challenge/explosion",
+                path: ASSETS_PATH_BASE + "/explosion",
                 length: 12
             }
             }
@@ -2907,7 +2901,7 @@ const golemAnimations = [
       {
         id: ANIMATION_ID.golem_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/golem/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/golem/idle",
           length: 12
       }
       }
@@ -2923,7 +2917,7 @@ const golemAnimations = [
         {
           id: ANIMATION_ID.golem_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/golem/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/golem/attack",
             length: 16
         }
         }
@@ -2939,7 +2933,7 @@ const golemAnimations = [
           {
             id: ANIMATION_ID.golem_opponent_death,
             sprite: {
-              path: "assets/challenge/characters/enemies/golem/death",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/death",
               length: 28
           }
           }
@@ -2955,7 +2949,7 @@ const golemAnimations = [
             {
               id: ANIMATION_ID.golem_opponent_death_from_special_attack,
               sprite:  {
-                path: "assets/challenge/explosion",
+                path: ASSETS_PATH_BASE + "/explosion",
                 length: 12
             }
             }
@@ -2991,7 +2985,7 @@ const kingAnimations = [
       {
         id: ANIMATION_ID.king_opponent_idle,
         sprite:    {
-          path: "assets/challenge/characters/enemies/king/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/king/idle",
           length: 18
       }
       }
@@ -3007,7 +3001,7 @@ const kingAnimations = [
         {
           id: ANIMATION_ID.king_opponent_attack,
           sprite:    {
-            path: "assets/challenge/characters/enemies/king/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/king/attack",
             length: 58
         }
         }
@@ -3023,7 +3017,7 @@ const kingAnimations = [
           {
             id: ANIMATION_ID.king_opponent_death,
             sprite:    {
-              path: "assets/challenge/explosion",
+              path: ASSETS_PATH_BASE + "/explosion",
               length: 11
           }
           }
@@ -3052,7 +3046,7 @@ const kingAnimations = [
 const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
-  enemyViewPoint.style.left = "105vw";
+  enemyViewPoint.style.left = "90vw";
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
@@ -3061,7 +3055,7 @@ const createRedHammerCharacter = (): DefaultCharacter => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-    newEnnemyImg.src = "assets/challenge/characters/enemies/hard/idle/1.png";  
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/1.png";  
     newOpponentContainer.append(newEnnemyImg);
 
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
@@ -3219,7 +3213,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = "assets/challenge/characters/enemies/golem/idle/1.png";  
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "-4.5vh";
 
@@ -3239,7 +3233,7 @@ const createKingCharacter = (): DefaultCharacter => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = "assets/challenge/characters/enemies/king/idle/1.png";  
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/king/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
@@ -3256,7 +3250,7 @@ const createWitchCharacter = (): DefaultCharacter => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = "assets/challenge/characters/enemies/witch/idle/1.png";  
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/witch/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "-4vh";
 
@@ -3285,7 +3279,7 @@ const createOrcCharacter = (): DefaultCharacter => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-    newEnnemyImg.src = "assets/challenge/characters/enemies/orc/idle/1.png";  
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/orc/idle/1.png";  
     newOpponentContainer.append(newEnnemyImg);
     newOpponentContainer.style.bottom = "-15.5vh";
 
@@ -3293,7 +3287,7 @@ const createOrcCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    enemyViewPoint.style.left = "105vw";
+    enemyViewPoint.style.left = "90vw";
     enemyViewPoint.style.display = "flex";
 
  return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
@@ -3304,7 +3298,7 @@ const createDwarfCharacter = (): DefaultCharacter => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = "assets/challenge/characters/enemies/dwarf/idle/1.png";  
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/dwarf/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "-15vh";
 
@@ -3312,7 +3306,7 @@ const createDwarfCharacter = (): DefaultCharacter => {
 
   //init view point
 
-  enemyViewPoint.style.left = "105vw";
+  enemyViewPoint.style.left = "90vw";
   enemyViewPoint.style.display = "flex";
 
   return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations);
@@ -3355,7 +3349,7 @@ const checkForOpponentAttack = () => {
         heroImage,
         0,
         "png",
-        "assets/challenge/characters/hero/stop_time",
+        ASSETS_PATH_BASE + "/characters/hero/stop_time",
         1,
         4,
         1,
@@ -3607,7 +3601,7 @@ const stopRun = (definitiveStop = false) => {
   interruptAnimation(ANIMATION_ID.camera_right_to_left);
 
 
-  heroImage.src = "assets/challenge/characters/hero/idle/1.png";
+  heroImage.src = ASSETS_PATH_BASE + "/characters/hero/idle/1.png";
 
   addAnimationCallbackToQueue(ANIMATION_ID.stop, launchIdleLoop);
   //launchAnimation(heroCharacter, AnimationType.idle);
@@ -3753,7 +3747,7 @@ const launchTransformation = () => {
       heroImage,
       0,
       "png",
-      "assets/challenge/characters/transformed_hero/run",
+      ASSETS_PATH_BASE + "/characters/transformed_hero/run",
       1,
       6,
       1,
@@ -3782,7 +3776,7 @@ const launchTransformation = () => {
         heroImage,
         0,
         "png",
-        "assets/challenge/characters/transformed_hero/pre_run",
+        ASSETS_PATH_BASE + "/characters/transformed_hero/pre_run",
         1,
         9,
         1,
@@ -3822,7 +3816,7 @@ const launchTransformation = () => {
             heroImage,
             0,
             "png",
-            "assets/challenge/characters/transformed_hero/run",
+            ASSETS_PATH_BASE + "/characters/transformed_hero/run",
             1,
             6,
             1,
@@ -3920,7 +3914,7 @@ const launchDeathAnimation = () => {
       heroImage,
       0,
       "png",
-      "assets/challenge/characters/hero/death",
+      ASSETS_PATH_BASE + "/characters/hero/death",
       1,
       6,
       1,
@@ -3950,7 +3944,7 @@ const launchDeathAnimation = () => {
     transformed = false;
   }
 
-  heroImage.src = "assets/challenge/characters/hero/death/1.png";
+  heroImage.src = ASSETS_PATH_BASE + "/characters/hero/death/1.png";
 
   setTimeout(killHero, 1000);
 };
@@ -3961,8 +3955,8 @@ const launchHeroHurtAnimation = () => {
     0,
     "png",
     transformed
-      ? "assets/challenge/characters/transformed_hero/hurt"
-      : "assets/challenge/characters/hero/hurt",
+      ? ASSETS_PATH_BASE + "/characters/transformed_hero/hurt"
+      : ASSETS_PATH_BASE + "/characters/hero/hurt",
     1,
     transformed ? 5 : 3,
     1,
@@ -4216,7 +4210,7 @@ const launchDragon = () => {
     dragonImage,
     0,
     "png",
-    "assets/challenge/characters/neutral/dragons/red/rightToLeft",
+    ASSETS_PATH_BASE + "/characters/neutral/dragons/red/rightToLeft",
     1,
     3,
     1,

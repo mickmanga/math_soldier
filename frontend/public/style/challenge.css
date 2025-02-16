@@ -163,7 +163,7 @@ audio {
 .enemyViewPoint {
   position: absolute;
   top: 50vh;
-  left: 101vw;
+  left: 50vw;
   height: 25vh;
   width: 2.5vw;
   display: none;
