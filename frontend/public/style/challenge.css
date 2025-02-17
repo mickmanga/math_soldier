@@ -137,6 +137,148 @@ audio {
   align-items: flex-end;
 }
 
+#extended_form_container {
+  position: absolute;
+  left: 20%;
+  top: 10%;
+  height: 80%;
+  width: 60%;
+  background: rgb(182, 182, 182);
+  z-index: 10000;
+  border-radius: 15px;
+  display: none;
+  flex-direction: column;
+}
+
+#extended_form_container_a {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#extended_form_container_aa {
+  height: 90%;
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#extended_form_container_aaa {
+  height: 80%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.extended_form_container_aaaa {
+  height: 70%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+}
+
+
+#extended_form_container_aab {
+  height: 20%;
+  width: 100%;
+  position: relative;
+}
+
+.extended_form_container_aaba {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.extended_form_container_aabaa {
+  height: 50%;
+  width: 20%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: xx-large;
+}
+
+.extended_form_container_aabab {
+  width: 40%;
+  height: 50%;
+  border-radius: 10px;
+  border: none;
+}
+
+#close_button_container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgb(168, 176, 167);
+  height: 5%;
+  aspect-ratio: 1/1;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#extended_form_container_b {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#extended_form_container_ba {
+  height: 80%;
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.extended_form_container_baa {
+  height: 10%;
+  aspect-ratio: 1/1;
+  background: orange;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+
+#extended_form_container_bb {
+  height: 80%;
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#extended_form_container_bba {
+   height: 60%;
+   width: 70%;
+   background: #006c80;
+   border-radius: 15px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   color: white;
+   font-size: medium;
+}
+
+
 #quitChallenge {
   position: absolute;
    top: 88.5%;

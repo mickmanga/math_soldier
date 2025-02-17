@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HERO_MODES, MapElement } from '../../types/map';
+import { ELEMENT_TYPE, HERO_MODES, MapElement } from '../../types/map';
 
 export interface MapState {
   elements: Array<MapElement>;
@@ -12,7 +12,7 @@ export interface MapState {
 
 const initialState: MapState = {
   elements: [
-    {type: "form", id: "01", formBlocks: [
+    {type: ELEMENT_TYPE.form, id: "01", formBlocks: [
      {
       question: "combien fait 1+1",
       answer: "2",
@@ -24,7 +24,7 @@ const initialState: MapState = {
       validated: false
      },
   ]},
-  {type: "form", id: "2334", formBlocks: [
+  {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
     {
      question: "combien fait 1+1",
      answer: "2",
@@ -36,7 +36,7 @@ const initialState: MapState = {
      validated: false
     },
  ]},
- {type: "form", id: "1234ER", formBlocks: [
+ {type: ELEMENT_TYPE.form, id: "1234ER", formBlocks: [
   {
    question: "combien fait 1+1",
    answer: "2",
@@ -48,8 +48,8 @@ const initialState: MapState = {
    validated: false
   },
 ]},
-  {type: "challenge", topScore: "D", id: "677e814577322467895fd15c"},
-  {type: "challenge", topScore: "D", id: "677e814577322467895fd17e"},  {type: "form", id: "04", formBlocks: [
+  {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd15c"},
+  {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd17e"},  {type: ELEMENT_TYPE.form, id: "04", formBlocks: [
     {
      question: "combien fait 1+1",
      answer: "2",
@@ -61,19 +61,19 @@ const initialState: MapState = {
      validated: false
     },
  ]},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd1a2"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd1c6"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd1ea"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd1fa"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd20a"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd21a"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd22a"},
- {type: "challenge", topScore: "D", id: "677e814577322467895fd23a"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd1a2"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd1c6"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd1ea"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd1fa"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd20a"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd21a"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd22a"},
+ {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd23a"},
 ],  
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 3,
+  currentIndex: 0,
   heroMode: HERO_MODES.normal
 };
 

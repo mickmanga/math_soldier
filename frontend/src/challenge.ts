@@ -1,7 +1,7 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
-import { FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
+import { ELEMENT_TYPE, FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
 
 enum GAME_MODES {
@@ -38,6 +38,7 @@ const scoreRewardContainer = document.getElementById("score_reward_container")!;
 const scoreRewardDetail = document.getElementById("score_reward_detail")!;
 const specialMoveIndicator = document.getElementById("special_move_indicator")!;
 const specialMoveTimer = document.getElementById("special_move_timer");
+const extendedFormContainer = document.getElementById("extended_form_container")!;
 
 const lightningImg = document.getElementById('lightning_img') as HTMLImageElement;
 
@@ -306,6 +307,7 @@ declare global {
     launchInvisibilityToggle: (event: Event) => void;
     openMap: (event: Event) => void;
     tryAgain: (event: Event) => void;
+    closeForm: (event: Event) => void;
   }
 }
 
@@ -471,8 +473,8 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createOrcCharacter,
-  createDwarfCharacter
+  createRedHammerCharacter,
+  createGolemCharacter,
  ];
 
  lastEnemyIndex++;
@@ -727,6 +729,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hammer_opponent_attack]: 0,
   [ANIMATION_ID.hammer_opponent_death]: 0,
   [ANIMATION_ID.hammer_opponent_move]: 0,
+  [ANIMATION_ID.hammer_opponent_death_from_special_attack]:0,
   [ANIMATION_ID.orc_opponent_idle]:0,
   [ANIMATION_ID.orc_opponent_run]:0,
   [ANIMATION_ID.orc_opponent_attack]:0,
@@ -765,7 +768,6 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.boss_idle]: 0,
   [ANIMATION_ID.boss_attack]: 0,
   [ANIMATION_ID.lightning]: 0,
-
 };
 
 const APP_IDS = {
@@ -1005,12 +1007,8 @@ type ChallengeEnd = {type: "ChallengeEnd"};
 type ExtendedMapElement = MapElement | ChallengeEnd;
 
 
-const createMapElement2 = (mapElement: ExtendedMapElement) => {
-  return mapElement.type === "form" ? createFormElement(mapElement) : createChallengPilar(mapElement);
-}
-
 const createMapElement = (element: MapElement) => {
-  return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
+  return element.type === ELEMENT_TYPE.form ? createFormElement(element) : createChallengPilar(element);
 }
 
 const createElementMapBlockStart = (left:number, imagePath: string, zIndex: string)  => {
@@ -1150,7 +1148,6 @@ const ALGEBRA_INTRO_2 = {
   ]
 };
 
-
 export const launchAnimationAndDeclareItLaunched = (
   gameElement: HTMLImageElement,
   throttleNum: number,
@@ -1166,7 +1163,6 @@ export const launchAnimationAndDeclareItLaunched = (
   if (ANIMATION_RUNNING_VALUES[animationId] >= 1) {
     return;
   }
-
 
   ANIMATION_RUNNING_VALUES[animationId]++;
   
@@ -1284,7 +1280,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 150 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2832,9 +2828,9 @@ const witchAnimations = [
         {
           id: ANIMATION_ID.witch_opponent_attack,
           sprite:    {
-            path: ASSETS_PATH_BASE + "/characters/enemies/witch/attack",
-            length: 18
-        }
+          path: ASSETS_PATH_BASE + "/characters/enemies/witch/attack",
+             length: 18
+            }
         }
        }
      ]
@@ -3098,26 +3094,52 @@ const createChallengPilar = (element: MapElement) => {
     }
   }
 
-
   pilarBackgroundContainer.append(pillarcontainer);
 
   return pilarBackgroundContainer;
  
 }
 
-
-const setFormContent = (formHtmlContainer: HTMLElement, formBlock: FormBlock, newIndex: number) => {
-
-   //we go and look for an element of class "..."
-
-   //question => we need to find a container with a certain class, and insert the question
-
-   // const question = formBlock.question;
-
-}
-
 let lastGolemVal = 0;
 let golemAudioIndex = 0;
+
+
+const extendForm = (id: string) => {
+  extendedFormContainer.style.display = "flex";
+}
+
+
+const closeForm = (event: Event) => {
+  extendedFormContainer.style.display = "none";
+};
+
+window.closeForm = closeForm;
+
+
+const getMinifiedFormContainerFromId = (id: string) => {
+  return document.getElementById(`${MINIFIED_FORM_PREFIX}${id}`);
+}
+
+const getFormContainerFromId = (id: string) => {
+  return document.getElementById(`${FORM_CONTAINER_PREFIX}${id}`)
+}
+
+const getFormFromId = (id: string) => {
+
+  let  foundForm = null;
+
+  const elementsOnScreen = store.getState().persistedMap.elementsOnScreen;
+
+  elementsOnScreen.forEach(
+    element => {
+       if(element.id === id && element.type === ELEMENT_TYPE.form){
+         foundForm === element;
+       }
+    }
+  );
+
+  return foundForm;
+}
 
 const launchGolemTalk = () => {
   const needSomethingAudio = document.getElementById("need_something")! as HTMLAudioElement;
@@ -3133,6 +3155,8 @@ const launchGolemTalk = () => {
 
 }
 
+const MINIFIED_FORM_PREFIX = "minified_form_";
+const FORM_CONTAINER_PREFIX= "form_container";
 
 const createFormElement = (formElement: MapElement) => {
   
@@ -3151,13 +3175,26 @@ const createFormElement = (formElement: MapElement) => {
     formBackgroundContainer.style.alignItems = "center";
     formBackgroundContainer.style.flexDirection = "column";
 
-
     const formContainer = document.createElement("div");
+    formContainer.id=`${FORM_CONTAINER_PREFIX}${formElement.id}`;
+    console.log("form id>");
+    console.log(formContainer.id);
     formContainer.style.position="relative";
     formContainer.style.width = "70%";
     formContainer.style.height = "45%";
     formContainer.style.background = "grey";
     formContainer.style.borderRadius = "15px";
+    formContainer.style.position = "absolute";
+    formContainer.style.top = "0";
+    formContainer.style.zIndex = "1000";
+
+    const minifiedFormContentContainer = document.createElement("div");
+    minifiedFormContentContainer.style.height = "100%";
+    minifiedFormContentContainer.style.width = "100%";
+    minifiedFormContentContainer.id= `${MINIFIED_FORM_PREFIX}${formElement.id}`;
+
+    formContainer.append(minifiedFormContentContainer);
+    
 
     const validatedPoint = document.createElement("div");
     validatedPoint.style.position = "absolute";
@@ -3182,18 +3219,17 @@ const createFormElement = (formElement: MapElement) => {
     extendButton.style.alignItems = "center";
     extendButton.style.background = "#726e6e";
     extendButton.innerHTML = "Extend";
-    extendButton.onclick = launchGolemTalk;
+    extendButton.onclick = (event: Event) => extendForm(formElement.id);
 
-
-    formContainer.append(validatedPoint);
-    formContainer.append(extendButton);
+    minifiedFormContentContainer.append(validatedPoint);
+    minifiedFormContentContainer.append(extendButton);
     
-    formContainer.id = `${formElement.id}`;
     formBackgroundContainer.append(formContainer);
 
     const golemContainer = document.createElement("div");
     golemContainer.style.height = "50%";
-
+    golemContainer.style.position = "absolute";
+    golemContainer.style.bottom = "0";
 
     const golemImg = document.createElement("img") as HTMLImageElement;
     golemImg.style.height = lastGolemVal === 0 ? "100%" : "80%";

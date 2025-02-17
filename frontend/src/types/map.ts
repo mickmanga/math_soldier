@@ -1,7 +1,7 @@
 export type MapElement = FormElement | ChallengeElement;
 
 export type FormElement = {
-   type: string;
+   type: ELEMENT_TYPE;
    id: string;
    formBlocks: Array<FormBlock>
 };
@@ -13,7 +13,7 @@ export type FormBlock = {
 }
 
 export type ChallengeElement = {
-   type: string;
+   type: ELEMENT_TYPE;
    id: string;
    topScore: string
 };
@@ -21,4 +21,9 @@ export type ChallengeElement = {
 export enum HERO_MODES {
    normal,
    special
+}
+
+export enum ELEMENT_TYPE {
+  "challenge",
+  "form"
 }

@@ -2365,7 +2365,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      { type: "form", id: "01", formBlocks: [
+      { type: 1 /* form */, id: "01", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2377,7 +2377,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "form", id: "2334", formBlocks: [
+      { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2389,7 +2389,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "form", id: "1234ER", formBlocks: [
+      { type: 1 /* form */, id: "1234ER", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2401,9 +2401,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd15c" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd17e" },
-      { type: "form", id: "04", formBlocks: [
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd15c" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd17e" },
+      { type: 1 /* form */, id: "04", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2415,19 +2415,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1a2" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1c6" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1ea" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1fa" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd20a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd21a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd22a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd23a" }
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1a2" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1c6" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1ea" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1fa" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd20a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd21a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd22a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 3,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
@@ -2953,6 +2953,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var scoreRewardDetail = document.getElementById("score_reward_detail");
   var specialMoveIndicator = document.getElementById("special_move_indicator");
   var specialMoveTimer = document.getElementById("special_move_timer");
+  var extendedFormContainer = document.getElementById("extended_form_container");
   var lightningImg = document.getElementById("lightning_img");
   var ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS = 80;
   var ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS = 66;
@@ -3210,8 +3211,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createOrcCharacter,
-      createDwarfCharacter
+      createRedHammerCharacter,
+      createGolemCharacter
     ];
     lastEnemyIndex++;
     if (lastEnemyIndex === enemyCreationCallbacks.length) {
@@ -3432,6 +3433,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     [21 /* hammer_opponent_attack */]: 0,
     [22 /* hammer_opponent_death */]: 0,
     [24 /* hammer_opponent_move */]: 0,
+    [23 /* hammer_opponent_death_from_special_attack */]: 0,
     [42 /* orc_opponent_idle */]: 0,
     [43 /* orc_opponent_run */]: 0,
     [44 /* orc_opponent_attack */]: 0,
@@ -3647,7 +3649,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return createMapBlock(0, imagePath, zIndex, elementDiv);
   };
   var createMapElement = (element) => {
-    return element.type === "form" ? createFormElement(element) : createChallengPilar(element);
+    return element.type === 1 /* form */ ? createFormElement(element) : createChallengPilar(element);
   };
   var createElementMapBlockStart = (left, imagePath, zIndex) => {
     store.dispatch(decreaseStartIndex());
@@ -3814,7 +3816,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 64 /* lightning */ || animationId === 19 /* hammer_opponent_idle */ || animationId === 22 /* hammer_opponent_death */ || animationId === 39 /* witch_opponent_death */ || animationId === 40 /* witch_opponent_death_from_special_attack */ || animationId === 21 /* hammer_opponent_attack */ || animationId === 42 /* orc_opponent_idle */ || animationId === 44 /* orc_opponent_attack */ || animationId === 47 /* dwarf_opponent_idle */ || animationId === 49 /* dwarf_opponent_attack */ || animationId === 25 /* golem_opponent_idle */ || animationId === 27 /* golem_opponent_attack */ || animationId === 28 /* golem_opponent_death */ || animationId === 45 /* orc_opponent_death */ || animationId === 50 /* dwarf_opponent_death */ || animationId === 29 /* golem_opponent_death_from_special_attack */ || animationId === 23 /* hammer_opponent_death_from_special_attack */ || animationId === 31 /* king_opponent_idle */ || animationId === 33 /* king_opponent_attack */ || animationId === 36 /* witch_opponent_idle */ || animationId === 38 /* witch_opponent_attack */ || animationId === 52 /* dragon_fly_right */ || animationId === 53 /* dragon_fly_left */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 23 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 29 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 150 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 64 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 22 /* hammer_opponent_death */ ? 60 : animationId === 28 /* golem_opponent_death */ ? 80 : animationId === 39 /* witch_opponent_death */ ? 100 : animationId === 40 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 23 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 29 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 19 /* hammer_opponent_idle */ ? 115 : animationId === 42 /* orc_opponent_idle */ ? 80 : animationId === 25 /* golem_opponent_idle */ ? 120 : animationId === 36 /* witch_opponent_idle */ ? 90 : animationId === 38 /* witch_opponent_attack */ ? 120 : animationId === 31 /* king_opponent_idle */ ? 115 : animationId === 33 /* king_opponent_attack */ ? 50 : animationId === 47 /* dwarf_opponent_idle */ ? 80 : animationId === 21 /* hammer_opponent_attack */ ? 100 : animationId === 53 /* dragon_fly_left */ ? 150 : animationId === 52 /* dragon_fly_right */ ? 150 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -5035,6 +5037,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -5063,17 +5075,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return pilarBackgroundContainer;
   };
   var lastGolemVal = 0;
-  var golemAudioIndex = 0;
-  var launchGolemTalk = () => {
-    const needSomethingAudio = document.getElementById("need_something");
-    const byeAudio = document.getElementById("bye");
-    if (golemAudioIndex === 0) {
-      needSomethingAudio.play();
-    } else {
-      byeAudio.play();
-    }
-    golemAudioIndex = golemAudioIndex === 0 ? 1 : 0;
+  var extendForm = (id) => {
+    extendedFormContainer.style.display = "flex";
   };
+  var closeForm = (event) => {
+    extendedFormContainer.style.display = "none";
+  };
+  window.closeForm = closeForm;
+  var MINIFIED_FORM_PREFIX = "minified_form_";
+  var FORM_CONTAINER_PREFIX = "form_container";
   var createFormElement = (formElement) => {
     const formBackgroundContainer = document.createElement("div");
     formBackgroundContainer.style.position = "absolute";
@@ -5088,11 +5098,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.style.alignItems = "center";
     formBackgroundContainer.style.flexDirection = "column";
     const formContainer = document.createElement("div");
+    formContainer.id = `${FORM_CONTAINER_PREFIX}${formElement.id}`;
+    console.log("form id>");
+    console.log(formContainer.id);
     formContainer.style.position = "relative";
     formContainer.style.width = "70%";
     formContainer.style.height = "45%";
     formContainer.style.background = "grey";
     formContainer.style.borderRadius = "15px";
+    formContainer.style.position = "absolute";
+    formContainer.style.top = "0";
+    formContainer.style.zIndex = "1000";
+    const minifiedFormContentContainer = document.createElement("div");
+    minifiedFormContentContainer.style.height = "100%";
+    minifiedFormContentContainer.style.width = "100%";
+    minifiedFormContentContainer.id = `${MINIFIED_FORM_PREFIX}${formElement.id}`;
+    formContainer.append(minifiedFormContentContainer);
     const validatedPoint = document.createElement("div");
     validatedPoint.style.position = "absolute";
     validatedPoint.style.background = "#007480";
@@ -5115,13 +5136,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     extendButton.style.alignItems = "center";
     extendButton.style.background = "#726e6e";
     extendButton.innerHTML = "Extend";
-    extendButton.onclick = launchGolemTalk;
-    formContainer.append(validatedPoint);
-    formContainer.append(extendButton);
-    formContainer.id = `${formElement.id}`;
+    extendButton.onclick = (event) => extendForm(formElement.id);
+    minifiedFormContentContainer.append(validatedPoint);
+    minifiedFormContentContainer.append(extendButton);
     formBackgroundContainer.append(formContainer);
     const golemContainer = document.createElement("div");
     golemContainer.style.height = "50%";
+    golemContainer.style.position = "absolute";
+    golemContainer.style.bottom = "0";
     const golemImg = document.createElement("img");
     golemImg.style.height = lastGolemVal === 0 ? "100%" : "80%";
     golemImg.style.width = "auto";
@@ -5131,29 +5153,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
   };
-  var createOrcCharacter = () => {
+  var createGolemCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/orc/idle/1.png";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15.5vh";
+    newOpponentContainer.style.bottom = "-4.5vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "90vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, orcAnimations);
-  };
-  var createDwarfCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/dwarf/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    enemyViewPoint.style.left = "90vw";
-    enemyViewPoint.style.display = "flex";
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, dwarfAnimations);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 54 /* camera_left_to_right */ : 55 /* camera_right_to_left */] === 0) {

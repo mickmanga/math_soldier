@@ -2356,7 +2356,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      { type: "form", id: "01", formBlocks: [
+      { type: 1 /* form */, id: "01", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2368,7 +2368,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "form", id: "2334", formBlocks: [
+      { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2380,7 +2380,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "form", id: "1234ER", formBlocks: [
+      { type: 1 /* form */, id: "1234ER", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2392,9 +2392,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd15c" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd17e" },
-      { type: "form", id: "04", formBlocks: [
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd15c" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd17e" },
+      { type: 1 /* form */, id: "04", formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2406,19 +2406,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1a2" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1c6" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1ea" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd1fa" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd20a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd21a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd22a" },
-      { type: "challenge", topScore: "D", id: "677e814577322467895fd23a" }
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1a2" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1c6" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1ea" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd1fa" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd20a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd21a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd22a" },
+      { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 3,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
