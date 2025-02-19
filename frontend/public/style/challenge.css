@@ -83,9 +83,9 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 61vh;
+  top: 63vh;
   left: 20vw;
-  height: 24vh;
+  height: 22vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
   z-index: 3011;
   display: flex;
@@ -305,10 +305,10 @@ audio {
 .enemyViewPoint {
   position: absolute;
   top: 50vh;
-  left: 50vw;
+  left: 100vw;
   height: 25vh;
   width: 2.5vw;
-  display: none;
+  display: flex;
   z-index: 1003;
   flex-direction: column;
   align-items: center;
@@ -717,26 +717,47 @@ audio {
   --progress: 0%;
   border-radius: 20px;
   position: absolute;
-  top: 5vh;
   left: 5vw;
-  width: 25vw;
   height: 3.5vh;
   border: 1px solid #fff;
   padding: 9px 7px;
   box-shadow: 0 0 10px #aaa;
   z-index: 1002;
-  display: none;
+  display: flex;
 }
+
+.progress2 {
+  top: 5vh;
+  width: 25vw;
+  --progress: 100%;
+
+}
+
+.progress1 {
+  top: 10vh;
+  width: 20vw;
+}
+
 
 .progress .bar {
   border-radius: 10px 0px 0px 10px ;
   width: var(--progress);
   height: 100%;
+  animation: shine 4s ease-in infinite, end 1s ease-out 1;
+  transition: width 3s ease;
+}
+
+
+.progress1 .bar {
   background: linear-gradient(gold, #c85, gold);
   background-repeat: repeat;
   box-shadow: 0 0 10px 0px orange;
-  animation: shine 4s ease-in infinite, end 1s ease-out 1;
-  transition: width 3s ease;
+}
+
+.progress2 .bar {
+  background: linear-gradient(rgb(0, 255, 47), rgb(85, 204, 133), rgb(0, 255, 47));
+  background-repeat: repeat;
+  box-shadow: 0 0 10px 0px rgb(0, 255, 115);
 }
 
 #playAgainLink {

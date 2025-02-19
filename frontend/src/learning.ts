@@ -1,3 +1,4 @@
+import { launchAnimation } from "./challenge";
 
 interface Window {
   openMap: (event: Event) => void;
@@ -94,6 +95,9 @@ window.onload = () => {
     getChapters();
 }
 
+const launchMonsterAnimation = () => {
+  //  launchAnimation()
+}
 
 
 document.addEventListener('keydown', (event) => {
