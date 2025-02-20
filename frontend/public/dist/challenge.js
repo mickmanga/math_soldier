@@ -3695,6 +3695,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     let multiplicator = mapSetIndex * 6;
     for (let i = 0; i < mapSet.maps.length; i++) {
       const map = mapSet.maps[i];
+      console.log(`${map.getBoundingClientRect().left + Math.floor(
+        (direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * multiplicator * (diff / 3) * (mapSet.velocity / (heroRunning ? 400 : 500)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 3
+      )}px`);
       map.style.left = `${map.getBoundingClientRect().left + Math.floor(
         (direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * multiplicator * diff * (mapSet.velocity / (heroRunning ? 400 : 500)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 3
       )}px`;
