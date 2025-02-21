@@ -1091,7 +1091,7 @@ const moveCamera = (
     )
     */
 
-    let addedPixels = - (mapSetIndex/ 4) * (heroRunning ? 2 : 1);
+    let addedPixels = - (mapSetIndex/ 100) * (heroRunning ? 1.33 : 1) * multiplicator;
 
     map.style.left = `${
       map.getBoundingClientRect().left + addedPixels

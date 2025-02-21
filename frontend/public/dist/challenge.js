@@ -3695,7 +3695,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     let multiplicator = mapSetIndex * 6;
     for (let i = 0; i < mapSet.maps.length; i++) {
       const map = mapSet.maps[i];
-      let addedPixels = -(mapSetIndex / 4) * (heroRunning ? 2 : 1);
+      let addedPixels = -(mapSetIndex / 100) * (heroRunning ? 1.33 : 1) * multiplicator;
       map.style.left = `${map.getBoundingClientRect().left + addedPixels}px`;
     }
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
