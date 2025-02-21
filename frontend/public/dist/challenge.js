@@ -3695,7 +3695,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     let multiplicator = mapSetIndex * 6;
     for (let i = 0; i < mapSet.maps.length; i++) {
       const map = mapSet.maps[i];
-      let addedPixels = -(mapSetIndex / 100) * (heroRunning ? 1.33 : 1) * multiplicator;
+      const addedPixels = Math.floor(
+        (direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * multiplicator * diff * (mapSet.velocity * (mapSetIndex === 6 && heroRunning ? 1.33 : 1) / (heroRunning ? 400 : 500)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 4
+      );
       map.style.left = `${map.getBoundingClientRect().left + addedPixels}px`;
     }
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
@@ -4267,7 +4269,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
-          if (index === 6 && gameMode === 0 /* discovery */) {
+          if (index === 4 && gameMode === 0 /* discovery */) {
             store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
             store.dispatch(increaseStartIndex());
           }
@@ -5387,7 +5389,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 54 /* camera_left_to_right */ : 55 /* camera_right_to_left */] === 0) {
       startCamera(direction);
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 5; i++) {
         moveCamera(direction, Date.now(), i, 1);
       }
     }
@@ -5915,10 +5917,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var createMapSets = () => {
-    for (let i = 1; i <= 7; i++) {
-      const lastSet = i === 7 ? true : false;
+    for (let i = 1; i <= 5; i++) {
+      const lastSet = i === 5 ? true : false;
       const velocity = i * i;
-      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`, lastSet);
+      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`, lastSet);
     }
   };
   var initElementsIndexes = () => {

@@ -604,6 +604,20 @@ audio {
   animation: 2s Blazing infinite alternate linear;
 }
 
+#bottomDiv {
+  z-index: 1019;
+  position: absolute;
+  background: red;
+  bottom: 0;
+  left:0;
+  height: 15%;
+  width: 100%;
+  /*
+  background: linear-gradient(to bottom, #253968, #2b3561, rgb(31 59 107));
+  */
+  background: #257ec1;
+}
+
 @keyframes Blazing {
   0% {
     text-shadow: 0 3px 20px red, 0 0 20px red, 0 0 10px orange, 0 0 0 yellow,
