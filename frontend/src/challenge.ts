@@ -1080,30 +1080,19 @@ const moveCamera = (
 
   for (let i = 0; i < mapSet.maps.length; i++) {
     const map = mapSet.maps[i];
-    console.log(`${
-      map.getBoundingClientRect().left +
-      Math.floor(
-        ((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) *
-          cameraSpeed *
-          multiplicator *
-          (diff/3) *
-          (mapSet.velocity / (heroRunning ? 400 : 500)) *
-          (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3
-      )
-    }px`);
+    const addedPixels =  Math.floor(
+      ((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) *
+        cameraSpeed *
+        multiplicator *
+        diff *
+        ((mapSet.velocity * (mapSetIndex === 4 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
+        (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 4
+    )
     map.style.left = `${
-      map.getBoundingClientRect().left +
-      Math.floor(
-        ((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) *
-          cameraSpeed *
-          multiplicator *
-          diff *
-          (mapSet.velocity / (heroRunning ? 400 : 500)) *
-          (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 3
-      )
+      map.getBoundingClientRect().left + addedPixels
     }px`;
+
   }
-     
 
   requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
 };
