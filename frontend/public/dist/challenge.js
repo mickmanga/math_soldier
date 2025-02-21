@@ -3695,9 +3695,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     let multiplicator = mapSetIndex * 6;
     for (let i = 0; i < mapSet.maps.length; i++) {
       const map = mapSet.maps[i];
-      const addedPixels = Math.floor(
-        (direction === 0 /* LEFT_TO_RIGHT */ ? -1 : 1) * cameraSpeed * multiplicator * diff * (mapSet.velocity * (mapSetIndex === 4 && heroRunning ? 1.33 : 1) / (heroRunning ? 400 : 500)) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8) / 4
-      );
+      let addedPixels = -(mapSetIndex / 4) * (heroRunning ? 2 : 1);
       map.style.left = `${map.getBoundingClientRect().left + addedPixels}px`;
     }
     requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
@@ -4269,7 +4267,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       (mapSet, index) => {
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
+          if (index === 6 && gameMode === 0 /* discovery */) {
             store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
             store.dispatch(increaseStartIndex());
           }
@@ -4280,7 +4278,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const endIndex = store.getState().persistedMap.endIndex;
         const elements = store.getState().persistedMap.elements;
         if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10) {
-          if (index === 4) {
+          if (index === 6) {
             if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
               interruptAnimation(4 /* hero_walk_right */);
               stopCameraMovingToRight();
@@ -4291,7 +4289,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
           }
           ;
-          if (index === 4) {
+          if (index === 6) {
             if (gameMode === 0 /* discovery */) {
               mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
             } else {
@@ -4338,7 +4336,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const startIndex = store.getState().persistedMap.startIndex;
         const firstMapDomElement = mapSet.maps[0];
         if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
+          if (index === 6 && gameMode === 0 /* discovery */) {
             if (startIndex === 0) {
               interruptAnimation(5 /* hero_walk_left */);
               stopCameraMovingToLeft();
@@ -4346,7 +4344,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
           }
           mapSet.maps.unshift(
-            index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+            index === 6 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
               firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
               mapSet.imagePath,
               `${index}`
@@ -4355,7 +4353,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
+          if (index === 6 && gameMode === 0 /* discovery */) {
             store.dispatch(decreaseEndIndex());
           }
           lastMapDomElement.remove();
@@ -5389,7 +5387,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 54 /* camera_left_to_right */ : 55 /* camera_right_to_left */] === 0) {
       startCamera(direction);
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 7; i++) {
         moveCamera(direction, Date.now(), i, 1);
       }
     }
@@ -5917,10 +5915,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   var createMapSets = () => {
-    for (let i = 1; i <= 5; i++) {
-      const lastSet = i === 5 ? true : false;
+    for (let i = 1; i <= 7; i++) {
+      const lastSet = i === 7 ? true : false;
       const velocity = i * i;
-      createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`, lastSet);
+      createMapSet(`assets/challenge/maps/forest/${i}.png`, velocity, `${i}`, lastSet);
     }
   };
   var initElementsIndexes = () => {

@@ -8,8 +8,8 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: #257ec1;  
- /*background: #1f3159;*/
+  /*background: #257ec1;  */
+ background: #1f3159;
 }
 
 .mapBlock{
@@ -18,6 +18,6 @@ html, body {
 }
 
 .mapBlock img {
-   height: 85%;
+   height: 100%;
    width: 100%;
 }

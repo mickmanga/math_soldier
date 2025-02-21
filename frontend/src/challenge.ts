@@ -1080,14 +1080,19 @@ const moveCamera = (
 
   for (let i = 0; i < mapSet.maps.length; i++) {
     const map = mapSet.maps[i];
+    /*
     const addedPixels =  Math.floor(
       ((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) *
         cameraSpeed *
         multiplicator *
         diff *
-        ((mapSet.velocity * (mapSetIndex === 4 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
+        ((mapSet.velocity * (mapSetIndex === 6 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
         (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 4
     )
+    */
+
+    let addedPixels = - (mapSetIndex/ 4) * (heroRunning ? 2 : 1);
+
     map.style.left = `${
       map.getBoundingClientRect().left + addedPixels
     }px`;
@@ -1096,7 +1101,6 @@ const moveCamera = (
 
   requestAnimationFrame(() => moveCamera(direction, currentFrameTimeStamp, mapSetIndex, cameraSpeed));
 };
-
 
 const ALGEBRA_INTRO_2 = {
   title: "Algebra Basics",
@@ -2004,7 +2008,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
 
-    if(index === 4 && gameMode === GAME_MODES.discovery){
+    if(index === 6 && gameMode === GAME_MODES.discovery){
      store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
      store.dispatch(increaseStartIndex());
     }
@@ -2022,7 +2026,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
       
-      if(index === 4){
+      if(index === 6){
         if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
           interruptAnimation(ANIMATION_ID.hero_walk_right);
           stopCameraMovingToRight();
@@ -2034,7 +2038,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       }
      };
 
-     if(index === 4){
+     if(index === 6){
 
       if(gameMode === GAME_MODES.discovery){
         mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
@@ -2093,7 +2097,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 4 && gameMode === GAME_MODES.discovery){
+    if(index === 6 && gameMode === GAME_MODES.discovery){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -2103,7 +2107,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 6 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -2117,7 +2121,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 6 && gameMode === GAME_MODES.discovery){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -3606,7 +3610,7 @@ const moveBackground = (direction: Direction) => {
 
   if (ANIMATION_RUNNING_VALUES[direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left] === 0) {
     startCamera(direction);
-    for(let i=0; i < 5 ; i++){
+    for(let i=0; i < 7 ; i++){
       moveCamera(direction, Date.now(), i, 1);
     }
   }
@@ -4346,12 +4350,12 @@ const animateLightning = () => {
 
  const createMapSets = () => {
 
-    for(let i=1; i <= 5; i++){
+    for(let i=1; i <= 7; i++){
 
-      const lastSet = i === 5 ? true : false;
+      const lastSet = i === 7 ? true : false;
       
       const velocity = i * i;
-      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
+      createMapSet( `assets/challenge/maps/forest/${i}.png` , velocity, `${i}`, lastSet);
 
     } 
 
