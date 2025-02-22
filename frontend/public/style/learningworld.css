@@ -16,7 +16,7 @@ body {
     color: #ffffff;
     line-height: 1.6;
     padding: 20px;
-    overflow: overlay;
+    overflow: hidden;
     font-family: "CustomFont", cursive;
     font-weight: 400;
     font-style: normal;
@@ -126,18 +126,18 @@ body {
    background: #4d4c4c52;
   }
 
-#master_container {
+#learning_god_container {
   position: absolute;
-  right: 5vw;
+  right: -15vw;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  height: 60vh;
+  height: 95vh;
   width: 10vw;
-  top: 33vh;
+  top: 12vh;
 }
 
-#master_container img {
+#learning_god_container img {
   height: 100%;
   width: auto;
 }

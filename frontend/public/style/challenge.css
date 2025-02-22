@@ -900,7 +900,7 @@ audio {
   position: absolute;
    top: 88.5%;
    left: 2.5%;
-   z-index: 1010;
+   z-index: 1020;
    width: 10%;
    height: 10%;
    display: flex;

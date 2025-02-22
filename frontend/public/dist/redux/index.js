@@ -2418,7 +2418,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 3,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({

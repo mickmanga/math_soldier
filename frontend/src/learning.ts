@@ -1,4 +1,4 @@
-import { launchAnimation } from "./challenge";
+import { AnimationType, DefaultCharacter, launchAnimation, learningGodAnimations, LearningGodCharacterStates } from "./challenge";
 
 interface Window {
   openMap: (event: Event) => void;
@@ -9,6 +9,12 @@ interface Window {
 const openMap = (event: Event) => {
   window.location.replace("http://localhost:3001/new_world");
 }
+
+const learningGodContainer = document.getElementById("learning_god_container")!;
+const learningGodImg = document.getElementById("learningGodImg")! as HTMLImageElement;
+const learningGodCharacter = new DefaultCharacter(learningGodImg, LearningGodCharacterStates.idle, learningGodAnimations); 
+
+
 
 const hideSideBar = (event: Event) => {
   document.getElementById("course_container_ab_back_left_button")!.style.display = "flex";
@@ -96,8 +102,8 @@ window.onload = () => {
 }
 
 const launchMonsterAnimation = () => {
-  //  launchAnimation()
-}
+    launchAnimation(learningGodCharacter, AnimationType.walk_left);
+} 
 
 
 document.addEventListener('keydown', (event) => {
@@ -109,5 +115,27 @@ document.addEventListener('keydown', (event) => {
            window.location.replace("http://localhost:3001/world");
         }
     }
+});
 
-})
+
+const moveLearningGod = () => {
+
+    const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
+
+    if(learningGodLeft <= (window.innerWidth* 0.75)){
+        launchAnimation(learningGodCharacter, AnimationType.idle,  )
+        return;
+    }
+
+    learningGodContainer.style.left = `${learningGodLeft- 1}px`;
+
+
+    requestAnimationFrame(
+        moveLearningGod
+    )
+}
+
+window.onload = () => {
+    launchMonsterAnimation();
+    moveLearningGod();
+}

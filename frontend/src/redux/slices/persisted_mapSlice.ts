@@ -73,7 +73,7 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 3,
+  currentIndex: 0,
   heroMode: HERO_MODES.normal
 };
 
