@@ -378,9 +378,7 @@ const sortAndStoreAnswers = (challengeData: Array<ChallengeAnswerData>) => {
        }))
     }
   )
-
 }
-
 
 const findNextAnswer = () => {
 
@@ -389,7 +387,6 @@ const findNextAnswer = () => {
   const answers = challenge.answers;
 
   if(currentAnswerIndex >= answers.length){
-        
     return "done";
   }
 
@@ -472,7 +469,7 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createGolemCharacter,
+  createKingCharacter,
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -644,6 +641,12 @@ export enum ANIMATION_ID {
   hero_special_attack,
   learning_god_walk_left,
   learning_god_idle,
+  master_attack,
+  master_hurt,
+  master_death_from_special_attack,
+  master_run,
+  master_idle,
+  master_move,
   stop,
   stop_time,
   cancel_stop_time,
@@ -714,6 +717,12 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.learning_god_walk_left]: 0,
   [ANIMATION_ID.learning_god_idle]: 0,
+  [ANIMATION_ID.master_attack]: 0,
+  [ANIMATION_ID.master_run]: 0,
+  [ANIMATION_ID.master_idle]: 0,
+  [ANIMATION_ID.master_hurt]: 0,
+  [ANIMATION_ID.master_move]: 0,
+  [ANIMATION_ID.master_death_from_special_attack]: 0,
   [ANIMATION_ID.stop_time]: 0,
   [ANIMATION_ID.stop]: 0,
   [ANIMATION_ID.cancel_stop_time]: 0,
@@ -777,7 +786,8 @@ const APP_IDS = {
   golem_enemy: "golem_enemy",
   king_enemy: "king_enemy",
   witch_enemy: "witch_enemy",
-  learning_god: "learning_god"
+  learning_god: "learning_god",
+  master: "master"
 };
 
 class AnimationRequest {
@@ -905,7 +915,18 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.learning_god_idle,
       ANIMATION_ID.learning_god_walk_left,
     ]
-  }
+  },
+  master: {
+    request_queue: [],
+    current_animation: null,
+    associated_animations: [
+      ANIMATION_ID.master_idle,
+      ANIMATION_ID.master_attack,
+      ANIMATION_ID.master_hurt,
+      ANIMATION_ID.master_death_from_special_attack,
+      ANIMATION_ID.master_run
+    ]
+  },
 };
 
 const getAppIdByAnimationId = (
@@ -947,7 +968,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
+    this.maps = [lastSet && gameMode === GAME_MODES.challenge ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
   }
 }
 
@@ -1095,14 +1116,29 @@ const moveCamera = (
         cameraSpeed *
         multiplicator *
         diff *
-        ((mapSet.velocity * (mapSetIndex === 6 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
+        ((mapSet.velocity * (mapSetIndex === 4 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
         (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 4
     );
   
-
     /*
 
     let addedPixels = - (mapSetIndex/ 100) * (heroRunning ? 1.33 : 1) * multiplicator;
+
+    */
+
+    /*
+
+    intro
+
+    
+    const addedPixels =  Math.floor(
+      ((direction === Direction.LEFT_TO_RIGHT ? -1 : 1) *
+        cameraSpeed *
+        multiplicator *
+        diff *
+        ((mapSet.velocity * (mapSetIndex === 4 && heroRunning ? 1.33 : 1)) / (heroRunning ? 400 : 500)) *
+        (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 0.8)) / 8
+    );
 
     */
 
@@ -1299,12 +1335,12 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.golem_opponent_run || animationId === ANIMATION_ID.witch_opponent_run  || animationId === ANIMATION_ID.hammer_opponent_run || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left || animationId === ANIMATION_ID.learning_god_idle || animationId === ANIMATION_ID.learning_god_walk_left ) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.golem_opponent_run || animationId === ANIMATION_ID.witch_opponent_run  || animationId === ANIMATION_ID.hammer_opponent_run || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left || animationId === ANIMATION_ID.learning_god_idle || animationId === ANIMATION_ID.learning_god_walk_left || animationId === ANIMATION_ID.master_attack || animationId === ANIMATION_ID.master_idle || animationId === ANIMATION_ID.master_run || animationId === ANIMATION_ID.master_hurt || animationId === ANIMATION_ID.master_death_from_special_attack ) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 80 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 80 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 100 : animationId === ANIMATION_ID.master_run ? 70 : animationId === ANIMATION_ID.master_idle ? 120 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1584,14 +1620,13 @@ const moveEnemy = (
 
   const currentTimeStamp = Date.now();
   const diff = currentTimeStamp - previousTimeStamp;
-  let hardEnemyMoveRatio = 1;
 
   throttleNum = 0;
   const enemyContainer = enemy.character.element.parentElement!;
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      4 * (runningPointReached ? 1.3  : 1)
+      3 * (runningPointReached ? 1.3  : 1)
   )}px`;
 
   if (hardMode) {
@@ -2040,7 +2075,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
     ) {
       
-      if(index === 6){
+      if(index === 4){
         if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
           interruptAnimation(ANIMATION_ID.hero_walk_right);
           stopCameraMovingToRight();
@@ -2052,7 +2087,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       }
      };
 
-     if(index === 6){
+     if(index === 4){
 
       if(gameMode === GAME_MODES.discovery){
         mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
@@ -2111,7 +2146,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 6 && gameMode === GAME_MODES.discovery){
+    if(index === 4 && gameMode === GAME_MODES.discovery){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -2121,7 +2156,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 6 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.challenge ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -2135,7 +2170,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 6 && gameMode === GAME_MODES.discovery){
+      if(index === 4 && gameMode === GAME_MODES.discovery){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -2292,8 +2327,6 @@ export enum AnimationType {
   movement,
 }
 
-const ALL_STATES = "ALL_STATES";
-
 type CharacterAnimations = Array<
   {
     animationType: AnimationType,
@@ -2329,7 +2362,7 @@ export class DefaultCharacter {
 }
 
 
-type CharacterStates = HeroCharacterStates | LearningGodCharacterStates | RedHammerEnemyCharacterStates | OrcEnemyCharacterStates | DwarfEnemyCharacterStates | GolemEnemyCharacterStates | KingEnemyCharacterStates | WitchEnemyCharacterStates;
+type CharacterStates = CharacterDefaultStates | HeroCharacterStates | LearningGodCharacterStates | RedHammerEnemyCharacterStates | OrcEnemyCharacterStates | DwarfEnemyCharacterStates | GolemEnemyCharacterStates | KingEnemyCharacterStates | WitchEnemyCharacterStates;
 
 
 
@@ -2349,6 +2382,10 @@ enum HeroCharacterStates {
   transformed_running,
   transformed_attacking,
   transformed_dead,
+}
+
+enum CharacterDefaultStates {
+  default
 }
 
 export enum LearningGodCharacterStates {
@@ -2979,7 +3016,105 @@ const witchAnimations = [
 ];
 
 
+const masterAnimations = [
+  {
+  animationType: AnimationType.idle,
+  animationsStatesBlocks: [
+    {
+      states: [CharacterDefaultStates.default],
+      animation: 
+      {
+        id: ANIMATION_ID.master_idle,
+        sprite:    {
+          path: ASSETS_PATH_BASE + "/characters/neutral/master/idle",
+          length: 8
+      }
+      }
+     }
+   ]
+  },
+  {
+    animationType: AnimationType.attack,
+    animationsStatesBlocks: [
+      {
+        states: [CharacterDefaultStates.default],
+        animation: 
+        {
+          id: ANIMATION_ID.master_attack,
+          sprite:    {
+            path: ASSETS_PATH_BASE + "/characters/neutral/master/attack/new",
+            length: 8
+        }
+        }
+       }
+     ]
+    },
+    {
+      animationType: AnimationType.death,
+      animationsStatesBlocks: [
+        {
+          states: [CharacterDefaultStates.default],
+          animation: 
+          {
+            id: ANIMATION_ID.master_hurt,
+            sprite: {
+              path: ASSETS_PATH_BASE + "/characters/neutral/master/hurt",
+              length: 4
+          }
+          }
+         }
+       ]
+      },
+      {
+        animationType: AnimationType.death_from_special_attack,
+        animationsStatesBlocks: [
+          {
+            states: [CharacterDefaultStates.default],
+            animation: 
+            {
+              id: ANIMATION_ID.master_death_from_special_attack,
+              sprite:  {
+                path: ASSETS_PATH_BASE + "/explosion",
+                length: 12
+            }
+            }
+           }
+         ]
+      },
+    {
+      animationType: AnimationType.movement,
+      animationsStatesBlocks: [
+        {
+          states: [CharacterDefaultStates.default],
+          animation: 
+          {
+            id: ANIMATION_ID.master_move,
+            sprite:    {
+              path: "",
+              length: 0
+          }
+          }
+         }
+       ]
+      },
 
+      {
+        animationType: AnimationType.run,
+        animationsStatesBlocks: [
+          {
+            states: [CharacterDefaultStates.default],
+            animation: 
+            {
+              id: ANIMATION_ID.master_run,
+              sprite:    {
+                path: ASSETS_PATH_BASE + "/characters/neutral/master/run/new",
+                length: 8
+            }
+            }
+           }
+         ]
+      },
+];
 
 
 
@@ -3375,6 +3510,27 @@ const createGolemCharacter = (): DefaultCharacter => {
 }
 
 
+const createMasterCharacter = (): DefaultCharacter => {
+
+  const newOpponentContainer = document.createElement("div");
+  newOpponentContainer.classList.add("hard_enemy_container");
+  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/neutral/master/idle/1.png";  
+  newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "5vh";
+  newOpponentContainer.style.height = "35vh";
+
+  document.getElementsByTagName("body")[0].append(newOpponentContainer);
+
+  //init view point
+
+  resetViewPoint();
+
+  return new DefaultCharacter(newEnnemyImg, CharacterDefaultStates.default, masterAnimations);
+
+}
+
+
 const createKingCharacter = (): DefaultCharacter => {
 
   const newOpponentContainer = document.createElement("div");
@@ -3382,6 +3538,7 @@ const createKingCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/king/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-10.5vh"
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -4222,10 +4379,10 @@ const animateLightning = () => {
  }
 
  const setGameVolumes = () => {
-  dragonAudio.volume = 0.05;
+  dragonAudio.volume = 0.01;
   
   epicAudio.volume = 0;
-  windAudio.volume = 0.3;
+  windAudio.volume = 0.1;
   stepsInSwow.volume = 0.1;
 
   flameThrowerAudio.volume = 0.6;
@@ -4262,11 +4419,6 @@ window.onload = () => {
 
   checkForRunningEnemyPoint();
 
-  if (hardMode) {
-    epicAudio.play();
-  } else {
-    fireBackgroundAudio.play();
-  }
 };
 
 const setupListeners = () => {
@@ -4279,8 +4431,24 @@ const setupListeners = () => {
     ?.addEventListener("click", goBackToMountain);
 };
 
+const launchCinematic = () => {
+  const bottomDiv = document.getElementById("bottomDiv")!;
+  bottomDiv.style.display = "none";
+
+  // Select all elements with class "mapBlock" and type them as HTMLElement (or a more specific type if you know it).
+  
+  const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
+  // Iterate over each element and add the "cinematicMapBlock" class
+
+  mapBlocks.forEach((block) => {
+    block.classList.add('cinematicMapBlock');
+  });
+
+  heroImage.classList.add("cinematicHero");
+}
+
 const createGameAccordingToMode = () => {
-  progressBar.style.display = "flex";
+  //progressBar.style.display = "flex";
 
   if (hardMode) {
     return;

@@ -6,8 +6,6 @@ const stepsInSwow = document.getElementById(
 )! as HTMLAudioElement;
 const windowAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
 
-const gameCover = document.getElementById("game_cover")!;
-
 windowAudio.volume = 0.7;
 stepsInSwow.volume = 0.7;
 stepsInSwow.playbackRate = 1.2;
@@ -444,14 +442,10 @@ const startGame = () => {
   }
   launchedGame = true;
   windowAudio.play();
-  gameCover.style.display = "none";
 };
 
 window.onload = () => {
-  if (getUrlParameter("started")) {
     startGame();
-  }
-
   MAPS.push(createMapPalaceBlock(0));
   MAPS.push(createMapPalaceBlock(window.innerWidth));
   MAPS.push(createMapPalaceBlock(window.innerWidth * 2));

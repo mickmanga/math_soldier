@@ -8,12 +8,20 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: #257ec1;
+  /*background: #257ec1;*/
+  background: black;
 }
+
 
 .mapBlock{
   height: 100vh;
   width: 100vw;
+}
+
+.cinematicMapBlock{
+  height: 85vh;
+  width: 100vw;
+  top: 15vh;
 }
 
 .mapBlock img {

@@ -83,14 +83,19 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 63vh;
+  top: 74.3vh;
   left: 20vw;
-  height: 22vh;
+  height: 13vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
   z-index: 3011;
   display: flex;
   justify-content: flex-start;
   opacity: 0.85;
+}
+
+.cinematicHero {
+  top: 74.3vh;
+  height: 13vh;
 }
 
 .enemy_container {
@@ -612,6 +617,7 @@ audio {
   left:0;
   height: 15%;
   width: 100%;
+  display: flex;
   /*
   background: linear-gradient(to bottom, #253968, #2b3561, rgb(31 59 107));
   */
@@ -694,6 +700,7 @@ audio {
   z-index: 1002;
   display: none;
 }
+
 .controllerImg {
   height: 100%;
   width: auto;
@@ -726,7 +733,6 @@ audio {
   width: auto;
 }
 
-
 .progress {
   --progress: 0%;
   border-radius: 20px;
@@ -737,21 +743,21 @@ audio {
   padding: 9px 7px;
   box-shadow: 0 0 10px #aaa;
   z-index: 1002;
-  display: flex;
+  display: none;
 }
 
 .progress2 {
   top: 5vh;
   width: 25vw;
   --progress: 100%;
-
+  display: none;
 }
 
 .progress1 {
   top: 10vh;
   width: 20vw;
+  display: none;
 }
-
 
 .progress .bar {
   border-radius: 10px 0px 0px 10px ;
@@ -760,7 +766,6 @@ audio {
   animation: shine 4s ease-in infinite, end 1s ease-out 1;
   transition: width 3s ease;
 }
-
 
 .progress1 .bar {
   background: linear-gradient(gold, #c85, gold);
@@ -883,11 +888,10 @@ audio {
   }
   100%{
     transform:rotate(360deg)
-              translate(-45px)
-              rotate(-360deg);
+      translate(-45px)
+      rotate(-360deg);
   }
 }
-
 
 .parallax-container {
   position: relative;
@@ -903,7 +907,7 @@ audio {
    z-index: 1020;
    width: 10%;
    height: 10%;
-   display: flex;
+   display: none;
    flex-direction: column;
    justify-content: space-around;
    align-items: center;
