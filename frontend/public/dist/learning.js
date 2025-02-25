@@ -3210,7 +3210,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createKingCharacter
+      createGolemCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -3557,7 +3557,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     constructor(imagePath, velocity, zIndex, lastSet) {
       this.imagePath = imagePath;
       this.velocity = velocity;
-      this.maps = [lastSet && gameMode === 1 /* challenge */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
+      this.maps = [lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
     }
   };
   var lastElementUpdated = null;
@@ -4301,7 +4301,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
           }
           mapSet.maps.unshift(
-            index === 4 && gameMode === 1 /* challenge */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+            index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
               firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
               mapSet.imagePath,
               `${index}`
@@ -5265,16 +5265,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
   };
-  var createKingCharacter = () => {
+  var createGolemCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/king/idle/1.png";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-10.5vh";
+    newOpponentContainer.style.bottom = "-4.5vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, kingAnimations);
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 62 /* camera_left_to_right */ : 63 /* camera_right_to_left */] === 0) {
@@ -5309,12 +5309,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var executeSuperSpeedToggle = () => {
     superSpeedOn = !superSpeedOn;
   };
-  var quitChallenge = () => {
-    window.location.replace(window.location.href);
-  };
   document.addEventListener("keyup", (event) => {
     if (event.key === "a") {
-      quitChallenge();
+      launchCinematic();
     }
     if (event.key === "Shift") {
       heroRunning = false;
@@ -5843,6 +5840,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     var _a, _b;
     (_a = document.getElementById("playAgainLink")) == null ? void 0 : _a.addEventListener("click", (event) => window.location.reload());
     (_b = document.getElementById("backToStormGradButton")) == null ? void 0 : _b.addEventListener("click", goBackToMountain);
+  };
+  var launchCinematic = () => {
+    const bottomDiv = document.getElementById("bottomDiv");
+    bottomDiv.style.display = "none";
+    const mapBlocks = document.querySelectorAll(".mapBlock");
+    mapBlocks.forEach((block) => {
+      block.classList.add("cinematicMapBlock");
+    });
+    heroContainer.classList.add("cinematicHero");
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {

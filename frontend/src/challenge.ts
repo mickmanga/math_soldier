@@ -469,7 +469,7 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createKingCharacter,
+  createGolemCharacter,
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -968,7 +968,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet && gameMode === GAME_MODES.challenge ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
+    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
   }
 }
 
@@ -2156,7 +2156,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.challenge ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -3698,7 +3698,7 @@ const quitChallenge = () => {
 document.addEventListener("keyup", (event) => {
 
   if(event.key === "a"){
-    quitChallenge();
+    launchCinematic();
   }
 
   if(event.key === "Shift"){
@@ -4444,7 +4444,8 @@ const launchCinematic = () => {
     block.classList.add('cinematicMapBlock');
   });
 
-  heroImage.classList.add("cinematicHero");
+  heroContainer.classList.add("cinematicHero");
+
 }
 
 const createGameAccordingToMode = () => {

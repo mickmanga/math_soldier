@@ -83,9 +83,9 @@ audio {
   --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
   /* Define a CSS variable for height */
   position: fixed;
-  top: 74.3vh;
+  top: 65.3vh;
   left: 20vw;
-  height: 13vh;
+  height: 20vh;
   width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
   z-index: 3011;
   display: flex;

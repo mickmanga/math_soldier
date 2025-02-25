@@ -14,8 +14,9 @@ html, body {
 
 
 .mapBlock{
-  height: 100vh;
+  height: 85vh;
   width: 100vw;
+  top: 15vh;
 }
 
 .cinematicMapBlock{
