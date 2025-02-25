@@ -3774,7 +3774,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 72 /* lightning */ || animationId === 27 /* hammer_opponent_idle */ || animationId === 30 /* hammer_opponent_death */ || animationId === 47 /* witch_opponent_death */ || animationId === 48 /* witch_opponent_death_from_special_attack */ || animationId === 29 /* hammer_opponent_attack */ || animationId === 50 /* orc_opponent_idle */ || animationId === 52 /* orc_opponent_attack */ || animationId === 55 /* dwarf_opponent_idle */ || animationId === 57 /* dwarf_opponent_attack */ || animationId === 33 /* golem_opponent_idle */ || animationId === 35 /* golem_opponent_attack */ || animationId === 36 /* golem_opponent_death */ || animationId === 53 /* orc_opponent_death */ || animationId === 58 /* dwarf_opponent_death */ || animationId === 37 /* golem_opponent_death_from_special_attack */ || animationId === 34 /* golem_opponent_run */ || animationId === 45 /* witch_opponent_run */ || animationId === 28 /* hammer_opponent_run */ || animationId === 31 /* hammer_opponent_death_from_special_attack */ || animationId === 39 /* king_opponent_idle */ || animationId === 41 /* king_opponent_attack */ || animationId === 44 /* witch_opponent_idle */ || animationId === 46 /* witch_opponent_attack */ || animationId === 60 /* dragon_fly_right */ || animationId === 61 /* dragon_fly_left */ || animationId === 12 /* learning_god_idle */ || animationId === 11 /* learning_god_walk_left */ || animationId === 13 /* master_attack */ || animationId === 17 /* master_idle */ || animationId === 16 /* master_run */ || animationId === 14 /* master_hurt */ || animationId === 15 /* master_death_from_special_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 72 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 30 /* hammer_opponent_death */ ? 60 : animationId === 36 /* golem_opponent_death */ ? 80 : animationId === 47 /* witch_opponent_death */ ? 100 : animationId === 48 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 31 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 37 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 27 /* hammer_opponent_idle */ ? 115 : animationId === 50 /* orc_opponent_idle */ ? 80 : animationId === 33 /* golem_opponent_idle */ ? 120 : animationId === 34 /* golem_opponent_run */ ? 150 : animationId === 45 /* witch_opponent_run */ ? 150 : animationId === 28 /* hammer_opponent_run */ ? 80 : animationId === 44 /* witch_opponent_idle */ ? 90 : animationId === 46 /* witch_opponent_attack */ ? 120 : animationId === 39 /* king_opponent_idle */ ? 115 : animationId === 41 /* king_opponent_attack */ ? 50 : animationId === 55 /* dwarf_opponent_idle */ ? 80 : animationId === 29 /* hammer_opponent_attack */ ? 100 : animationId === 61 /* dragon_fly_left */ ? 150 : animationId === 60 /* dragon_fly_right */ ? 150 : animationId === 12 /* learning_god_idle */ ? 100 : animationId === 11 /* learning_god_walk_left */ ? 100 : animationId === 16 /* master_run */ ? 70 : animationId === 17 /* master_idle */ ? 120 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 72 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 30 /* hammer_opponent_death */ ? 60 : animationId === 36 /* golem_opponent_death */ ? 80 : animationId === 47 /* witch_opponent_death */ ? 100 : animationId === 48 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 31 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 37 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 27 /* hammer_opponent_idle */ ? 115 : animationId === 50 /* orc_opponent_idle */ ? 80 : animationId === 33 /* golem_opponent_idle */ ? 120 : animationId === 34 /* golem_opponent_run */ ? 150 : animationId === 45 /* witch_opponent_run */ ? 150 : animationId === 28 /* hammer_opponent_run */ ? 50 : animationId === 44 /* witch_opponent_idle */ ? 90 : animationId === 46 /* witch_opponent_attack */ ? 120 : animationId === 39 /* king_opponent_idle */ ? 115 : animationId === 41 /* king_opponent_attack */ ? 50 : animationId === 55 /* dwarf_opponent_idle */ ? 80 : animationId === 29 /* hammer_opponent_attack */ ? 100 : animationId === 61 /* dragon_fly_left */ ? 150 : animationId === 60 /* dragon_fly_right */ ? 150 : animationId === 12 /* learning_god_idle */ ? 100 : animationId === 11 /* learning_god_walk_left */ ? 100 : animationId === 16 /* master_run */ ? 70 : animationId === 17 /* master_idle */ ? 120 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4625,8 +4625,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 27 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle",
-              length: 16
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new",
+              length: 10
             }
           }
         }
@@ -4640,8 +4640,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 29 /* hammer_opponent_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack",
-              length: 30
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/new",
+              length: 7
             }
           }
         }
@@ -4655,8 +4655,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 30 /* hammer_opponent_death */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
-              length: 41
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death/new",
+              length: 3
             }
           }
         }
@@ -4700,8 +4700,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 28 /* hammer_opponent_run */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/walk",
-              length: 8
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/walk/new",
+              length: 16
             }
           }
         }
