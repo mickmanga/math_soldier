@@ -136,6 +136,10 @@ const moveLearningGod = () => {
 }
 
 window.onload = () => {
-    launchMonsterAnimation();
-    moveLearningGod();
+    setTimeout(
+        () => {    
+        launchMonsterAnimation();
+         moveLearningGod();
+        }, 3000
+    )
 }

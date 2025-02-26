@@ -3728,8 +3728,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         max,
         min,
         loop,
-        animationId,
-        endOfAnimationCallback
+        animationId
       );
     };
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -3788,7 +3787,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             min,
             loop,
             animationId,
-            endOfAnimationCallback,
+            () => {
+            },
             lastExecutionTimeStamp
           )
         );
@@ -3804,6 +3804,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             return;
           }
           APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation2].current_animation = null;
+        }
+        if (endOfAnimationCallback) {
+          endOfAnimationCallback();
         }
         return;
       }
@@ -3942,18 +3945,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interruptOpponentRun(enemy);
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 13 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    setTimeout(
-      (event) => {
-        launchAnimation(enemy.character, 11 /* idle */, true);
-        setTimeout(
-          () => {
-            launchMountainGod();
-          },
-          4e3
-        );
-      },
-      5e3
-    );
+    launchAnimation(enemy.character, 11 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
@@ -4426,6 +4418,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   ];
   var runningPointReached = false;
+  var checkForRunningEnemyPoint = () => {
+    ennemiesOnScreen.forEach(
+      (enemy) => {
+        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.01 && !runningPointReached) {
+          launchAnimation(enemy.character, 2 /* run */);
+          runningPointReached = true;
+        }
+      }
+    );
+    requestAnimationFrame(checkForRunningEnemyPoint);
+  };
   var heroAnimations = [
     {
       animationType: 11 /* idle */,
@@ -4622,8 +4625,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 27 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/obelisk",
-              length: 14
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
+              length: 41
             }
           }
         }
@@ -4653,7 +4656,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             id: 30 /* hammer_opponent_death */,
             sprite: {
               path: ASSETS_PATH_BASE + "/characters/enemies/hard/death/new",
-              length: 3
+              length: 5
             }
           }
         }
@@ -5162,35 +5165,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/obelisk/1.png";
-    newEnnemyImg.style.opacity = "0.9";
-    newOpponentContainer.style.height = "30vh";
-    newOpponentContainer.style.bottom = "13vh";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
-  };
-  var launchMountainGod = () => {
-    const mountainGodLightningImg = document.getElementById("mountain_god_lightning_img");
-    const mountainGodImg = document.getElementById("mountain_god_img");
-    mountainGodLightningImg.style.display = "flex";
-    ANIMATION_RUNNING_VALUES[72 /* lightning */] = 0;
-    mountainGodImg.style.display = "flex";
-    launchAnimationAndDeclareItLaunched(
-      mountainGodLightningImg,
-      0,
-      "png",
-      `assets/challenge/items/teleportation_lightning`,
-      1,
-      8,
-      1,
-      false,
-      72 /* lightning */,
-      () => {
-        alert("ok");
-      }
-    );
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -5376,9 +5355,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       }
     );
+    setupChallengeDisplay();
     breathAudio.play();
     gameMode = 1 /* challenge */;
     initializeChallengePage(pillarId);
+  };
+  var setupChallengeDisplay = () => {
+    lightningImg.style.opacity = "1";
+    answerDataContainer.style.opacity = "1";
+    scoreContainer.style.opacity = "1";
+    topScoreContainer.style.opacity = "1";
   };
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
@@ -5386,9 +5372,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (heroMoving) {
         launchAnimation(heroCharacter, currentHeroDirection === 0 /* LEFT_TO_RIGHT */ ? 6 /* walk_right */ : 7 /* walk_left */);
       }
-    }
-    if (event.key === "v") {
-      launchMountainGod();
     }
     if (event.key === "p") {
       checkForScreenUpdateFromLeftToRight(0);
@@ -5850,6 +5833,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     animateLightning();
     launchAnimation(heroCharacter, 11 /* idle */, false);
     launchDragon();
+    checkForRunningEnemyPoint();
   };
   var setupListeners = () => {
     var _a, _b;
@@ -6077,8 +6061,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   window.onload = () => {
-    launchMonsterAnimation();
-    moveLearningGod();
+    setTimeout(
+      () => {
+        launchMonsterAnimation();
+        moveLearningGod();
+      },
+      3e3
+    );
   };
 })();
 //# sourceMappingURL=learning.js.map

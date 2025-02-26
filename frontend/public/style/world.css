@@ -49,22 +49,22 @@ html {
 }
 
 #ice {
-    height: 100%;
-    width: auto;
-    border-radius: 20px;
-    opacity: 0;
-    transition: opacity 3s ease, visibility 3s ease; /* Animate opacity over 1 second */
+  height: 100%;
+  width: auto;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 3s ease, visibility 3s ease; /* Animate opacity over 1 second */
 }
 
 #mapBackground {
-    position: absolute;
-    top: 20vh;
-    left: 20vw;
-    height: 90vh;
-    width: 60vw;
-    overflow: auto;
-    padding-bottom: 100px;
-    margin-top: 500px;
+  position: absolute;
+  top: 20vh;
+  left: 20vw;
+  height: 90vh;
+  width: 60vw;
+  overflow: auto;
+  padding-bottom: 100px;
+  margin-top: 500px;
 }
 
 .mapBackground_a {

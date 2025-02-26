@@ -469,7 +469,7 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createGolemCharacter,
+  createRedHammerCharacter,
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -1879,7 +1879,6 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
 
     const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, fromSpecialAttack ? AnimationType.death_from_special_attack : AnimationType.death)!;
 
-
     launchAnimationAndDeclareItLaunched(
       enemy.character.element,
       0,
@@ -1891,6 +1890,32 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       false,
       deathAnimation.id,
     );
+
+    /*
+
+    setTimeout(
+      () => {
+        launchAnimationAndDeclareItLaunched(
+          enemy.character.element,
+          0,
+          "png",
+          "assets/challenge/items/teleportation_lightning",
+          1,
+          deathAnimation.sprite.length,
+          8,
+          false,
+          deathAnimation.id,
+        );
+
+        setTimeout(
+          () => {
+            enemy.character.element.style.display = "none"
+          }, 300
+        )
+      }, 400
+    )
+
+    */
   };
 
   launchExplosion();
@@ -2018,6 +2043,23 @@ const detectCollision = () => {
 
       updateEnemyViewPointDisplay();
       launchAnimation(enemyOnScreen.character, AnimationType.attack);
+
+      /*
+        mountain god 
+
+        
+      setTimeout(
+        () => {
+          launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
+          setTimeout(
+            () => launchAnimation(enemyOnScreen.character, AnimationType.run), 700
+          );
+          
+        }, 200
+      )
+    
+
+      */
     }
 
     if (
@@ -2485,7 +2527,7 @@ let runningPointReached = false;
 const checkForRunningEnemyPoint = () => {
   ennemiesOnScreen.forEach(
     (enemy) => {
-      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.35)) && !runningPointReached ){
+      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.01)) && !runningPointReached ){
         launchAnimation(enemy.character, AnimationType.run);
         runningPointReached=true;
       }
@@ -2706,8 +2748,8 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new",
-          length: 10
+          path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
+          length: 41
       }
       }
      }
@@ -2739,7 +2781,7 @@ const redHammerAnimations = [
             id: ANIMATION_ID.hammer_opponent_death,
             sprite:    {
               path: ASSETS_PATH_BASE + "/characters/enemies/hard/death/new",
-              length: 3
+              length: 5
           }
           }
          }
