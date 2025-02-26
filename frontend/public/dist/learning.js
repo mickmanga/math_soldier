@@ -3210,7 +3210,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createGolemCharacter
+      createRedHammerCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -3728,7 +3728,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         max,
         min,
         loop,
-        animationId
+        animationId,
+        endOfAnimationCallback
       );
     };
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -3787,8 +3788,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             min,
             loop,
             animationId,
-            () => {
-            },
+            endOfAnimationCallback,
             lastExecutionTimeStamp
           )
         );
@@ -3804,9 +3804,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             return;
           }
           APP_ELEMENTS_ANIMATION_QUEUE[elementAssociatedWithThisAnimation2].current_animation = null;
-        }
-        if (endOfAnimationCallback) {
-          endOfAnimationCallback();
         }
         return;
       }
@@ -3945,7 +3942,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interruptOpponentRun(enemy);
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 13 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    launchAnimation(enemy.character, 11 /* idle */);
+    setTimeout(
+      (event) => {
+        launchAnimation(enemy.character, 11 /* idle */, true);
+        setTimeout(
+          () => {
+            launchMountainGod();
+          },
+          4e3
+        );
+      },
+      5e3
+    );
     moveEnemy(enemy, 0, Date.now());
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
@@ -4418,17 +4426,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   ];
   var runningPointReached = false;
-  var checkForRunningEnemyPoint = () => {
-    ennemiesOnScreen.forEach(
-      (enemy) => {
-        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.35 && !runningPointReached) {
-          launchAnimation(enemy.character, 2 /* run */);
-          runningPointReached = true;
-        }
-      }
-    );
-    requestAnimationFrame(checkForRunningEnemyPoint);
-  };
   var heroAnimations = [
     {
       animationType: 11 /* idle */,
@@ -4625,8 +4622,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 27 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new",
-              length: 10
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/obelisk",
+              length: 14
             }
           }
         }
@@ -5161,6 +5158,40 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/obelisk/1.png";
+    newEnnemyImg.style.opacity = "0.9";
+    newOpponentContainer.style.height = "30vh";
+    newOpponentContainer.style.bottom = "13vh";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+  };
+  var launchMountainGod = () => {
+    const mountainGodLightningImg = document.getElementById("mountain_god_lightning_img");
+    const mountainGodImg = document.getElementById("mountain_god_img");
+    mountainGodLightningImg.style.display = "flex";
+    ANIMATION_RUNNING_VALUES[72 /* lightning */] = 0;
+    mountainGodImg.style.display = "flex";
+    launchAnimationAndDeclareItLaunched(
+      mountainGodLightningImg,
+      0,
+      "png",
+      `assets/challenge/items/teleportation_lightning`,
+      1,
+      8,
+      1,
+      false,
+      72 /* lightning */,
+      () => {
+        alert("ok");
+      }
+    );
+  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -5265,17 +5296,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
   };
-  var createGolemCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-4.5vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
-  };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 62 /* camera_left_to_right */ : 63 /* camera_right_to_left */] === 0) {
       startCamera(direction);
@@ -5356,16 +5376,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       }
     );
-    setupChallengeDisplay();
     breathAudio.play();
     gameMode = 1 /* challenge */;
     initializeChallengePage(pillarId);
-  };
-  var setupChallengeDisplay = () => {
-    lightningImg.style.opacity = "1";
-    answerDataContainer.style.opacity = "1";
-    scoreContainer.style.opacity = "1";
-    topScoreContainer.style.opacity = "1";
   };
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
@@ -5373,6 +5386,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (heroMoving) {
         launchAnimation(heroCharacter, currentHeroDirection === 0 /* LEFT_TO_RIGHT */ ? 6 /* walk_right */ : 7 /* walk_left */);
       }
+    }
+    if (event.key === "v") {
+      launchMountainGod();
     }
     if (event.key === "p") {
       checkForScreenUpdateFromLeftToRight(0);
@@ -5834,7 +5850,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     animateLightning();
     launchAnimation(heroCharacter, 11 /* idle */, false);
     launchDragon();
-    checkForRunningEnemyPoint();
   };
   var setupListeners = () => {
     var _a, _b;

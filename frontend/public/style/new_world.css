@@ -9,7 +9,7 @@
     background: rgb(92, 92, 92);
     margin-left: 7.5vw;
     margin-top: 100px;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
@@ -22,4 +22,9 @@
     background: rgb(0, 102, 128);
     justify-content: space-around;
     align-items: center;
+}
+
+.mapBackground_aaa img {
+    height: 100%;
+    width: auto;
 }
