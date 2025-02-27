@@ -1565,12 +1565,125 @@ const launchOpponent = (enemy: EnemyInterface) => {
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
 
-  launchAnimation(enemy.character, AnimationType.idle);
+ 
+  setTimeout(
+    () => {
+      const thunder = document.getElementById("thunder_audio")! as HTMLAudioElement;
+      thunder.play();
+    }, 1000
+  )
+
+  setTimeout(
+    () => {
+
+      launchAnimationAndDeclareItLaunched(
+        enemy.character.element,
+        0,
+        "png",
+        "assets/challenge/items/teleportation_lightning",
+        1,
+        8,
+        8,
+        false,
+        ANIMATION_ID.hammer_opponent_death,
+      );
+  
+    
+  setTimeout(
+    () => { 
+
+      launchAnimation(enemy.character, AnimationType.idle);
+
+      setTimeout(
+        () => {
+          
+      setTimeout(
+        () => {
+          const god = document.getElementById("god_audio")! as HTMLAudioElement;
+          god.play();
+
+          setTimeout(
+            () => {
+              launchAnimationAndDeclareItLaunched(
+                enemy.character.element,
+                0,
+                "png",
+                "assets/challenge/items/teleportation_lightning",
+                1,
+                8,
+                8,
+                false,
+                ANIMATION_ID.hammer_opponent_death,
+              );
+
+              setTimeout(
+                () => {
+                  enemy.character.element.parentElement!.style.left  
+
+                }, 1000
+              )
+
+
+            }, 8000
+          )
+
+        }, 1000
+      )
+
+        }, 2000
+      )
+
+    }, 360
+  )
+
+    }, 1000
+  )
+
+  
 
  // launchIdleProcess(enemy.character);
 
   moveEnemy(enemy, 0, Date.now());
 };
+
+let godAppeared = false;
+
+const launchNonLoopAnimation = (character: CharacterInterface, animationType: AnimationType, timeBetweenAnimations: number) => {
+
+  const animation = getCharacterAnimationAccordingToType(character, animationType)!;
+
+  if(!animation){
+    console.log("sorry, no animations were found");
+    return;
+  }
+
+  launchAnimationAndDeclareItLaunched(
+    character.element,
+    0,
+    "png",
+    animation.sprite.path,
+    1,
+    animation.sprite.length,
+    1,
+    true,
+    animation.id
+   );
+
+  setTimeout(
+    () => {
+      interruptAnimation(animation.id);
+      setTimeout(
+        () => {
+          launchNonLoopAnimation(character, animationType, timeBetweenAnimations)
+        }, 3000
+      );
+
+      godAppeared = true;
+
+    }, 3000
+  )
+
+}
 
 const launchIdleProcess = (character: CharacterInterface) => {
   launchAnimation(character, AnimationType.idle, false);
@@ -1891,7 +2004,6 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       deathAnimation.id,
     );
 
-    /*
 
     setTimeout(
       () => {
@@ -1915,7 +2027,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       }, 400
     )
 
-    */
+
   };
 
   launchExplosion();
@@ -2042,12 +2154,9 @@ const detectCollision = () => {
       heroInTheRedZone = true;
 
       updateEnemyViewPointDisplay();
-      launchAnimation(enemyOnScreen.character, AnimationType.attack);
+      //launchAnimation(enemyOnScreen.character, AnimationType.attack);
 
-      /*
-        mountain god 
-
-        
+     
       setTimeout(
         () => {
           launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
@@ -2058,8 +2167,7 @@ const detectCollision = () => {
         }, 200
       )
     
-
-      */
+    
     }
 
     if (
@@ -2527,7 +2635,7 @@ let runningPointReached = false;
 const checkForRunningEnemyPoint = () => {
   ennemiesOnScreen.forEach(
     (enemy) => {
-      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.01)) && !runningPointReached ){
+      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.1)) && !runningPointReached ){
         launchAnimation(enemy.character, AnimationType.run);
         runningPointReached=true;
       }
@@ -2748,8 +2856,8 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
-          length: 41
+          path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new",
+          length: 10
       }
       }
      }
@@ -3341,7 +3449,7 @@ const createRedHammerCharacter = (): DefaultCharacter => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/1.png";  
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";  
     newOpponentContainer.append(newEnnemyImg);
 
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
@@ -3797,8 +3905,8 @@ const launchChallenge = (pillarId: string) => {
     }
   )
 
-  setupChallengeDisplay();
-  breathAudio.play();
+ // setupChallengeDisplay();
+ // breathAudio.play();
   gameMode = GAME_MODES.challenge;
   initializeChallengePage(pillarId);
 
@@ -4421,7 +4529,7 @@ const animateLightning = () => {
  }
 
  const setGameVolumes = () => {
-  dragonAudio.volume = 0.01;
+  dragonAudio.volume = 0.02;
   
   epicAudio.volume = 0;
   windAudio.volume = 0.1;
@@ -4436,6 +4544,8 @@ const animateLightning = () => {
  }
 
 window.onload = () => {
+
+  setGameVolumes();
 
   initElementsIndexes();
   createMapSets();

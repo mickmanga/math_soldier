@@ -3945,7 +3945,69 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interruptOpponentRun(enemy);
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 13 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    launchAnimation(enemy.character, 11 /* idle */);
+    setTimeout(
+      () => {
+        const thunder = document.getElementById("thunder_audio");
+        thunder.play();
+      },
+      1e3
+    );
+    setTimeout(
+      () => {
+        launchAnimationAndDeclareItLaunched(
+          enemy.character.element,
+          0,
+          "png",
+          "assets/challenge/items/teleportation_lightning",
+          1,
+          8,
+          8,
+          false,
+          30 /* hammer_opponent_death */
+        );
+        setTimeout(
+          () => {
+            launchAnimation(enemy.character, 11 /* idle */);
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        launchAnimationAndDeclareItLaunched(
+                          enemy.character.element,
+                          0,
+                          "png",
+                          "assets/challenge/items/teleportation_lightning",
+                          1,
+                          8,
+                          8,
+                          false,
+                          30 /* hammer_opponent_death */
+                        );
+                        setTimeout(
+                          () => {
+                            enemy.character.element.parentElement.style.left;
+                          },
+                          1e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  1e3
+                );
+              },
+              2e3
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
     moveEnemy(enemy, 0, Date.now());
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
@@ -4122,6 +4184,28 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         false,
         deathAnimation.id
       );
+      setTimeout(
+        () => {
+          launchAnimationAndDeclareItLaunched(
+            enemy.character.element,
+            0,
+            "png",
+            "assets/challenge/items/teleportation_lightning",
+            1,
+            deathAnimation.sprite.length,
+            8,
+            false,
+            deathAnimation.id
+          );
+          setTimeout(
+            () => {
+              enemy.character.element.style.display = "none";
+            },
+            300
+          );
+        },
+        400
+      );
     };
     launchExplosion();
     destroyEnemyAndLaunchNewOne(enemy);
@@ -4202,7 +4286,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
-        launchAnimation(enemyOnScreen.character, 0 /* attack */);
+        setTimeout(
+          () => {
+            launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
+            setTimeout(
+              () => launchAnimation(enemyOnScreen.character, 2 /* run */),
+              700
+            );
+          },
+          200
+        );
       }
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
         enemyViewPointThresholdCrossed = true;
@@ -4421,7 +4514,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var checkForRunningEnemyPoint = () => {
     ennemiesOnScreen.forEach(
       (enemy) => {
-        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.01 && !runningPointReached) {
+        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.1 && !runningPointReached) {
           launchAnimation(enemy.character, 2 /* run */);
           runningPointReached = true;
         }
@@ -4625,8 +4718,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 27 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death",
-              length: 41
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new",
+              length: 10
             }
           }
         }
@@ -5165,7 +5258,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/hard/idle/1.png";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
@@ -5355,16 +5448,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       }
     );
-    setupChallengeDisplay();
-    breathAudio.play();
     gameMode = 1 /* challenge */;
     initializeChallengePage(pillarId);
-  };
-  var setupChallengeDisplay = () => {
-    lightningImg.style.opacity = "1";
-    answerDataContainer.style.opacity = "1";
-    scoreContainer.style.opacity = "1";
-    topScoreContainer.style.opacity = "1";
   };
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
@@ -5814,7 +5899,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     store.dispatch(setStartIndex(currentIndex));
     store.dispatch(setEndIndex(currentIndex));
   };
+  var setGameVolumes = () => {
+    dragonAudio.volume = 0.02;
+    epicAudio.volume = 0;
+    windAudio.volume = 0.1;
+    stepsInSwow.volume = 0.1;
+    flameThrowerAudio.volume = 0.6;
+    transitionAudio.volume = 0.15;
+  };
   window.onload = () => {
+    setGameVolumes();
     initElementsIndexes();
     createMapSets();
     checkForCurrentMapElementUpdate();
