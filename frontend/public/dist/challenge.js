@@ -5463,6 +5463,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const masterCharacter = new DefaultCharacter(masterImage, 0 /* idle */, golemMasterAnimations);
     const animateMaster = () => {
       launchAnimation(masterCharacter, 15 /* transformation */, false);
+      const transformationAudio = document.getElementById("transformation_audio");
+      transformationAudio.play();
       setTimeout(
         () => {
           launchAnimation(masterCharacter, 11 /* idle */);

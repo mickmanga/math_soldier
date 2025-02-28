@@ -3795,6 +3795,10 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
   const animateMaster = () => {
        launchAnimation(masterCharacter, AnimationType.transformation, false);
 
+       const transformationAudio = document.getElementById("transformation_audio")! as HTMLAudioElement;
+
+       transformationAudio.play();
+
        setTimeout(
         () => {
            launchAnimation(masterCharacter, AnimationType.idle);
