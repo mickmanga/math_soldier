@@ -5355,20 +5355,31 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
+  var golemLaunched = false;
   var createMasterCharacter = (masterImage) => {
     const masterCharacter = new DefaultCharacter(masterImage, 0 /* idle */, golemMasterAnimations);
-    setTimeout(
-      () => {
-        launchAnimation(masterCharacter, 15 /* transformation */, false);
-        setTimeout(
-          () => {
-            launchAnimation(masterCharacter, 11 /* idle */);
-          },
-          5400
-        );
-      },
-      300
-    );
+    const animateMaster = () => {
+      launchAnimation(masterCharacter, 15 /* transformation */, false);
+      setTimeout(
+        () => {
+          launchAnimation(masterCharacter, 11 /* idle */);
+          const talnurAudio = document.getElementById("talnur_audio");
+          talnurAudio.play();
+        },
+        5400
+      );
+    };
+    const launchMasterPositionCheck = () => {
+      if (golemLaunched) {
+        return;
+      }
+      if (masterImage.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
+        setTimeout(animateMaster, 3e3);
+        golemLaunched = true;
+      }
+      requestAnimationFrame(launchMasterPositionCheck);
+    };
+    launchMasterPositionCheck();
   };
   var createMasterCharacterElement = () => {
     const masterElement = document.createElement("div");
@@ -5919,9 +5930,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     store.dispatch(setEndIndex(currentIndex));
   };
   var setGameVolumes = () => {
-    dragonAudio.volume = 0.02;
+    dragonAudio.volume = 0.05;
     epicAudio.volume = 0;
-    windAudio.volume = 0.1;
+    windAudio.volume = 0.6;
     stepsInSwow.volume = 0.1;
     flameThrowerAudio.volume = 0.6;
     transitionAudio.volume = 0.15;

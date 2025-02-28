@@ -3786,23 +3786,41 @@ const createGolemCharacter = (): DefaultCharacter => {
  
 }
 
+let golemLaunched = false;
+
 const createMasterCharacter = (masterImage : HTMLImageElement) => {
 
   const masterCharacter = new DefaultCharacter(masterImage as HTMLImageElement, HeroCharacterStates.idle, golemMasterAnimations);
-  
-  setTimeout(
-    () =>
-    {
-     launchAnimation(masterCharacter, AnimationType.transformation, false);
 
-     setTimeout(
-      () => {
-         launchAnimation(masterCharacter, AnimationType.idle);
-      }, 5400
-     )
-    }, 300
-  );
+  const animateMaster = () => {
+       launchAnimation(masterCharacter, AnimationType.transformation, false);
 
+       setTimeout(
+        () => {
+           launchAnimation(masterCharacter, AnimationType.idle);
+          const talnurAudio = document.getElementById("talnur_audio")! as HTMLAudioElement;
+          talnurAudio.play();
+
+        }, 5400
+       )
+  }
+
+  const launchMasterPositionCheck = () => {
+
+     if(golemLaunched){
+      return;
+     }
+      
+     if(masterImage.parentElement!.getBoundingClientRect().left - getHeroLeft() < (window.innerWidth * 0.01)){
+       
+        setTimeout(animateMaster, 3000);
+        golemLaunched = true;
+     }
+
+     requestAnimationFrame(launchMasterPositionCheck)
+  }
+
+  launchMasterPositionCheck();
 }
 
 const createMasterCharacterElement = (): HTMLElement => {
@@ -4667,10 +4685,10 @@ const animateLightning = () => {
  }
 
  const setGameVolumes = () => {
-  dragonAudio.volume = 0.02;
+  dragonAudio.volume = 0.05;
   
   epicAudio.volume = 0;
-  windAudio.volume = 0.1;
+  windAudio.volume = 0.6;
   stepsInSwow.volume = 0.1;
 
   flameThrowerAudio.volume = 0.6;

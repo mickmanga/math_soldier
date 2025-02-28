@@ -144,7 +144,7 @@ audio {
 
 .golem_master_container {
   position: absolute;
-  left: 5vw;
+  left: 0vw;
   height: 50vh;
   width: 35vw;
   top: 26vh;
