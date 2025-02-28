@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ELEMENT_TYPE, HERO_MODES, MapElement } from '../../types/map';
+import { CHARACTER_ELEMENTS_NAMES, ELEMENT_TYPE, HERO_MODES, MapElement } from '../../types/map';
 
 export interface MapState {
-  elements: Array<MapElement>;
+  elements: Array<MapElement | null>;
   elementsOnScreen: Array<MapElement>;
   startIndex: number,
   endIndex: number,
@@ -12,6 +12,9 @@ export interface MapState {
 
 const initialState: MapState = {
   elements: [
+    null,
+    null,
+    {type: ELEMENT_TYPE.character, id: "00", name: CHARACTER_ELEMENTS_NAMES.golem_master},
     {type: ELEMENT_TYPE.form, id: "01", formBlocks: [
      {
       question: "combien fait 1+1",
@@ -73,7 +76,7 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 3,
+  currentIndex: 0,
   heroMode: HERO_MODES.normal
 };
 
@@ -110,7 +113,11 @@ const persistedMapSlice = createSlice({
       if(elementIndex > state.elements.length - 1 || elementIndex < 0){
         return;
       }
-      state.elementsOnScreen.push(state.elements[elementIndex]);
+      const elementToAdd = state.elements[elementIndex];
+      if(!elementToAdd){
+        return;
+      }
+      state.elementsOnScreen.push();
     },
     removeElementFromElementsOnScreen: (state, action: PayloadAction<number>) => {
       const removedElementIndex = action.payload;

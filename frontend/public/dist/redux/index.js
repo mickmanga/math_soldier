@@ -2356,6 +2356,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
+      null,
+      null,
+      { type: 2 /* character */, id: "00", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: "01", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2418,7 +2421,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 3,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
@@ -2454,7 +2457,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         if (elementIndex > state.elements.length - 1 || elementIndex < 0) {
           return;
         }
-        state.elementsOnScreen.push(state.elements[elementIndex]);
+        const elementToAdd = state.elements[elementIndex];
+        if (!elementToAdd) {
+          return;
+        }
+        state.elementsOnScreen.push();
       },
       removeElementFromElementsOnScreen: (state, action) => {
         const removedElementIndex = action.payload;

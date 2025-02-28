@@ -1,4 +1,4 @@
-export type MapElement = FormElement | ChallengeElement;
+export type MapElement = FormElement | ChallengeElement | CharacterElement;
 
 export type FormElement = {
    type: ELEMENT_TYPE;
@@ -18,6 +18,17 @@ export type ChallengeElement = {
    topScore: string
 };
 
+export type CharacterElement = {
+   type: ELEMENT_TYPE,
+   id: string,
+   name: CHARACTER_ELEMENTS_NAMES
+}
+
+export enum CHARACTER_ELEMENTS_NAMES {
+   "golem_master",
+   "mountain_god"
+}
+
 export enum HERO_MODES {
    normal,
    special
@@ -25,5 +36,6 @@ export enum HERO_MODES {
 
 export enum ELEMENT_TYPE {
   "challenge",
-  "form"
+  "form",
+  "character",
 }

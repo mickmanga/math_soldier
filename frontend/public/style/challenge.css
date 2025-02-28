@@ -142,6 +142,23 @@ audio {
   align-items: flex-end;
 }
 
+.golem_master_container {
+  position: absolute;
+  left: 5vw;
+  height: 50vh;
+  width: 35vw;
+  top: 26vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+}
+
+.golem_master_container img{
+  height: 100%  !important ;
+  width: auto  !important ;
+}
+
 #extended_form_container {
   position: absolute;
   left: 20%;
