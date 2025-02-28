@@ -1,7 +1,7 @@
 import { AnimationType, DefaultCharacter, launchAnimation, learningGodAnimations, LearningGodCharacterStates } from "./challenge";
 
 interface Window {
-  openMap: (event: Event) => void;
+  openap: (event: Event) => void;
   hideSideBar: (event: Event) => void;
   displaySideBar: (event: Event) => void;
 }
@@ -13,8 +13,6 @@ const openMap = (event: Event) => {
 const learningGodContainer = document.getElementById("learning_god_container")!;
 const learningGodImg = document.getElementById("learningGodImg")! as HTMLImageElement;
 const learningGodCharacter = new DefaultCharacter(learningGodImg, LearningGodCharacterStates.idle, learningGodAnimations); 
-
-
 
 const hideSideBar = (event: Event) => {
   document.getElementById("course_container_ab_back_left_button")!.style.display = "flex";
@@ -91,11 +89,17 @@ const getChapters = async () => {
 document.addEventListener("keydown", 
     (event) => {
         if(event.key === "g"){
-            document.getElementById("interface_container")!.style.opacity = "1";
+            openCourse();
         }
-
     }
 )
+
+const openCourse = () => {
+    launchAnimation(learningGodCharacter, AnimationType.open_course, false);
+    setTimeout(
+        () =>  document.getElementById("interface_container")!.style.opacity = "1", 900
+    )
+}
 
 window.onload = () => {
     getChapters();
@@ -136,10 +140,6 @@ const moveLearningGod = () => {
 }
 
 window.onload = () => {
-    setTimeout(
-        () => {    
-        launchMonsterAnimation();
-         moveLearningGod();
-        }, 3000
-    )
+    launchMonsterAnimation();
+    moveLearningGod();
 }

@@ -28,7 +28,7 @@
                 <button onclick="displaySideBar(event)" id="course_container_ab_back_left_button">></button>
                 <div id="course_container_ab_wrapper">
                   <button onclick="hideSideBar(event)" id="course_container_ab_back_right_button"><</button>
-                  <div class="course_container_aba">Qu'est ce qu'un vecteur?</div>
+                  <div class="course_container_aba" style="opacity: 1;">Qu'est ce qu'un vecteur?</div>
                   <div class="course_container_aba">Couplets, triplets, n-uplets de réels</div>
                   <div class="course_container_aba">Construire le vecteur somme</div>
                   <div class="course_container_aba">Multiplication vecteur/scalaire</div>
@@ -38,6 +38,334 @@
             </div>
 
             <div id="course_container_b">
+              <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complete Course on Vectors</title>
+  <!-- Medieval font -->
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    /* Main colors */
+    :root {
+      --text-blue: #8cd3ff;
+      --outline-blue: #8cd3ff;
+      --container-background: #1c1c1c;
+      --example-background: #2a2a2a;
+      --code-background: #333333;
+      --vector-red: #ff6b6b; /* Color for the vector and axes on the canvas */
+    }
+
+    body {
+      background-color: var(--dark-background);
+      font-family: 'MedievalSharp', cursive;
+      color: var(--text-blue);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    h1, h2, h3 {
+      border-bottom: 3px solid var(--outline-blue);
+      padding-bottom: 5px;
+      margin-top: 0;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    code {
+      background-color: var(--code-background);
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .example {
+      background-color: var(--example-background);
+      border-left: 5px solid var(--outline-blue);
+      padding: 10px;
+      margin: 15px 0;
+      font-family: monospace;
+    }
+    .canvas-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    canvas {
+      border: 2px solid var(--outline-blue);
+      background-color: var(--container-background);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Introduction -->
+    <h1>Complete Course on Vectors</h1>
+    <p>
+      Vectors are fundamental mathematical objects used in many fields: mathematics, physics, computer science, etc.
+      This course covers the definition, graphical representation, and the main operations on two-dimensional vectors,
+      along with a more in-depth look at norm, direction, projection, and normalization.
+    </p>
+
+    <!-- Section 1: General Definition -->
+    <section>
+      <h2>1. General Definition</h2>
+      <p>
+        In two dimensions, a vector is defined by two main attributes:
+      </p>
+      <ul>
+        <li><strong>Direction</strong>: The orientation of the vector in the plane.</li>
+        <li><strong>Magnitude (or norm)</strong>: The length of the vector, usually representing the intensity or force associated with it.</li>
+      </ul>
+      <p>
+        We commonly denote a vector <code>V</code> in the form <code>(x, y)</code>, where <code>x</code> and <code>y</code> are its components along the X and Y axes.
+      </p>
+    </section>
+
+    <!-- Section 2: Graphical Representation and Components (with graphic) -->
+    <section>
+      <h2>2. Graphical Representation and Components</h2>
+      <p>
+        In a two-dimensional plane, the vector <code>(x, y)</code> can be represented by an arrow starting at the origin (<code>(0, 0)</code>)
+        and ending at the point <code>(x, y)</code>. The direction of this arrow corresponds to the vector's orientation, and its length corresponds to the vector's magnitude.
+      </p>
+      <p>
+        Below is an example of a vector <code>V = (50, 100)</code> represented on a coordinate system.
+        The origin of the coordinate system is placed at the center of the canvas, and the vector points toward the upper-right corner.
+      </p>
+
+      <div class="canvas-container">
+        <canvas id="vectorCanvas" width="400" height="400"></canvas>
+      </div>
+    </section>
+
+    <!-- Section 3: Magnitude and Direction -->
+    <section>
+      <h2>3. Magnitude and Direction</h2>
+      <p>
+        The <strong>magnitude</strong> (or norm) of a vector <code>V = (x, y)</code> is calculated using the Pythagorean theorem:
+      </p>
+      <div class="example">
+        ||V|| = √(x² + y²)
+      </div>
+      <p>
+        The <strong>direction</strong> of a vector, often expressed as an <em>angle</em> (in degrees or radians), is generally determined by:
+      </p>
+      <div class="example">
+        θ = arctan(y / x)
+      </div>
+      <p>
+        <strong>Example:</strong> For <code>V = (3, 4)</code>:
+      </p>
+      <div class="example">
+        Magnitude: ||V|| = √(3² + 4²) = 5<br>
+        Angle: θ = arctan(4/3) ≈ 53.13°
+      </div>
+    </section>
+
+    <!-- Section 4: Addition and Subtraction of Vectors -->
+    <section>
+      <h2>4. Addition and Subtraction of Vectors</h2>
+      <p>
+        Operations between vectors are done component-wise.
+      </p>
+      <h3>4.1 Addition</h3>
+      <p>
+        For two vectors <code>A = (a₁, a₂)</code> and <code>B = (b₁, b₂)</code>:
+      </p>
+      <div class="example">
+        A + B = (a₁ + b₁, a₂ + b₂)
+      </div>
+      <p>
+        <strong>Example:</strong> <code>A = (2, 3)</code>, <code>B = (4, 1)</code>:
+      </p>
+      <div class="example">
+        A + B = (2 + 4, 3 + 1) = (6, 4)
+      </div>
+
+      <h3>4.2 Subtraction</h3>
+      <p>
+        For subtraction, just subtract the corresponding components:
+      </p>
+      <div class="example">
+        A - B = (a₁ - b₁, a₂ - b₂)
+      </div>
+      <p>
+        <strong>Example:</strong> <code>A = (2, 3)</code>, <code>B = (1, -2)</code>:
+      </p>
+      <div class="example">
+        A - B = (2 - 1, 3 - (-2)) = (1, 5)
+      </div>
+    </section>
+
+    <!-- Section 5: Scalar Multiplication -->
+    <section>
+      <h2>5. Scalar Multiplication</h2>
+      <p>
+        Multiplying a vector by a scalar <code>k</code> enlarges or shrinks its magnitude without changing its direction (unless <code>k</code> is negative, in which case the direction is reversed).
+      </p>
+      <div class="example">
+        k × V = (k × x, k × y)
+      </div>
+      <p>
+        <strong>Example:</strong> <code>V = (3, 4)</code>, <code>k = 2</code>:
+      </p>
+      <div class="example">
+        2 × V = (6, 8)
+      </div>
+    </section>
+
+    <!-- Section 6: Dot Product -->
+    <section>
+      <h2>6. Dot Product</h2>
+      <p>
+        The dot product of two vectors <code>A = (a₁, a₂)</code> and <code>B = (b₁, b₂)</code> is defined as:
+      </p>
+      <div class="example">
+        A · B = a₁b₁ + a₂b₂
+      </div>
+      <p>
+        It can also be expressed in terms of the norms of the vectors and the angle <code>θ</code> between them:
+      </p>
+      <div class="example">
+        A · B = ||A|| · ||B|| · cos(θ)
+      </div>
+      <p>
+        The dot product is useful for:
+      </p>
+      <ul>
+        <li>Determining if two vectors are orthogonal (the dot product is 0).</li>
+        <li>Calculating the angle between two vectors.</li>
+        <li>Performing projection operations in physics and geometry.</li>
+      </ul>
+    </section>
+
+    <!-- Section 7: Normalization, Projection, and Conclusion -->
+    <section>
+      <h2>7. Normalization, Projection, and Conclusion</h2>
+
+      <h3>7.1 Unit Vector and Normalization</h3>
+      <p>
+        A <strong>unit vector</strong> is a vector with a magnitude of 1. For any non-zero vector <code>V</code>,
+        you can normalize it (convert it to a unit vector) by dividing it by its own norm:
+      </p>
+      <div class="example">
+        V<sub>unit</sub> = V / ||V||
+      </div>
+      <p>
+        This operation is very common when you want to keep only the direction of a vector, discarding its scale.
+      </p>
+
+      <h3>7.2 Projection of a Vector</h3>
+      <p>
+        The projection of a vector <code>A</code> onto another vector <code>B</code> finds the component of <code>A</code>
+        in the direction of <code>B</code>. It is often written as:
+      </p>
+      <div class="example">
+        proj<sub>B</sub>(A) = ( (A · B) / ||B||² ) · B
+      </div>
+      <p>
+        Projection is particularly useful for decomposing forces in physics or extracting a component along a given axis.
+      </p>
+
+      <h3>7.3 Conclusion</h3>
+      <p>
+        Vectors form an essential basis for describing and understanding geometric and physical phenomena.
+        In two dimensions, their manipulation (addition, subtraction, dot product, normalization, etc.) provides powerful tools
+        to model translations, directions, and even dynamic phenomena.
+      </p>
+      <p>
+        Building on this knowledge, you can explore:
+      </p>
+      <ul>
+        <li>Extending vectors to three dimensions (3D).</li>
+        <li>The cross product, crucial in 3D for calculating normals.</li>
+        <li>More advanced linear algebra, including matrices and linear transformations.</li>
+      </ul>
+      <p>
+        Mastering these fundamental concepts opens the door to a wide range of applications in science, engineering, and beyond.
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Script to draw the vector in Section 2 -->
+  <script>
+    const canvas = document.getElementById('vectorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Origin at the center of the canvas
+    const originX = canvas.width / 2;
+    const originY = canvas.height / 2;
+
+    // Draw X and Y axes in red
+    function drawAxes() {
+      ctx.strokeStyle = 'var(--vector-red)';
+      ctx.lineWidth = 2;
+      // Horizontal axis
+      ctx.beginPath();
+      ctx.moveTo(0, originY);
+      ctx.lineTo(canvas.width, originY);
+      ctx.stroke();
+      // Vertical axis
+      ctx.beginPath();
+      ctx.moveTo(originX, 0);
+      ctx.lineTo(originX, canvas.height);
+      ctx.stroke();
+    }
+
+    // Draw a vector from the center in red
+    function drawVector(x, y) {
+      ctx.strokeStyle = 'var(--vector-red)';
+      ctx.fillStyle = 'var(--vector-red)';
+      ctx.lineWidth = 4;
+
+      // End point of the vector
+      const endX = originX + x;
+      const endY = originY - y; // Invert y because the canvas has an inverted Y-axis
+
+      // Draw the vector line
+      ctx.beginPath();
+      ctx.moveTo(originX, originY);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+
+      // Draw the arrowhead
+      const headLength = 10;
+      const angle = Math.atan2(originY - endY, endX - originX);
+      ctx.beginPath();
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(
+        endX - headLength * Math.cos(angle - Math.PI / 6),
+        endY + headLength * Math.sin(angle - Math.PI / 6)
+      );
+      ctx.lineTo(
+        endX - headLength * Math.cos(angle + Math.PI / 6),
+        endY + headLength * Math.sin(angle + Math.PI / 6)
+      );
+      ctx.lineTo(endX, endY);
+      ctx.fill();
+    }
+
+    // Initialize the drawing
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawAxes();
+      // Example vector: (50, 100)
+      drawVector(50, 100);
+    }
+
+    draw();
+  </script>
+</body>
+</html>
+
+   
           </div>
          </div>
 
@@ -148,10 +476,7 @@
                   4.3 Résolution de problèmes concrets
                 </div>
               </div>  
-              
-   
-  
-   
+            
          </div>
   
       </div>
