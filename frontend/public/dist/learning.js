@@ -4208,10 +4208,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         setTimeout(
           () => {
             launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
-            setTimeout(
-              () => launchAnimation(enemyOnScreen.character, 2 /* run */),
-              700
-            );
           },
           200
         );

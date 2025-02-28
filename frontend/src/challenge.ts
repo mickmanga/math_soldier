@@ -2171,18 +2171,12 @@ const detectCollision = () => {
       updateEnemyViewPointDisplay();
       //launchAnimation(enemyOnScreen.character, AnimationType.attack);
 
-     
       setTimeout(
         () => {
           launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
-          setTimeout(
-            () => launchAnimation(enemyOnScreen.character, AnimationType.run), 700
-          );
-          
         }, 200
       )
-    
-    
+      
     }
 
     if (
