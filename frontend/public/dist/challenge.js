@@ -3611,11 +3611,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       request_queue: [],
       current_animation: null,
       associated_animations: [
-        18 /* master_idle */,
-        14 /* master_attack */,
-        15 /* master_hurt */,
-        16 /* master_death_from_special_attack */,
-        17 /* master_run */
+        41 /* golem_master_idle */,
+        40 /* golem_master_transformation */
       ]
     }
   };
@@ -5161,7 +5158,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         {
           states: ALL_GOLEM_ENEMY_STATES,
           animation: {
-            id: 34 /* golem_opponent_idle */,
+            id: 40 /* golem_master_transformation */,
             sprite: {
               path: ASSETS_PATH_BASE + "/characters/neutral/master/transformation",
               length: 45
@@ -5179,7 +5176,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             id: 34 /* golem_opponent_idle */,
             sprite: {
               path: ASSETS_PATH_BASE + "/characters/neutral/master/idle",
-              length: 12
+              length: 8
             }
           }
         }
@@ -5470,10 +5467,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           () => {
             launchAnimation(masterCharacter, 11 /* idle */);
           },
-          5e3
+          5400
         );
       },
-      3e3
+      300
     );
   };
   var createMasterCharacterElement = () => {

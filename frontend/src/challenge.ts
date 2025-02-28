@@ -955,11 +955,8 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
     request_queue: [],
     current_animation: null,
     associated_animations: [
-      ANIMATION_ID.master_idle,
-      ANIMATION_ID.master_attack,
-      ANIMATION_ID.master_hurt,
-      ANIMATION_ID.master_death_from_special_attack,
-      ANIMATION_ID.master_run
+      ANIMATION_ID.golem_master_idle,
+      ANIMATION_ID.golem_master_transformation
     ]
   },
 };
@@ -3371,7 +3368,7 @@ const golemMasterAnimations = [
         states: ALL_GOLEM_ENEMY_STATES,
         animation: 
         {
-          id: ANIMATION_ID.golem_opponent_idle,
+          id: ANIMATION_ID.golem_master_transformation,
           sprite:    {
             path: ASSETS_PATH_BASE + "/characters/neutral/master/transformation",
             length: 45
@@ -3390,7 +3387,7 @@ const golemMasterAnimations = [
             id: ANIMATION_ID.golem_opponent_idle,
             sprite:    {
               path: ASSETS_PATH_BASE + "/characters/neutral/master/idle",
-              length: 12
+              length: 8
           }
           }
          }
@@ -3797,14 +3794,14 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
     () =>
     {
      launchAnimation(masterCharacter, AnimationType.transformation, false);
+
      setTimeout(
       () => {
-        launchAnimation(masterCharacter, AnimationType.idle);
-      }, 5000
+         launchAnimation(masterCharacter, AnimationType.idle);
+      }, 5400
      )
-    }
-      , 3000
-  )
+    }, 300
+  );
 
 }
 
