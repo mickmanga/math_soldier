@@ -469,7 +469,7 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter,
+  createGolemCharacter,
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -1068,6 +1068,9 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
 
   const block = document.createElement("div");
   block.classList.add("mapBlock");
+  if(cinematicOn){
+    block.classList.add("cinematicMapBlock");
+  }
   block.style.zIndex = zIndex;
   const backgroundImage = document.createElement("img");
   backgroundImage.src = imagePath;
@@ -1565,7 +1568,20 @@ const launchOpponent = (enemy: EnemyInterface) => {
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
 
- 
+ launchAnimation(enemy.character, AnimationType.idle);
+
+ // launchIdleProcess(enemy.character);
+
+ moveEnemy(enemy, 0, Date.now());
+
+};
+
+const launchMountainGod = () => {
+
+  /*
+
+  //const mountainGod = document.getElementById("mountain_god")!;
+  
   setTimeout(
     () => {
       const thunder = document.getElementById("thunder_audio")! as HTMLAudioElement;
@@ -1577,7 +1593,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
     () => {
 
       launchAnimationAndDeclareItLaunched(
-        enemy.character.element,
+        mountainGod.element,
         0,
         "png",
         "assets/challenge/items/teleportation_lightning",
@@ -1639,12 +1655,8 @@ const launchOpponent = (enemy: EnemyInterface) => {
     }, 1000
   )
 
-  
-
- // launchIdleProcess(enemy.character);
-
-  moveEnemy(enemy, 0, Date.now());
-};
+  */
+}
 
 let godAppeared = false;
 
@@ -2003,7 +2015,8 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       false,
       deathAnimation.id,
     );
-
+    
+    /*
 
     setTimeout(
       () => {
@@ -2026,6 +2039,8 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
         )
       }, 400
     )
+
+    */
 
 
   };
@@ -2635,7 +2650,7 @@ let runningPointReached = false;
 const checkForRunningEnemyPoint = () => {
   ennemiesOnScreen.forEach(
     (enemy) => {
-      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.1)) && !runningPointReached ){
+      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.35)) && !runningPointReached ){
         launchAnimation(enemy.character, AnimationType.run);
         runningPointReached=true;
       }
@@ -3647,7 +3662,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
   newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "-4.5vh";
+  newOpponentContainer.style.bottom = "-6.5vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -3905,8 +3920,8 @@ const launchChallenge = (pillarId: string) => {
     }
   )
 
- // setupChallengeDisplay();
- // breathAudio.play();
+  setupChallengeDisplay();
+  breathAudio.play();
   gameMode = GAME_MODES.challenge;
   initializeChallengePage(pillarId);
 
@@ -4583,10 +4598,13 @@ const setupListeners = () => {
     ?.addEventListener("click", goBackToMountain);
 };
 
+let cinematicOn = false;
+
 const launchCinematic = () => {
+  cinematicOn = true;
   const bottomDiv = document.getElementById("bottomDiv")!;
   bottomDiv.style.display = "none";
-
+  
   // Select all elements with class "mapBlock" and type them as HTMLElement (or a more specific type if you know it).
   
   const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
@@ -4597,6 +4615,24 @@ const launchCinematic = () => {
   });
 
   heroContainer.classList.add("cinematicHero");
+
+  answerDataContainer.style.top = "88vh";
+  answerDataContainer.style.height = "10.5vh";
+
+}
+
+const quitCinematic = () => {
+
+  cinematicOn = false;
+
+  const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
+  // Iterate over each element and add the "cinematicMapBlock" class
+
+  mapBlocks.forEach((block) => {
+    block.classList.remove('cinematicMapBlock');
+  });
+
+  heroContainer.classList.remove("cinematicHero");
 
 }
 

@@ -3210,7 +3210,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createRedHammerCharacter
+      createGolemCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -3626,6 +3626,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastBlockId++;
     const block = document.createElement("div");
     block.classList.add("mapBlock");
+    if (cinematicOn) {
+      block.classList.add("cinematicMapBlock");
+    }
     block.style.zIndex = zIndex;
     const backgroundImage = document.createElement("img");
     backgroundImage.src = imagePath;
@@ -3945,69 +3948,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interruptOpponentRun(enemy);
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 13 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    setTimeout(
-      () => {
-        const thunder = document.getElementById("thunder_audio");
-        thunder.play();
-      },
-      1e3
-    );
-    setTimeout(
-      () => {
-        launchAnimationAndDeclareItLaunched(
-          enemy.character.element,
-          0,
-          "png",
-          "assets/challenge/items/teleportation_lightning",
-          1,
-          8,
-          8,
-          false,
-          30 /* hammer_opponent_death */
-        );
-        setTimeout(
-          () => {
-            launchAnimation(enemy.character, 11 /* idle */);
-            setTimeout(
-              () => {
-                setTimeout(
-                  () => {
-                    const god = document.getElementById("god_audio");
-                    god.play();
-                    setTimeout(
-                      () => {
-                        launchAnimationAndDeclareItLaunched(
-                          enemy.character.element,
-                          0,
-                          "png",
-                          "assets/challenge/items/teleportation_lightning",
-                          1,
-                          8,
-                          8,
-                          false,
-                          30 /* hammer_opponent_death */
-                        );
-                        setTimeout(
-                          () => {
-                            enemy.character.element.parentElement.style.left;
-                          },
-                          1e3
-                        );
-                      },
-                      8e3
-                    );
-                  },
-                  1e3
-                );
-              },
-              2e3
-            );
-          },
-          360
-        );
-      },
-      1e3
-    );
+    launchAnimation(enemy.character, 11 /* idle */);
     moveEnemy(enemy, 0, Date.now());
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
@@ -4183,28 +4124,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         1,
         false,
         deathAnimation.id
-      );
-      setTimeout(
-        () => {
-          launchAnimationAndDeclareItLaunched(
-            enemy.character.element,
-            0,
-            "png",
-            "assets/challenge/items/teleportation_lightning",
-            1,
-            deathAnimation.sprite.length,
-            8,
-            false,
-            deathAnimation.id
-          );
-          setTimeout(
-            () => {
-              enemy.character.element.style.display = "none";
-            },
-            300
-          );
-        },
-        400
       );
     };
     launchExplosion();
@@ -4514,7 +4433,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var checkForRunningEnemyPoint = () => {
     ennemiesOnScreen.forEach(
       (enemy) => {
-        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.1 && !runningPointReached) {
+        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * 0.35 && !runningPointReached) {
           launchAnimation(enemy.character, 2 /* run */);
           runningPointReached = true;
         }
@@ -5254,16 +5173,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createRedHammerCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
-  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -5368,6 +5277,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
   };
+  var createGolemCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-6.5vh";
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
+  };
   var moveBackground = (direction) => {
     if (ANIMATION_RUNNING_VALUES[direction === 0 /* LEFT_TO_RIGHT */ ? 62 /* camera_left_to_right */ : 63 /* camera_right_to_left */] === 0) {
       startCamera(direction);
@@ -5448,8 +5368,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       }
     );
+    setupChallengeDisplay();
+    breathAudio.play();
     gameMode = 1 /* challenge */;
     initializeChallengePage(pillarId);
+  };
+  var setupChallengeDisplay = () => {
+    lightningImg.style.opacity = "1";
+    answerDataContainer.style.opacity = "1";
+    scoreContainer.style.opacity = "1";
+    topScoreContainer.style.opacity = "1";
   };
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
@@ -5934,7 +5862,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     (_a = document.getElementById("playAgainLink")) == null ? void 0 : _a.addEventListener("click", (event) => window.location.reload());
     (_b = document.getElementById("backToStormGradButton")) == null ? void 0 : _b.addEventListener("click", goBackToMountain);
   };
+  var cinematicOn = false;
   var launchCinematic = () => {
+    cinematicOn = true;
     const bottomDiv = document.getElementById("bottomDiv");
     bottomDiv.style.display = "none";
     const mapBlocks = document.querySelectorAll(".mapBlock");
@@ -5942,6 +5872,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       block.classList.add("cinematicMapBlock");
     });
     heroContainer.classList.add("cinematicHero");
+    answerDataContainer.style.top = "88vh";
+    answerDataContainer.style.height = "10.5vh";
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {

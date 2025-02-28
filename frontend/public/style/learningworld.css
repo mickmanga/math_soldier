@@ -10,6 +10,11 @@ html {
   font-style: normal;
 }
 
+#background_image {
+  height: 100vh;
+  width: 100vw;
+}
+
 
 body {
     background-color: #212121;
@@ -81,7 +86,6 @@ body {
     top: 85vh;
 }
 
-
 #map_container {
   position: absolute;
    top: 88.5%;
@@ -89,7 +93,7 @@ body {
    z-index: 1010;
    width: 10%;
    height: 10%;
-   display: flex;
+   display: none;
    flex-direction: column;
    justify-content: space-around;
    align-items: center;
