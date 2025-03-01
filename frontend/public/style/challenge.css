@@ -154,7 +154,20 @@ audio {
   z-index: 11000;
 }
 
-.golem_master_container img{
+.mountain_obelisk_container {
+  position: absolute;
+  left: 0vw;
+  height: 35vh;
+  width: 35vw;
+  top: 38.25vh;
+  display: flex
+;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+}
+
+.golem_master_container img, .mountain_obelisk_container img{
   height: 100%  !important ;
   width: auto  !important ;
 }

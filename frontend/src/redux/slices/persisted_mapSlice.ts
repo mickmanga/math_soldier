@@ -14,24 +14,14 @@ const initialState: MapState = {
   elements: [
     null,
     null,
-    {type: ELEMENT_TYPE.character, id: "00", name: CHARACTER_ELEMENTS_NAMES.golem_master},
-    {type: ELEMENT_TYPE.form, id: "01", formBlocks: [
+    null,
+    null,
+    {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
+    {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
      {
       question: "combien fait 1+1",
       answer: "2",
       validated: false
-     },
-     {
-      question: "combien fait 2+2",
-      answer: "4",
-      validated: false
-     },
-  ]},
-  {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
-    {
-     question: "combien fait 1+1",
-     answer: "2",
-     validated: false
     },
     {
      question: "combien fait 2+2",
@@ -76,7 +66,7 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 0,
+  currentIndex: 2,
   heroMode: HERO_MODES.normal
 };
 

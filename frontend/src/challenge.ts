@@ -1,7 +1,7 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
 import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
-import { CharacterElement, ELEMENT_TYPE, FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
+import { CHARACTER_ELEMENTS_NAMES, CharacterElement, ELEMENT_TYPE, FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
 
 enum GAME_MODES {
@@ -1075,19 +1075,27 @@ const createMapElement = (element: MapElement) => {
 
 const createCharacterElement = (element: CharacterElement) => {
   
-  /*
-
-  return element.name === ELEMENT_NAMES.golem ? createGolemCharacter() : createMountainGodCharacter()
-
-  //those elements come with their own event listeners
-
-   */
-
   launchCinematic();
 
-  return createMasterCharacterElement();
-
+   return element.name === CHARACTER_ELEMENTS_NAMES.golem_master ? createMasterCharacterElementAndPrepareAnimations() : createMountainGodCharacterAndPrepareAnimations();
 }
+
+const createMountainGodCharacterAndPrepareAnimations = () => {
+  return createMoutainGodPilar();
+}
+
+const createMoutainGodPilar = () => {
+  const pilarImg = document.createElement("img")! as HTMLImageElement;
+
+  const pilarContainer = document.createElement("div");
+  pilarContainer.classList.add("mountain_obelisk_container")
+
+  pilarImg.src = ASSETS_PATH_BASE + '/items/god_obelisk/1.png';
+  pilarContainer.append(pilarImg);
+
+  return pilarContainer;
+}
+
 
 const launchGolemApparitionProcess = () => {
     /*
@@ -3565,7 +3573,7 @@ const kingAnimations = [
 ];
 
 
-const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
+export const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
   enemyViewPoint.style.left = "100vw";
@@ -3843,7 +3851,7 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
   launchMasterPositionCheck();
 }
 
-const createMasterCharacterElement = (): HTMLElement => {
+const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
   const masterElement = document.createElement("div");
   masterElement.classList.add("golem_master_container");
 

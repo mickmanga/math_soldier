@@ -2367,19 +2367,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
-      { type: 2 /* character */, id: "00", name: 0 /* golem_master */ },
-      { type: 1 /* form */, id: "01", formBlocks: [
-        {
-          question: "combien fait 1+1",
-          answer: "2",
-          validated: false
-        },
-        {
-          question: "combien fait 2+2",
-          answer: "4",
-          validated: false
-        }
-      ] },
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2430,7 +2420,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 0,
+    currentIndex: 2,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
@@ -3619,7 +3609,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createCharacterElement = (element) => {
     launchCinematic();
-    return createMasterCharacterElement();
+    return element.name === 0 /* golem_master */ ? createMasterCharacterElementAndPrepareAnimations() : createMountainGodCharacterAndPrepareAnimations();
+  };
+  var createMountainGodCharacterAndPrepareAnimations = () => {
+    return createMoutainGodPilar();
+  };
+  var createMoutainGodPilar = () => {
+    const pilarImg = document.createElement("img");
+    const pilarContainer = document.createElement("div");
+    pilarContainer.classList.add("mountain_obelisk_container");
+    pilarImg.src = ASSETS_PATH_BASE + "/items/god_obelisk/1.png";
+    pilarContainer.append(pilarImg);
+    return pilarContainer;
   };
   var createElementMapBlockStart = (left, imagePath, zIndex) => {
     store.dispatch(decreaseStartIndex());
@@ -5397,7 +5398,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     };
     launchMasterPositionCheck();
   };
-  var createMasterCharacterElement = () => {
+  var createMasterCharacterElementAndPrepareAnimations = () => {
     const masterElement = document.createElement("div");
     masterElement.classList.add("golem_master_container");
     const masterImg = document.createElement("img");
@@ -6160,6 +6161,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setTimeout(
       () => {
         document.getElementById("interface_container").style.opacity = "1";
+        const letterBoxTop = document.getElementById("letterBoxTop");
+        const letterBoxBottom = document.getElementById("letterBoxBottom");
+        letterBoxTop.style.display = "none";
+        letterBoxBottom.style.display = "none";
       },
       900
     );
@@ -6177,6 +6182,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchLearningGod = () => {
     const heroContainer2 = document.getElementById("hero_container");
     heroContainer2.style.height = "7.5vh";
+    const letterBoxTop = document.getElementById("letterBoxTop");
+    const letterBoxBottom = document.getElementById("letterBoxBottom");
+    letterBoxTop.style.display = "flex";
+    letterBoxBottom.style.display = "flex";
     launchGodFootsteps();
     setTimeout(
       () => {
@@ -6218,7 +6227,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
   var moveLearningGod = () => {
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
-    if (learningGodLeft <= window.innerWidth * 0.74) {
+    if (learningGodLeft <= window.innerWidth * 0.75) {
       launchAnimation(learningGodCharacter, 11 /* idle */);
       return;
     }

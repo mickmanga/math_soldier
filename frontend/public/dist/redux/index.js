@@ -2358,19 +2358,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
-      { type: 2 /* character */, id: "00", name: 0 /* golem_master */ },
-      { type: 1 /* form */, id: "01", formBlocks: [
-        {
-          question: "combien fait 1+1",
-          answer: "2",
-          validated: false
-        },
-        {
-          question: "combien fait 2+2",
-          answer: "4",
-          validated: false
-        }
-      ] },
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2421,7 +2411,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 0,
+    currentIndex: 2,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({

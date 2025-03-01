@@ -100,6 +100,12 @@ const openCourse = () => {
     setTimeout(
         () =>  {
             document.getElementById("interface_container")!.style.opacity = "1";
+            
+  const letterBoxTop = document.getElementById("letterBoxTop")!;
+  const letterBoxBottom = document.getElementById("letterBoxBottom")!;
+
+  letterBoxTop.style.display = "none";
+  letterBoxBottom.style.display = "none";
         }, 900
     )
 }
@@ -122,6 +128,14 @@ const launchLearningGod = () => {
     
   const heroContainer = document.getElementById("hero_container")!;
   heroContainer.style.height = "7.5vh";
+
+  const letterBoxTop = document.getElementById("letterBoxTop")!;
+  const letterBoxBottom = document.getElementById("letterBoxBottom")!;
+
+  letterBoxTop.style.display = "flex";
+  letterBoxBottom.style.display = "flex";
+
+
 
     launchGodFootsteps();
    setTimeout(
@@ -178,7 +192,7 @@ const moveLearningGod = () => {
 
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
 
-    if(learningGodLeft <= (window.innerWidth* 0.74)){
+    if(learningGodLeft <= (window.innerWidth* 0.75)){
         launchAnimation(learningGodCharacter, AnimationType.idle,  )
         return;
     }

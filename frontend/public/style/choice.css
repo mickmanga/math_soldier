@@ -18,7 +18,7 @@ html, * {
     height: 15vh;
     width: 40vw;
     z-index: 2;
-    left: 30vw;
+    left: 33vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -29,4 +29,18 @@ html, * {
     aspect-ratio: 1/1;
     border-radius: 50%;
     background: grey;
+}
+
+#hero_container {
+    height: 33vh;
+    width: auto;
+    position: absolute;
+    left: 45vw;
+    top: 49vh;
+    z-index: 3;
+}
+
+#heroImg {
+    height: 100%;
+    width: auto;
 }
