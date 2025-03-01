@@ -80,7 +80,7 @@ audio {
 
 .hero_container_hard {
   --hero-img-height: 30vh;  
-  --hero-img-height-to-width-ratio: 2;          /* Define a CSS variable for height */
+  --hero-img-height-to-width-ratio: 2;          
   /* Define a CSS variable for height */
   position: fixed;
   top: 65.3vh;
@@ -94,7 +94,7 @@ audio {
 }
 
 .cinematicHero {
-  top: 74.3vh;
+  top: 73.95vh;
   height: 13vh;
 }
 
@@ -123,15 +123,12 @@ audio {
   position: absolute;
   /* 
     flames : 
-
     bottom: 17vh;
     height: 28.5vh;
 
     sword: 
-
     height: 21.5vh;
     bottom: 21vh;
-
 */
   left: 105vw;
   height: 60.5vh;
