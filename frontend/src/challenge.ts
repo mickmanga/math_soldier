@@ -237,7 +237,7 @@ const setInitialGameVolume = () => {
   bombAudio.volume = 0.12;
   electricityAudio.volume = 0.7;
   transformationScreamAudio.volume = 0.25;
-  hurtAudio.volume = 0.025;
+  hurtAudio.volume = 0.1;
   runAudio.volume = 0;
   stepsInSwow.volume = 0.7;
   stepsInSwow.playbackRate = 1.2;
@@ -1082,6 +1082,7 @@ const createCharacterElement = (element: CharacterElement) => {
   //those elements come with their own event listeners
 
    */
+
   launchCinematic();
 
   return createMasterCharacterElement();
@@ -3805,6 +3806,21 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
           const talnurAudio = document.getElementById("talnur_audio")! as HTMLAudioElement;
           talnurAudio.play();
 
+          setTimeout(
+            () => {
+              killHero();
+              setTimeout(
+                () => breathAudio.play(), 1500
+
+              )
+              
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"), 3000
+              )
+
+            }, 19000
+          )
+
         }, 5400
        )
   }
@@ -3991,7 +4007,7 @@ const launchHeroWalk2 = (direction: Direction) => {
   stepsInSwow.play();
   }
 
-const moveHero = (type: MovementType, direction: Direction) => {
+export const moveHero = (type: MovementType, direction: Direction) => {
 
   launchAnimation(heroCharacter, AnimationType.walk_right);
   //moveCamera depending on the direction

@@ -96,13 +96,65 @@ document.addEventListener("keydown",
 
 const openCourse = () => {
     launchAnimation(learningGodCharacter, AnimationType.open_course, false);
+
     setTimeout(
-        () =>  document.getElementById("interface_container")!.style.opacity = "1", 900
+        () =>  {
+            document.getElementById("interface_container")!.style.opacity = "1";
+        }, 900
     )
 }
 
+let diffBetweenFrames = 0;
+
+
+const launchGodFootsteps = () => {
+    const godStepsAudio = document.getElementById("god_steps")! as HTMLAudioElement;
+    godStepsAudio.play();
+}
+
 window.onload = () => {
-    getChapters();
+    setTimeout(
+        launchLearningGod, 6000
+    );
+}
+
+const launchLearningGod = () => {
+    
+  const heroContainer = document.getElementById("hero_container")!;
+  heroContainer.style.height = "7.5vh";
+
+    launchGodFootsteps();
+   setTimeout(
+    () => {  
+      const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
+      godSongAudio.play();
+
+      setTimeout(
+        () => {
+
+            setTimeout(
+                () => {
+
+                 const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
+                 godTalking.play();
+
+            
+                }, 2000
+            )
+         
+        }, 11500
+      )
+
+    }, 5000
+   )
+
+    setTimeout(
+        () => { 
+           launchMonsterAnimation();
+           moveLearningGod();
+        }, 10000
+    )
+
 }
 
 const launchMonsterAnimation = () => {
@@ -126,7 +178,7 @@ const moveLearningGod = () => {
 
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
 
-    if(learningGodLeft <= (window.innerWidth* 0.75)){
+    if(learningGodLeft <= (window.innerWidth* 0.74)){
         launchAnimation(learningGodCharacter, AnimationType.idle,  )
         return;
     }
@@ -137,9 +189,4 @@ const moveLearningGod = () => {
     requestAnimationFrame(
         moveLearningGod
     )
-}
-
-window.onload = () => {
-    launchMonsterAnimation();
-    moveLearningGod();
 }

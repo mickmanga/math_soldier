@@ -7,10 +7,21 @@
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   </head>
 
-  <body>       
+  <body>
+
+    <audio id="god_steps" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls>
+      <source src="assets/audio/monster_footsteps.mp3">
+    </audio>
+
+    <audio id="god_song" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls>
+      <source src="assets/audio/god_song.mp3">
+    </audio>
+    <audio id="god_talking" style="position: absolute; left: 10vw; z-index: 2000;display: none;" width="320" height="240" controls>
+      <source src="assets/audio/god_talking.mp3">
+    </audio>
 
     <div id="hero_container">
-      <img class="characterImg" src="assets/challenge/characters/hero/idle/1.png" alt="hero">
+      <img id="heroImg" class="characterImg" src="assets/challenge/characters/hero/idle/1.png" alt="hero">
     </div>
 
     <div id="learning_god_container">
@@ -68,7 +79,7 @@
       max-width: 1000px;
       margin: auto;
       padding: 30px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.797);
     }
     h1, h2, h3 {
       border-bottom: 3px solid var(--outline-blue);

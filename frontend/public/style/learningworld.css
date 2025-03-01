@@ -81,9 +81,9 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    height: 7.5vh;
     width: 10vw;
-    top: 85vh;
+    bottom: 12vh;
+    height: 20vh;
 }
 
 #map_container {
@@ -138,7 +138,7 @@ body {
   align-items: center;
   height: 95vh;
   width: 10vw;
-  top: 12vh;
+  top: 8vh;
 }
 
 #learning_god_container img {
@@ -149,9 +149,9 @@ body {
 #interface_container{
     position: absolute;
     top: 2.5vh;
-    left: 10vw;
-    width: 80vw;
-    height: 80vh;
+    left: 5vw;
+    width: 90vw;
+    height: 90vh;
     display: flex;
     border: solid 1px;
     border-radius: 15px;
@@ -160,7 +160,7 @@ body {
     border: 1px solid #fff;
     padding: 9px 7px;
     box-shadow: 0 0 10px #aaaaaae8;
-    background: #00000069;
+    background: #000000f6;
 }
 
 #interface_container_a {

@@ -3079,7 +3079,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     bombAudio.volume = 0.12;
     electricityAudio.volume = 0.7;
     transformationScreamAudio.volume = 0.25;
-    hurtAudio.volume = 0.025;
+    hurtAudio.volume = 0.1;
     runAudio.volume = 0;
     stepsInSwow.volume = 0.7;
     stepsInSwow.playbackRate = 1.2;
@@ -5367,6 +5367,20 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           launchAnimation(masterCharacter, 11 /* idle */);
           const talnurAudio = document.getElementById("talnur_audio");
           talnurAudio.play();
+          setTimeout(
+            () => {
+              killHero();
+              setTimeout(
+                () => breathAudio.play(),
+                1500
+              );
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"),
+                3e3
+              );
+            },
+            19e3
+          );
         },
         5400
       );
@@ -6133,30 +6147,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   window.openMap = openMap2;
   window.hideSideBar = hideSideBar;
   window.displaySideBar = displaySideBar;
-  var getChapters = () => __async(void 0, null, function* () {
-    try {
-      const courseContainer = document.getElementById("course_container_b");
-      const response = yield fetch("http://localhost:3000/api/chapters/677e814577322467895fd23e", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch chapters");
-      }
-      const knowledgeData = yield response.json();
-      console.log("data:", knowledgeData);
-      knowledgeData.forEach(
-        (data) => {
-          console.log(data);
-          courseContainer.innerHTML = (courseContainer == null ? void 0 : courseContainer.innerHTML) + data.data;
-        }
-      );
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
   document.addEventListener(
     "keydown",
     (event) => {
@@ -6168,12 +6158,52 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var openCourse = () => {
     launchAnimation(learningGodCharacter, 14 /* open_course */, false);
     setTimeout(
-      () => document.getElementById("interface_container").style.opacity = "1",
+      () => {
+        document.getElementById("interface_container").style.opacity = "1";
+      },
       900
     );
   };
+  var launchGodFootsteps = () => {
+    const godStepsAudio = document.getElementById("god_steps");
+    godStepsAudio.play();
+  };
   window.onload = () => {
-    getChapters();
+    setTimeout(
+      launchLearningGod,
+      6e3
+    );
+  };
+  var launchLearningGod = () => {
+    const heroContainer2 = document.getElementById("hero_container");
+    heroContainer2.style.height = "7.5vh";
+    launchGodFootsteps();
+    setTimeout(
+      () => {
+        const godSongAudio = document.getElementById("god_song");
+        godSongAudio.play();
+        setTimeout(
+          () => {
+            setTimeout(
+              () => {
+                const godTalking = document.getElementById("god_talking");
+                godTalking.play();
+              },
+              2e3
+            );
+          },
+          11500
+        );
+      },
+      5e3
+    );
+    setTimeout(
+      () => {
+        launchMonsterAnimation();
+        moveLearningGod();
+      },
+      1e4
+    );
   };
   var launchMonsterAnimation = () => {
     launchAnimation(learningGodCharacter, 7 /* walk_left */);
@@ -6188,7 +6218,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   });
   var moveLearningGod = () => {
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
-    if (learningGodLeft <= window.innerWidth * 0.75) {
+    if (learningGodLeft <= window.innerWidth * 0.74) {
       launchAnimation(learningGodCharacter, 11 /* idle */);
       return;
     }
@@ -6196,10 +6226,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     requestAnimationFrame(
       moveLearningGod
     );
-  };
-  window.onload = () => {
-    launchMonsterAnimation();
-    moveLearningGod();
   };
 })();
 //# sourceMappingURL=learning.js.map

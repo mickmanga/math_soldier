@@ -3079,7 +3079,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     bombAudio.volume = 0.12;
     electricityAudio.volume = 0.7;
     transformationScreamAudio.volume = 0.25;
-    hurtAudio.volume = 0.025;
+    hurtAudio.volume = 0.1;
     runAudio.volume = 0;
     stepsInSwow.volume = 0.7;
     stepsInSwow.playbackRate = 1.2;
@@ -5470,6 +5470,20 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           launchAnimation(masterCharacter, 11 /* idle */);
           const talnurAudio = document.getElementById("talnur_audio");
           talnurAudio.play();
+          setTimeout(
+            () => {
+              killHero();
+              setTimeout(
+                () => breathAudio.play(),
+                1500
+              );
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"),
+                3e3
+              );
+            },
+            19e3
+          );
         },
         5400
       );
