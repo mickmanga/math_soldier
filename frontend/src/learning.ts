@@ -137,11 +137,11 @@ const launchLearningGod = () => {
 
 
 
-    launchGodFootsteps();
+   launchGodFootsteps();
    setTimeout(
     () => {  
-      const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
-      godSongAudio.play();
+      //const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
+      //godSongAudio.play();
 
       setTimeout(
         () => {
@@ -149,8 +149,8 @@ const launchLearningGod = () => {
             setTimeout(
                 () => {
 
-                 const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
-                 godTalking.play();
+                 //const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
+                 //godTalking.play();
 
             
                 }, 2000
@@ -166,15 +166,14 @@ const launchLearningGod = () => {
         () => { 
            launchMonsterAnimation();
            moveLearningGod();
-        }, 10000
+        }, 14000
     )
 
 }
 
 const launchMonsterAnimation = () => {
-    launchAnimation(learningGodCharacter, AnimationType.walk_left);
+  launchAnimation(learningGodCharacter, AnimationType.walk_left);
 } 
-
 
 document.addEventListener('keydown', (event) => {
 
@@ -197,7 +196,7 @@ const moveLearningGod = () => {
         return;
     }
 
-    learningGodContainer.style.left = `${learningGodLeft- 1}px`;
+    learningGodContainer.style.left = `${learningGodLeft- 0.33}px`;
 
 
     requestAnimationFrame(

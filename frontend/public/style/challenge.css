@@ -94,8 +94,8 @@ audio {
 }
 
 .cinematicHero {
-  top: 73.95vh;
-  height: 13vh;
+  top: 68vh;
+  height: 18.5vh;
 }
 
 .enemy_container {
@@ -153,15 +153,27 @@ audio {
 
 .mountain_obelisk_container {
   position: absolute;
-  left: 0vw;
+  left: 10vw;
   height: 35vh;
   width: 35vw;
   top: 38.25vh;
-  display: flex
-;
+  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 11000;
+  opacity: 0.9;
+}
+
+.mountain_obelisk_container_full {
+  top: 26.25vh;
+  height: 59vh;
+  left: 30vw;
+}
+
+.mountain_obelisk_container_cinematic {
+  height: 57vh;
+  top: 20.25vh;
+  left: 0vw;
 }
 
 .golem_master_container img, .mountain_obelisk_container img{
@@ -952,6 +964,20 @@ audio {
 }
 
 #dragon_container img {
+  height: 100%;
+  width: auto;
+}
+
+.mountain_god_container {
+  height: 38.5vh;
+  width: 19vw;
+  position: absolute;
+  z-index: 3000;
+  top: 53.5vh;
+  right: 20vw;
+}
+
+.mountain_god_container img {
   height: 100%;
   width: auto;
 }
