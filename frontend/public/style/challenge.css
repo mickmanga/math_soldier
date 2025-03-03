@@ -161,7 +161,7 @@ audio {
   justify-content: center;
   align-items: center;
   z-index: 11000;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .mountain_obelisk_container_full {
@@ -172,13 +172,18 @@ audio {
 
 .mountain_obelisk_container_cinematic {
   height: 57vh;
-  top: 20.25vh;
+  top: 24.25vh;
   left: 0vw;
 }
 
-.golem_master_container img, .mountain_obelisk_container img{
+.golem_master_container img{
   height: 100%  !important ;
   width: auto  !important ;
+}
+
+.mountain_obelisk_container img{
+  height: 86% !important;
+  width: 35% !important;
 }
 
 #extended_form_container {

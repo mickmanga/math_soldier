@@ -4022,6 +4022,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     document.body.append(mountainGodContainer);
     const mountainGodCharacter = new DefaultCharacter(mountainGodImg, 0 /* default */, mountainGodAnimations);
     launchAnimation(mountainGodCharacter, 11 /* idle */);
+    setTimeout(
+      () => {
+        const thunder = document.getElementById("thunder_audio");
+        thunder.play();
+      },
+      1e3
+    );
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;

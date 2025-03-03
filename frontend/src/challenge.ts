@@ -1709,15 +1709,15 @@ const launchMountainGod = () => {
 
   launchAnimation(mountainGodCharacter, AnimationType.idle);
 
-  /*
-  
   setTimeout(
     () => {
       const thunder = document.getElementById("thunder_audio")! as HTMLAudioElement;
       thunder.play();
     }, 1000
-  )
+  );
 
+  /*
+  
   setTimeout(
     () => {
 
