@@ -196,7 +196,7 @@ const moveLearningGod = () => {
         return;
     }
 
-    learningGodContainer.style.left = `${learningGodLeft- 0.33}px`;
+    learningGodContainer.style.left = `${learningGodLeft- 0.8}px`;
 
 
     requestAnimationFrame(
