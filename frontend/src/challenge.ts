@@ -56,7 +56,7 @@ const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 const SPECIAL_MODE_MAX_VALUE = 10;
 
 
-const ASSETS_PATH_BASE = "assets/challenge";
+export const ASSETS_PATH_BASE = "assets/challenge";
 
 
 let currentChallengeLength = 0;
@@ -667,6 +667,7 @@ export enum ANIMATION_ID {
   hero_idle,
   hero_second_idle,
   hero_special_attack,
+  hero_teleportation,
   learning_god_walk_left,
   learning_god_idle,
   learning_god_open_course,
@@ -746,6 +747,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.hero_death]: 0,
   [ANIMATION_ID.hero_hurt]: 0,
   [ANIMATION_ID.hero_idle]: 0,
+  [ANIMATION_ID.hero_teleportation]: 0,
   [ANIMATION_ID.hero_second_idle]: 0,
   [ANIMATION_ID.hero_special_attack]: 0,
   [ANIMATION_ID.learning_god_walk_left]: 0,
@@ -865,13 +867,14 @@ const APP_ELEMENTS_ANIMATION_QUEUE: AppElementsAnimationQueue = {
       ANIMATION_ID.hero_hurt,
       ANIMATION_ID.hero_death,
       ANIMATION_ID.hero_special_attack,
+      ANIMATION_ID.hero_idle,
+      ANIMATION_ID.hero_teleportation,
       ANIMATION_ID.stop,
       ANIMATION_ID.stop_time,
       ANIMATION_ID.hero_transformation_hurt,
       ANIMATION_ID.hero_transformation_pre_run,
       ANIMATION_ID.hero_transformation_run,
       ANIMATION_ID.hero_transformation_attack,
-      ANIMATION_ID.hero_idle,
     ],
   },
   enemy: {
@@ -1116,7 +1119,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
           launchAnimation(pillarElement, AnimationType.transformation);
 
               setTimeout(
-                  launchMountainGod, 1000
+                  launchMountainGodCinematic, 5000
               )
      
         }, 1000
@@ -1462,13 +1465,13 @@ const launchCharacterAnimation = (
   const newExecutionTimeStamp = Date.now();
 
   if (
-    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.lightning ||
+    (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_teleportation || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.hero_death || animationId === ANIMATION_ID.lightning ||
       animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.golem_opponent_run || animationId === ANIMATION_ID.witch_opponent_run  || animationId === ANIMATION_ID.hammer_opponent_run || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left || animationId === ANIMATION_ID.learning_god_idle || animationId === ANIMATION_ID.learning_god_open_course || animationId === ANIMATION_ID.learning_god_walk_left || animationId === ANIMATION_ID.mountain_god_attack || animationId === ANIMATION_ID.mountain_god_idle || animationId === ANIMATION_ID.mountain_god_teleportation || animationId === ANIMATION_ID.mountain_god_run || animationId === ANIMATION_ID.mountain_god_hurt || animationId === ANIMATION_ID.mountain_god_death_from_special_attack || animationId === ANIMATION_ID.golem_master_transformation ||  animationId === ANIMATION_ID.golem_master_idle || animationId === ANIMATION_ID.mountain_pillar_activated) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1701,23 +1704,30 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
 };
 
-const launchMountainGod = () => {
+const createMountainGod = (cinematic = false) => {
 
   const mountainGodContainer = document.createElement("div")! as HTMLImageElement;
   mountainGodContainer.classList.add("mountain_god_container");
 
   const mountainGodImg = document.createElement("img");
 
-  
   mountainGodContainer.append(mountainGodImg);
-  document.body.append(mountainGodContainer);
 
-  //mountainGodImg.src="assets/challenge/characters/enemies/mountain_god/idle/1.png";
+  if(cinematic){
+    document.body.append(mountainGodContainer);
+  } else {
+    mountainGodContainer.classList.add("mountain_god_container_fight");
+  }
+  
+  return new DefaultCharacter(mountainGodImg, CharacterDefaultStates.default, mountainGodAnimations);
+}
+
+const launchMountainGodCinematic = () => {
 
   const thunder = document.getElementById("thunder_audio")! as HTMLAudioElement;
   thunder.play();
 
-  const mountainGodCharacter = new DefaultCharacter(mountainGodImg, CharacterDefaultStates.default, mountainGodAnimations);
+  const mountainGodCharacter = createMountainGod(true);
 
   setTimeout(
     () => { 
@@ -1733,6 +1743,17 @@ const launchMountainGod = () => {
             setTimeout(
               () => {
                 launchAnimation(mountainGodCharacter, AnimationType.teleportation,false);
+                setTimeout(
+                  () => {
+                    document.getElementById("obelisk")!.style.left = `${document.getElementById("obelisk")!.getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                    quitCinematic();
+                    setTimeout(
+                      () => {
+                        launchChallenge("677e814577322467895fd1a2")
+                      }, 2000
+                    )
+                  }, 2000
+                )
               }, 8000
             )
           }, 1000
@@ -2747,7 +2768,6 @@ const ALL_KING_ENEMY_STATES = [KingEnemyCharacterStates.idle, KingEnemyCharacter
 const ALL_WITCH_ENEMY_STATES = [WitchEnemyCharacterStates.idle, WitchEnemyCharacterStates.running, WitchEnemyCharacterStates.attacking, WitchEnemyCharacterStates.dead];
 const ALL_DEFAULT_STATES = [CharacterDefaultStates.default];
 
-
 export const learningGodAnimations = [
   {
   animationType: AnimationType.idle,
@@ -2773,15 +2793,14 @@ export const learningGodAnimations = [
             animation: 
             {
               id: ANIMATION_ID.learning_god_walk_left,
-              sprite:    {
+              sprite: {
                 path: ASSETS_PATH_BASE + "/characters/neutral/learningGod/walk",
                 length: 12
+               }
             }
-            }
-           },
-         ]
+         },
+      ]
     },
-
     {
       animationType: AnimationType.open_course,
         animationsStatesBlocks: [
@@ -2790,16 +2809,14 @@ export const learningGodAnimations = [
             animation: 
             {
               id: ANIMATION_ID.learning_god_open_course,
-              sprite:    {
-                path: ASSETS_PATH_BASE + "/characters/neutral/learningGod/open_course",
-                length: 13
-            }
-            }
-           },
-         ]
-    },
-
-
+              sprite: {
+                  path: ASSETS_PATH_BASE + "/characters/neutral/learningGod/open_course",
+                  length: 17
+                }
+             }
+          },
+       ]
+    }
 ];
 
 let runningPointReached = false;
@@ -3030,8 +3047,24 @@ const heroAnimations = [
               {
                id: ANIMATION_ID.hero_death,
                sprite:    {
-                path: ASSETS_PATH_BASE + "/characters/hero/death",
-                length: 6
+                path: ASSETS_PATH_BASE + "/characters/hero/back_up",
+                length: 4
+              }
+            }
+           }
+         ]
+        },
+        {
+          animationType: AnimationType.teleportation,
+          animationsStatesBlocks: [
+            {
+             states: ALL_HERO_STATES,
+             animation: 
+              {
+               id: ANIMATION_ID.hero_teleportation,
+               sprite:    {
+                path: ASSETS_PATH_BASE + "/characters/hero/teleportation/new",
+                length: 12
               }
             }
            }
@@ -3385,8 +3418,8 @@ const mountainGodAnimations = [
         {
           id: ANIMATION_ID.mountain_god_attack,
           sprite:    {
-            path: ASSETS_PATH_BASE + "/characters/neutral/master/attack/new",
-            length: 8
+            path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/attack",
+            length: 7
         }
         }
        }
@@ -3401,7 +3434,7 @@ const mountainGodAnimations = [
           {
             id: ANIMATION_ID.mountain_god_hurt,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/neutral/master/hurt",
+              path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/hurt",
               length: 4
           }
           }
@@ -3456,7 +3489,6 @@ const mountainGodAnimations = [
            }
          ]
       },
-
       {
         animationType: AnimationType.death_from_special_attack,
         animationsStatesBlocks: [
@@ -3940,13 +3972,10 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
           setTimeout(
             () => {
               killHero();
-              setTimeout(
-                () => breathAudio.play(), 1500
-
-              )
+            
               
               setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"), 3000
+                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
               )
 
             }, 19000
@@ -4749,8 +4778,6 @@ const stopCameraMovingToLeft = () => {
 };
 
 
-
-
 const startCamera = (direction: Direction) => {
 
   const cameraAnimation = direction === Direction.LEFT_TO_RIGHT ? ANIMATION_ID.camera_left_to_right : ANIMATION_ID.camera_right_to_left;
@@ -4768,10 +4795,7 @@ const initHeroAnimations = () => {
   ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_hurt] = 0;
 };
 
-
-
 const animateLightning = () => {
-
 
   lightningImg.style.display = "block";
 
@@ -4820,12 +4844,11 @@ const animateLightning = () => {
     for(let i=1; i <= 5; i++){
 
       const lastSet = i === 5 ? true : false;
-      
       const velocity = i * i;
+
       createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
 
-    } 
-
+    }
  }
 
  const initElementsIndexes = () => {
@@ -4836,32 +4859,24 @@ const animateLightning = () => {
  }
 
  const setGameVolumes = () => {
-  dragonAudio.volume = 0.05;
   
+  dragonAudio.volume = 0.05;
   epicAudio.volume = 0;
   windAudio.volume = 0.15;
   stepsInSwow.volume = 0.1;
-
   flameThrowerAudio.volume = 0.6;
-
   transitionAudio.volume = 0.15;
-
-
 
  }
 
 window.onload = () => {
-
   setGameVolumes();
-
   initElementsIndexes();
   createMapSets();
-
   checkForCurrentMapElementUpdate();
   setupListeners();
   setInitialGameVolume();
   launchHardModeToggle();
-
   createGameAccordingToMode();
   updateLifePointsDisplay();
   updateScoreDisplay();
@@ -4872,13 +4887,21 @@ window.onload = () => {
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
-  launchAnimation(heroCharacter, AnimationType.idle, false);
+  launchHeroTeleporationAnimation();
+ // launchAnimation(heroCharacter, AnimationType.idle, false);
   launchDragon();
   //launchChallenge(store.getState().persistedMap.elements[1].id)
-
   checkForRunningEnemyPoint();
-
 };
+
+const launchHeroTeleporationAnimation = () => {
+  launchAnimation(heroCharacter, AnimationType.teleportation);
+  setTimeout(
+      () => {
+         launchAnimation(heroCharacter, AnimationType.idle, false)
+      }, 3000
+  )
+}
 
 const setupListeners = () => {
   document
@@ -4892,7 +4915,12 @@ const setupListeners = () => {
 
 let cinematicOn = false;
 
-const launchCinematic = () => {
+enum CINEMATIC_ID {
+  FIRST,
+  SECOND
+}
+
+const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
   
   cinematicOn = true;
   const bottomDiv = document.getElementById("bottomDiv")!;
@@ -4911,6 +4939,8 @@ const launchCinematic = () => {
 
   answerDataContainer.style.top = "88vh";
   answerDataContainer.style.height = "10.5vh";
+
+ // repositionMapBlocks();
 
 }
 
@@ -4931,6 +4961,8 @@ const quitCinematic = () => {
   bottomDiv.style.display = "flex";
 
   heroContainer.classList.remove("cinematicHero");
+
+  //repositionMapBlocks();
   
 }
 
@@ -5111,3 +5143,21 @@ const launchHeroLightningSpeedAnimation = () => {
 
 }
 
+const repositionMapBlocks = () => {
+ let previousMapBlock = null;
+
+ MAP_SETS.forEach(
+  (mapSet) => {
+    
+    mapSet.maps.forEach(
+      (map,index) => {
+        previousMapBlock = map;
+        if(index > 0){
+          map.style.left = `${previousMapBlock.getBoundingClientRect().left + previousMapBlock.getBoundingClientRect().width - 10}px`; 
+        }
+      }
+    )
+  }
+ );
+
+}

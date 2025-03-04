@@ -1,4 +1,4 @@
-import { AnimationType, DefaultCharacter, launchAnimation, learningGodAnimations, LearningGodCharacterStates } from "./challenge";
+import { AnimationType, ASSETS_PATH_BASE, DefaultCharacter, heroCharacter, launchAnimation, learningGodAnimations, LearningGodCharacterStates } from "./challenge";
 
 interface Window {
   openap: (event: Event) => void;
@@ -72,7 +72,6 @@ const getChapters = async () => {
         }
         
         const knowledgeData = await response.json() as Array<any>;
-        console.log('data:', knowledgeData); // Replace with your handling logic
 
         knowledgeData.forEach(
             data => {
@@ -108,10 +107,7 @@ const openCourse = () => {
   letterBoxBottom.style.display = "none";
         }, 900
     )
-}
-
-let diffBetweenFrames = 0;
-
+};
 
 const launchGodFootsteps = () => {
     const godStepsAudio = document.getElementById("god_steps")! as HTMLAudioElement;
@@ -120,8 +116,23 @@ const launchGodFootsteps = () => {
 
 window.onload = () => {
     setTimeout(
-        launchLearningGod, 6000
+        () => {
+            launchAnimation(heroCharacter, AnimationType.death, false);
+
+            setTimeout(
+                () => {
+                    heroCharacter.element.src = ASSETS_PATH_BASE + "/characters/hero/idle/1.png";
+                }, 320);
+
+        }, 1000
+    )
+
+    
+    setTimeout(
+        launchLearningGod
+        , 6000
     );
+
 }
 
 const launchLearningGod = () => {
@@ -135,27 +146,34 @@ const launchLearningGod = () => {
   letterBoxTop.style.display = "flex";
   letterBoxBottom.style.display = "flex";
 
-
-
    launchGodFootsteps();
    setTimeout(
     () => {  
-      //const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
-      //godSongAudio.play();
+      const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
+      godSongAudio.play();
 
       setTimeout(
         () => {
-
             setTimeout(
                 () => {
-
-                 //const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
-                 //godTalking.play();
-
-            
+                 const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
+                 godTalking.play();
+                 setTimeout(
+                    () => {
+                        launchAnimation(heroCharacter, AnimationType.teleportation);
+                        
+                        setTimeout(
+                            () => {
+                                window.location.replace(
+                                    "http://localhost:3001/challenge"
+                                )
+                            },4000
+                        )
+                        
+                    },1000
+                 )
                 }, 2000
-            )
-         
+            );
         }, 11500
       )
 
@@ -186,7 +204,6 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-
 const moveLearningGod = () => {
 
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
@@ -197,9 +214,5 @@ const moveLearningGod = () => {
     }
 
     learningGodContainer.style.left = `${learningGodLeft- 0.8}px`;
-
-
-    requestAnimationFrame(
-        moveLearningGod
-    )
+    requestAnimationFrame(moveLearningGod);
 }

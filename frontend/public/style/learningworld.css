@@ -176,7 +176,7 @@ body {
     border: solid 1px;
     border-radius: 15px;
     opacity: 0;
-    transition: opacity 1s ease-in-out; /* Transition sur l'opacité, durée de 1 seconde */
+    transition: opacity 0.3s ease-in-out; /* Transition sur l'opacité, durée de 1 seconde */
     border: 1px solid #fff;
     padding: 9px 7px;
     box-shadow: 0 0 10px #aaaaaae8;

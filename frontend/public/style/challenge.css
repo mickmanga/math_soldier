@@ -93,10 +93,27 @@ audio {
   opacity: 0.85;
 }
 
+/*
+cinematic 1
+*/
+
 .cinematicHero {
   top: 68vh;
   height: 18.5vh;
 }
+
+
+/*
+cinematic 2
+*/
+
+/*
+.cinematicHero {
+  top: 69.75vh;
+  height: 11.25vh;
+}
+*/
+
 
 .enemy_container {
   position: fixed;
@@ -144,7 +161,7 @@ audio {
   left: 0vw;
   height: 50vh;
   width: 35vw;
-  top: 26vh;
+  top: 16vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -167,7 +184,7 @@ audio {
 .mountain_obelisk_container_full {
   top: 26.25vh;
   height: 59vh;
-  left: 30vw;
+  left: 10vw;
 }
 
 .mountain_obelisk_container_cinematic {
@@ -980,6 +997,10 @@ audio {
   z-index: 3000;
   top: 53.5vh;
   right: 20vw;
+}
+
+.mountain_god_container_fight {
+  left: 105vw;
 }
 
 .mountain_god_container img {
