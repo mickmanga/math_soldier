@@ -497,7 +497,7 @@ let lastEnemyIndex = 0;
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
  const enemyCreationCallbacks = [
-  createGolemCharacter,
+  createMountainGodEnemy,
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -1117,11 +1117,9 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
       setTimeout(
         () => {
           launchAnimation(pillarElement, AnimationType.transformation);
-
               setTimeout(
-                  launchMountainGodCinematic, 5000
+                 launchMountainGodCinematic, 5000
               )
-     
         }, 1000
       )
       return;
@@ -3482,8 +3480,8 @@ const mountainGodAnimations = [
             {
               id: ANIMATION_ID.mountain_god_run,
               sprite:    {
-                path: ASSETS_PATH_BASE + "/characters/neutral/master/run/new",
-                length: 8
+                path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/run",
+                length: 16
             }
             }
            }
@@ -3931,6 +3929,23 @@ const createFormElement = (formElement: MapElement) => {
     return formBackgroundContainer;
 }
 
+const createMountainGodEnemy = (): DefaultCharacter => {
+
+  const newOpponentContainer = document.createElement("div");
+  newOpponentContainer.classList.add("mountain_god_container_fight");
+  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/mountain_god/idle/1.png";  
+  newOpponentContainer.append(newEnnemyImg);
+  newOpponentContainer.style.bottom = "-6.5vh";
+
+  document.getElementsByTagName("body")[0].append(newOpponentContainer);
+
+  resetViewPoint();
+
+  return new DefaultCharacter(newEnnemyImg, CharacterDefaultStates.default, mountainGodAnimations);
+
+}
+
 const createGolemCharacter = (): DefaultCharacter => {
 
   const newOpponentContainer = document.createElement("div");
@@ -4324,7 +4339,9 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "s" && hardMode) {
-    if (runStopped || runningPointReached) return;
+    if (runStopped || runningPointReached) {
+      return;
+    };
     stopRun(true);
   }
 

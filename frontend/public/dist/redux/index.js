@@ -2357,10 +2357,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
-      null,
-      null,
-      null,
-      null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
@@ -2413,7 +2409,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 2,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({

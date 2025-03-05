@@ -154,6 +154,8 @@ cinematic 2
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  top: 53.5vh;
+  height: 38.5vh;
 }
 
 .golem_master_container {
@@ -991,23 +993,29 @@ cinematic 2
 }
 
 .mountain_god_container {
+  right: 20vw;
+  top: 53.5vh;
   height: 38.5vh;
   width: 19vw;
   position: absolute;
   z-index: 3000;
-  top: 53.5vh;
-  right: 20vw;
 }
 
 .mountain_god_container_fight {
+  position: absolute;
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   left: 105vw;
+  top: 47.5vh;
+  height: 44.25vh;
 }
 
-.mountain_god_container img {
+.mountain_god_container img, .mountain_god_container_fight img {
   height: 100%;
   width: auto;
 }
-
 
 #location_description {
   display: flex;

@@ -2366,10 +2366,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
-      null,
-      null,
-      null,
-      null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
@@ -2422,7 +2418,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
-    currentIndex: 2,
+    currentIndex: 0,
     heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
@@ -3209,7 +3205,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
     const enemyCreationCallbacks = [
-      createGolemCharacter
+      createMountainGodEnemy
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -5173,8 +5169,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 19 /* mountain_god_run */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/neutral/master/run/new",
-              length: 8
+              path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/run",
+              length: 16
             }
           }
         }
@@ -5507,16 +5503,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
   };
-  var createGolemCharacter = () => {
+  var createMountainGodEnemy = () => {
     const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
+    newOpponentContainer.classList.add("mountain_god_container_fight");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/mountain_god/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     newOpponentContainer.style.bottom = "-6.5vh";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
+    return new DefaultCharacter(newEnnemyImg, 0 /* default */, mountainGodAnimations);
   };
   var golemLaunched = false;
   var createMasterCharacter = (masterImage) => {
@@ -5712,7 +5708,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       launchDeathAnimation();
     }
     if (event.key === "s" && hardMode) {
-      if (runStopped || runningPointReached) return;
+      if (runStopped || runningPointReached) {
+        return;
+      }
+      ;
       stopRun(true);
     }
     if (event.key === "z") {

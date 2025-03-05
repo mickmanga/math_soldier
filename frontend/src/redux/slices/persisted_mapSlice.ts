@@ -13,10 +13,6 @@ export interface MapState {
 const initialState: MapState = {
   elements: [
     null,
-    null,
-    null,
-    null,
-    null,
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.golem_master},
     {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
@@ -68,7 +64,7 @@ const initialState: MapState = {
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,
-  currentIndex: 2,
+  currentIndex: 0,
   heroMode: HERO_MODES.normal
 };
 
