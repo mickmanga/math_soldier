@@ -2310,6 +2310,24 @@ const detectCollision = () => {
       enemyViewPoint.style.display = "flex";
     }
 
+    
+    const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen: Enemy) => {
+      if(!enemyOnScreen.hurt){
+        setTimeout(
+          () => {
+            if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.run);
+          }, 700
+         )
+      }
+    }
+
+    if(getHeroLeft() > enemyOnScreen.character.element.parentElement!.getBoundingClientRect().left){
+        if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
+        if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
+            launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
+         }
+       } 
+   
     if (
       hardMode &&
       !heroInTheRedZone &&
@@ -2322,24 +2340,20 @@ const detectCollision = () => {
 
       updateEnemyViewPointDisplay();
 
-      const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen: Enemy) => {
-        if(!enemyOnScreen.hurt){
-          setTimeout(
-            () => {
-              if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.run);
-            }, 700
-           )
-        }
-      }
+      
+const launchEnemyRun = () => {
+  ennemiesOnScreen.forEach(
+    (enemy) => {
+       launchAnimation(enemy.character, AnimationType.run);
+      //  runningPointReached=true;
+        mountainGodHurt = false;
+       } 
+      
+    )
+  }
+  launchEnemyRun();
 
-        setTimeout(
-          () => {
-            if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
-            if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
-              launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
-            }
-          }, 350
-        )
+   
       }
   
 
@@ -2830,18 +2844,6 @@ const getMountainGodRunningEnemyPoint = () => {
   return ;
 }
 
-const checkForRunningEnemyPoint = () => {
-  ennemiesOnScreen.forEach(
-    (enemy) => {
-      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * (mountainGodHurt ? 0.35 : 1))) && !runningPointReached ){
-       launchAnimation(enemy.character, AnimationType.run);
-        runningPointReached=true;
-        mountainGodHurt = false;
-      } 
-    }
-  )
-  requestAnimationFrame(checkForRunningEnemyPoint);
-}
 
 const mountainPillarAnimations = [
   
@@ -4350,7 +4352,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "s" && hardMode) {
-    if (runStopped || runningPointReached) {
+    if (runStopped || heroInTheRedZone) {
       return;
     };
     stopRun(true);
@@ -4917,8 +4919,6 @@ window.onload = () => {
   launchHeroTeleporationAnimation();
  // launchAnimation(heroCharacter, AnimationType.idle, false);
   launchDragon();
-  //launchChallenge(store.getState().persistedMap.elements[1].id)
-  checkForRunningEnemyPoint();
 };
 
 const launchHeroTeleporationAnimation = () => {

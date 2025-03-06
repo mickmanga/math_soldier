@@ -381,7 +381,6 @@ cinematic 2
   align-items: center;
   justify-content: space-around;
   transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */
-  opacity: 0;
 }
 
 .enemyViewPointTopDiv {

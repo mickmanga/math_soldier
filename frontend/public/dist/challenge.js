@@ -4357,28 +4357,34 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         viewPointOnScreen = true;
         enemyViewPoint.style.display = "flex";
       }
+      const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen2) => {
+        if (!enemyOnScreen2.hurt) {
+          setTimeout(
+            () => {
+              if (!enemyOnScreen2.hurt) launchAnimation(enemyOnScreen2.character, 2 /* run */);
+            },
+            700
+          );
+        }
+      };
+      if (getHeroLeft() > enemyOnScreen.character.element.parentElement.getBoundingClientRect().left) {
+        if (!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
+        if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
+          launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
+        }
+      }
       if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
-        const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen2) => {
-          if (!enemyOnScreen2.hurt) {
-            setTimeout(
-              () => {
-                if (!enemyOnScreen2.hurt) launchAnimation(enemyOnScreen2.character, 2 /* run */);
-              },
-              700
-            );
-          }
-        };
-        setTimeout(
-          () => {
-            if (!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
-            if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
-              launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
+        const launchEnemyRun = () => {
+          ennemiesOnScreen.forEach(
+            (enemy) => {
+              launchAnimation(enemy.character, 2 /* run */);
+              mountainGodHurt = false;
             }
-          },
-          350
-        );
+          );
+        };
+        launchEnemyRun();
       }
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
         enemyViewPointThresholdCrossed = true;
@@ -4635,18 +4641,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   ];
   var runningPointReached = false;
-  var checkForRunningEnemyPoint = () => {
-    ennemiesOnScreen.forEach(
-      (enemy) => {
-        if (getHeroLeft() >= enemy.character.element.getBoundingClientRect().left - window.innerWidth * (mountainGodHurt ? 0.35 : 1) && !runningPointReached) {
-          launchAnimation(enemy.character, 2 /* run */);
-          runningPointReached = true;
-          mountainGodHurt = false;
-        }
-      }
-    );
-    requestAnimationFrame(checkForRunningEnemyPoint);
-  };
   var mountainPillarAnimations = [
     {
       animationType: 15 /* transformation */,
@@ -5781,7 +5775,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       launchDeathAnimation();
     }
     if (event.key === "s" && hardMode) {
-      if (runStopped || runningPointReached) {
+      if (runStopped || heroInTheRedZone) {
         return;
       }
       ;
@@ -6204,7 +6198,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     animateLightning();
     launchHeroTeleporationAnimation();
     launchDragon();
-    checkForRunningEnemyPoint();
   };
   var launchHeroTeleporationAnimation = () => {
     launchAnimation(heroCharacter, 16 /* teleportation */);
