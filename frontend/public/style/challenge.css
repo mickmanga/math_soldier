@@ -372,7 +372,7 @@ cinematic 2
 .enemyViewPoint {
   position: absolute;
   top: 50vh;
-  left: 100vw;
+  left: 60vw;
   height: 25vh;
   width: 2.5vw;
   display: flex;
@@ -381,6 +381,7 @@ cinematic 2
   align-items: center;
   justify-content: space-around;
   transition: opacity 1s ease, visibility 1s ease; /* Animate opacity over 1 second */
+  opacity: 0;
 }
 
 .enemyViewPointTopDiv {
@@ -1005,7 +1006,7 @@ cinematic 2
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  left: 105vw;
+  left: 90vw;
   top: 47.5vh;
   height: 44.25vh;
 }

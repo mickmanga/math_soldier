@@ -2928,7 +2928,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
   var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
-  var mountainGodHurt = false;
+  var mountainGodHurt = true;
   var flameThrowerAudio = document.getElementById("flame_thrower");
   var windAudio = document.getElementById("wind_audio");
   var MAP_SETS = [];
@@ -3207,6 +3207,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
+    enemyLaunchedAttack = false;
     const enemyCreationCallbacks = [
       createMountainGodEnemy
     ];
@@ -3638,7 +3639,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        launchAnimation(pillarElement, 15 /* transformation */);
         launchChallenge("677e814577322467895fd1a2");
         return;
       }
@@ -4010,17 +4010,29 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     interruptOpponentRun(enemy);
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 13 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-    if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ && mountainGodHurt) {
+    if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
       enemy.character.element.parentElement.classList.add("previously_hurt_moutain_god");
+      if (mountainGodHurt) {
+        enemyViewPoint.style.left = "60vw";
+      } else {
+        enemyViewPoint.style.left = "0vw";
+      }
       launchAnimation(enemy.character, 16 /* teleportation */, false);
       setTimeout(
         () => {
-          launchAnimation(enemy.character, 11 /* idle */);
+          moveEnemy(enemy, 0, Date.now());
+          if (mountainGodHurt) {
+            launchAnimation(enemy.character, 11 /* idle */);
+          } else {
+            runningPointReached = true;
+            launchAnimation(enemy.character, 2 /* run */);
+          }
         },
         360
       );
+    } else {
+      moveEnemy(enemy, 0, Date.now());
     }
-    moveEnemy(enemy, 0, Date.now());
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
@@ -4034,12 +4046,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - 3 * (runningPointReached ? 1.3 : 1)
+      enemyContainer.getBoundingClientRect().left - 3 * (runningPointReached ? 1.4 : 1)
     )}px`;
     if (hardMode) {
-      enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.45 : 1) * (runningPointReached ? 1.3 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
-      )}px`;
+      enemyViewPoint.style.left = `${enemyViewPoint.getBoundingClientRect().left - 10}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
   };
@@ -4218,7 +4228,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var destroyEnemy = (enemy, delay = true) => {
     clearAndHideAnswerDataContainer();
     heroInTheRedZone = false;
-    resetViewPoint();
     const enemyDestructionAndRevivalCallback = () => {
       enemy.character.element.remove();
       if (!preTransformed) {
@@ -4267,6 +4276,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var viewPointOnScreen = false;
   var enemyViewPointThresholdCrossed = false;
+  var enemyLaunchedAttack = false;
   var detectCollision = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
       const enemyContainer = enemyOnScreen.character.element.parentElement;
@@ -4285,8 +4295,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           );
         }
       };
-      if (getHeroLeft() > enemyOnScreen.character.element.parentElement.getBoundingClientRect().left) {
+      if (getHeroLeft() > enemyOnScreen.character.element.parentElement.getBoundingClientRect().left - window.innerWidth * 0.05 && !enemyLaunchedAttack) {
         if (!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
+        enemyLaunchedAttack = true;
         if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
           launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
         }
@@ -4298,11 +4309,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           ennemiesOnScreen.forEach(
             (enemy) => {
               launchAnimation(enemy.character, 2 /* run */);
+              runningPointReached = true;
               mountainGodHurt = false;
             }
           );
         };
-        launchEnemyRun();
+        if (mountainGodHurt) launchEnemyRun();
       }
       if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
         enemyViewPointThresholdCrossed = true;
@@ -5356,7 +5368,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var resetViewPoint = () => {
-    enemyViewPoint.style.left = "100vw";
+    enemyViewPoint.style.left = "0vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
@@ -6089,16 +6101,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
-    launchHeroTeleporationAnimation();
     launchDragon();
-  };
-  var launchHeroTeleporationAnimation = () => {
-    launchAnimation(heroCharacter, 16 /* teleportation */);
-    setTimeout(
-      () => {
-      },
-      3e3
-    );
   };
   var setupListeners = () => {
     var _a, _b;

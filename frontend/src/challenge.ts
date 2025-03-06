@@ -17,7 +17,7 @@ enum ENEMIES_ON_SCREEN {
 }
 
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
-let mountainGodHurt = false;
+let mountainGodHurt = true;
 
 const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioElement;
 
@@ -502,8 +502,10 @@ let lastEnemyIndex = 0;
 
 const buildEnemy = (answer: ChallengeAnswerData) => {
 
+ enemyLaunchedAttack = false;
+
  const enemyCreationCallbacks = [
-  createMountainGodEnemy,
+  createMountainGodEnemy
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -1121,14 +1123,16 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
 
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
-      //setTimeout(
-        //() => {
+      /*
+      setTimeout(
+        () => {
           launchAnimation(pillarElement, AnimationType.transformation);
-            //  setTimeout(
-              //   launchMountainGodCinematic, 5000
-             // )
-        //}, 1000
-      //)
+              setTimeout(
+                 launchMountainGodCinematic, 5000
+              )
+        }, 1000
+      )
+        */
       launchChallenge("677e814577322467895fd1a2");
       return;
     }
@@ -1705,19 +1709,33 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
 
 
-  if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD && mountainGodHurt){
+  if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
     enemy.character.element.parentElement!.classList.add("previously_hurt_moutain_god");
+    if(mountainGodHurt){
+      enemyViewPoint.style.left = "60vw";
+    } else {
+      enemyViewPoint.style.left = "0vw";
+    }
+
     launchAnimation(enemy.character, AnimationType.teleportation,false);
     setTimeout(
       () => {
-        launchAnimation(enemy.character, AnimationType.idle);
+        
+     // launchIdleProcess(enemy.character);
+
+        moveEnemy(enemy, 0, Date.now());
+        if(mountainGodHurt){
+         launchAnimation(enemy.character, AnimationType.idle);
+        } else {
+          runningPointReached = true;
+          launchAnimation(enemy.character, AnimationType.run);
+        }
       }, 360
     )
-  } 
+  } else {
+    moveEnemy(enemy, 0, Date.now());
+  }
 
- // launchIdleProcess(enemy.character);
-
- moveEnemy(enemy, 0, Date.now());
 
 };
 
@@ -1929,13 +1947,14 @@ const moveEnemy = (
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      3 * (runningPointReached ? 1.3  : 1)
+      3 * (runningPointReached ? 1.4  : 1)
   )}px`;
 
   if (hardMode) {
-    enemyViewPoint.style.left = `${Math.round(
-      enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.45 : 1) * (runningPointReached ? 1.3  : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
-    )}px`;
+    //enemyViewPoint.style.left = `${Math.round(
+      //enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.45 : 1) * (runningPointReached ? 1.3  : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+    //)}px`;
+    enemyViewPoint.style.left = `${enemyViewPoint.getBoundingClientRect().left - 10}px`;
   }
 
   requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
@@ -2229,7 +2248,6 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
   
   clearAndHideAnswerDataContainer();
   heroInTheRedZone = false;
-  resetViewPoint();
 
   const enemyDestructionAndRevivalCallback = () => {
     enemy.character.element.remove();
@@ -2298,6 +2316,8 @@ let enemyViewPointThresholdCrossed = false;
 
 let hardModeAttackOn = false;
 
+let enemyLaunchedAttack = false;
+
 const detectCollision = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
     const enemyContainer = enemyOnScreen.character.element.parentElement!;
@@ -2321,8 +2341,9 @@ const detectCollision = () => {
       }
     }
 
-    if(getHeroLeft() > enemyOnScreen.character.element.parentElement!.getBoundingClientRect().left){
+    if(getHeroLeft() > (enemyOnScreen.character.element.parentElement!.getBoundingClientRect().left - window.innerWidth * 0.05) && !enemyLaunchedAttack){
         if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
+        enemyLaunchedAttack = true;
         if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
             launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
          }
@@ -2345,16 +2366,16 @@ const launchEnemyRun = () => {
   ennemiesOnScreen.forEach(
     (enemy) => {
        launchAnimation(enemy.character, AnimationType.run);
-      //  runningPointReached=true;
+        runningPointReached=true;
         mountainGodHurt = false;
        } 
       
     )
   }
-  launchEnemyRun();
 
-   
-      }
+  if(mountainGodHurt) launchEnemyRun();
+
+  }
   
 
     if (
@@ -3739,11 +3760,10 @@ const kingAnimations = [
       },
 ];
 
-
 export const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
-  enemyViewPoint.style.left = "100vw";
+  enemyViewPoint.style.left = "0vw";
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
@@ -4105,7 +4125,7 @@ const createOrcCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    enemyViewPoint.style.left = "100vw";
+    resetViewPoint()
     enemyViewPoint.style.display = "flex";
 
  return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
@@ -4916,7 +4936,7 @@ window.onload = () => {
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
-  launchHeroTeleporationAnimation();
+  //launchHeroTeleporationAnimation();
  // launchAnimation(heroCharacter, AnimationType.idle, false);
   launchDragon();
 };
@@ -4925,7 +4945,7 @@ const launchHeroTeleporationAnimation = () => {
   launchAnimation(heroCharacter, AnimationType.teleportation);
   setTimeout(
       () => {
-      //   launchAnimation(heroCharacter, AnimationType.idle, false)
+        launchAnimation(heroCharacter, AnimationType.idle, false)
       }, 3000
   )
 }
@@ -5095,7 +5115,7 @@ const launchDragon = () => {
 
   moveDragon(Date.now());
 
-}
+};
 
 const soundEffectImage = document.getElementById("sound_effect_img_container")!;
 
