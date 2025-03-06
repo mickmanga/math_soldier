@@ -1011,6 +1011,10 @@ cinematic 2
   height: 44.25vh;
 }
 
+.previously_hurt_moutain_god {
+  left: 85vw;
+}
+
 .mountain_god_container img, .mountain_god_container_fight img {
   height: 100%;
   width: auto;

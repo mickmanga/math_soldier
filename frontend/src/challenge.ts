@@ -11,6 +11,14 @@ enum GAME_MODES {
 
 let gameMode: GAME_MODES = GAME_MODES.discovery;
 
+enum ENEMIES_ON_SCREEN {
+  MOUNTAIN_GOD,
+  RED_GOLEM
+}
+
+let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
+let mountainGodHurt = false;
+
 const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioElement;
 
 const windAudio = document.getElementById("wind_audio")! as HTMLAudioElement;
@@ -55,15 +63,11 @@ const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
 const SPECIAL_MODE_MAX_VALUE = 10;
 
-
 export const ASSETS_PATH_BASE = "assets/challenge";
-
 
 let currentChallengeLength = 0;
 
 let answers = null;
-
-
 //selectors
 
 const getHeroMode = () => {
@@ -310,12 +314,14 @@ interface EnemyInterface {
   character: CharacterInterface;
   answer: ChallengeAnswerData;
   collideable:boolean;
+  hurt: boolean;
 }
 
 class Enemy implements EnemyInterface {
   character: CharacterInterface;
   answer: ChallengeAnswerData;
   collideable = true;
+  hurt = false;
 
   constructor(character: CharacterInterface, answer: ChallengeAnswerData) {
     this.character = character;
@@ -673,7 +679,7 @@ export enum ANIMATION_ID {
   learning_god_open_course,
   mountain_god_attack,
   mountain_god_hurt,
-  mountain_god_death_from_special_attack,
+  mountain_god_hurt_from_special_attack,
   mountain_god_teleportation,
   mountain_god_run,
   mountain_god_idle,
@@ -758,7 +764,7 @@ export const ANIMATION_RUNNING_VALUES = {
   [ANIMATION_ID.mountain_god_idle]: 0,
   [ANIMATION_ID.mountain_god_hurt]: 0,
   [ANIMATION_ID.mountain_god_move]: 0,
-  [ANIMATION_ID.mountain_god_death_from_special_attack]: 0,
+  [ANIMATION_ID.mountain_god_hurt_from_special_attack]: 0,
   [ANIMATION_ID.mountain_god_teleportation]: 0,
   [ANIMATION_ID.stop_time]: 0,
   [ANIMATION_ID.stop]: 0,
@@ -1115,14 +1121,15 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
 
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
-      setTimeout(
-        () => {
+      //setTimeout(
+        //() => {
           launchAnimation(pillarElement, AnimationType.transformation);
-              setTimeout(
-                 launchMountainGodCinematic, 5000
-              )
-        }, 1000
-      )
+            //  setTimeout(
+              //   launchMountainGodCinematic, 5000
+             // )
+        //}, 1000
+      //)
+      launchChallenge("677e814577322467895fd1a2");
       return;
     }
     requestAnimationFrame(
@@ -1465,12 +1472,12 @@ const launchCharacterAnimation = (
 
   if (
     (animationId === ANIMATION_ID.hero_run || animationId === ANIMATION_ID.hero_walk_left || animationId === ANIMATION_ID.hero_walk_right || animationId === ANIMATION_ID.hero_idle || animationId === ANIMATION_ID.hero_teleportation || animationId === ANIMATION_ID.hero_special_attack || animationId === ANIMATION_ID.hero_second_idle || animationId === ANIMATION_ID.hero_death || animationId === ANIMATION_ID.lightning ||
-      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.golem_opponent_run || animationId === ANIMATION_ID.witch_opponent_run  || animationId === ANIMATION_ID.hammer_opponent_run || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left || animationId === ANIMATION_ID.learning_god_idle || animationId === ANIMATION_ID.learning_god_open_course || animationId === ANIMATION_ID.learning_god_walk_left || animationId === ANIMATION_ID.mountain_god_attack || animationId === ANIMATION_ID.mountain_god_idle || animationId === ANIMATION_ID.mountain_god_teleportation || animationId === ANIMATION_ID.mountain_god_run || animationId === ANIMATION_ID.mountain_god_hurt || animationId === ANIMATION_ID.mountain_god_death_from_special_attack || animationId === ANIMATION_ID.golem_master_transformation ||  animationId === ANIMATION_ID.golem_master_idle || animationId === ANIMATION_ID.mountain_pillar_activated) &&
+      animationId === ANIMATION_ID.hammer_opponent_idle || animationId === ANIMATION_ID.hammer_opponent_death || animationId === ANIMATION_ID.witch_opponent_death || animationId === ANIMATION_ID.witch_opponent_death_from_special_attack || animationId === ANIMATION_ID.hammer_opponent_attack ||  animationId === ANIMATION_ID.orc_opponent_idle || animationId === ANIMATION_ID.orc_opponent_attack ||   animationId === ANIMATION_ID.dwarf_opponent_idle || animationId === ANIMATION_ID.dwarf_opponent_attack || animationId === ANIMATION_ID.golem_opponent_idle || animationId === ANIMATION_ID.golem_opponent_attack || animationId === ANIMATION_ID.golem_opponent_death || animationId === ANIMATION_ID.orc_opponent_death || animationId === ANIMATION_ID.dwarf_opponent_death || animationId === ANIMATION_ID.golem_opponent_death_from_special_attack || animationId === ANIMATION_ID.golem_opponent_run || animationId === ANIMATION_ID.witch_opponent_run  || animationId === ANIMATION_ID.hammer_opponent_run || animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack || animationId === ANIMATION_ID.king_opponent_idle || animationId === ANIMATION_ID.king_opponent_attack || animationId === ANIMATION_ID.witch_opponent_idle || animationId === ANIMATION_ID.witch_opponent_attack ||  animationId === ANIMATION_ID.dragon_fly_right || animationId === ANIMATION_ID.dragon_fly_left || animationId === ANIMATION_ID.learning_god_idle || animationId === ANIMATION_ID.learning_god_open_course || animationId === ANIMATION_ID.learning_god_walk_left || animationId === ANIMATION_ID.mountain_god_attack || animationId === ANIMATION_ID.mountain_god_idle || animationId === ANIMATION_ID.mountain_god_teleportation || animationId === ANIMATION_ID.mountain_god_run || animationId === ANIMATION_ID.mountain_god_hurt || animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack || animationId === ANIMATION_ID.golem_master_transformation ||  animationId === ANIMATION_ID.golem_master_idle || animationId === ANIMATION_ID.mountain_pillar_activated) &&
     lastExecutionTimeStamp
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 60 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ? 115 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_hurt ? 100 : animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack ? 60 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1641,6 +1648,7 @@ const launchAttack = (special = false) => {
     if (!enemyCanBeHit(enemy)) {
       return;
     }
+    enemy.hurt = true;
     if (!enemy.answer.true) {
       killWrongEnemy(enemy, special);
     } else {
@@ -1695,7 +1703,17 @@ const launchOpponent = (enemy: EnemyInterface) => {
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
 
- launchAnimation(enemy.character, AnimationType.idle);
+
+
+  if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD && mountainGodHurt){
+    enemy.character.element.parentElement!.classList.add("previously_hurt_moutain_god");
+    launchAnimation(enemy.character, AnimationType.teleportation,false);
+    setTimeout(
+      () => {
+        launchAnimation(enemy.character, AnimationType.idle);
+      }, 360
+    )
+  } 
 
  // launchIdleProcess(enemy.character);
 
@@ -2162,47 +2180,23 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       hardEnemyContainer.style.bottom = "17vh";
     }
 
-    const deathAnimation = getCharacterAnimationAccordingToType(enemy.character, fromSpecialAttack ? AnimationType.death_from_special_attack : AnimationType.death)!;
 
-    launchAnimationAndDeclareItLaunched(
-      enemy.character.element,
-      0,
-      "png",
-      deathAnimation.sprite.path,
-      1,
-      deathAnimation.sprite.length,
-      1,
-      false,
-      deathAnimation.id,
-    );
-    
-    /*
+    if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
 
+      interruptAnimation(ANIMATION_ID.mountain_god_run);
+      interruptAnimation(ANIMATION_ID.mountain_god_attack);
+
+      enemy.character.element.src = ASSETS_PATH_BASE + "/characters/enemies/mountain_god/hurt/5.png";
+      
     setTimeout(
       () => {
-        launchAnimationAndDeclareItLaunched(
-          enemy.character.element,
-          0,
-          "png",
-          "assets/challenge/items/teleportation_lightning",
-          1,
-          deathAnimation.sprite.length,
-          8,
-          false,
-          deathAnimation.id,
-        );
-
-        setTimeout(
-          () => {
-            enemy.character.element.style.display = "none"
-          }, 300
-        )
-      }, 400
+          launchAnimation(enemy.character, AnimationType.teleportation,false);
+      },200
     )
-
-    */
-
-
+    mountainGodHurt = true;
+    } else {
+      launchAnimation(enemy.character, fromSpecialAttack ? AnimationType.death_from_special_attack : AnimationType.death, false);
+    }
   };
 
   launchExplosion();
@@ -2327,15 +2321,27 @@ const detectCollision = () => {
       heroInTheRedZone = true;
 
       updateEnemyViewPointDisplay();
-      //launchAnimation(enemyOnScreen.character, AnimationType.attack);
 
-      setTimeout(
-        () => {
-          launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
-        }, 200
-      )
-      
-    }
+      const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen: Enemy) => {
+        if(!enemyOnScreen.hurt){
+          setTimeout(
+            () => {
+              if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.run);
+            }, 700
+           )
+        }
+      }
+
+        setTimeout(
+          () => {
+            if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
+            if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
+              launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
+            }
+          }, 350
+        )
+      }
+  
 
     if (
       hardMode &&
@@ -2819,13 +2825,19 @@ export const learningGodAnimations = [
 
 let runningPointReached = false;
 
+
+const getMountainGodRunningEnemyPoint = () => {
+  return ;
+}
+
 const checkForRunningEnemyPoint = () => {
   ennemiesOnScreen.forEach(
     (enemy) => {
-      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * 0.35)) && !runningPointReached ){
-       // launchAnimation(enemy.character, AnimationType.run);
+      if(getHeroLeft() >= (enemy.character.element.getBoundingClientRect().left - (window.innerWidth * (mountainGodHurt ? 0.35 : 1))) && !runningPointReached ){
+       launchAnimation(enemy.character, AnimationType.run);
         runningPointReached=true;
-      }
+        mountainGodHurt = false;
+      } 
     }
   )
   requestAnimationFrame(checkForRunningEnemyPoint);
@@ -3433,7 +3445,7 @@ const mountainGodAnimations = [
             id: ANIMATION_ID.mountain_god_hurt,
             sprite: {
               path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/hurt",
-              length: 4
+              length: 5
           }
           }
          }
@@ -3446,7 +3458,7 @@ const mountainGodAnimations = [
             states: [CharacterDefaultStates.default],
             animation: 
             {
-              id: ANIMATION_ID.mountain_god_death_from_special_attack,
+              id: ANIMATION_ID.mountain_god_hurt_from_special_attack,
               sprite:  {
                 path: ASSETS_PATH_BASE + "/explosion",
                 length: 12
@@ -3494,7 +3506,7 @@ const mountainGodAnimations = [
             states: [CharacterDefaultStates.default],
             animation: 
             {
-              id: ANIMATION_ID.mountain_god_death_from_special_attack,
+              id: ANIMATION_ID.mountain_god_hurt_from_special_attack,
               sprite:  {
                 path: "assets/challenge/items/teleportation_lightning",
                 length: 12
@@ -4913,7 +4925,7 @@ const launchHeroTeleporationAnimation = () => {
   launchAnimation(heroCharacter, AnimationType.teleportation);
   setTimeout(
       () => {
-         launchAnimation(heroCharacter, AnimationType.idle, false)
+      //   launchAnimation(heroCharacter, AnimationType.idle, false)
       }, 3000
   )
 }
@@ -5020,7 +5032,8 @@ const updateTransformationProgressBarDisplay = () => {
 
 const defineSwordReach = () => {
 //  swordReach = window.innerWidth * (window.innerWidth > 1000 ? 0.15 : 0.35);
- swordReach = heroImage.getBoundingClientRect().height * 2;
+ //swordReach = heroImage.getBoundingClientRect().height * 2;
+ swordReach = window.innerWidth * 0.6;
 };
 
 const launchGame = () => {
