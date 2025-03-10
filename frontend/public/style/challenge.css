@@ -146,15 +146,21 @@ cinematic 2
     height: 21.5vh;
     bottom: 21vh;
 */
-  left: 105vw;
+
+/*
+  top: 53.5vh;
+  height: 38.5vh;
+*/
+  left: 90vw;
   height: 60.5vh;
   bottom: 2vh;
   z-index: 2000;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
-  top: 53.5vh;
-  height: 38.5vh;
+  /*red hammer */
+  top: 32.5vh;
+  height: 67.5vh;
 }
 
 .golem_master_container {
@@ -1012,7 +1018,7 @@ cinematic 2
 }
 
 .previously_hurt_moutain_god {
-  left: 85vw;
+  left: 30vw;
 }
 
 .mountain_god_container img, .mountain_god_container_fight img {
