@@ -3608,8 +3608,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        quitCinematic();
-        launchChallenge("677e814577322467895fd1a2");
+        setTimeout(
+          () => {
+            launchAnimation(pillarElement, 15 /* transformation */);
+            setTimeout(
+              launchMountainGodCinematic,
+              5e3
+            );
+          },
+          1e3
+        );
         return;
       }
       requestAnimationFrame(
@@ -3963,7 +3971,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var interruptOpponentRun = (enemy) => {
     interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 11 /* idle */).id);
   };
-  var apparitionVal = 0;
+  var apparitionVal = 1;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
@@ -3983,6 +3991,67 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     } else {
       moveEnemy(enemy, 0, Date.now());
     }
+  };
+  var createMountainGod = (cinematic = false) => {
+    const mountainGodContainer = document.createElement("div");
+    mountainGodContainer.classList.add("mountain_god_container");
+    const mountainGodImg = document.createElement("img");
+    mountainGodContainer.append(mountainGodImg);
+    if (cinematic) {
+      document.body.append(mountainGodContainer);
+    } else {
+      mountainGodContainer.classList.add("mountain_god_container_fight");
+    }
+    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
+  };
+  var launchMountainGodCinematic = () => {
+    const thunder = document.getElementById("thunder_audio");
+    thunder.play();
+    const mountainGodCharacter = createMountainGod(true);
+    setTimeout(
+      () => {
+        launchAnimation(mountainGodCharacter, 16 /* teleportation */, false);
+        setTimeout(
+          () => {
+            launchAnimation(mountainGodCharacter, 1 /* specialAttack */, false);
+            setTimeout(
+              () => {
+              },
+              800
+            );
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        setTimeout(
+                          () => {
+                            setTimeout(
+                              () => {
+                              },
+                              2e3
+                            );
+                          },
+                          2e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  700
+                );
+              },
+              700
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
@@ -4150,7 +4219,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         interruptAnimation(19 /* mountain_god_run */);
         interruptAnimation(15 /* mountain_god_attack */);
         interruptAnimation(30 /* hammer_opponent_idle */);
-        enemy.character.element.src = ASSETS_PATH_BASE + "/characters/enemies/hard/attack/death/1.png";
+        enemy.character.element.src = ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/death/1.png";
         setTimeout(
           () => {
             launchAnimation(enemy.character, 16 /* teleportation */, false);
@@ -4718,8 +4787,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 33 /* hammer_opponent_special_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/spin",
-              length: 30
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/new",
+              length: 20
             }
           }
         }
@@ -4763,7 +4832,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 37 /* hammer_opponent_taunt */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt",
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new",
               length: 7
             }
           }
@@ -6072,17 +6141,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroContainer.classList.add("cinematicHero");
     answerDataContainer.style.top = "88vh";
     answerDataContainer.style.height = "10.5vh";
-  };
-  var quitCinematic = () => {
-    cinematicOn = false;
-    const mapBlocks = document.querySelectorAll(".mapBlock");
-    dragonContainer.style.top = "5vh";
-    mapBlocks.forEach((block) => {
-      block.classList.remove("cinematicMapBlock");
-    });
-    const bottomDiv = document.getElementById("bottomDiv");
-    bottomDiv.style.display = "flex";
-    heroContainer.classList.remove("cinematicHero");
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {

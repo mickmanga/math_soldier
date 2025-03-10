@@ -1130,16 +1130,16 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
       
-     // setTimeout(
-       // () => {
-         // launchAnimation(pillarElement, AnimationType.transformation);
-           //   setTimeout(
-         //        launchMountainGodCinematic, 5000
-       //       )
-     //   }, 1000
-   //   );
-        quitCinematic();
-    launchChallenge("677e814577322467895fd1a2");
+      setTimeout(
+        () => {
+          launchAnimation(pillarElement, AnimationType.transformation);
+             setTimeout(
+                 launchMountainGodCinematic, 5000
+              )
+        }, 1000
+      );
+     //   quitCinematic();
+   // launchChallenge("677e814577322467895fd1a2");
       return;
     }
     requestAnimationFrame(
@@ -1706,7 +1706,7 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let apparitionVal = 0;
+let apparitionVal = 1;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
@@ -1780,10 +1780,17 @@ const launchMountainGodCinematic = () => {
      launchAnimation(mountainGodCharacter, AnimationType.teleportation,false);
       setTimeout(
       () => {
-        launchAnimation(mountainGodCharacter, AnimationType.idle);
+        launchAnimation(mountainGodCharacter, AnimationType.specialAttack, false);
 
         setTimeout(
           () => {
+           // launchAnimation(mountainGodCharacter, AnimationType.idle)
+          }, 800
+        )
+
+        setTimeout(
+          () => {
+
 
             setTimeout(
               () => {
@@ -1791,15 +1798,15 @@ const launchMountainGodCinematic = () => {
                 god.play();
                 setTimeout(
                   () => {
-                    launchAnimation(mountainGodCharacter, AnimationType.teleportation,false);
+                    //launchAnimation(mountainGodCharacter, AnimationType.teleportation,false);
           
                     setTimeout(
                       () => {
-                        document.getElementById("obelisk")!.style.left = `${document.getElementById("obelisk")!.getBoundingClientRect().left + window.innerWidth * 0.02}px`;
-                        quitCinematic();
+                  //      document.getElementById("obelisk")!.style.left = `${document.getElementById("obelisk")!.getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                    //    quitCinematic();
                         setTimeout(
                           () => {
-                            launchChallenge("677e814577322467895fd1a2")
+                         //   launchChallenge("677e814577322467895fd1a2")
                           }, 2000
                         )
                       }, 2000
@@ -2227,7 +2234,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
       interruptAnimation(ANIMATION_ID.mountain_god_attack);
       interruptAnimation(ANIMATION_ID.hammer_opponent_idle);
 
-      enemy.character.element.src = ASSETS_PATH_BASE + "/characters/enemies/hard/attack/death/1.png";
+      enemy.character.element.src = ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/death/1.png";
       
     setTimeout(
       () => {
@@ -3170,8 +3177,8 @@ const redHammerAnimations = [
           {
             id: ANIMATION_ID.hammer_opponent_special_attack,
             sprite:    {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/spin",
-              length: 30
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/new",
+              length: 20
           }
           }
          }
@@ -3219,7 +3226,7 @@ const redHammerAnimations = [
             {
               id: ANIMATION_ID.hammer_opponent_taunt,
               sprite:  {
-                path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt",
+                path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new",
                 length: 7
             }
             }
