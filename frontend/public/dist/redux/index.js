@@ -2357,8 +2357,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
-      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2371,6 +2369,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           validated: false
         }
       ] },
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: "1234ER", formBlocks: [
         {
           question: "combien fait 1+1",

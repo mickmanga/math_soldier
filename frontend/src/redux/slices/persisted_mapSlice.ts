@@ -13,21 +13,23 @@ export interface MapState {
 const initialState: MapState = {
   elements: [
     null,
+    {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+  null,
+  null,
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.golem_master},
-    {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
-     {
-      question: "combien fait 1+1",
-      answer: "2",
-      validated: false
-    },
-    {
-     question: "combien fait 2+2",
-     answer: "4",
-     validated: false
-    },
- ]},
- {type: ELEMENT_TYPE.form, id: "1234ER", formBlocks: [
+   {type: ELEMENT_TYPE.form, id: "1234ER", formBlocks: [
   {
    question: "combien fait 1+1",
    answer: "2",
