@@ -113,7 +113,6 @@ const getUrlParameter = (name: string): string | null => {
   return urlParams.get(name);
 };
 
-
 // Fetch a challenge by ID from the backend
 const fetchChallengeById = async (challengeId: string): Promise<void> => {
   try {
@@ -187,7 +186,6 @@ const updateEnemyViewPointDisplay = () => {
   );
 
   /*
-
   enemyViewPointLogo.src = `${
    ASSETS_PATH_BASE + heroInTheRedZone ? "/millescaneous/careful.png" :  "/items/lightning/11.png"
   }`;
@@ -4345,8 +4343,6 @@ const checkForOpponentAttack = () => {
   });
 };
 
-const heroInitialTop = heroContainer.getBoundingClientRect().top;
-
 
 let superSpeedOn = false;
 
@@ -5035,7 +5031,7 @@ const animateLightning = () => {
     );
  }
 
- const createMapSets = () => {
+ export const createMapSets = () => {
 
     for(let i=1; i <= 5; i++){
 

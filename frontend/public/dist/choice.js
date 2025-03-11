@@ -5638,7 +5638,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     moveBackground(direction);
     launchHeroRunAnimation(direction);
   };
-  var heroInitialTop = heroContainer.getBoundingClientRect().top;
   var superSpeedOn = false;
   var launchHeroWalk2 = (direction) => {
     moveHero(0 /* WALK */, direction);
