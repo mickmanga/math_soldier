@@ -1811,7 +1811,7 @@ const launchMountainGodCinematic = () => {
         setTimeout(
           () => {
             launchAnimation(mountainGodCharacter, AnimationType.idle)
-          }, 800
+          }, 1600
         )
 
         setTimeout(
@@ -3202,7 +3202,7 @@ const redHammerAnimations = [
       {
         id: ANIMATION_ID.hammer_opponent_idle,
         sprite:    {
-          path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new/new",
           length: 16
       }
       }

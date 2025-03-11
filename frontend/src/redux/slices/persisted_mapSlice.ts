@@ -13,6 +13,7 @@ export interface MapState {
 const initialState: MapState = {
   elements: [
     null,
+    {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
       {
        question: "combien fait 1+1",

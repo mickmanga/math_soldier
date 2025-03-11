@@ -2366,6 +2366,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: "2334", formBlocks: [
         {
           question: "combien fait 1+1",
@@ -4117,7 +4118,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               () => {
                 launchAnimation(mountainGodCharacter, 11 /* idle */);
               },
-              800
+              1600
             );
             setTimeout(
               () => {
@@ -4920,7 +4921,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 30 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle",
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new/new",
               length: 16
             }
           }
