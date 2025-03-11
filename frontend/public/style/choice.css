@@ -44,3 +44,72 @@ html, * {
     height: 100%;
     width: auto;
 }
+
+#personalisation_container {
+    position: absolute;
+    left: 5%;
+    height: 50%;
+    top: 25%;
+    width: 30%;
+    background: grey;
+    border-radius: 15px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.personalisation_container_a {
+    height: 10%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.personalisation_container_aa {
+    height: 100%;
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.personalisation_container_ab {
+    height: 100%;
+    width: 65%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.personalisation_switch_button{
+    height: 100%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.personalisation_content {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: purple;
+    border-radius: 5px;
+}
+
+.personalisation_container_ac {
+    height: 100%;
+    width: 50%;
+    background: RED;
+}
+
+.personalisation_container_ad {
+    height: 100%;
+    width: 10%;
+    background: orange;
+}
