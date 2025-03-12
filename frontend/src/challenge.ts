@@ -1684,7 +1684,7 @@ const launchAttack = (special = false) => {
   const enemyLeft = getHardModeEnemyRealLeft(enemy)! * (special ? 1.1: 1.2);
 
     return (
-      ( apparitionVal === 2 || enemyLeft >
+      ( ennemyOnScreenAttackIndex === 2 || enemyLeft >
       getHeroLeft()) &&
       enemyLeft <
       getHeroLeft() +
@@ -1744,7 +1744,7 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let apparitionVal = 2;
+let ennemyOnScreenAttackIndex = 2;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
@@ -1771,9 +1771,9 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
         moveEnemy(enemy, 0, Date.now());
        // if(mountainGodHurt){
-         launchAnimation(enemy.character, apparitionVal === 0 ? AnimationType.attack : apparitionVal === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
+         launchAnimation(enemy.character, ennemyOnScreenAttackIndex === 0 ? AnimationType.attack : ennemyOnScreenAttackIndex === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
 
-         if(apparitionVal === 2){
+         if(ennemyOnScreenAttackIndex === 2){
           interruptAnimation(ANIMATION_ID.hammer_opponent_move);
           setTimeout(
             () => {
@@ -1782,7 +1782,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
           )
          }
 
-       //  apparitionVal++;
+       //  ennemyOnScreenAttackIndex++;
         
         // } else {
        //   runningPointReached = true;
@@ -2263,7 +2263,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
 
     if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
 
-      if(apparitionVal < 2){
+      if(ennemyOnScreenAttackIndex < 2 || getHeroMode() === HERO_MODES.normal){
         
       interruptAnimation(ANIMATION_ID.mountain_god_run);
       interruptAnimation(ANIMATION_ID.mountain_god_attack);
