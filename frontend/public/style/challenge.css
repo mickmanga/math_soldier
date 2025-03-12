@@ -151,7 +151,12 @@ cinematic 2
   top: 53.5vh;
   height: 38.5vh;
 */
-  left: 90vw;
+/*
+jump 
+  left: -150px !important;
+
+*/
+  left: -150px !important;
   height: 60.5vh;
   bottom: 2vh;
   z-index: 2000;
@@ -161,6 +166,13 @@ cinematic 2
   /*red hammer */
   top: 32.5vh;
   height: 67.5vh;
+}
+
+#explosion_img {
+  height: 120% !important;
+  width: auto !important;
+  position: absolute;
+  left: 0;
 }
 
 .golem_master_container {
