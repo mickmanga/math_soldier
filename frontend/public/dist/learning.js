@@ -3983,7 +3983,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var interruptOpponentRun = (enemy) => {
     interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* idle */).id);
   };
-  var enemyOnScreenAttackIndex = 1;
+  var enemyOnScreenAttackIndex = 2;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
@@ -4788,8 +4788,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 33 /* hammer_opponent_special_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/new",
-              length: 20
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/spin",
+              length: 30
             }
           }
         }

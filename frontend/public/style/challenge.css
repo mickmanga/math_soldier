@@ -156,9 +156,9 @@ jump
   left: -11vw !important;
 
 */
-  left: -11vw !important;
+  left: -12vw !important;
   height: auto;
-  bottom: 5vh;
+  bottom: 3.5vh;
   z-index: 2000;
   display: flex;
   justify-content: flex-start;

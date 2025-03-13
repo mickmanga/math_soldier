@@ -1744,7 +1744,7 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let enemyOnScreenAttackIndex = 1;
+let enemyOnScreenAttackIndex = 2;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
@@ -3271,8 +3271,8 @@ const redHammerAnimations = [
           {
             id: ANIMATION_ID.hammer_opponent_special_attack,
             sprite:    {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/jump/new",
-              length: 20
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/attack/spin",
+              length: 30
           }
           }
          }
