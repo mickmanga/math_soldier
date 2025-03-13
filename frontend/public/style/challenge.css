@@ -81,11 +81,11 @@ audio {
   --hero-img-height: 30vh;  
   --hero-img-height-to-width-ratio: 2;          
   /* Define a CSS variable for height */
-  position: fixed;
-  top: 65.3vh;
+  position: absolute;
+  bottom: 15vh;
   left: 20vw;
-  height: 20vh;
-  width: calc(var(--hero-img-height) * var(--hero-img-height-to-width-ratio));
+  height: auto;
+  width: 31%;
   z-index: 3011;
   display: flex;
   justify-content: flex-start;
@@ -153,19 +153,19 @@ cinematic 2
 */
 /*
 jump 
-  left: -150px !important;
+  left: -11vw !important;
 
 */
-  left: -150px !important;
-  height: 60.5vh;
-  bottom: 2vh;
+  left: -11vw !important;
+  height: auto;
+  bottom: 5vh;
   z-index: 2000;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
   /*red hammer */
   top: 32.5vh;
-  height: 67.5vh;
+  width: 96vw;
 }
 
 #explosion_img {
@@ -430,10 +430,14 @@ jump
   display: none;
 }
 
-#hero_container img,
+#hero_container img {
+    height: auto;
+    width: 40%;
+}
+
 .hard_enemy_container img {
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 100%;
 }
 
 .enemy_container img {

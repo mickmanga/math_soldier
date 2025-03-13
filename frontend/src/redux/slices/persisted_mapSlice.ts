@@ -68,7 +68,7 @@ const initialState: MapState = {
   startIndex: 0,
   endIndex: 0,
   currentIndex: 0,
-  heroMode: HERO_MODES.normal
+  heroMode: HERO_MODES.special
 };
 
 const persistedMapSlice = createSlice({

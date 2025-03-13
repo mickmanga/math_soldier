@@ -2413,7 +2413,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     startIndex: 0,
     endIndex: 0,
     currentIndex: 0,
-    heroMode: 0 /* normal */
+    heroMode: 1 /* special */
   };
   var persistedMapSlice = createSlice({
     name: "map",

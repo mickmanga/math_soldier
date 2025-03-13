@@ -1684,7 +1684,7 @@ const launchAttack = (special = false) => {
   const enemyLeft = getHardModeEnemyRealLeft(enemy)! * (special ? 1.1: 1.2);
 
     return (
-      ( ennemyOnScreenAttackIndex === 2 || enemyLeft >
+      ( enemyOnScreenAttackIndex === 2 || enemyLeft >
       getHeroLeft()) &&
       enemyLeft <
       getHeroLeft() +
@@ -1744,7 +1744,7 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let ennemyOnScreenAttackIndex = 2;
+let enemyOnScreenAttackIndex = 1;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
@@ -1752,7 +1752,6 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-
 
 
   if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
@@ -1771,9 +1770,9 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
         moveEnemy(enemy, 0, Date.now());
        // if(mountainGodHurt){
-         launchAnimation(enemy.character, ennemyOnScreenAttackIndex === 0 ? AnimationType.attack : ennemyOnScreenAttackIndex === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
+         launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : enemyOnScreenAttackIndex === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
 
-         if(ennemyOnScreenAttackIndex === 2){
+         if(enemyOnScreenAttackIndex === 2){
           interruptAnimation(ANIMATION_ID.hammer_opponent_move);
           setTimeout(
             () => {
@@ -1782,7 +1781,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
           )
          }
 
-       //  ennemyOnScreenAttackIndex++;
+       //  enemyOnScreenAttackIndex++;
         
         // } else {
        //   runningPointReached = true;
@@ -2263,7 +2262,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
 
     if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
 
-      if(ennemyOnScreenAttackIndex < 2 || getHeroMode() === HERO_MODES.normal){
+      if(enemyOnScreenAttackIndex < 2 || getHeroMode() === HERO_MODES.normal){
         
       interruptAnimation(ANIMATION_ID.mountain_god_run);
       interruptAnimation(ANIMATION_ID.mountain_god_attack);
@@ -3039,8 +3038,8 @@ const heroAnimations = [
           {
             id: ANIMATION_ID.hero_special_attack ,
             sprite:    {
-              path: ASSETS_PATH_BASE + "/characters/hero/flames/new",
-              length: 15
+              path: ASSETS_PATH_BASE + "/characters/hero/flames",
+              length: 14
           }
           }
          }

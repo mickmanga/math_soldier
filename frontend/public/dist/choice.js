@@ -2422,7 +2422,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     startIndex: 0,
     endIndex: 0,
     currentIndex: 0,
-    heroMode: 0 /* normal */
+    heroMode: 1 /* special */
   };
   var persistedMapSlice = createSlice({
     name: "map",
@@ -3945,7 +3945,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const enemyCanBeHit = (enemy) => {
       const enemyLeft = getHardModeEnemyRealLeft(enemy) * (special ? 1.1 : 1.2);
-      return (ennemyOnScreenAttackIndex === 2 || enemyLeft > getHeroLeft()) && enemyLeft < getHeroLeft() + swordReach;
+      return (enemyOnScreenAttackIndex === 2 || enemyLeft > getHeroLeft()) && enemyLeft < getHeroLeft() + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
       if (!enemyCanBeHit(enemy)) {
@@ -3983,7 +3983,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var interruptOpponentRun = (enemy) => {
     interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* idle */).id);
   };
-  var ennemyOnScreenAttackIndex = 2;
+  var enemyOnScreenAttackIndex = 1;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
@@ -3996,8 +3996,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       setTimeout(
         () => {
           moveEnemy(enemy, 0, Date.now());
-          launchAnimation(enemy.character, ennemyOnScreenAttackIndex === 0 ? 0 /* attack */ : ennemyOnScreenAttackIndex === 1 ? 1 /* specialAttack */ : 2 /* specialAttack2 */);
-          if (ennemyOnScreenAttackIndex === 2) {
+          launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : enemyOnScreenAttackIndex === 1 ? 1 /* specialAttack */ : 2 /* specialAttack2 */);
+          if (enemyOnScreenAttackIndex === 2) {
             interruptAnimation(37 /* hammer_opponent_move */);
             setTimeout(
               () => {
@@ -4170,7 +4170,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       bombAudio.play();
       bombAudio.currentTime = 0;
       if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
-        if (ennemyOnScreenAttackIndex < 2 || getHeroMode() === 0 /* normal */) {
+        if (enemyOnScreenAttackIndex < 2 || getHeroMode() === 0 /* normal */) {
           interruptAnimation(19 /* mountain_god_run */);
           interruptAnimation(15 /* mountain_god_attack */);
           interruptAnimation(30 /* hammer_opponent_idle */);
@@ -4573,8 +4573,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 10 /* hero_special_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/hero/flames/new",
-              length: 15
+              path: ASSETS_PATH_BASE + "/characters/hero/flames",
+              length: 14
             }
           }
         }
