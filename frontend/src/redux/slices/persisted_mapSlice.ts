@@ -10,11 +10,31 @@ export interface MapState {
   heroMode: HERO_MODES
 }
 
+export enum GOLEM_IDS {
+  "golem1",
+  "golem2"
+}
+
 const initialState: MapState = {
   elements: [
     null,
+    {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.golem_master},
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
-    {type: ELEMENT_TYPE.form, id: "2334", formBlocks: [
+    {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
       {
        question: "combien fait 1+1",
        answer: "2",
