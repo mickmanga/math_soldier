@@ -18,6 +18,7 @@ enum ENEMIES_ON_SCREEN {
 
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
 let mountainGodHurt = true;
+let currentMapBlockWidthComparedToScreenWidth = 1;
 
 const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioElement;
 
@@ -61,8 +62,20 @@ let heroRunning = false;
 
 const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
-
 const SPECIAL_MODE_MAX_VALUE = 10;
+
+const calculateElementOnScreenSizeBasedOnCurrentMapBlockWidth = (width: number) => {
+  return width * currentMapBlockWidthComparedToScreenWidth;
+}
+
+const updateElementsSizesOnScreenBasedOnCurrentMapBlockWidth = () => {
+
+  //loop on ennemy container
+
+  //
+
+
+}
 
 export const ASSETS_PATH_BASE = "assets/challenge";
 
@@ -1744,23 +1757,27 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let enemyOnScreenAttackIndex = 2;
+let enemyOnScreenAttackIndex = 0;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
   interruptOpponentRun(enemy);
+
+  
+  if(enemyOnScreenAttackIndex === 2){
+    enemy.character.element.parentElement!.classList.add("enemy_container_jump");
+  } else {
+    enemy.character.element.parentElement!.classList.add("enemy_container_normal");
+  }
+
 
   const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
   ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
 
 
   if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
-    enemy.character.element.parentElement!.classList.add("previously_hurt_moutain_god");
-//    if(mountainGodHurt){
+
       enemyViewPoint.style.left = "40vw";
-  //  } else {
-     // enemyViewPoint.style.left = "0vw";
-   // }
 
     launchAnimation(enemy.character, AnimationType.teleportation,false);
     setTimeout(
@@ -1773,7 +1790,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
          launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : enemyOnScreenAttackIndex === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
 
          if(enemyOnScreenAttackIndex === 2){
-          interruptAnimation(ANIMATION_ID.hammer_opponent_move);
+        //  interruptAnimation(ANIMATION_ID.hammer_opponent_move);
           setTimeout(
             () => {
               mountainGodInTheContactZone = true;
@@ -2003,6 +2020,7 @@ const moveEnemy = (
   if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1 || !enemy.character.element) {
     return; 
   }
+
 
   const currentTimeStamp = Date.now();
   const diff = currentTimeStamp - previousTimeStamp;

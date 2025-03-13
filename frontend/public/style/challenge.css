@@ -137,28 +137,8 @@ cinematic 2
 
 .hard_enemy_container {
   position: absolute;
-  /* 
-    flames : 
-    bottom: 17vh;
-    height: 28.5vh;
-
-    sword: 
-    height: 21.5vh;
-    bottom: 21vh;
-*/
-
-/*
-  top: 53.5vh;
-  height: 38.5vh;
-*/
-/*
-jump 
-  left: -11vw !important;
-
-*/
-  left: -12vw !important;
   height: auto;
-  bottom: 3.5vh;
+  bottom: 3vh;
   z-index: 2000;
   display: flex;
   justify-content: flex-start;
@@ -166,6 +146,13 @@ jump
   /*red hammer */
   top: 32.5vh;
   width: 96vw;
+}
+
+.enemy_container_jump_attack {
+  left: -16vw !important;
+}
+.enemy_container_normal {
+  left: 40vw !important;
 }
 
 #explosion_img {

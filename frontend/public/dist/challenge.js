@@ -2422,7 +2422,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     startIndex: 0,
     endIndex: 0,
     currentIndex: 0,
-    heroMode: 1 /* special */
+    heroMode: 0 /* normal */
   };
   var persistedMapSlice = createSlice({
     name: "map",
@@ -3210,7 +3210,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var buildEnemy = (answer) => {
     enemyLaunchedAttack = false;
     const enemyCreationCallbacks = [
-      createRedHammerCharacter
+      //createRedHammerCharacter
+      createGolemCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -4070,14 +4071,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var interruptOpponentRun = (enemy) => {
     interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* idle */).id);
   };
-  var enemyOnScreenAttackIndex = 2;
+  var enemyOnScreenAttackIndex = 0;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     interruptOpponentRun(enemy);
+    if (enemyOnScreenAttackIndex === 2) {
+      enemy.character.element.parentElement.classList.add("enemy_container_jump");
+    } else {
+      enemy.character.element.parentElement.classList.add("enemy_container_normal");
+    }
     const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 14 /* movement */);
     ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
     if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
-      enemy.character.element.parentElement.classList.add("previously_hurt_moutain_god");
       enemyViewPoint.style.left = "40vw";
       launchAnimation(enemy.character, 18 /* teleportation */, false);
       setTimeout(
@@ -4085,7 +4090,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           moveEnemy(enemy, 0, Date.now());
           launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : enemyOnScreenAttackIndex === 1 ? 1 /* specialAttack */ : 2 /* specialAttack2 */);
           if (enemyOnScreenAttackIndex === 2) {
-            interruptAnimation(37 /* hammer_opponent_move */);
             setTimeout(
               () => {
                 mountainGodInTheContactZone = true;
@@ -5531,16 +5535,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
-  var createRedHammerCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";
-    newOpponentContainer.append(newEnnemyImg);
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
-  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -5651,6 +5645,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.append(golemContainer);
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
+  };
+  var createGolemCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
+    newOpponentContainer.append(newEnnemyImg);
+    newOpponentContainer.style.bottom = "-6.5vh";
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
   var golemLaunched = false;
   var createMasterCharacter = (masterImage) => {
