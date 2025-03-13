@@ -1172,7 +1172,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
 
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
-      /*
+      
       setTimeout(
         () => {
           launchAnimation(pillarElement, AnimationType.transformation);
@@ -1182,10 +1182,10 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
         }, 1000
       );
 
-      */
+      
     
-    quitCinematic();
-    launchChallenge("677e814577322467895fd1a2");
+    //quitCinematic();
+   // launchChallenge("677e814577322467895fd1a2");
       return;
     }
     requestAnimationFrame(
@@ -1808,7 +1808,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
       }, 360
     )
   } else {
-    moveEnemy(enemy, 0, Date.now());
+    launchAnimation(enemy.character, AnimationType.idle);
   }
 
 
@@ -1844,7 +1844,7 @@ const launchMountainGodCinematic = () => {
      launchAnimation(mountainGodCharacter, AnimationType.teleportation,false);
       setTimeout(
       () => {
-        launchAnimation(mountainGodCharacter, AnimationType.specialAttack, false);
+        launchAnimation(mountainGodCharacter, AnimationType.specialAttack2, false);
 
         setTimeout(
           () => {
@@ -3808,7 +3808,7 @@ const golemAnimations = [
       {
         id: ANIMATION_ID.golem_opponent_idle,
         sprite:    {
-          path: ASSETS_PATH_BASE + "/characters/enemies/golem/idle",
+          path: ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new",
           length: 12
       }
       }
@@ -4586,7 +4586,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "s" && hardMode) {
-    if (runStopped || heroInTheRedZone) {
+    if (runStopped) {
       return;
     };
     stopRun(true);

@@ -3210,8 +3210,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var buildEnemy = (answer) => {
     enemyLaunchedAttack = false;
     const enemyCreationCallbacks = [
-      //createRedHammerCharacter
-      createGolemCharacter
+      createRedHammerCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -3626,8 +3625,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        quitCinematic();
-        launchChallenge("677e814577322467895fd1a2");
+        setTimeout(
+          () => {
+            launchAnimation(pillarElement, 16 /* transformation */);
+            setTimeout(
+              launchMountainGodCinematic,
+              5e3
+            );
+          },
+          1e3
+        );
         return;
       }
       requestAnimationFrame(
@@ -4014,8 +4021,74 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         360
       );
     } else {
-      moveEnemy(enemy, 0, Date.now());
+      launchAnimation(enemy.character, 12 /* idle */);
     }
+  };
+  var createMountainGod = (cinematic = false) => {
+    const mountainGodContainer = document.createElement("div");
+    mountainGodContainer.classList.add("mountain_god_container");
+    const mountainGodImg = document.createElement("img");
+    mountainGodContainer.append(mountainGodImg);
+    if (cinematic) {
+      document.body.append(mountainGodContainer);
+    } else {
+      mountainGodContainer.classList.add("mountain_god_container_fight");
+    }
+    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
+  };
+  var launchMountainGodCinematic = () => {
+    const thunder = document.getElementById("thunder_audio");
+    thunder.play();
+    const mountainGodCharacter = createMountainGod(true);
+    setTimeout(
+      () => {
+        launchAnimation(mountainGodCharacter, 18 /* teleportation */, false);
+        setTimeout(
+          () => {
+            launchAnimation(mountainGodCharacter, 2 /* specialAttack2 */, false);
+            setTimeout(
+              () => {
+                launchAnimation(mountainGodCharacter, 12 /* idle */);
+              },
+              1600
+            );
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        launchAnimation(mountainGodCharacter, 18 /* teleportation */, false);
+                        setTimeout(
+                          () => {
+                            document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                            quitCinematic();
+                            setTimeout(
+                              () => {
+                                launchChallenge("677e814577322467895fd1a2");
+                              },
+                              2e3
+                            );
+                          },
+                          2e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  700
+                );
+              },
+              700
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
@@ -5269,7 +5342,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 39 /* golem_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/idle",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new",
               length: 12
             }
           }
@@ -5420,6 +5493,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
+  var createRedHammerCharacter = () => {
+    const newOpponentContainer = document.createElement("div");
+    newOpponentContainer.classList.add("hard_enemy_container");
+    const newEnnemyImg = document.createElement("img");
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";
+    newOpponentContainer.append(newEnnemyImg);
+    document.getElementsByTagName("body")[0].append(newOpponentContainer);
+    resetViewPoint();
+    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+  };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
     pilarBackgroundContainer.style.position = "absolute";
@@ -5530,17 +5613,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     formBackgroundContainer.append(golemContainer);
     lastGolemVal = lastGolemVal === 0 ? 1 : 0;
     return formBackgroundContainer;
-  };
-  var createGolemCharacter = () => {
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-6.5vh";
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
   };
   var golemLaunched = false;
   var createMasterCharacter = (masterImage) => {
@@ -5735,7 +5807,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       launchTransformation();
     }
     if (event.key === "s" && hardMode) {
-      if (runStopped || heroInTheRedZone) {
+      if (runStopped) {
         return;
       }
       ;
