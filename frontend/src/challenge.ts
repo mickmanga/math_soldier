@@ -1199,7 +1199,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
      // );
 
        
-     //quitCinematic();
+     quitCinematic();
      launchChallenge("677e814577322467895fd1a2");
 
       return;
@@ -5302,6 +5302,10 @@ const updateHeroContainerBottom = (newBottomInVw: string) => {
 const quitCinematic = () => {
 
   cinematicOn = false;
+  const bottomDiv = document.getElementById("bottomDiv")!;
+  bottomDiv.style.display = "flex";
+  
+  return;
 
   const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
   // Iterate over each element and add the "cinematicMapBlock" class
@@ -5311,10 +5315,6 @@ const quitCinematic = () => {
   mapBlocks.forEach((block) => {
     block.classList.remove('cinematicMapBlock');
   });
-
-  const bottomDiv = document.getElementById("bottomDiv")!;
-  bottomDiv.style.display = "flex";
-
   heroContainer.classList.remove("cinematicHero");
 
   //repositionMapBlocks();
