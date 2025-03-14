@@ -18,7 +18,7 @@ enum ENEMIES_ON_SCREEN {
 
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
 let mountainGodHurt = true;
-let currentMapBlockWidthComparedToScreenWidth = 1;
+let currentMapBlockHeightAndWidthComparedToScreen = 1;
 
 const flameThrowerAudio = document.getElementById("flame_thrower") as HTMLAudioElement;
 
@@ -65,12 +65,12 @@ const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 const SPECIAL_MODE_MAX_VALUE = 10;
 
 const calculateElementOnScreenSizeBasedOnCurrentMapBlockWidth = (width: number) => {
-  return width * currentMapBlockWidthComparedToScreenWidth;
+  return width * currentMapBlockHeightAndWidthComparedToScreen;
 }
 
 const calculateHeroLeft = () => {
   const HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW = 20;
-  heroContainer.style.left = `${HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW * currentMapBlockWidthComparedToScreenWidth}px`;
+  heroContainer.style.left = `${HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW * currentMapBlockHeightAndWidthComparedToScreen}vw`;
 }
 
 const updateElementsSizesOnScreenBasedOnCurrentMapBlockWidth = () => {
@@ -4275,12 +4275,12 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
 
           setTimeout(
             () => {
-              killHero();
+            //  killHero();
             
               
-              setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
-              )
+             // setTimeout(
+              //  () => window.location.replace("http://localhost:3001/learningWorld"), 5000
+              //)
 
             }, 19000
           )
@@ -5222,7 +5222,7 @@ enum CINEMATIC_ID {
   FIRST,
   SECOND
 }
-
+/*
 const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
   
   cinematicOn = true;
@@ -5246,6 +5246,56 @@ const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
  // repositionMapBlocks();
 
 }
+ */
+
+
+
+
+
+
+const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
+
+  //According to cinematic, modify width accordingly. Go through each map block. Simply change => their width, their height, their top
+  
+  cinematicOn = true;
+  const bottomDiv = document.getElementById("bottomDiv")!;
+  bottomDiv.style.display = "none";
+
+  return;
+
+  const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
+  // Iterate over each element and add the "cinematicMapBlock" class
+
+  mapBlocks.forEach((block) => {
+    if(cinematicId === CINEMATIC_ID.FIRST){
+        block.style.height = "70vh";
+        block.style.width = "70vw";
+        block.style.bottom = "15vh";
+        updateHeroContainerBottom("15vh");
+        currentMapBlockHeightAndWidthComparedToScreen = 0.7;
+        calculateHeroLeft();
+    } else {
+      block.style.height = "90vh";
+      block.style.width = "90vw";
+      block.style.bottom = "5vh";
+    }
+  });
+  
+
+ /*
+   calculate new top => easy
+   100 - height / 2;
+
+   bottom of each element on the screen with certain class => bottom = mapBlockBottom
+
+  */
+  
+}
+
+const updateHeroContainerBottom = (newBottomInVw: string) => {   
+  heroContainer.style.bottom = newBottomInVw;
+}
+
 
 const quitCinematic = () => {
 
@@ -5456,7 +5506,6 @@ const repositionMapBlocks = () => {
 
  MAP_SETS.forEach(
   (mapSet) => {
-    
     mapSet.maps.forEach(
       (map,index) => {
         previousMapBlock = map;

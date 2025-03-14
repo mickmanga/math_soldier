@@ -82,10 +82,20 @@ audio {
   --hero-img-height-to-width-ratio: 2;          
   /* Define a CSS variable for height */
   position: absolute;
-  bottom: 15vh;
+  /*
+  cinematic 1
+  bottom: 16vh;
+  width: 20vw;
+  */
+  /*
+  normal
+  bottom: 25vh;
+  width: 31%;
+  */
+  bottom: 16vh;
   left: 20vw;
   height: auto;
-  width: 31%;
+  width: 20%;
   z-index: 3011;
   display: flex;
   justify-content: flex-start;
@@ -97,8 +107,11 @@ cinematic 1
 */
 
 .cinematicHero {
+  /*
   top: 68vh;
-  height: 18.5vh;
+  */
+
+  width: 18vw;
 }
 
 
@@ -164,10 +177,10 @@ cinematic 2
 
 .golem_master_container {
   position: absolute;
+  bottom:0;
   left: 0vw;
   height: 50vh;
   width: 35vw;
-  top: 16vh;
   display: flex;
   justify-content: center;
   align-items: center;

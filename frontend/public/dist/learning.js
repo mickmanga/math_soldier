@@ -2366,6 +2366,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2947,6 +2948,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var gameMode = 0 /* discovery */;
   var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
   var mountainGodHurt = true;
+  var currentMapBlockHeightAndWidthComparedToScreen = 1;
   var flameThrowerAudio = document.getElementById("flame_thrower");
   var windAudio = document.getElementById("wind_audio");
   var MAP_SETS = [];
@@ -2979,6 +2981,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var SPECIAL_MODE_MAX_VALUE = 10;
+  var calculateHeroLeft = () => {
+    const HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW = 20;
+    heroContainer.style.left = `${HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW * currentMapBlockHeightAndWidthComparedToScreen}vw`;
+  };
   var ASSETS_PATH_BASE = "assets/challenge";
   var currentChallengeLength = 0;
   var answers = null;
@@ -3847,7 +3853,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 11 /* hero_teleportation */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 7 /* hero_death */ || animationId === 83 /* lightning */ || animationId === 30 /* hammer_opponent_idle */ || animationId === 35 /* hammer_opponent_death */ || animationId === 58 /* witch_opponent_death */ || animationId === 59 /* witch_opponent_death_from_special_attack */ || animationId === 32 /* hammer_opponent_attack */ || animationId === 33 /* hammer_opponent_special_attack */ || animationId === 34 /* hammer_opponent_special_attack2 */ || animationId === 61 /* orc_opponent_idle */ || animationId === 63 /* orc_opponent_attack */ || animationId === 66 /* dwarf_opponent_idle */ || animationId === 68 /* dwarf_opponent_attack */ || animationId === 39 /* golem_opponent_idle */ || animationId === 41 /* golem_opponent_attack */ || animationId === 42 /* golem_opponent_death */ || animationId === 64 /* orc_opponent_death */ || animationId === 69 /* dwarf_opponent_death */ || animationId === 43 /* golem_opponent_death_from_special_attack */ || animationId === 40 /* golem_opponent_run */ || animationId === 56 /* witch_opponent_run */ || animationId === 31 /* hammer_opponent_run */ || animationId === 38 /* hammer_opponent_taunt */ || animationId === 36 /* hammer_opponent_death_from_special_attack */ || animationId === 50 /* king_opponent_idle */ || animationId === 52 /* king_opponent_attack */ || animationId === 55 /* witch_opponent_idle */ || animationId === 57 /* witch_opponent_attack */ || animationId === 71 /* dragon_fly_right */ || animationId === 72 /* dragon_fly_left */ || animationId === 13 /* learning_god_idle */ || animationId === 14 /* learning_god_open_course */ || animationId === 12 /* learning_god_walk_left */ || animationId === 15 /* mountain_god_attack */ || animationId === 20 /* mountain_god_idle */ || animationId === 18 /* mountain_god_teleportation */ || animationId === 19 /* mountain_god_run */ || animationId === 16 /* mountain_god_hurt */ || animationId === 17 /* mountain_god_hurt_from_special_attack */ || animationId === 45 /* golem_master_transformation */ || animationId === 46 /* golem_master_idle */ || animationId === 84 /* mountain_pillar_activated */ || animationId === 47 /* pnj1_transformation */ || animationId === 48 /* pnj1_transformation2 */ || animationId === 49 /* pnj2_idle */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 83 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 72 /* dragon_fly_left */ ? 150 : animationId === 71 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 100 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 120 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 120 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 84 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 83 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 72 /* dragon_fly_left */ ? 150 : animationId === 71 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 100 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 120 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 4e3 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 84 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -5673,11 +5679,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           talnurAudio.play();
           setTimeout(
             () => {
-              killHero();
-              setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"),
-                5e3
-              );
             },
             19e3
           );
@@ -6251,14 +6252,25 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     cinematicOn = true;
     const bottomDiv = document.getElementById("bottomDiv");
     bottomDiv.style.display = "none";
-    dragonContainer.style.top = "20vh";
+    return;
     const mapBlocks = document.querySelectorAll(".mapBlock");
     mapBlocks.forEach((block) => {
-      block.classList.add("cinematicMapBlock");
+      if (cinematicId === 0 /* FIRST */) {
+        block.style.height = "70vh";
+        block.style.width = "70vw";
+        block.style.bottom = "15vh";
+        updateHeroContainerBottom("15vh");
+        currentMapBlockHeightAndWidthComparedToScreen = 0.7;
+        calculateHeroLeft();
+      } else {
+        block.style.height = "90vh";
+        block.style.width = "90vw";
+        block.style.bottom = "5vh";
+      }
     });
-    heroContainer.classList.add("cinematicHero");
-    answerDataContainer.style.top = "88vh";
-    answerDataContainer.style.height = "10.5vh";
+  };
+  var updateHeroContainerBottom = (newBottomInVw) => {
+    heroContainer.style.bottom = newBottomInVw;
   };
   var quitCinematic = () => {
     cinematicOn = false;
