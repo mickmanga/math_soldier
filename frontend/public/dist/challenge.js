@@ -2988,6 +2988,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var getElementsRight = (element) => {
     return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
   };
+  var handleHeroAndEnemyContact = (enemy) => {
+    enemy.collideable = false;
+    if (!invisible || enemy.answer.true) {
+      hurtHero();
+    } else if (invisible && !enemy.answer.true) {
+      rewardHero();
+      transformIfRequired();
+    }
+  };
   var ASSETS_PATH_BASE = "assets/challenge";
   var currentChallengeLength = 0;
   var answers = null;
@@ -4097,7 +4106,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
-  var enemyOnScreenAttackIndex = 0;
+  var enemyOnScreenAttackIndex = 1;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     if (enemyOnScreenAttackIndex === 2) {
@@ -4107,15 +4116,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
       launchAnimation(enemy.character, 18 /* teleportation */, false);
-      if (enemyOnScreenAttackIndex === 2) {
-        setTimeout(
-          () => {
+      setTimeout(
+        () => {
+          if (enemyOnScreenAttackIndex < 2) {
+            interruptAnimation(44 /* golem_opponent_move */);
+            launchAnimation(enemy.character, 12 /* idle */);
+            ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
+            moveEnemy(enemy, 0, Date.now());
+          } else {
             launchAnimation(enemy.character, 2 /* specialAttack2 */, false);
             setTimeout(
               () => {
-                if (!enemy.hurt) {
-                  hurtHero();
-                }
+                handleHeroAndEnemyContact(enemy);
               },
               300
             );
@@ -4127,20 +4139,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               },
               600
             );
-          },
-          360
-        );
-      } else {
-        setTimeout(
-          () => {
-            interruptAnimation(44 /* golem_opponent_move */);
-            launchAnimation(enemy.character, 12 /* idle */);
-            ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
-            moveEnemy(enemy, 0, Date.now());
-          },
-          360
-        );
-      }
+          }
+        },
+        360
+      );
     } else {
       enemyViewPoint.style.left = "40vw";
       moveEnemy(enemy, 0, Date.now());
@@ -4405,10 +4407,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       const enemyContainer = enemyOnScreen.character.element.parentElement;
       const enemyLeft = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodRealLeft(enemyOnScreen) : enemyContainer.getBoundingClientRect().left;
       if (getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack) {
-        if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ && enemyOnScreenAttackIndex === 2) {
-          enemyLaunchedAttack = true;
+        enemyLaunchedAttack = true;
+        if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
+          if (enemyOnScreenAttackIndex < 2) {
+            launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : 1 /* specialAttack */);
+          }
         } else {
-          enemyLaunchedAttack = true;
           launchAnimation(enemyOnScreen.character, 0 /* attack */);
         }
       }
@@ -4417,13 +4421,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         updateEnemyViewPointDisplay();
       }
       if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
-        enemyOnScreen.collideable = false;
-        if (!invisible || enemyOnScreen.answer.true) {
-          hurtHero();
-        } else if (invisible && !enemyOnScreen.answer.true) {
-          rewardHero();
-          transformIfRequired();
-        }
+        handleHeroAndEnemyContact(enemyOnScreen);
       }
     });
     requestAnimationFrame(detectCollision);

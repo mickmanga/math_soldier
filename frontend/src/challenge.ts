@@ -86,6 +86,17 @@ const getElementsRight = (element: HTMLElement) => {
   return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
 }
 
+const handleHeroAndEnemyContact = (enemy: Enemy) => {
+  enemy.collideable = false;
+
+  if (!invisible || enemy.answer.true) {
+    hurtHero();
+  } else if (invisible && !enemy.answer.true) {
+    rewardHero();
+    transformIfRequired();
+  }
+}
+
 export const ASSETS_PATH_BASE = "assets/challenge";
 
 let currentChallengeLength = 0;
@@ -1768,7 +1779,7 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let enemyOnScreenAttackIndex = 0;
+let enemyOnScreenAttackIndex = 1;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
@@ -1785,38 +1796,35 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
     launchAnimation(enemy.character, AnimationType.teleportation,false);
 
-    if(enemyOnScreenAttackIndex === 2){ 
+
       setTimeout(
         () => {
-          launchAnimation(enemy.character, AnimationType.specialAttack2, false);
-          setTimeout(
-            () => {
-              if(!enemy.hurt){
-                hurtHero();
-              }
-            }, 300
-          )
-          setTimeout(
-            () => {
-              interruptAnimation(ANIMATION_ID.golem_opponent_move)
-              ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
-              moveEnemy(enemy, 0, Date.now());
-            }, 600
-          )
-        }, 360
-      )
-     } else {
-      setTimeout(
-        () => {
-          interruptAnimation(ANIMATION_ID.golem_opponent_move)
-          launchAnimation(enemy.character, AnimationType.idle);
-          ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
-          moveEnemy(enemy, 0, Date.now());
+          if(enemyOnScreenAttackIndex < 2){
+
+           interruptAnimation(ANIMATION_ID.golem_opponent_move)
+           launchAnimation(enemy.character, AnimationType.idle);
+           ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
+           moveEnemy(enemy, 0, Date.now());
+
+          } else {
+            
+            launchAnimation(enemy.character, AnimationType.specialAttack2, false);
+            setTimeout(
+              () => {
+                handleHeroAndEnemyContact(enemy)
+              }, 300
+            )
+            setTimeout(
+              () => {
+                interruptAnimation(ANIMATION_ID.golem_opponent_move)
+                ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
+                moveEnemy(enemy, 0, Date.now());
+              }, 600
+            )
+          }
         }, 360
       )
     
-
-     }
 
 
   } else {
@@ -2436,10 +2444,13 @@ const detectCollision = () => {
       : enemyContainer.getBoundingClientRect().left;
 
     if(getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack){
-      if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD && enemyOnScreenAttackIndex === 2 ){        
-        enemyLaunchedAttack = true;
+      enemyLaunchedAttack = true;
+
+      if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
+        if(enemyOnScreenAttackIndex < 2){
+          launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : AnimationType.specialAttack);   
+        }
       } else {
-        enemyLaunchedAttack = true;
         launchAnimation(enemyOnScreen.character, AnimationType.attack)   
       }
     } 
@@ -2457,20 +2468,15 @@ const detectCollision = () => {
       updateEnemyViewPointDisplay();
     
   }
+
+
   
     if (
       getHeroLeft() >
         enemyLeft &&
       enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2
     ) {
-      enemyOnScreen.collideable = false;
-
-      if (!invisible || enemyOnScreen.answer.true) {
-        hurtHero();
-      } else if (invisible && !enemyOnScreen.answer.true) {
-        rewardHero();
-        transformIfRequired();
-      }
+      handleHeroAndEnemyContact(enemyOnScreen);
     }
   });
 
