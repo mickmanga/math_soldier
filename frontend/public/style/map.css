@@ -14,37 +14,52 @@ html, body {
 
 /*
 CINEMATIC 1
-*/
-
 .mapBlock{
-  height: 70vh;
-  width: 70vw;
-  bottom: 15vh;
+  height: 65vh;
+  width: 65vw;
+  bottom: 17.5vh;
 }
 
 .cinematicMapBlock{
-  height: 70vh;
-  width: 70vw;
-  bottom: 15vh;
+  height: 65vh;
+  width: 65vw;
+  bottom: 17.5vh;
 }
+
+*/
 
 
 /*
 CINEMATIC 2
 */
+
 /*
 
-.mapBlock {
-  height: 100vh;
-  width: 100vw;
-}
+  .mapBlock{
+    height: 76vh;
+    width: 76vw;
+    bottom: 12vh;
+  }
+  
+  .cinematicMapBlock{
+    height: 76vh;
+    width: 76vw;
+    bottom: 12vh;
+  }
 
-.cinematicMapBlock {
-  top: 18.55vh;
-  height: 74vh;
-  width: 70vw;
-}
   */
+
+  .mapBlock{
+    height: 85vh;
+    width: 100vw;
+    bottom: 15vh;
+ }
+  
+ .cinematicMapBlock{
+  height: 85vh;
+  width: 100vw;
+  bottom: 15vh;
+ }
 
 
 .mapBlock img {

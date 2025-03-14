@@ -1189,22 +1189,23 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
       
-      setTimeout(
-        () => {
-          launchAnimation(pillarElement, AnimationType.transformation);
-             setTimeout(
-                 launchMountainGodCinematic, 5000
-              )
-        }, 1000
-      );
+    //  setTimeout(
+      //  () => {
+        //  launchAnimation(pillarElement, AnimationType.transformation);
+          //   setTimeout(
+            //     launchMountainGodCinematic, 5000
+             // )
+      //  }, 1000
+     // );
 
-      
-    
-    //quitCinematic();
-   // launchChallenge("677e814577322467895fd1a2");
+       
+     //quitCinematic();
+     launchChallenge("677e814577322467895fd1a2");
+
       return;
     }
-    requestAnimationFrame(
+
+      requestAnimationFrame(
       checkForHeroMeeting
     )
   }
@@ -4275,12 +4276,11 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
 
           setTimeout(
             () => {
-            //  killHero();
+              killHero();
             
-              
-             // setTimeout(
-              //  () => window.location.replace("http://localhost:3001/learningWorld"), 5000
-              //)
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
+              )
 
             }, 19000
           )
@@ -5193,7 +5193,7 @@ window.onload = () => {
   animateLightning();
   //launchHeroTeleporationAnimation();
  // launchAnimation(heroCharacter, AnimationType.idle, false);
-  launchDragon();
+  //launchDragon();
  // quitCinematic();
 };
 
@@ -5260,6 +5260,8 @@ const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
   cinematicOn = true;
   const bottomDiv = document.getElementById("bottomDiv")!;
   bottomDiv.style.display = "none";
+  dragonContainer.style.top = "20vh"
+
 
   return;
 

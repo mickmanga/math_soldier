@@ -84,18 +84,23 @@ audio {
   position: absolute;
   /*
   cinematic 1
-  bottom: 16vh;
-  width: 20vw;
+  bottom: 18vh;
+  width: 14%;
+  */
+  /*
+  cinematic 2
+  bottom: 12.5vh;
+  width: 27vw;
   */
   /*
   normal
-  bottom: 25vh;
+  bottom: 15.5vh;
   width: 31%;
   */
-  bottom: 16vh;
+  bottom: 15.5vh;
+  width: 31%;
   left: 20vw;
   height: auto;
-  width: 20%;
   z-index: 3011;
   display: flex;
   justify-content: flex-start;
@@ -177,7 +182,7 @@ cinematic 2
 
 .golem_master_container {
   position: absolute;
-  bottom:0;
+  bottom:-2.5vh;
   left: 0vw;
   height: 50vh;
   width: 35vw;
