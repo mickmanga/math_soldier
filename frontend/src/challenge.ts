@@ -79,7 +79,11 @@ const updateElementsSizesOnScreenBasedOnCurrentMapBlockWidth = () => {
 
   //
 
+}
 
+
+const getElementsRight = (element: HTMLElement) => {
+  return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
 }
 
 export const ASSETS_PATH_BASE = "assets/challenge";
@@ -204,11 +208,6 @@ const updateEnemyViewPointDisplay = () => {
         : "rgba(40, 108, 204, 0.514)")
   );
 
-  /*
-  enemyViewPointLogo.src = `${
-   ASSETS_PATH_BASE + heroInTheRedZone ? "/millescaneous/careful.png" :  "/items/lightning/11.png"
-  }`;
-  */
 };
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
@@ -536,7 +535,7 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
  enemyLaunchedAttack = false;
 
  const enemyCreationCallbacks = [
-  createRedHammerCharacter
+  createAndInjectRedHammerImgInDomAndGetCharacter
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
@@ -1435,7 +1434,6 @@ export const launchAnimationAndDeclareItLaunched = (
 
   ANIMATION_RUNNING_VALUES[animationId]++;
 
-  
   const animationCallback = () => {
     launchCharacterAnimation(
       gameElement,
@@ -1511,9 +1509,6 @@ const launchCharacterAnimation = (
     !ANIMATION_RUNNING_VALUES[animationId] ||
     ANIMATION_RUNNING_VALUES[animationId] > 1
   ) {
-    if(animationId === ANIMATION_ID.golem_opponent_death_from_special_attack){
-      alert("stop =>" + ANIMATION_RUNNING_VALUES[animationId] );
-    }
     return;
   }
   
@@ -1710,7 +1705,7 @@ const launchAttack = (special = false) => {
  
   const enemyCanBeHit = (enemy: EnemyInterface) => {
 
-  const enemyLeft = getHardModeEnemyRealLeft(enemy)! * (special ? 1.1: 1.2);
+  const enemyLeft = getMountainGodRealLeft(enemy)! * (special ? 1.1: 1.2);
 
     return (
       ( enemyOnScreenAttackIndex === 2 || enemyLeft >
@@ -1777,7 +1772,6 @@ let enemyOnScreenAttackIndex = 0;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-  interruptOpponentRun(enemy);
 
   
   if(enemyOnScreenAttackIndex === 2){
@@ -1787,46 +1781,49 @@ const launchOpponent = (enemy: EnemyInterface) => {
   }
 
 
-  const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
-  ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
-
-
   if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
 
-      enemyViewPoint.style.left = "40vw";
-
     launchAnimation(enemy.character, AnimationType.teleportation,false);
-    setTimeout(
-      () => {
-        
-      // launchIdleProcess(enemy.character);
 
-        moveEnemy(enemy, 0, Date.now());
-       // if(mountainGodHurt){
-         launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : enemyOnScreenAttackIndex === 1 ? AnimationType.specialAttack : AnimationType.specialAttack2);
-
-         if(enemyOnScreenAttackIndex === 2){
-        //  interruptAnimation(ANIMATION_ID.hammer_opponent_move);
+    if(enemyOnScreenAttackIndex === 2){ 
+      setTimeout(
+        () => {
+          launchAnimation(enemy.character, AnimationType.specialAttack2, false);
           setTimeout(
             () => {
-              mountainGodInTheContactZone = true;
-            }, 2700
+              if(!enemy.hurt){
+                hurtHero();
+              }
+            }, 300
           )
-         }
+          setTimeout(
+            () => {
+              interruptAnimation(ANIMATION_ID.golem_opponent_move)
+              ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
+              moveEnemy(enemy, 0, Date.now());
+            }, 600
+          )
+        }, 360
+      )
+     } else {
+      setTimeout(
+        () => {
+          interruptAnimation(ANIMATION_ID.golem_opponent_move)
+          launchAnimation(enemy.character, AnimationType.idle);
+          ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
+          moveEnemy(enemy, 0, Date.now());
+        }, 360
+      )
+    
 
-       //  enemyOnScreenAttackIndex++;
-        
-        // } else {
-       //   runningPointReached = true;
-      //     launchAnimation(enemy.character, AnimationType.run);
-     //   }
+     }
 
-      }, 360
-    )
+
   } else {
+    enemyViewPoint.style.left = "40vw";
+    moveEnemy(enemy, 0, Date.now());
     launchAnimation(enemy.character, AnimationType.idle);
   }
-
 
 };
 
@@ -2037,7 +2034,6 @@ const moveEnemy = (
     return; 
   }
 
-
   const currentTimeStamp = Date.now();
   const diff = currentTimeStamp - previousTimeStamp;
 
@@ -2049,7 +2045,7 @@ const moveEnemy = (
       2 * (runningPointReached ? 1.4  : 1)
   )}px`;
 
-  if (hardMode) {
+  if (enemyCurrentlyOnScreen !== ENEMIES_ON_SCREEN.MOUNTAIN_GOD) {
     //enemyViewPoint.style.left = `${Math.round(
       //enemyViewPoint.getBoundingClientRect().left - diff * (hardMode ? 0.45 : 1) * (runningPointReached ? 1.3  : 1) * (superSpeedOn? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
     //)}px`;
@@ -2341,7 +2337,7 @@ const killEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
   destroyEnemyAndLaunchNewOne(enemy);
 };
 
-const getHardModeEnemyRealLeft = (enemy: EnemyInterface) => {
+const getMountainGodRealLeft = (enemy: EnemyInterface) => {
   const enemyContainer = enemy.character.element.parentElement;
 
   if(!enemyContainer){
@@ -2350,8 +2346,7 @@ const getHardModeEnemyRealLeft = (enemy: EnemyInterface) => {
   }
 
   return (
-    enemyContainer.getBoundingClientRect().left +
-    enemyContainer.getBoundingClientRect().width * 0.3
+    enemyContainer.getBoundingClientRect().left * 1.3
   );
 };
 
@@ -2412,7 +2407,7 @@ const hurtHero = () => {
    hurtAudio.currentTime = 0;
 
   updateLifePointsDisplay();
-//  launchHeroHurtAnimation();
+  launchHeroHurtAnimation();
 
   displayMalus("Malus! You were hurt!");
 };
@@ -2429,46 +2424,28 @@ const killHero = () => {
   launchDeathAnimation();
 };
 
-let viewPointOnScreen = false;
-let enemyViewPointThresholdCrossed = false;
-
-let hardModeAttackOn = false;
-
 let enemyLaunchedAttack = false;
+
+
 
 const detectCollision = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
     const enemyContainer = enemyOnScreen.character.element.parentElement!;
-    const enemyLeft = hardMode
-      ? getHardModeEnemyRealLeft(enemyOnScreen)!
+    const enemyLeft = enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD
+      ? getMountainGodRealLeft(enemyOnScreen)!
       : enemyContainer.getBoundingClientRect().left;
 
-    if (hardMode && !viewPointOnScreen && enemyLeft < window.innerWidth) {
-      viewPointOnScreen = true;
-      enemyViewPoint.style.display = "flex";
-    }
-
-    
-    const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen: Enemy) => {
-      if(!enemyOnScreen.hurt){
-        setTimeout(
-          () => {
-            if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.run);
-          }, 700
-         )
-      }
-    }
-
-    if(getHeroLeft() > (enemyOnScreen.character.element.parentElement!.getBoundingClientRect().left - window.innerWidth * 0.05) && !enemyLaunchedAttack){
-    //    if(!enemyOnScreen.hurt) launchAnimation(enemyOnScreen.character, AnimationType.attack);
+    if(getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack){
+      if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD && enemyOnScreenAttackIndex === 2 ){        
         enemyLaunchedAttack = true;
-        if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
-           // launchMountainGodRunAfterAttackAnimation(enemyOnScreen);
-         }
-       } 
+      } else {
+        enemyLaunchedAttack = true;
+        launchAnimation(enemyOnScreen.character, AnimationType.attack)   
+      }
+    } 
    
     if (
-      hardMode &&
+      enemyCurrentlyOnScreen !== ENEMIES_ON_SCREEN.MOUNTAIN_GOD &&
       !heroInTheRedZone &&
       enemyViewPoint.getBoundingClientRect().left +
         enemyViewPoint.getBoundingClientRect().width <
@@ -2478,36 +2455,13 @@ const detectCollision = () => {
       heroInTheRedZone = true;
 
       updateEnemyViewPointDisplay();
-
-      
-const launchEnemyRun = () => {
-  ennemiesOnScreen.forEach(
-    (enemy) => {
-       launchAnimation(enemy.character, AnimationType.run);
-        runningPointReached=true;
-        mountainGodHurt = false;
-       } 
-      
-    )
-  }
-
- // if(mountainGodHurt) launchEnemyRun();
-
+    
   }
   
-
-    if (
-      hardMode &&
-      !enemyViewPointThresholdCrossed &&
-      enemyLeft < window.innerWidth
-    ) {
-      enemyViewPointThresholdCrossed = true;
-    }
-
     if (
       getHeroLeft() >
         enemyLeft &&
-      enemyOnScreen.collideable
+      enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2
     ) {
       enemyOnScreen.collideable = false;
 
@@ -4008,7 +3962,7 @@ const resetViewPoint = () => {
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
-const createRedHammerCharacter = (): DefaultCharacter => {
+const createAndInjectRedHammerImgInDomAndGetCharacter = (): DefaultCharacter => {
 
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
@@ -4020,9 +3974,12 @@ const createRedHammerCharacter = (): DefaultCharacter => {
 
     //init view point
 
-    resetViewPoint();
+ return getRedHammerCharacter(newEnnemyImg);
+}
 
- return new DefaultCharacter(newEnnemyImg, RedHammerEnemyCharacterStates.idle, redHammerAnimations);
+const getRedHammerCharacter = (img: HTMLImageElement) => {
+
+  return new DefaultCharacter(img, RedHammerEnemyCharacterStates.idle, redHammerAnimations);
 }
 
 
@@ -4220,21 +4177,6 @@ const createFormElement = (formElement: MapElement) => {
     return formBackgroundContainer;
 }
 
-const createMountainGodEnemy = (): DefaultCharacter => {
-
-  const newOpponentContainer = document.createElement("div");
-  newOpponentContainer.classList.add("mountain_god_container_fight");
-  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/mountain_god/idle/1.png";  
-  newOpponentContainer.append(newEnnemyImg);
-
-  document.getElementsByTagName("body")[0].append(newOpponentContainer);
-
-  resetViewPoint();
-
-  return new DefaultCharacter(newEnnemyImg, CharacterDefaultStates.default, mountainGodAnimations);
-
-}
 
 const createGolemCharacter = (): DefaultCharacter => {
 
@@ -4319,91 +4261,6 @@ const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
   createMasterCharacter(masterImg);
 
   return masterElement;
-}
-
-const createKingCharacter = (): DefaultCharacter => {
-
-  const newOpponentContainer = document.createElement("div");
-  newOpponentContainer.classList.add("hard_enemy_container");
-  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/king/idle/1.png";  
-  newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "-10.5vh"
-
-  document.getElementsByTagName("body")[0].append(newOpponentContainer);
-
-  //init view point
-
-  resetViewPoint();
-
- return new DefaultCharacter(newEnnemyImg, KingEnemyCharacterStates.idle, kingAnimations); 
-}
-
-const createWitchCharacter = (): DefaultCharacter => {
-
-  const newOpponentContainer = document.createElement("div");
-  newOpponentContainer.classList.add("hard_enemy_container");
-  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/witch/idle/1.png";  
-  newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "-4vh";
-
-  document.getElementsByTagName("body")[0].append(newOpponentContainer);
-
-  //init view point
-
-  resetViewPoint();
-
- return new DefaultCharacter(newEnnemyImg, WitchEnemyCharacterStates.idle, witchAnimations);
- 
-}
-
-
-
-const createExplosionElement = (hostEnemy: EnemyInterface) => {
-   const explosionContainer = document.getElementById("div")!;
-   explosionContainer.classList.add("explosion_container");
-
-   hostEnemy.character.element.append(explosionContainer);
-
-}
-
-const createOrcCharacter = (): DefaultCharacter => {
-
-    const newOpponentContainer = document.createElement("div");
-    newOpponentContainer.classList.add("hard_enemy_container");
-    const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/orc/idle/1.png";  
-    newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "-15.5vh";
-
-    document.getElementsByTagName("body")[0].append(newOpponentContainer);
-
-    //init view point
-
-    resetViewPoint()
-    enemyViewPoint.style.display = "flex";
-
- return new DefaultCharacter(newEnnemyImg, OrcEnemyCharacterStates.idle, orcAnimations)
-}
-
-const createDwarfCharacter = (): DefaultCharacter => {
-
-  const newOpponentContainer = document.createElement("div");
-  newOpponentContainer.classList.add("hard_enemy_container");
-  const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/dwarf/idle/1.png";  
-  newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "-15vh";
-
-  document.getElementsByTagName("body")[0].append(newOpponentContainer);
-
-  //init view point
-
-  enemyViewPoint.style.left = "80vw";
-  enemyViewPoint.style.display = "flex";
-
-  return new DefaultCharacter(newEnnemyImg, DwarfEnemyCharacterStates.idle, dwarfAnimations);
 }
 
 const moveBackground = (direction: Direction) => {
@@ -4749,11 +4606,8 @@ const resumeRun = () => {
 
 const checkForOpponentsClearance = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
-    const enemyLeft = hardMode
-      ? getHardModeEnemyRealLeft(enemyOnScreen)!
-      : enemyOnScreen.character.element.getBoundingClientRect().left;
-
-    if (enemyLeft < 0 - window.innerWidth * 0.05) {
+    const enemyRight = getElementsRight(enemyOnScreen.character.element.parentElement!);
+    if (enemyRight/2 < 0 - window.innerWidth * 0.05) {
       clearEnemy(enemyOnScreen);
     }
   });

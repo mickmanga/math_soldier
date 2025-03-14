@@ -2985,6 +2985,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW = 20;
     heroContainer.style.left = `${HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW * currentMapBlockHeightAndWidthComparedToScreen}vw`;
   };
+  var getElementsRight = (element) => {
+    return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
+  };
   var ASSETS_PATH_BASE = "assets/challenge";
   var currentChallengeLength = 0;
   var answers = null;
@@ -3231,7 +3234,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var buildEnemy = (answer) => {
     enemyLaunchedAttack = false;
     const enemyCreationCallbacks = [
-      createRedHammerCharacter
+      createAndInjectRedHammerImgInDomAndGetCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -3742,6 +3745,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
+        quitCinematic();
         launchChallenge("677e814577322467895fd1a2");
         return;
       }
@@ -3911,9 +3915,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     if (!ANIMATION_RUNNING_VALUES[animationId] || ANIMATION_RUNNING_VALUES[animationId] > 1) {
-      if (animationId === 43 /* golem_opponent_death_from_special_attack */) {
-        alert("stop =>" + ANIMATION_RUNNING_VALUES[animationId]);
-      }
       return;
     }
     const elementAssociatedWithThisAnimation = getAppIdByAnimationId(animationId);
@@ -4060,7 +4061,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     }
     const enemyCanBeHit = (enemy) => {
-      const enemyLeft = getHardModeEnemyRealLeft(enemy) * (special ? 1.1 : 1.2);
+      const enemyLeft = getMountainGodRealLeft(enemy) * (special ? 1.1 : 1.2);
       return (enemyOnScreenAttackIndex === 2 || enemyLeft > getHeroLeft()) && enemyLeft < getHeroLeft() + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
@@ -4096,39 +4097,53 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
-  var interruptOpponentRun = (enemy) => {
-    interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, 12 /* idle */).id);
-  };
   var enemyOnScreenAttackIndex = 0;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-    interruptOpponentRun(enemy);
     if (enemyOnScreenAttackIndex === 2) {
       enemy.character.element.parentElement.classList.add("enemy_container_jump");
     } else {
       enemy.character.element.parentElement.classList.add("enemy_container_normal");
     }
-    const enemyMovementAnimation = getCharacterAnimationAccordingToType(enemy.character, 14 /* movement */);
-    ANIMATION_RUNNING_VALUES[enemyMovementAnimation.id]++;
     if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
-      enemyViewPoint.style.left = "40vw";
       launchAnimation(enemy.character, 18 /* teleportation */, false);
-      setTimeout(
-        () => {
-          moveEnemy(enemy, 0, Date.now());
-          launchAnimation(enemy.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : enemyOnScreenAttackIndex === 1 ? 1 /* specialAttack */ : 2 /* specialAttack2 */);
-          if (enemyOnScreenAttackIndex === 2) {
+      if (enemyOnScreenAttackIndex === 2) {
+        setTimeout(
+          () => {
+            launchAnimation(enemy.character, 2 /* specialAttack2 */, false);
             setTimeout(
               () => {
-                mountainGodInTheContactZone = true;
+                if (!enemy.hurt) {
+                  hurtHero();
+                }
               },
-              2700
+              300
             );
-          }
-        },
-        360
-      );
+            setTimeout(
+              () => {
+                interruptAnimation(44 /* golem_opponent_move */);
+                ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
+                moveEnemy(enemy, 0, Date.now());
+              },
+              600
+            );
+          },
+          360
+        );
+      } else {
+        setTimeout(
+          () => {
+            interruptAnimation(44 /* golem_opponent_move */);
+            launchAnimation(enemy.character, 12 /* idle */);
+            ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
+            moveEnemy(enemy, 0, Date.now());
+          },
+          360
+        );
+      }
     } else {
+      enemyViewPoint.style.left = "40vw";
+      moveEnemy(enemy, 0, Date.now());
       launchAnimation(enemy.character, 12 /* idle */);
     }
   };
@@ -4146,7 +4161,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     enemyContainer.style.left = `${Math.round(
       enemyContainer.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1)
     )}px`;
-    if (hardMode) {
+    if (enemyCurrentlyOnScreen !== 0 /* MOUNTAIN_GOD */) {
       enemyViewPoint.style.left = `${Math.round(
         enemyViewPoint.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1)
       )}px`;
@@ -4323,13 +4338,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchExplosion();
     destroyEnemyAndLaunchNewOne(enemy);
   };
-  var getHardModeEnemyRealLeft = (enemy) => {
+  var getMountainGodRealLeft = (enemy) => {
     const enemyContainer = enemy.character.element.parentElement;
     if (!enemyContainer) {
       console.log("sorry, we did not find the html container of your enemy");
       return;
     }
-    return enemyContainer.getBoundingClientRect().left + enemyContainer.getBoundingClientRect().width * 0.3;
+    return enemyContainer.getBoundingClientRect().left * 1.3;
   };
   var clearEnemy = (enemy) => {
     interruptAnimation(26 /* ghost_opponent_run */);
@@ -4371,6 +4386,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     checkForHerosDeath();
     hurtAudio.currentTime = 0;
     updateLifePointsDisplay();
+    launchHeroHurtAnimation();
     displayMalus("Malus! You were hurt!");
   };
   var checkForHerosDeath = () => {
@@ -4383,49 +4399,24 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroIsAlive = false;
     launchDeathAnimation();
   };
-  var viewPointOnScreen = false;
-  var enemyViewPointThresholdCrossed = false;
   var enemyLaunchedAttack = false;
   var detectCollision = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
       const enemyContainer = enemyOnScreen.character.element.parentElement;
-      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemyOnScreen) : enemyContainer.getBoundingClientRect().left;
-      if (hardMode && !viewPointOnScreen && enemyLeft < window.innerWidth) {
-        viewPointOnScreen = true;
-        enemyViewPoint.style.display = "flex";
-      }
-      const launchMountainGodRunAfterAttackAnimation = (enemyOnScreen2) => {
-        if (!enemyOnScreen2.hurt) {
-          setTimeout(
-            () => {
-              if (!enemyOnScreen2.hurt) launchAnimation(enemyOnScreen2.character, 3 /* run */);
-            },
-            700
-          );
-        }
-      };
-      if (getHeroLeft() > enemyOnScreen.character.element.parentElement.getBoundingClientRect().left - window.innerWidth * 0.05 && !enemyLaunchedAttack) {
-        enemyLaunchedAttack = true;
-        if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
+      const enemyLeft = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodRealLeft(enemyOnScreen) : enemyContainer.getBoundingClientRect().left;
+      if (getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack) {
+        if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ && enemyOnScreenAttackIndex === 2) {
+          enemyLaunchedAttack = true;
+        } else {
+          enemyLaunchedAttack = true;
+          launchAnimation(enemyOnScreen.character, 0 /* attack */);
         }
       }
-      if (hardMode && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
+      if (enemyCurrentlyOnScreen !== 0 /* MOUNTAIN_GOD */ && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
-        const launchEnemyRun = () => {
-          ennemiesOnScreen.forEach(
-            (enemy) => {
-              launchAnimation(enemy.character, 3 /* run */);
-              runningPointReached = true;
-              mountainGodHurt = false;
-            }
-          );
-        };
       }
-      if (hardMode && !enemyViewPointThresholdCrossed && enemyLeft < window.innerWidth) {
-        enemyViewPointThresholdCrossed = true;
-      }
-      if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable) {
+      if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
         enemyOnScreen.collideable = false;
         if (!invisible || enemyOnScreen.answer.true) {
           hurtHero();
@@ -4912,7 +4903,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ]
     }
   ];
-  var mountainGodInTheContactZone = false;
   var redHammerAnimations = [
     {
       animationType: 12 /* idle */,
@@ -5575,20 +5565,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
-  var resetViewPoint = () => {
-    enemyViewPoint.style.left = "0vw";
-    enemyViewPoint.style.display = "flex";
-    updateEnemyViewPointDisplay();
-  };
-  var createRedHammerCharacter = () => {
+  var createAndInjectRedHammerImgInDomAndGetCharacter = () => {
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
     newEnnemyImg.src = ASSETS_PATH_BASE + "/items/teleportation_lightning/8.png";
     newOpponentContainer.append(newEnnemyImg);
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
-    resetViewPoint();
-    return new DefaultCharacter(newEnnemyImg, 0 /* idle */, redHammerAnimations);
+    return getRedHammerCharacter(newEnnemyImg);
+  };
+  var getRedHammerCharacter = (img) => {
+    return new DefaultCharacter(img, 0 /* idle */, redHammerAnimations);
   };
   var createChallengPilar = (element) => {
     const pilarBackgroundContainer = document.createElement("div");
@@ -5987,8 +5974,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var checkForOpponentsClearance = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
-      const enemyLeft = hardMode ? getHardModeEnemyRealLeft(enemyOnScreen) : enemyOnScreen.character.element.getBoundingClientRect().left;
-      if (enemyLeft < 0 - window.innerWidth * 0.05) {
+      const enemyRight = getElementsRight(enemyOnScreen.character.element.parentElement);
+      if (enemyRight / 2 < 0 - window.innerWidth * 0.05) {
         clearEnemy(enemyOnScreen);
       }
     });
@@ -6203,6 +6190,31 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroImage.src = ASSETS_PATH_BASE + "/characters/hero/death/1.png";
     setTimeout(killHero2, 1e3);
   };
+  var launchHeroHurtAnimation = () => {
+    launchAnimationAndDeclareItLaunched(
+      heroImage,
+      0,
+      "png",
+      transformed ? ASSETS_PATH_BASE + "/characters/transformed_hero/hurt" : ASSETS_PATH_BASE + "/characters/hero/hurt",
+      1,
+      transformed ? 5 : 3,
+      1,
+      false,
+      transformed ? 79 /* hero_transformation_hurt */ : 6 /* hero_hurt */
+    );
+    if (!hardMode) {
+      stopCameraMovingToRight();
+    }
+    clearTimeoutAndLaunchNewOne(
+      0 /* HERO */,
+      setTimeout(() => {
+        heroHurt = false;
+        if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
+          launchHeroRun();
+        }
+      }, 500)
+    );
+  };
   var stopCameraMovingToRight = () => {
     ANIMATION_RUNNING_VALUES[73 /* camera_left_to_right */] = 0;
   };
@@ -6317,6 +6329,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var updateHeroContainerBottom = (newBottomInVw) => {
     heroContainer.style.bottom = newBottomInVw;
+  };
+  var quitCinematic = () => {
+    cinematicOn = false;
+    const bottomDiv = document.getElementById("bottomDiv");
+    bottomDiv.style.display = "flex";
+    return;
+    const mapBlocks = document.querySelectorAll(".mapBlock");
+    dragonContainer.style.top = "5vh";
+    mapBlocks.forEach((block) => {
+      block.classList.remove("cinematicMapBlock");
+    });
+    heroContainer.classList.remove("cinematicHero");
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {

@@ -170,7 +170,7 @@ cinematic 2
   left: -16vw !important;
 }
 .enemy_container_normal {
-  left: 40vw !important;
+  left: 40vw;
 }
 
 #explosion_img {
