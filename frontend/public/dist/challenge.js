@@ -2366,6 +2366,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
+      null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      null,
+      null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
@@ -2946,6 +2950,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
+  var currentCinematicMode = 0 /* NONE */;
   var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
   var mountainGodHurt = true;
   var currentMapBlockHeightAndWidthComparedToScreen = 1;
@@ -2981,10 +2986,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var SPECIAL_MODE_MAX_VALUE = 10;
-  var calculateHeroLeft = () => {
-    const HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW = 20;
-    heroContainer.style.left = `${HERO_DISTANCE_FROM_MAP_BLOCK_LEFT_IN_VW * currentMapBlockHeightAndWidthComparedToScreen}vw`;
-  };
   var getElementsRight = (element) => {
     return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
   };
@@ -3742,10 +3743,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return element.type === 1 /* form */ ? createFormElement(element) : element.type === 0 /* challenge */ ? createChallengPilar(element) : createCharacterElement(element);
   };
   var createCharacterElement = (element) => {
-    launchCinematic();
     return element.name === 0 /* golem_master */ ? createMasterCharacterElementAndPrepareAnimations() : createMountainGodCharacterAndPrepareAnimations();
   };
   var createMountainGodCharacterAndPrepareAnimations = () => {
+    specifyAndLaunchCinematic(2 /* SECOND */);
     const mountainGodPillar = createMoutainGodPilar();
     prepareMountainGodAnimations(mountainGodPillar.firstChild);
     return mountainGodPillar;
@@ -3754,8 +3755,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        quitCinematic();
-        launchChallenge("677e814577322467895fd1a2");
+        setTimeout(
+          () => {
+            launchAnimation(pillarElement, 16 /* transformation */);
+            setTimeout(
+              launchMountainGodCinematic,
+              5e3
+            );
+          },
+          1e3
+        );
         return;
       }
       requestAnimationFrame(
@@ -3791,8 +3800,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lastBlockId++;
     const block = document.createElement("div");
     block.classList.add("mapBlock");
-    if (cinematicOn) {
-      block.classList.add("cinematicMapBlock");
+    if (currentCinematicMode === 1 /* FIRST */) {
+      block.classList.add("cinematicMapBlock1");
+    } else if (currentCinematicMode === 2 /* SECOND */) {
+      block.classList.add("cinematicMapBlock2");
     }
     block.style.zIndex = zIndex;
     const backgroundImage = document.createElement("img");
@@ -4106,11 +4117,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
-  var enemyOnScreenAttackIndex = 1;
+  var enemyOnScreenAttackIndex = 2;
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     if (enemyOnScreenAttackIndex === 2) {
-      enemy.character.element.parentElement.classList.add("enemy_container_jump");
+      enemy.character.element.parentElement.classList.add("enemy_container_jump_attack");
     } else {
       enemy.character.element.parentElement.classList.add("enemy_container_normal");
     }
@@ -4129,7 +4140,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               () => {
                 handleHeroAndEnemyContact(enemy);
               },
-              300
+              330
             );
             setTimeout(
               () => {
@@ -4148,6 +4159,70 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       moveEnemy(enemy, 0, Date.now());
       launchAnimation(enemy.character, 12 /* idle */);
     }
+  };
+  var createMountainGod = (cinematic = false) => {
+    const mountainGodContainer = document.createElement("div");
+    mountainGodContainer.classList.add("mountain_god_container");
+    const mountainGodImg = document.createElement("img");
+    mountainGodContainer.append(mountainGodImg);
+    if (cinematic) {
+      document.body.append(mountainGodContainer);
+    } else {
+      mountainGodContainer.classList.add("mountain_god_container_fight");
+    }
+    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
+  };
+  var launchMountainGodCinematic = () => {
+    const thunder = document.getElementById("thunder_audio");
+    thunder.play();
+    const mountainGodCharacter = createMountainGod(true);
+    setTimeout(
+      () => {
+        launchAnimation(mountainGodCharacter, 18 /* teleportation */, false);
+        setTimeout(
+          () => {
+            launchAnimation(mountainGodCharacter, 2 /* specialAttack2 */, false);
+            setTimeout(
+              () => {
+                launchAnimation(mountainGodCharacter, 12 /* idle */);
+              },
+              1600
+            );
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        launchAnimation(mountainGodCharacter, 18 /* teleportation */, false);
+                        setTimeout(
+                          () => {
+                            document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                            setTimeout(
+                              () => {
+                              },
+                              2e3
+                            );
+                          },
+                          2e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  700
+                );
+              },
+              700
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
@@ -4402,6 +4477,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchDeathAnimation();
   };
   var enemyLaunchedAttack = false;
+  var movementInteruptedForCinematicTransition = false;
   var detectCollision = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
       const enemyContainer = enemyOnScreen.character.element.parentElement;
@@ -4426,6 +4502,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     });
     requestAnimationFrame(detectCollision);
   };
+  var repositioningDone = false;
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
     MAP_SETS.forEach(
       (mapSet, index) => {
@@ -4441,7 +4518,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
         const endIndex = store.getState().persistedMap.endIndex;
         const elements = store.getState().persistedMap.elements;
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10) {
+        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width <= window.innerWidth) {
           if (index === 4) {
             if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
               interruptAnimation(4 /* hero_walk_right */);
@@ -4469,6 +4546,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               mapSet.imagePath,
               `${index}`
             ));
+          }
+          if (currentCinematicMode !== 0 /* NONE */ && !repositioningDone) {
+            repositioningDone = true;
+            repositionMapBlocks();
           }
         }
       }
@@ -5706,10 +5787,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           setTimeout(
             () => {
               killHero();
-              setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"),
-                5e3
-              );
             },
             19e3
           );
@@ -5729,7 +5806,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     };
     launchMasterPositionCheck();
   };
+  var interuptMovementForCinematicTransition = () => {
+    movementInteruptedForCinematicTransition = true;
+    stopHeroMove(currentHeroDirection);
+  };
+  var specifyAndLaunchCinematic = (cinematicMode) => {
+    currentCinematicMode = cinematicMode;
+    interuptMovementForCinematicTransition();
+    launchCinematic();
+  };
   var createMasterCharacterElementAndPrepareAnimations = () => {
+    specifyAndLaunchCinematic(1 /* FIRST */);
     const masterElement = document.createElement("div");
     masterElement.classList.add("golem_master_container");
     const masterImg = document.createElement("img");
@@ -5764,6 +5851,17 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     moveBackground(direction);
     stepsInSwow.play();
   };
+  var stopHeroMove = (direction = 0 /* LEFT_TO_RIGHT */) => {
+    heroMoving = false;
+    stepsInSwow.pause();
+    if (direction === 0 /* LEFT_TO_RIGHT */) {
+      interruptAnimation(4 /* hero_walk_right */);
+      stopCameraMovingToRight();
+    } else {
+      interruptAnimation(5 /* hero_walk_left */);
+      stopCameraMovingToLeft();
+    }
+  };
   var moveHero = (type, direction) => {
     launchAnimation(heroCharacter, 7 /* walk_right */);
   };
@@ -5781,18 +5879,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
     if (event.key === "d" && gameMode === 0 /* discovery */) {
-      heroMoving = false;
-      interruptAnimation(4 /* hero_walk_right */);
-      stopCameraMovingToRight();
-      stepsInSwow.pause();
+      stopHeroMove(0 /* LEFT_TO_RIGHT */);
     }
     if (event.key === "q") {
-      heroMoving = false;
-      interruptAnimation(5 /* hero_walk_left */);
-      stopCameraMovingToLeft();
-      if (gameMode === 0 /* discovery */) {
-        stepsInSwow.pause();
-      }
+      stopHeroMove(1 /* RIGHT_TO_LEFT */);
     }
   });
   var findMapElement = (elementId) => {
@@ -5842,6 +5932,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       window.location.replace(window.location.href);
     }
     if (event.key === "d") {
+      if (movementInteruptedForCinematicTransition) {
+        return;
+      }
       heroMoving = true;
       if (gameMode === 0 /* discovery */) {
         currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
@@ -6302,43 +6395,36 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateTransformationProgressBarDisplay();
     animateLightning();
   };
-  var cinematicOn = false;
-  var launchCinematic = (cinematicId = 0 /* FIRST */) => {
-    cinematicOn = true;
+  var calculateHeroSize = () => {
+    const heroFullWidthInScreenWidthPercentage = 31;
+    heroContainer.style.width = `${heroFullWidthInScreenWidthPercentage * currentMapBlockHeightAndWidthComparedToScreen}%`;
+  };
+  var launchCinematic = () => {
+    if (currentCinematicMode === 0 /* NONE */) {
+      return;
+    }
     const bottomDiv = document.getElementById("bottomDiv");
     bottomDiv.style.display = "none";
     dragonContainer.style.top = "20vh";
-    return;
     const mapBlocks = document.querySelectorAll(".mapBlock");
+    if (currentCinematicMode === 1 /* FIRST */) {
+      currentMapBlockHeightAndWidthComparedToScreen = 0.65;
+      updateHeroContainerBottom("17.5vh");
+    } else {
+      currentMapBlockHeightAndWidthComparedToScreen = 0.76;
+      updateHeroContainerBottom("12vh");
+    }
     mapBlocks.forEach((block) => {
-      if (cinematicId === 0 /* FIRST */) {
-        block.style.height = "70vh";
-        block.style.width = "70vw";
-        block.style.bottom = "15vh";
-        updateHeroContainerBottom("15vh");
-        currentMapBlockHeightAndWidthComparedToScreen = 0.7;
-        calculateHeroLeft();
+      if (currentCinematicMode === 1 /* FIRST */) {
+        block.classList.add("cinematicMapBlock1");
       } else {
-        block.style.height = "90vh";
-        block.style.width = "90vw";
-        block.style.bottom = "5vh";
+        block.classList.add("cinematicMapBlock2");
       }
     });
+    calculateHeroSize();
   };
   var updateHeroContainerBottom = (newBottomInVw) => {
     heroContainer.style.bottom = newBottomInVw;
-  };
-  var quitCinematic = () => {
-    cinematicOn = false;
-    const bottomDiv = document.getElementById("bottomDiv");
-    bottomDiv.style.display = "flex";
-    return;
-    const mapBlocks = document.querySelectorAll(".mapBlock");
-    dragonContainer.style.top = "5vh";
-    mapBlocks.forEach((block) => {
-      block.classList.remove("cinematicMapBlock");
-    });
-    heroContainer.classList.remove("cinematicHero");
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {
@@ -6443,6 +6529,21 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         800
       );
     }, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
+  };
+  var repositionMapBlocks = () => {
+    let previousMapBlock = null;
+    MAP_SETS.forEach(
+      (mapSet) => {
+        mapSet.maps.forEach(
+          (map, mapIndex) => {
+            if (mapIndex > 0) {
+              map.style.left = `${previousMapBlock.getBoundingClientRect().left + previousMapBlock.getBoundingClientRect().width - 10}px`;
+            }
+            previousMapBlock = map;
+          }
+        );
+      }
+    );
   };
 })();
 //# sourceMappingURL=challenge.js.map

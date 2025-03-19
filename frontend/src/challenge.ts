@@ -16,6 +16,15 @@ enum ENEMIES_ON_SCREEN {
   RED_GOLEM
 }
 
+
+enum CINEMATIC_MODES {
+  NONE,
+  FIRST,
+  SECOND
+}
+
+let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
+
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
 let mountainGodHurt = true;
 let currentMapBlockHeightAndWidthComparedToScreen = 1;
@@ -1179,14 +1188,12 @@ const createMapElement = (element: MapElement) => {
 
 const createCharacterElement = (element: CharacterElement) => {
   
-  launchCinematic();
-
    return element.name === CHARACTER_ELEMENTS_NAMES.golem_master ? createMasterCharacterElementAndPrepareAnimations() : createMountainGodCharacterAndPrepareAnimations();
 }
 
 const createMountainGodCharacterAndPrepareAnimations = () => {
+  specifyAndLaunchCinematic(CINEMATIC_MODES.SECOND);
   const mountainGodPillar = createMoutainGodPilar();
-
   prepareMountainGodAnimations(mountainGodPillar.firstChild as HTMLImageElement);
 
   return mountainGodPillar;
@@ -1199,18 +1206,18 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
       
-    //  setTimeout(
-      //  () => {
-        //  launchAnimation(pillarElement, AnimationType.transformation);
-          //   setTimeout(
-            //     launchMountainGodCinematic, 5000
-             // )
-      //  }, 1000
-     // );
+      setTimeout(
+        () => {
+          launchAnimation(pillarElement, AnimationType.transformation);
+             setTimeout(
+                 launchMountainGodCinematic, 5000
+              )
+        }, 1000
+      );
 
        
-     quitCinematic();
-     launchChallenge("677e814577322467895fd1a2");
+    // quitCinematic();
+    // launchChallenge("677e814577322467895fd1a2");
 
       return;
     }
@@ -1285,9 +1292,12 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
 
   const block = document.createElement("div");
   block.classList.add("mapBlock");
-  if(cinematicOn){
-    block.classList.add("cinematicMapBlock");
+  if(currentCinematicMode === CINEMATIC_MODES.FIRST){
+    block.classList.add("cinematicMapBlock1");
+  } else if(currentCinematicMode === CINEMATIC_MODES.SECOND){
+    block.classList.add("cinematicMapBlock2");
   }
+
   block.style.zIndex = zIndex;
   const backgroundImage = document.createElement("img");
   backgroundImage.src = imagePath;
@@ -1779,14 +1789,14 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let enemyOnScreenAttackIndex = 1;
+let enemyOnScreenAttackIndex = 2;
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
 
   
   if(enemyOnScreenAttackIndex === 2){
-    enemy.character.element.parentElement!.classList.add("enemy_container_jump");
+    enemy.character.element.parentElement!.classList.add("enemy_container_jump_attack");
   } else {
     enemy.character.element.parentElement!.classList.add("enemy_container_normal");
   }
@@ -1812,7 +1822,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
             setTimeout(
               () => {
                 handleHeroAndEnemyContact(enemy)
-              }, 300
+              }, 330
             )
             setTimeout(
               () => {
@@ -1885,10 +1895,10 @@ const launchMountainGodCinematic = () => {
                     setTimeout(
                       () => {
                         document.getElementById("obelisk")!.style.left = `${document.getElementById("obelisk")!.getBoundingClientRect().left + window.innerWidth * 0.02}px`;
-                        quitCinematic();
+                       // quitCinematic();
                         setTimeout(
                           () => {
-                            launchChallenge("677e814577322467895fd1a2");
+                        //    launchChallenge("677e814577322467895fd1a2");
                           }, 2000
                         )
                       }, 2000
@@ -2434,7 +2444,7 @@ const killHero = () => {
 
 let enemyLaunchedAttack = false;
 
-
+let movementInteruptedForCinematicTransition = false; 
 
 const detectCollision = () => {
   ennemiesOnScreen.forEach((enemyOnScreen) => {
@@ -2483,6 +2493,8 @@ const detectCollision = () => {
   requestAnimationFrame(detectCollision);
 };
 
+let repositioningDone = false;
+
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   
   MAP_SETS.forEach(
@@ -2508,7 +2520,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
     if (
       lastMapDomElement &&
-      lastMapDomElement.getBoundingClientRect().left <= window.innerWidth / 10
+      (lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width) <= window.innerWidth
     ) {
       
       if(index === 4){
@@ -2536,6 +2548,10 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       mapSet.maps.push(createMapBlock(
          lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
        ));
+    }
+    if(currentCinematicMode !== CINEMATIC_MODES.NONE && !repositioningDone){
+      repositioningDone = true;
+      repositionMapBlocks();
     }
     } 
    }
@@ -4226,9 +4242,9 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
             () => {
               killHero();
             
-              setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
-              )
+           //   setTimeout(
+          //      () => window.location.replace("http://localhost:3001/learningWorld"), 5000
+            //  )
 
             }, 19000
           )
@@ -4255,7 +4271,21 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
   launchMasterPositionCheck();
 }
 
+const interuptMovementForCinematicTransition = () => {
+  movementInteruptedForCinematicTransition = true;
+  stopHeroMove(currentHeroDirection);
+}
+
+const specifyAndLaunchCinematic = (cinematicMode: CINEMATIC_MODES) => {
+  currentCinematicMode = cinematicMode;
+  interuptMovementForCinematicTransition();
+  launchCinematic();
+}
+
 const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
+
+  specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
+
   const masterElement = document.createElement("div");
   masterElement.classList.add("golem_master_container");
 
@@ -4332,6 +4362,20 @@ const launchHeroWalk2 = (direction: Direction) => {
   stepsInSwow.play();
   }
 
+const stopHeroMove = (direction = Direction.LEFT_TO_RIGHT) => {
+    heroMoving = false;
+    stepsInSwow.pause();  
+   
+    if(direction === Direction.LEFT_TO_RIGHT){
+      interruptAnimation(ANIMATION_ID.hero_walk_right);
+      stopCameraMovingToRight();
+    } else {
+      interruptAnimation(ANIMATION_ID.hero_walk_left);
+      stopCameraMovingToLeft();
+    }
+
+}
+
 export const moveHero = (type: MovementType, direction: Direction) => {
 
   launchAnimation(heroCharacter, AnimationType.walk_right);
@@ -4361,20 +4405,12 @@ document.addEventListener("keyup", (event) => {
   }
 
   if(event.key === "d" && gameMode === GAME_MODES.discovery){
-    heroMoving = false;
-    interruptAnimation(ANIMATION_ID.hero_walk_right);
-    stopCameraMovingToRight();
-    stepsInSwow.pause();
+    stopHeroMove(Direction.LEFT_TO_RIGHT);
   }
 
   
   if(event.key === "q"){
-    heroMoving = false;
-    interruptAnimation(ANIMATION_ID.hero_walk_left);
-    stopCameraMovingToLeft();
-    if(gameMode === GAME_MODES.discovery){
-      stepsInSwow.pause();
-    }
+    stopHeroMove(Direction.RIGHT_TO_LEFT);
   }
 
 });
@@ -4438,6 +4474,10 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "d") {
+    
+    if(movementInteruptedForCinematicTransition){
+      return;
+    }
 
     heroMoving = true;
 
@@ -5010,7 +5050,7 @@ const animateLightning = () => {
       const lastSet = i === 5 ? true : false;
       const velocity = i * i;
 
-      createMapSet( `assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
+      createMapSet(`assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
 
     }
  }
@@ -5076,73 +5116,45 @@ const setupListeners = () => {
     ?.addEventListener("click", goBackToMountain);
 };
 
-let cinematicOn = false;
 
-enum CINEMATIC_ID {
-  FIRST,
-  SECOND
+const calculateHeroSize = () => {
+  const heroFullWidthInScreenWidthPercentage = 31;
+  heroContainer.style.width = `${heroFullWidthInScreenWidthPercentage * currentMapBlockHeightAndWidthComparedToScreen}%`;
 }
-/*
-const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
-  
-  cinematicOn = true;
-  const bottomDiv = document.getElementById("bottomDiv")!;
-  bottomDiv.style.display = "none";
-  dragonContainer.style.top = "20vh"
-  // Select all elements with class "mapBlock" and type them as HTMLElement (or a more specific type if you know it).
-  
-  const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
-  // Iterate over each element and add the "cinematicMapBlock" class
 
-  mapBlocks.forEach((block) => {
-    block.classList.add('cinematicMapBlock');
-  });
-
-  heroContainer.classList.add("cinematicHero");
-
-  answerDataContainer.style.top = "88vh";
-  answerDataContainer.style.height = "10.5vh";
-
- // repositionMapBlocks();
-
-}
- */
-
-
-
-
-
-
-const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
+const launchCinematic = () => {
 
   //According to cinematic, modify width accordingly. Go through each map block. Simply change => their width, their height, their top
   
-  cinematicOn = true;
+  if(currentCinematicMode === CINEMATIC_MODES.NONE){
+    return;
+  }
+
   const bottomDiv = document.getElementById("bottomDiv")!;
   bottomDiv.style.display = "none";
   dragonContainer.style.top = "20vh"
 
-
-  return;
-
   const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
   // Iterate over each element and add the "cinematicMapBlock" class
 
+  if(currentCinematicMode as CINEMATIC_MODES === CINEMATIC_MODES.FIRST){
+    currentMapBlockHeightAndWidthComparedToScreen = 0.65;
+    updateHeroContainerBottom("17.5vh");
+  } else {
+    currentMapBlockHeightAndWidthComparedToScreen = 0.76;
+    updateHeroContainerBottom("12vh");
+  }
+
   mapBlocks.forEach((block) => {
-    if(cinematicId === CINEMATIC_ID.FIRST){
-        block.style.height = "70vh";
-        block.style.width = "70vw";
-        block.style.bottom = "15vh";
-        updateHeroContainerBottom("15vh");
-        currentMapBlockHeightAndWidthComparedToScreen = 0.7;
-        calculateHeroLeft();
+    if(currentCinematicMode as CINEMATIC_MODES === CINEMATIC_MODES.FIRST){
+      block.classList.add("cinematicMapBlock1");
     } else {
-      block.style.height = "90vh";
-      block.style.width = "90vw";
-      block.style.bottom = "5vh";
+      block.classList.add("cinematicMapBlock2");
     }
   });
+
   
+  calculateHeroSize();
 
  /*
    calculate new top => easy
@@ -5151,7 +5163,6 @@ const launchCinematic = (cinematicId = CINEMATIC_ID.FIRST) => {
    bottom of each element on the screen with certain class => bottom = mapBlockBottom
 
   */
-  
 }
 
 const updateHeroContainerBottom = (newBottomInVw: string) => {   
@@ -5161,7 +5172,6 @@ const updateHeroContainerBottom = (newBottomInVw: string) => {
 
 const quitCinematic = () => {
 
-  cinematicOn = false;
   const bottomDiv = document.getElementById("bottomDiv")!;
   bottomDiv.style.display = "flex";
   
@@ -5225,16 +5235,13 @@ const defineSwordReach = () => {
 };
 
 const launchGame = () => {
-  
   runAudio.play();
   epicAudio.play();
-
   heroRunning = true;
   gameLaunched = true;
   launchHeroRun();
   triggerOpponentsApparition();
 };
-
 
 const killAllAudios = () => {
   runAudio.pause();
@@ -5262,7 +5269,6 @@ const moveDragon = (lastExecutionTimeStamp: number) => {
   }
 
   requestAnimationFrame(() => moveDragon(newExecutionTimeStamp))
-
 }
 
 const launchDragon = () => {
@@ -5282,7 +5288,6 @@ const launchDragon = () => {
   );
 
   moveDragon(Date.now());
-
 };
 
 const soundEffectImage = document.getElementById("sound_effect_img_container")!;
@@ -5292,7 +5297,7 @@ const displaySoundEffectImage = () => {
   soundEffectImage.style.display = "flex";
 
   setTimeout(
-    () => soundEffectImage.style.display = "none", 1000 
+    () => soundEffectImage.style.display = "none", 1000
   );
 
 }
@@ -5369,11 +5374,13 @@ const repositionMapBlocks = () => {
  MAP_SETS.forEach(
   (mapSet) => {
     mapSet.maps.forEach(
-      (map,index) => {
-        previousMapBlock = map;
-        if(index > 0){
-          map.style.left = `${previousMapBlock.getBoundingClientRect().left + previousMapBlock.getBoundingClientRect().width - 10}px`; 
+      (map, mapIndex) => {
+        
+        if(mapIndex > 0){
+          map.style.left = `${previousMapBlock!.getBoundingClientRect().left + previousMapBlock!.getBoundingClientRect().width - 10}px`; 
         }
+          previousMapBlock = map;
+
       }
     )
   }

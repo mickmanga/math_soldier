@@ -51,14 +51,20 @@ CINEMATIC 2
 
   .mapBlock{
     height: 85vh;
-    width: 100vw;
+    width: 85vw;
     bottom: 15vh;
  }
   
- .cinematicMapBlock{
-  height: 85vh;
-  width: 100vw;
-  bottom: 15vh;
+ .cinematicMapBlock1{
+  height: 65vh;
+  width: 65vw;
+  bottom: 17.5vh;
+ }
+ 
+ .cinematicMapBlock2{
+  height: 76vh;
+  width: 76vw;
+  bottom: 12vh;
  }
 
 

@@ -167,7 +167,7 @@ cinematic 2
 }
 
 .enemy_container_jump_attack {
-  left: -16vw !important;
+  left: -15vw !important;
 }
 .enemy_container_normal {
   left: 40vw;
