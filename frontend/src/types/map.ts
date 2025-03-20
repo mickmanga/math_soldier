@@ -26,7 +26,8 @@ export type CharacterElement = {
 
 export enum CHARACTER_ELEMENTS_NAMES {
    "golem_master",
-   "mountain_god"
+   "mountain_god",
+   "pike_man",
 }
 
 export enum HERO_MODES {
