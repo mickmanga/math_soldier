@@ -83,13 +83,8 @@ const calculateHeroLeft = () => {
 }
 
 const updateElementsSizesOnScreenBasedOnCurrentMapBlockWidth = () => {
-
-  //loop on ennemy container
-
-  //
-
+  //loop on ennemy container;
 }
-
 
 const getElementsRight = (element: HTMLElement) => {
   return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
@@ -320,7 +315,7 @@ let heroHurt = false;
 
 let heroIsAlive = true;
 
-const lifePoints = { max: 4, value: 4 };
+const lifePoints = { max: 10, value: 10 };
 let INVISIBILITY_DURATION_IN_MILLISECONDS = 2000;
 
 let invisible = false;
@@ -2263,7 +2258,7 @@ const killWrongEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
   lifePoints.value--;
   checkForHerosDeath();
 
-  updateLifePointsDisplay();
+  //updateLifePointsDisplay();
 
   rewardStreak = 0;
   specialMoveIndicator.style.display = "none";
@@ -2457,7 +2452,7 @@ const hurtHero = () => {
   // hurtAudio.play();
    hurtAudio.currentTime = 0;
 
-  updateLifePointsDisplay();
+ // updateLifePointsDisplay();
   launchHeroHurtAnimation();
 
   displayMalus("Malus! You were hurt!");
@@ -5120,7 +5115,7 @@ window.onload = () => {
   setInitialGameVolume();
   launchHardModeToggle();
   createGameAccordingToMode();
-  updateLifePointsDisplay();
+  //updateLifePointsDisplay();
   updateScoreDisplay();
   detectCollision();
   checkForScreenUpdateFromLeftToRight(10);

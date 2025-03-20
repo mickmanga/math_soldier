@@ -3127,7 +3127,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var score = 0;
   var heroHurt = false;
   var heroIsAlive = true;
-  var lifePoints = { max: 4, value: 4 };
+  var lifePoints = { max: 10, value: 10 };
   var INVISIBILITY_DURATION_IN_MILLISECONDS = 2e3;
   var invisible = false;
   var ennemiesOnScreen = [];
@@ -3236,12 +3236,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var getChallengeGrade = () => {
     const grade = Math.round((score === 0 ? 0 : score / currentChallengeLength) * 20);
     return Grades.D.includes(grade) ? "D" : Grades.C.includes(grade) ? "C" : Grades.B.includes(grade) ? "B" : Grades.A.includes(grade) ? "A" : "S";
-  };
-  var updateLifePointsDisplay = () => {
-    for (let i = 1; i <= lifePoints.max; i++) {
-      const lifePointOpacity = i <= lifePoints.value ? "1" : "0.3";
-      document.getElementById(`lifePointContainer_${i}`).style.opacity = lifePointOpacity;
-    }
   };
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
@@ -4346,7 +4340,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     store.dispatch(setFoundAtIndex({ index: store.getState().challenge.currentAnswerIndex - 1, found: false }));
     lifePoints.value--;
     checkForHerosDeath();
-    updateLifePointsDisplay();
     rewardStreak = 0;
     specialMoveIndicator.style.display = "none";
     updateTransformationProgressBarDisplay();
@@ -4487,7 +4480,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lifePoints.value--;
     checkForHerosDeath();
     hurtAudio.currentTime = 0;
-    updateLifePointsDisplay();
     launchHeroHurtAnimation();
     displayMalus("Malus! You were hurt!");
   };
@@ -6421,7 +6413,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setInitialGameVolume();
     launchHardModeToggle();
     createGameAccordingToMode();
-    updateLifePointsDisplay();
     updateScoreDisplay();
     detectCollision();
     checkForScreenUpdateFromLeftToRight(10);
