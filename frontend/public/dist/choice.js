@@ -2367,6 +2367,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      null,
+      null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       null,
       null,
@@ -4029,9 +4032,30 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
   };
-  var enemyOnScreenAttackIndex = 2;
+  var enemyOnScreenAttackIndex = 0;
+  var mountainGodApparitionAnimationIndex = 0;
+  var getMountainGodApparitionAnimation = (character) => {
+    const mountainGodApparitions = [() => launchAnimation(character, 19 /* taunt */, false), () => launchAnimation(character, 12 /* idle */), () => launchAnimation(character, 19 /* taunt */, false), () => launchAnimation(character, 12 /* idle */), () => launchAnimation(character, 19 /* taunt */)];
+    const mountainGodApparitionAnimation = mountainGodApparitions[mountainGodApparitionAnimationIndex];
+    mountainGodApparitionAnimationIndex++;
+    if (mountainGodApparitionAnimationIndex > mountainGodApparitions.length - 1) {
+      mountainGodApparitionAnimationIndex = 0;
+    }
+    return mountainGodApparitionAnimation;
+  };
+  var mountainGodAttackIndexesIndex = 0;
+  var getMountainGodAttackIndex = () => {
+    const mountainGodAttackIndexes = [0, 1, 2, 1, 2, 0, 1, 2, 2, 1, 1, 0, 2];
+    const attackIndex = mountainGodAttackIndexes[mountainGodAttackIndexesIndex];
+    mountainGodAttackIndexesIndex++;
+    if (mountainGodAttackIndexesIndex > mountainGodAttackIndexes.length - 1) {
+      mountainGodAttackIndexesIndex = 0;
+    }
+    return attackIndex;
+  };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
+    enemyOnScreenAttackIndex = getMountainGodAttackIndex();
     if (enemyOnScreenAttackIndex === 2) {
       enemy.character.element.parentElement.classList.add("enemy_container_jump_attack");
     } else {
@@ -4042,8 +4066,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       setTimeout(
         () => {
           if (enemyOnScreenAttackIndex < 2) {
-            interruptAnimation(44 /* golem_opponent_move */);
-            launchAnimation(enemy.character, 12 /* idle */);
+            const animation = getMountainGodApparitionAnimation(enemy.character);
+            animation();
             ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
             moveEnemy(enemy, 0, Date.now());
           } else {
@@ -4056,7 +4080,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             );
             setTimeout(
               () => {
-                interruptAnimation(44 /* golem_opponent_move */);
                 ANIMATION_RUNNING_VALUES[37 /* hammer_opponent_move */]++;
                 moveEnemy(enemy, 0, Date.now());
               },
@@ -4112,8 +4135,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
                         setTimeout(
                           () => {
                             document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                            quitCinematic();
                             setTimeout(
                               () => {
+                                launchChallenge("677e814577322467895fd1a2");
                               },
                               2e3
                             );
@@ -4965,8 +4990,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 38 /* hammer_opponent_taunt */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new",
-              length: 7
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new/new",
+              length: 16
             }
           }
         }
@@ -5671,6 +5696,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           setTimeout(
             () => {
               killHero();
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"),
+                5e3
+              );
             },
             19e3
           );
@@ -5683,7 +5712,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         return;
       }
       if (masterImage.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        setTimeout(animateMaster, 3e3);
+        setTimeout(animateMaster, 1e3);
         golemLaunched = true;
       }
       requestAnimationFrame(launchMasterPositionCheck);
@@ -5692,6 +5721,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var interuptMovementForCinematicTransition = () => {
     movementInteruptedForCinematicTransition = true;
+    setTimeout(
+      () => {
+        movementInteruptedForCinematicTransition = false;
+      },
+      100
+    );
     stopHeroMove(currentHeroDirection);
   };
   var specifyAndLaunchCinematic = (cinematicMode) => {
@@ -6278,6 +6313,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
+    launchHeroTeleporationAnimation();
+  };
+  var launchHeroTeleporationAnimation = () => {
+    launchAnimation(heroCharacter, 18 /* teleportation */);
+    setTimeout(
+      () => {
+        launchAnimation(heroCharacter, 12 /* idle */, false);
+      },
+      3e3
+    );
   };
   var calculateHeroSize = () => {
     const heroFullWidthInScreenWidthPercentage = 31;
@@ -6309,6 +6354,20 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var updateHeroContainerBottom = (newBottomInVw) => {
     heroContainer.style.bottom = newBottomInVw;
+  };
+  var quitCinematic = () => {
+    const bottomDiv = document.getElementById("bottomDiv");
+    bottomDiv.style.display = "flex";
+    currentCinematicMode = 0 /* NONE */;
+    const mapBlocks = document.querySelectorAll(".mapBlock");
+    mapBlocks.forEach((block) => {
+      block.classList.remove("cinematicMapBlock1");
+      block.classList.remove("cinematicMapBlock2");
+    });
+    currentMapBlockHeightAndWidthComparedToScreen = 1;
+    calculateHeroSize();
+    updateHeroContainerBottom("15.5vh");
+    repositionMapBlocks();
   };
   var createGameAccordingToMode = () => {
     if (hardMode) {

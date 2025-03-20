@@ -1205,7 +1205,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
 
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
-      
+  
       setTimeout(
         () => {
           launchAnimation(pillarElement, AnimationType.transformation);
@@ -1214,11 +1214,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
               )
         }, 1000
       );
-
-       
-    // quitCinematic();
-    // launchChallenge("677e814577322467895fd1a2");
-
+      
       return;
     }
 
@@ -1789,11 +1785,48 @@ const interruptOpponentRun = (enemy: Enemy) => {
   interruptAnimation(getCharacterAnimationAccordingToType(enemy.character, AnimationType.idle)!.id);
 }
 
-let enemyOnScreenAttackIndex = 2;
+let enemyOnScreenAttackIndex = 0;
+
+let mountainGodApparitionAnimationIndex = 0;
+
+let getMountainGodApparitionAnimation = (character: DefaultCharacter): () => void => {
+
+  const mountainGodApparitions: Array<() => void> = [() =>  launchAnimation(character, AnimationType.taunt, false), () => launchAnimation(character, AnimationType.idle), () => launchAnimation(character, AnimationType.taunt, false), () => launchAnimation(character, AnimationType.idle), () => launchAnimation(character, AnimationType.taunt)];
+
+  const mountainGodApparitionAnimation = mountainGodApparitions[mountainGodApparitionAnimationIndex];
+
+  mountainGodApparitionAnimationIndex++;
+
+  if(mountainGodApparitionAnimationIndex > mountainGodApparitions.length - 1){
+    mountainGodApparitionAnimationIndex = 0;
+  }
+
+  return mountainGodApparitionAnimation;
+
+}
+
+let mountainGodAttackIndexesIndex = 0;
+
+const getMountainGodAttackIndex = () => {
+
+  const mountainGodAttackIndexes = [0,1,2,1,2,0,1,2,2,1,1,0,2];
+
+  const attackIndex = mountainGodAttackIndexes[mountainGodAttackIndexesIndex];
+
+  mountainGodAttackIndexesIndex++;
+
+  if(mountainGodAttackIndexesIndex > mountainGodAttackIndexes.length - 1 ){
+    mountainGodAttackIndexesIndex = 0;
+  }
+
+  return attackIndex;
+   
+}
 
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
 
+  enemyOnScreenAttackIndex = getMountainGodAttackIndex();
   
   if(enemyOnScreenAttackIndex === 2){
     enemy.character.element.parentElement!.classList.add("enemy_container_jump_attack");
@@ -1811,8 +1844,9 @@ const launchOpponent = (enemy: EnemyInterface) => {
         () => {
           if(enemyOnScreenAttackIndex < 2){
 
-           interruptAnimation(ANIMATION_ID.golem_opponent_move)
-           launchAnimation(enemy.character, AnimationType.idle);
+         const animation = getMountainGodApparitionAnimation(enemy.character);
+         animation();
+
            ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
            moveEnemy(enemy, 0, Date.now());
 
@@ -1826,7 +1860,6 @@ const launchOpponent = (enemy: EnemyInterface) => {
             )
             setTimeout(
               () => {
-                interruptAnimation(ANIMATION_ID.golem_opponent_move)
                 ANIMATION_RUNNING_VALUES[ANIMATION_ID.hammer_opponent_move]++;
                 moveEnemy(enemy, 0, Date.now());
               }, 600
@@ -1895,10 +1928,10 @@ const launchMountainGodCinematic = () => {
                     setTimeout(
                       () => {
                         document.getElementById("obelisk")!.style.left = `${document.getElementById("obelisk")!.getBoundingClientRect().left + window.innerWidth * 0.02}px`;
-                       // quitCinematic();
+                        quitCinematic();
                         setTimeout(
                           () => {
-                        //    launchChallenge("677e814577322467895fd1a2");
+                           launchChallenge("677e814577322467895fd1a2");
                           }, 2000
                         )
                       }, 2000
@@ -3365,8 +3398,8 @@ const redHammerAnimations = [
             {
               id: ANIMATION_ID.hammer_opponent_taunt,
               sprite:  {
-                path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new",
-                length: 7
+                path: ASSETS_PATH_BASE + "/characters/enemies/hard/taunt/new/new",
+                length: 16
             }
             }
            }
@@ -4242,9 +4275,9 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
             () => {
               killHero();
             
-           //   setTimeout(
-          //      () => window.location.replace("http://localhost:3001/learningWorld"), 5000
-            //  )
+              setTimeout(
+                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
+              )
 
             }, 19000
           )
@@ -4261,7 +4294,7 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
       
      if(masterImage.parentElement!.getBoundingClientRect().left - getHeroLeft() < (window.innerWidth * 0.01)){
        
-        setTimeout(animateMaster, 3000);
+        setTimeout(animateMaster, 1000);
         golemLaunched = true;
      }
 
@@ -4273,6 +4306,11 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
 
 const interuptMovementForCinematicTransition = () => {
   movementInteruptedForCinematicTransition = true;
+  setTimeout(
+    () => {
+      movementInteruptedForCinematicTransition = false;
+    }, 100
+  )
   stopHeroMove(currentHeroDirection);
 }
 
@@ -5091,7 +5129,7 @@ window.onload = () => {
   defineSwordReach();
   updateTransformationProgressBarDisplay();
   animateLightning();
-  //launchHeroTeleporationAnimation();
+  launchHeroTeleporationAnimation();
  // launchAnimation(heroCharacter, AnimationType.idle, false);
   //launchDragon();
  // quitCinematic();
@@ -5174,21 +5212,26 @@ const quitCinematic = () => {
 
   const bottomDiv = document.getElementById("bottomDiv")!;
   bottomDiv.style.display = "flex";
-  
-  return;
+
+  currentCinematicMode = CINEMATIC_MODES.NONE;
 
   const mapBlocks = document.querySelectorAll<HTMLElement>('.mapBlock');
   // Iterate over each element and add the "cinematicMapBlock" class
 
-  dragonContainer.style.top = "5vh";
 
   mapBlocks.forEach((block) => {
-    block.classList.remove('cinematicMapBlock');
-  });
-  heroContainer.classList.remove("cinematicHero");
+    block.classList.remove('cinematicMapBlock1');
+    block.classList.remove("cinematicMapBlock2");
 
-  //repositionMapBlocks();
+  });
   
+  currentMapBlockHeightAndWidthComparedToScreen = 1;
+  calculateHeroSize();
+
+  updateHeroContainerBottom("15.5vh");
+
+  repositionMapBlocks();
+   
 }
 
 const createGameAccordingToMode = () => {
