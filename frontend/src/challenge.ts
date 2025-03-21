@@ -25,6 +25,8 @@ enum CINEMATIC_MODES {
 
 let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
 
+let gateOpened = false;
+
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.RED_GOLEM;
 let mountainGodHurt = true;
 let currentMapBlockHeightAndWidthComparedToScreen = 1;
@@ -227,6 +229,10 @@ const updateEnemyViewPointDisplay = () => {
 
 const runAudio = document.getElementById("run_audio")! as HTMLAudioElement;
 const dragonAudio = document.getElementById("dragon_audio")! as HTMLAudioElement;
+
+const getEnemyRealRight = (enemyContainer: HTMLElement) => {
+  return enemyContainer.getBoundingClientRect().left + (enemyContainer.getBoundingClientRect().width - (enemyContainer.getBoundingClientRect().width * 0.3))
+};
 
 const stepsInSwow = document.getElementById(
   "snow_steps_audio"
@@ -1752,12 +1758,11 @@ const launchAttack = (special = false) => {
   const enemyLeft = getMountainGodRealLeft(enemy)! * (special ? 1.1: 1.2);
 
     return (
-      ( enemyOnScreenAttackIndex === 2 || enemyLeft >
-      getHeroLeft()) &&
+      getEnemyRealRight(enemy.character.element.parentElement!) > getHeroLeft() &&
       enemyLeft <
       getHeroLeft() +
           swordReach
-    );
+    )
   };
 
   ennemiesOnScreen.forEach((enemy) => {
@@ -1853,7 +1858,7 @@ const getMountainGodAttackIndex = () => {
 const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
 
-  enemyOnScreenAttackIndex = getMountainGodAttackIndex();
+  enemyOnScreenAttackIndex = enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD ? getMountainGodAttackIndex() : 0;
   
   if(enemyOnScreenAttackIndex === 2){
     enemy.character.element.parentElement!.classList.add("enemy_container_jump_attack");
@@ -2543,7 +2548,7 @@ const detectCollision = () => {
   
     if (
       getHeroLeft() >
-        enemyLeft &&
+        enemyLeft + (enemyContainer.getBoundingClientRect().width * ( enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.RED_GOLEM ? 0.3 : 0)) &&
       enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2
     ) {
       handleHeroAndEnemyContact(enemyOnScreen);
@@ -3932,7 +3937,7 @@ const golemAnimations = [
         {
           id: ANIMATION_ID.golem_opponent_attack,
           sprite:    {
-            path: ASSETS_PATH_BASE + "/characters/enemies/golem/attack",
+            path: ASSETS_PATH_BASE + "/characters/enemies/golem/attack/new",
             length: 16
         }
         }
@@ -3948,7 +3953,7 @@ const golemAnimations = [
           {
             id: ANIMATION_ID.golem_opponent_death,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/death",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/death/new",
               length: 28
           }
           }
@@ -3987,7 +3992,6 @@ const golemAnimations = [
          }
        ]
       },
-
       {
         animationType: AnimationType.run,
         animationsStatesBlocks: [
@@ -3997,7 +4001,7 @@ const golemAnimations = [
             {
               id: ANIMATION_ID.golem_opponent_run,
               sprite:    {
-                path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk",
+                path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk/new",
                 length: 7
             }
             }
@@ -4287,15 +4291,11 @@ const createFormElement = (formElement: MapElement) => {
       launchAnimation(pnjCharacter, AnimationType.idle);
     }
 
-
-
     formBackgroundContainer.append(golemContainer);
-
     lastGolemVal = lastGolemVal === 0 ? 1 : 0; 
 
     return formBackgroundContainer;
 }
-
 
 const createGolemCharacter = (): DefaultCharacter => {
 
@@ -4305,7 +4305,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "18vh";
-  newOpponentContainer.style.width = "75vh";  
+  newOpponentContainer.style.width = "75vh";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -4314,7 +4314,6 @@ const createGolemCharacter = (): DefaultCharacter => {
   resetViewPoint();
 
   return new DefaultCharacter(newEnnemyImg, GolemEnemyCharacterStates.idle, golemAnimations);
- 
 }
 
 let golemLaunched = false;
@@ -4322,7 +4321,6 @@ let golemLaunched = false;
 const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
   
   const masterCharacter = new DefaultCharacter(pikeImage, CharacterDefaultStates.default, pikeManAnimations);
-
   //launchAnimation(masterCharacter, AnimationType.idle);
 
   document.addEventListener("keyup", (event) => {
@@ -4334,6 +4332,7 @@ const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
           launchChallenge("677e814577322467895fd1a2");
           setTimeout(
             () => {
+              gateOpened = true;
               specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
               repositionMapBlocks();
             }, 2000
@@ -4477,9 +4476,7 @@ const checkForOpponentAttack = () => {
   });
 };
 
-
 let superSpeedOn = false;
-
 
 enum MovementType {
   WALK,
@@ -4495,6 +4492,7 @@ const launchHeroWalk2 = (direction: Direction) => {
 const stopHeroMove = (direction = Direction.LEFT_TO_RIGHT) => {
     heroMoving = false;
     stepsInSwow.pause();  
+    interruptAnimation(ANIMATION_ID.hero_run);
    
     if(direction === Direction.LEFT_TO_RIGHT){
       interruptAnimation(ANIMATION_ID.hero_walk_right);
@@ -4625,6 +4623,8 @@ document.addEventListener("keydown", (event) => {
       launchGame();
     } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
       resumeRun();
+    } else if(gateOpened){
+      alert("go2");
     }
   }
   
@@ -5370,6 +5370,11 @@ const defineSwordReach = () => {
  //swordReach = heroImage.getBoundingClientRect().height * 2;
  swordReach = window.innerWidth * 0.6;
 };
+
+const getRedHammerCharacterRealRight = (redHammerContainer: HTMLElement) => {
+  return
+}
+
 
 const launchGame = () => {
   runAudio.play();

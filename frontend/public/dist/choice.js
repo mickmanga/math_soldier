@@ -2370,14 +2370,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
       null,
       null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
-      null,
-      null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       null,
       null,
@@ -2962,6 +2954,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
   var currentCinematicMode = 0 /* NONE */;
+  var gateOpened = false;
   var enemyCurrentlyOnScreen = 1 /* RED_GOLEM */;
   var mountainGodHurt = true;
   var currentMapBlockHeightAndWidthComparedToScreen = 1;
@@ -3077,6 +3070,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var runAudio = document.getElementById("run_audio");
   var dragonAudio = document.getElementById("dragon_audio");
+  var getEnemyRealRight = (enemyContainer) => {
+    return enemyContainer.getBoundingClientRect().left + (enemyContainer.getBoundingClientRect().width - enemyContainer.getBoundingClientRect().width * 0.3);
+  };
   var stepsInSwow = document.getElementById(
     "snow_steps_audio"
   );
@@ -4020,7 +4016,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const enemyCanBeHit = (enemy) => {
       const enemyLeft = getMountainGodRealLeft(enemy) * (special ? 1.1 : 1.2);
-      return (enemyOnScreenAttackIndex === 2 || enemyLeft > getHeroLeft()) && enemyLeft < getHeroLeft() + swordReach;
+      return getEnemyRealRight(enemy.character.element.parentElement) > getHeroLeft() && enemyLeft < getHeroLeft() + swordReach;
     };
     ennemiesOnScreen.forEach((enemy) => {
       if (!enemyCanBeHit(enemy)) {
@@ -4078,7 +4074,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
-    enemyOnScreenAttackIndex = getMountainGodAttackIndex();
+    enemyOnScreenAttackIndex = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodAttackIndex() : 0;
     if (enemyOnScreenAttackIndex === 2) {
       enemy.character.element.parentElement.classList.add("enemy_container_jump_attack");
     } else {
@@ -4454,7 +4450,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
       }
-      if (getHeroLeft() > enemyLeft && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
+      if (getHeroLeft() > enemyLeft + enemyContainer.getBoundingClientRect().width * (enemyCurrentlyOnScreen === 1 /* RED_GOLEM */ ? 0.3 : 0) && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
         handleHeroAndEnemyContact(enemyOnScreen);
       }
     });
@@ -5475,7 +5471,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 41 /* golem_opponent_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/attack",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/attack/new",
               length: 16
             }
           }
@@ -5490,7 +5486,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 42 /* golem_opponent_death */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/death",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/death/new",
               length: 28
             }
           }
@@ -5535,7 +5531,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 40 /* golem_opponent_run */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk/new",
               length: 7
             }
           }
@@ -5763,6 +5759,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             launchChallenge("677e814577322467895fd1a2");
             setTimeout(
               () => {
+                gateOpened = true;
                 specifyAndLaunchCinematic(1 /* FIRST */);
                 repositionMapBlocks();
               },
@@ -5865,6 +5862,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var stopHeroMove = (direction = 0 /* LEFT_TO_RIGHT */) => {
     heroMoving = false;
     stepsInSwow.pause();
+    interruptAnimation(1 /* hero_run */);
     if (direction === 0 /* LEFT_TO_RIGHT */) {
       interruptAnimation(4 /* hero_walk_right */);
       stopCameraMovingToRight();
@@ -5958,6 +5956,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         launchGame();
       } else if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
         resumeRun();
+      } else if (gateOpened) {
+        alert("go2");
       }
     }
     if (event.key === "q") {
