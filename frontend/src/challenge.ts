@@ -1599,7 +1599,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 100 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ?  130 : animationId === ANIMATION_ID.hammer_opponent_taunt ? 100 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack2 ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_hurt ? 100 : animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack ? 60 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : animationId === ANIMATION_ID.pnj1_transformation ? 200 : animationId === ANIMATION_ID.pnj1_transformation2 ? 250 : animationId === ANIMATION_ID.pnj2_idle ? 130 : animationId === ANIMATION_ID.pike_man_idle ? 100 : animationId === ANIMATION_ID.pike_man_open_gate ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 100 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ?  130 : animationId === ANIMATION_ID.hammer_opponent_taunt ? 100 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_attack ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack2 ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 100 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 120 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_hurt ? 100 : animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack ? 60 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : animationId === ANIMATION_ID.pnj1_transformation ? 200 : animationId === ANIMATION_ID.pnj1_transformation2 ? 250 : animationId === ANIMATION_ID.pnj2_idle ? 130 : animationId === ANIMATION_ID.pike_man_idle ? 100 : animationId === ANIMATION_ID.pike_man_open_gate ? 100 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -1899,11 +1899,12 @@ const launchOpponent = (enemy: EnemyInterface) => {
           }
         }, 360
       )
-    
-
 
   } else {
+    console.log("launch")
     enemyViewPoint.style.left = "40vw";
+    interruptAnimation(ANIMATION_ID.golem_opponent_move);
+    ANIMATION_RUNNING_VALUES[ANIMATION_ID.golem_opponent_move]++;
     moveEnemy(enemy, 0, Date.now());
     launchAnimation(enemy.character, AnimationType.idle);
   }
@@ -2526,7 +2527,7 @@ const detectCollision = () => {
           launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : AnimationType.specialAttack);   
         }
       } else {
-        launchAnimation(enemyOnScreen.character, AnimationType.attack)   
+        launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
       }
     } 
    
@@ -2537,14 +2538,9 @@ const detectCollision = () => {
         enemyViewPoint.getBoundingClientRect().width <
         getHeroLeft()
     ) {
-      
       heroInTheRedZone = true;
-
       updateEnemyViewPointDisplay();
-    
-  }
-
-
+     }
   
     if (
       getHeroLeft() >
