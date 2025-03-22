@@ -4075,12 +4075,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var launchOpponent = (enemy) => {
     APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
     enemyOnScreenAttackIndex = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodAttackIndex() : 0;
-    if (enemyOnScreenAttackIndex === 2) {
-      enemy.character.element.parentElement.classList.add("enemy_container_jump_attack");
-    } else {
-      enemy.character.element.parentElement.classList.add("enemy_container_normal");
-    }
     if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
+      if (enemyOnScreenAttackIndex === 2) {
+        enemy.character.element.parentElement.classList.add("enmy_container_jump_attack");
+      } else {
+        enemy.character.element.parentElement.classList.add("enemy_container_normal");
+      }
       launchAnimation(enemy.character, 18 /* teleportation */, false);
       setTimeout(
         () => {
@@ -4109,8 +4109,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         360
       );
     } else {
-      console.log("launch");
-      enemyViewPoint.style.left = "40vw";
+      enemy.character.element.parentElement.classList.add("red_golem_container");
+      enemyViewPoint.style.left = "110vw";
       interruptAnimation(44 /* golem_opponent_move */);
       ANIMATION_RUNNING_VALUES[44 /* golem_opponent_move */]++;
       moveEnemy(enemy, 0, Date.now());
@@ -5959,8 +5959,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         launchGame();
       } else if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
         resumeRun();
-      } else if (gateOpened) {
-        alert("go2");
       }
     }
     if (event.key === "q") {
@@ -6076,7 +6074,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       moveEnemy(enemy, 0, Date.now());
     });
     if (!ennemiesOnScreen.length) {
-      triggerOpponentsApparition();
     }
   };
   var checkForOpponentsClearance = () => {

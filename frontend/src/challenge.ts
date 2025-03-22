@@ -108,7 +108,6 @@ export const ASSETS_PATH_BASE = "assets/challenge";
 let currentChallengeLength = 0;
 
 let answers = null;
-//selectors
 
 const getHeroMode = () => {
  return store.getState().persistedMap.heroMode;
@@ -1859,15 +1858,14 @@ const launchOpponent = (enemy: EnemyInterface) => {
   APP_ELEMENTS_ANIMATION_QUEUE.enemy.current_animation = null;
 
   enemyOnScreenAttackIndex = enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD ? getMountainGodAttackIndex() : 0;
-  
-  if(enemyOnScreenAttackIndex === 2){
-    enemy.character.element.parentElement!.classList.add("enemy_container_jump_attack");
-  } else {
-    enemy.character.element.parentElement!.classList.add("enemy_container_normal");
-  }
-
 
   if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
+
+    if(enemyOnScreenAttackIndex === 2){
+      enemy.character.element.parentElement!.classList.add("enmy_container_jump_attack");
+    } else {
+      enemy.character.element.parentElement!.classList.add("enemy_container_normal");
+    }
 
     launchAnimation(enemy.character, AnimationType.teleportation,false);
 
@@ -1901,8 +1899,8 @@ const launchOpponent = (enemy: EnemyInterface) => {
       )
 
   } else {
-    console.log("launch")
-    enemyViewPoint.style.left = "40vw";
+    enemy.character.element.parentElement!.classList.add("red_golem_container");
+    enemyViewPoint.style.left = "110vw";
     interruptAnimation(ANIMATION_ID.golem_opponent_move);
     ANIMATION_RUNNING_VALUES[ANIMATION_ID.golem_opponent_move]++;
     moveEnemy(enemy, 0, Date.now());
@@ -4619,8 +4617,6 @@ document.addEventListener("keydown", (event) => {
       launchGame();
     } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
       resumeRun();
-    } else if(gateOpened){
-      alert("go2");
     }
   }
   
@@ -4776,7 +4772,7 @@ const resumeRun = () => {
   });
 
   if (!ennemiesOnScreen.length) {
-    triggerOpponentsApparition();
+   // triggerOpponentsApparition();
   }
 };
 

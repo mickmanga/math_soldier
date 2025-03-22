@@ -172,6 +172,9 @@ cinematic 2
 .enemy_container_normal {
   left: 40vw;
 }
+.red_golem_container {
+  left: 110vw;
+}
 
 #explosion_img {
   height: 120% !important;
