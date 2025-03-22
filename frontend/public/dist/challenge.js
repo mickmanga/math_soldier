@@ -2370,6 +2370,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
       null,
       null,
+      null,
+      null,
+      null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       null,
       null,
@@ -3756,9 +3759,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return element.type === 1 /* form */ ? createFormElement(element) : element.type === 0 /* challenge */ ? createChallengPilar(element) : createCharacterElement(element);
   };
   var createPikeCharacterAndPrepareAnimations = () => {
-    specifyAndLaunchCinematic(2 /* SECOND */);
+    specifyAndLaunchCinematic(1 /* FIRST */);
     const pikeContainer = document.createElement("div");
-    pikeContainer.classList.add("golem_master_container");
+    pikeContainer.classList.add("pike_man_container");
     pikeContainer.style.bottom = "-20.75vh";
     const pikeImg = document.createElement("img");
     pikeImg.src = ASSETS_PATH_BASE + "/characters/neutral/pike_man/idle/1.png";
@@ -4201,9 +4204,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     } else {
       enemy.character.element.parentElement.classList.add("red_golem_container");
       enemyViewPoint.style.left = "110vw";
-      interruptAnimation(44 /* golem_opponent_move */);
-      ANIMATION_RUNNING_VALUES[44 /* golem_opponent_move */]++;
-      moveEnemy(enemy, 0, Date.now());
+      if (!runStopped) {
+        interruptAnimation(44 /* golem_opponent_move */);
+        ANIMATION_RUNNING_VALUES[44 /* golem_opponent_move */]++;
+        moveEnemy(enemy, 0, Date.now());
+      }
       launchAnimation(enemy.character, 12 /* idle */);
     }
   };
@@ -5877,13 +5882,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         launchAnimation(masterCharacter, 20 /* open_gate */, false);
         setTimeout(
           () => {
-            quitCinematic();
             launchChallenge("677e814577322467895fd1a2");
+            gateOpened = true;
             setTimeout(
               () => {
-                gateOpened = true;
-                specifyAndLaunchCinematic(1 /* FIRST */);
-                repositionMapBlocks();
               },
               2e3
             );
@@ -6108,6 +6110,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "y") {
       launchTransformation();
+    }
+    if (event.key === "t") {
+      firstRedGolemCanAppear = true;
     }
     if (event.key === "s" && hardMode) {
       if (runStopped) {

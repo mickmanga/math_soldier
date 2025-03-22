@@ -173,7 +173,7 @@ cinematic 2
   left: 40vw;
 }
 .red_golem_container {
-  left: 110vw;
+  left: 90vw;
 }
 
 #explosion_img {
@@ -187,6 +187,18 @@ cinematic 2
   position: absolute;
   bottom:-2.5vh;
   left: 0vw;
+  height: 50vh;
+  width: 35vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 11000;
+}
+
+.pike_man_container {
+  position: absolute;
+  bottom: -2.5vh;
+  right: 0vw;
   height: 50vh;
   width: 35vw;
   display: flex;

@@ -1202,16 +1202,18 @@ const createMapElement = (element: MapElement) => {
 
 const createPikeCharacterAndPrepareAnimations = () => {
   
-  specifyAndLaunchCinematic(CINEMATIC_MODES.SECOND);
+  specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
 
   const pikeContainer = document.createElement("div");
-  pikeContainer.classList.add("golem_master_container");
+  pikeContainer.classList.add("pike_man_container");
   pikeContainer.style.bottom = '-20.75vh';
 
   const pikeImg = document.createElement("img");
   pikeImg.src= ASSETS_PATH_BASE + "/characters/neutral/pike_man/idle/1.png"; 
 
   pikeContainer.append(pikeImg);
+
+//  checkForPikeManCloseToLeftBorder();
 
   createPikeManCharacter(pikeImg);
 
@@ -1869,7 +1871,6 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
     launchAnimation(enemy.character, AnimationType.teleportation,false);
 
-
       setTimeout(
         () => {
           if(enemyOnScreenAttackIndex < 2){
@@ -1901,12 +1902,13 @@ const launchOpponent = (enemy: EnemyInterface) => {
   } else {
     enemy.character.element.parentElement!.classList.add("red_golem_container");
     enemyViewPoint.style.left = "110vw";
-    interruptAnimation(ANIMATION_ID.golem_opponent_move);
-    ANIMATION_RUNNING_VALUES[ANIMATION_ID.golem_opponent_move]++;
-    moveEnemy(enemy, 0, Date.now());
+    if(!runStopped){
+      interruptAnimation(ANIMATION_ID.golem_opponent_move);
+      ANIMATION_RUNNING_VALUES[ANIMATION_ID.golem_opponent_move]++;
+      moveEnemy(enemy, 0, Date.now());
+    }
     launchAnimation(enemy.character, AnimationType.idle);
   }
-
 };
 
 const createMountainGod = (cinematic = false) => {
@@ -4322,20 +4324,19 @@ const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
       launchAnimation(masterCharacter, AnimationType.open_gate, false);
       setTimeout(
         () => {
-          quitCinematic();
           launchChallenge("677e814577322467895fd1a2");
+          gateOpened = true;
           setTimeout(
             () => {
-              gateOpened = true;
-              specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
-              repositionMapBlocks();
+              //gateOpened = true;
+              //specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
+              //repositionMapBlocks();
             }, 2000
           )
         }, 5000
       )
     }
-  })
-
+  });
 
 }
 
@@ -4652,6 +4653,10 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "y") {
     launchTransformation();
+  }
+
+  if(event.key === "t"){
+    firstRedGolemCanAppear = true;
   }
 
   if (event.key === "s" && hardMode) {
@@ -5366,7 +5371,6 @@ const defineSwordReach = () => {
 const getRedHammerCharacterRealRight = (redHammerContainer: HTMLElement) => {
   return
 }
-
 
 const launchGame = () => {
   runAudio.play();
