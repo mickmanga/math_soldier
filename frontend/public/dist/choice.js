@@ -4113,7 +4113,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
     } else {
       enemy.character.element.parentElement.classList.add("red_golem_container");
-      enemyViewPoint.style.left = "110vw";
+      enemyViewPoint.style.left = "70vw";
       if (!runStopped) {
         interruptAnimation(44 /* golem_opponent_move */);
         ANIMATION_RUNNING_VALUES[44 /* golem_opponent_move */]++;
@@ -4457,6 +4457,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       if (enemyCurrentlyOnScreen !== 0 /* MOUNTAIN_GOD */ && !heroInTheRedZone && enemyViewPoint.getBoundingClientRect().left + enemyViewPoint.getBoundingClientRect().width < getHeroLeft()) {
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
+        runningPointReached = true;
+        launchAnimation(enemyOnScreen.character, 3 /* run */);
       }
       if (getHeroLeft() > enemyLeft + enemyContainer.getBoundingClientRect().width * (enemyCurrentlyOnScreen === 1 /* RED_GOLEM */ ? 0.3 : 0) && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
         handleHeroAndEnemyContact(enemyOnScreen);
@@ -5539,7 +5541,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 40 /* golem_opponent_run */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk/new",
+              path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk",
               length: 7
             }
           }
@@ -5611,7 +5613,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   ];
   var heroCharacter = new DefaultCharacter(heroImage, 0 /* idle */, heroAnimations);
   var resetViewPoint = () => {
-    enemyViewPoint.style.left = "0vw";
+    enemyViewPoint.style.left = "70vw";
     enemyViewPoint.style.display = "flex";
     updateEnemyViewPointDisplay();
   };
@@ -5750,7 +5752,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
     newOpponentContainer.append(newEnnemyImg);
     newOpponentContainer.style.bottom = "18vh";
-    newOpponentContainer.style.width = "75vh";
+    newOpponentContainer.style.width = "55vw";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);

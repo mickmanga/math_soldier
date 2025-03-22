@@ -1901,7 +1901,7 @@ const launchOpponent = (enemy: EnemyInterface) => {
 
   } else {
     enemy.character.element.parentElement!.classList.add("red_golem_container");
-    enemyViewPoint.style.left = "110vw";
+    enemyViewPoint.style.left = "70vw";
     if(!runStopped){
       interruptAnimation(ANIMATION_ID.golem_opponent_move);
       ANIMATION_RUNNING_VALUES[ANIMATION_ID.golem_opponent_move]++;
@@ -2540,6 +2540,8 @@ const detectCollision = () => {
     ) {
       heroInTheRedZone = true;
       updateEnemyViewPointDisplay();
+      runningPointReached = true;
+      launchAnimation(enemyOnScreen.character, AnimationType.run);
      }
   
     if (
@@ -3997,7 +3999,7 @@ const golemAnimations = [
             {
               id: ANIMATION_ID.golem_opponent_run,
               sprite:    {
-                path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk/new",
+                path: ASSETS_PATH_BASE + "/characters/enemies/golem/walk",
                 length: 7
             }
             }
@@ -4077,7 +4079,7 @@ const kingAnimations = [
 export const heroCharacter = new DefaultCharacter(heroImage, HeroCharacterStates.idle, heroAnimations);
 
 const resetViewPoint = () => {
-  enemyViewPoint.style.left = "0vw";
+  enemyViewPoint.style.left = "70vw";
   enemyViewPoint.style.display = "flex";
   updateEnemyViewPointDisplay();
 }
@@ -4301,7 +4303,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "18vh";
-  newOpponentContainer.style.width = "75vh";
+  newOpponentContainer.style.width = "55vw";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
