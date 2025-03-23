@@ -2358,6 +2358,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
       null,
       null,
