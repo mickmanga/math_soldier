@@ -3140,7 +3140,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var REWARD_TIMEOUT_DURATION = 5;
   var rewardStreak = 1;
   var hardMode = false;
-  var TRANSFORMATION_THRESHOLD = hardMode ? 1e8 : 20;
+  var TRANSFORMATION_THRESHOLD = 20;
   var preTransformed = false;
   var gameFinished = false;
   var runStopped = false;
@@ -4047,7 +4047,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     clearTimeoutAndLaunchNewOne(
       0 /* HERO */,
       setTimeout(() => {
-        stopRun(true);
+        launchHeroRunAnimation();
       }, special ? 500 : transformed ? 360 : 350)
     );
   };
@@ -4283,21 +4283,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var hideReward = () => {
   };
   var killEnemy = (enemy, fromSpecialAttack) => {
-    specifyAndLaunchCinematic(2 /* SECOND */);
     const launchExplosion = () => {
       bombAudio.play();
       bombAudio.currentTime = 0;
       if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
         if (!fromSpecialAttack) {
-          interruptAnimation(37 /* hammer_opponent_move */);
-          launchAnimation(enemy.character, 13 /* death */, false);
-          setTimeout(
-            () => {
-              launchAnimation(enemy.character, 21 /* teleportation */, false);
-            },
-            15e3
-          );
-          return;
           interruptAnimation(19 /* mountain_god_run */);
           interruptAnimation(15 /* mountain_god_attack */);
           interruptAnimation(30 /* hammer_opponent_idle */);
@@ -4309,9 +4299,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             200
           );
         } else {
-          interruptAnimation(37 /* hammer_opponent_move */);
-          launchAnimation(enemy.character, 13 /* death */);
-          return;
           enemy.character.element.style.opacity = "0";
           interruptAnimation(32 /* hammer_opponent_attack */);
           interruptAnimation(30 /* hammer_opponent_idle */);
@@ -4356,6 +4343,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     };
     launchExplosion();
+    destroyEnemyAndLaunchNewOne(enemy);
   };
   var getMountainGodRealLeft = (enemy) => {
     const enemyContainer = enemy.character.element.parentElement;
@@ -4376,6 +4364,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const enemyDestructionAndRevivalCallback = () => {
       enemy.character.element.remove();
       if (!preTransformed) {
+        triggerOpponentsApparition();
       }
     };
     if (delay) {
@@ -4389,6 +4378,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         ennemiesOnScreen.splice(index, 1);
       }
     });
+  };
+  var destroyEnemyAndLaunchNewOne = (enemy) => {
+    destroyEnemy(enemy);
   };
   var hurtHero = () => {
     if (!heroIsAlive) {
@@ -4931,8 +4923,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 30 /* hammer_opponent_idle */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/explosion/mountain_god",
-              length: 9
+              path: ASSETS_PATH_BASE + "/characters/enemies/hard/idle/new/new",
+              length: 16
             }
           }
         }
@@ -4991,8 +4983,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 35 /* hammer_opponent_death */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/enemies/hard/death/new",
-              length: 41
+              path: ASSETS_PATH_BASE + "/characters/enemies/mountain_god/hurt",
+              length: 5
             }
           }
         }
@@ -6487,7 +6479,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return Math.floor(rewardStreak / TRANSFORMATION_THRESHOLD * 100);
   };
   var updateTransformationProgressBarDisplay = () => {
-    const progress = document.querySelector(".progress");
+    const progress = document.getElementById("specialBarValue");
     progress.style.setProperty(
       "--progress",
       `${getTransformationProgressValue()}%`

@@ -27,7 +27,7 @@ let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
 
 let gateOpened = false;
 
-let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.RED_GOLEM;
+let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
 let mountainGodHurt = true;
 let currentMapBlockHeightAndWidthComparedToScreen = 1;
 
@@ -306,7 +306,7 @@ let rewardStreak = 1;
 
 let hardMode: boolean | null = false;
 
-let TRANSFORMATION_THRESHOLD = hardMode ? 100000000 : 20;
+let TRANSFORMATION_THRESHOLD = 20;
 
 let preTransformed = false;
 
@@ -5434,7 +5434,7 @@ const getTransformationProgressValue = () => {
 };
 
 const updateTransformationProgressBarDisplay = () => {
-  const progress = document.querySelector(".progress")! as HTMLElement;
+  const progress = document.getElementById("specialBarValue")! as HTMLElement;
   progress.style.setProperty(
     "--progress",
     `${getTransformationProgressValue()}%`
