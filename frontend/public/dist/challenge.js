@@ -2367,10 +2367,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
+      null,
+      null,
+      null,
       { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
       null,
       null,
       null,
@@ -2966,7 +2969,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var gameMode = 0 /* discovery */;
   var currentCinematicMode = 0 /* NONE */;
   var gateOpened = false;
-  var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
+  var enemyCurrentlyOnScreen = 1 /* RED_GOLEM */;
   var mountainGodHurt = true;
   var currentMapBlockHeightAndWidthComparedToScreen = 1;
   var flameThrowerAudio = document.getElementById("flame_thrower");

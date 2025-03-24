@@ -27,7 +27,7 @@ let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
 
 let gateOpened = false;
 
-let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
+let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.RED_GOLEM;
 let mountainGodHurt = true;
 let currentMapBlockHeightAndWidthComparedToScreen = 1;
 
