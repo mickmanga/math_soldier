@@ -176,11 +176,20 @@ cinematic 2
   left: 90vw;
 }
 
-#explosion_img {
+#explosion_img_small {
   height: 120% !important;
   width: auto !important;
   position: absolute;
   left: 0;
+  bottom: 0;
+}
+#explosion_img_big {
+  height: 270% !important;
+  width: auto !important;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
 }
 
 .golem_master_container {
@@ -958,6 +967,7 @@ cinematic 2
   top: 10%;
   display: none;
   height: 100% !important;
+  width: auto !important;
   opacity: 0;
 }
 
