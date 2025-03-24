@@ -227,6 +227,7 @@ cinematic 2
   align-items: center;
   z-index: 11000;
   opacity: 0.85;
+  opacity: 0;
 }
 
 .mountain_obelisk_container_full {
