@@ -2367,6 +2367,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      null,
       { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       null,
       null,
@@ -2386,7 +2388,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       null,
       null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
@@ -3795,8 +3796,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        quitCinematic();
-        launchChallenge("677e814577322467895fd1a2");
+        setTimeout(
+          () => {
+            launchAnimation(pillarElement, 19 /* transformation */);
+            setTimeout(
+              launchMountainGodCinematic,
+              5e3
+            );
+          },
+          1e3
+        );
         return;
       }
       requestAnimationFrame(
@@ -4220,6 +4229,72 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
       launchAnimation(enemy.character, 15 /* idle */);
     }
+  };
+  var createMountainGod = (cinematic = false) => {
+    const mountainGodContainer = document.createElement("div");
+    mountainGodContainer.classList.add("mountain_god_container");
+    const mountainGodImg = document.createElement("img");
+    mountainGodContainer.append(mountainGodImg);
+    if (cinematic) {
+      document.body.append(mountainGodContainer);
+    } else {
+      mountainGodContainer.classList.add("mountain_god_container_fight");
+    }
+    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
+  };
+  var launchMountainGodCinematic = () => {
+    const thunder = document.getElementById("thunder_audio");
+    thunder.play();
+    const mountainGodCharacter = createMountainGod(true);
+    setTimeout(
+      () => {
+        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
+        setTimeout(
+          () => {
+            launchAnimation(mountainGodCharacter, 2 /* specialAttack2 */, false);
+            setTimeout(
+              () => {
+                launchAnimation(mountainGodCharacter, 15 /* idle */);
+              },
+              1600
+            );
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
+                        setTimeout(
+                          () => {
+                            document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                            quitCinematic();
+                            setTimeout(
+                              () => {
+                                launchChallenge("677e814577322467895fd1a2");
+                              },
+                              2e3
+                            );
+                          },
+                          2e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  700
+                );
+              },
+              700
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
   };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;

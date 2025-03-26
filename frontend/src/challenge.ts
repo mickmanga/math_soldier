@@ -1239,19 +1239,15 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
 
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
-
-      quitCinematic();
-      launchChallenge("677e814577322467895fd1a2");
-
   
-      //setTimeout(
-        //() => {
-          //launchAnimation(pillarElement, AnimationType.transformation);
-            // setTimeout(
-                 //launchMountainGodCinematic, 5000
-             /// )
-        //}, 1000
-      //);
+      setTimeout(
+        () => {
+          launchAnimation(pillarElement, AnimationType.transformation);
+             setTimeout(
+                 launchMountainGodCinematic, 5000
+              )
+        }, 1000
+      );
       
       return;
     }

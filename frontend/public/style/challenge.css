@@ -227,7 +227,6 @@ cinematic 2
   align-items: center;
   z-index: 11000;
   opacity: 0.85;
-  opacity: 0;
 }
 
 .mountain_obelisk_container_full {
@@ -859,12 +858,11 @@ cinematic 2
 
 #logo_container {
   height: 100%;
-  width: 30%;
-  background: green;
+  width: 20%;
 }
 
 #progress_bars_containers {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
@@ -895,11 +893,21 @@ cinematic 2
 
 #lifeBar {
   border-radius: 10px 10px 10px 10px;
-
 }
 
 #transformationBar {
   border-radius: 10px 0px 0px 10px;
+}
+
+#logo_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logo_container img {
+ width: 50%;
+ height: auto;
 }
 
 
