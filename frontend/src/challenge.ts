@@ -1248,7 +1248,7 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
              )
         }, 1000
       );
-      
+         
       return;
     }
 
@@ -1848,7 +1848,7 @@ let mountainGodAttackIndexesIndex = 0;
 
 const getMountainGodAttackIndex = () => {
 
-  const mountainGodAttackIndexes = [0,1,2,1,2,0,1,2,2,1,1,0,2];
+  const mountainGodAttackIndexes = [0,1,1,0,1,0,1,0,1,1,1,0,1];
 
   const attackIndex = mountainGodAttackIndexes[mountainGodAttackIndexesIndex];
 
@@ -2127,18 +2127,20 @@ const moveEnemy = (
   const currentTimeStamp = Date.now();
   const diff = currentTimeStamp - previousTimeStamp;
 
+  console.log(diff);
+
   throttleNum = 0;
   const enemyContainer = enemy.character.element.parentElement!;
 
   enemyContainer.style.left = `${Math.round(
     enemyContainer.getBoundingClientRect().left -
-      2 * (runningPointReached ? 1.4  : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)  
+      2 * (runningPointReached ? 1.4  : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff/8)
   )}px`;
 
   if (enemyCurrentlyOnScreen !== ENEMIES_ON_SCREEN.MOUNTAIN_GOD) {
     enemyViewPoint.style.left = `${Math.round(
       enemyViewPoint.getBoundingClientRect().left -
-      2 * (runningPointReached ? 1.4  : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)  
+      2 * (runningPointReached ? 1.4  : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff/8)
   )}px`;
   }
 
@@ -2555,7 +2557,7 @@ const detectCollision = () => {
 
       if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
         if(enemyOnScreenAttackIndex < 2){
-          launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : AnimationType.specialAttack);   
+          launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : AnimationType.specialAttack);
         }
       } else {
         launchAnimation(enemyOnScreen.character, AnimationType.attack, false);
@@ -4429,7 +4431,11 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
               killHero();
             
               setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"), 5000
+                () => {
+                  const talnurMusic = document.getElementById("talnur_music") as HTMLAudioElement;
+                  talnurMusic.pause();
+                  quitCinematic();
+                }, 5000
               )
 
             }, 19000
@@ -4476,6 +4482,9 @@ const specifyAndLaunchCinematic = (cinematicMode: CINEMATIC_MODES) => {
 const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
 
   specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
+
+  const talnurMusic = document.getElementById("talnur_music") as HTMLAudioElement;
+  talnurMusic.play();
 
   const masterElement = document.createElement("div");
   masterElement.classList.add("golem_master_container");

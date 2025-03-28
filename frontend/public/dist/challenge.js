@@ -2367,14 +2367,21 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       null,
+      null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       null,
       null,
       { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 2 /* pike_man */ },
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       null,
@@ -4177,7 +4184,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var mountainGodAttackIndexesIndex = 0;
   var getMountainGodAttackIndex = () => {
-    const mountainGodAttackIndexes = [0, 1, 2, 1, 2, 0, 1, 2, 2, 1, 1, 0, 2];
+    const mountainGodAttackIndexes = [0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1];
     const attackIndex = mountainGodAttackIndexes[mountainGodAttackIndexesIndex];
     mountainGodAttackIndexesIndex++;
     if (mountainGodAttackIndexesIndex > mountainGodAttackIndexes.length - 1) {
@@ -4307,14 +4314,15 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
+    console.log(diff);
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+      enemyContainer.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 8)
     )}px`;
     if (enemyCurrentlyOnScreen !== 0 /* MOUNTAIN_GOD */) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1)
+        enemyViewPoint.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 8)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
@@ -5988,7 +5996,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             () => {
               killHero();
               setTimeout(
-                () => window.location.replace("http://localhost:3001/learningWorld"),
+                () => {
+                  const talnurMusic = document.getElementById("talnur_music");
+                  talnurMusic.pause();
+                  quitCinematic();
+                },
                 5e3
               );
             },
@@ -6027,6 +6039,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var createMasterCharacterElementAndPrepareAnimations = () => {
     specifyAndLaunchCinematic(1 /* FIRST */);
+    const talnurMusic = document.getElementById("talnur_music");
+    talnurMusic.play();
     const masterElement = document.createElement("div");
     masterElement.classList.add("golem_master_container");
     const masterImg = document.createElement("img");
