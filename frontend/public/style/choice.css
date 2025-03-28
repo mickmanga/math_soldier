@@ -35,8 +35,8 @@ html, * {
     height: 33vh;
     width: auto;
     position: absolute;
-    left: 38vw;
-    top: 55vh;
+    left: 45vw;
+    top: 49vh;
     z-index: 3;
 }
 

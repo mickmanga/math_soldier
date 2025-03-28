@@ -152,13 +152,14 @@ body {
 
 #learning_god_container {
   position: absolute;
-  right: -15vw;
+  left: 105vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 95vh;
+  height: 97vh;
   width: 10vw;
-  top: 6.75vh;
+  top: 5vh;
+  opacity: 0.72;
 }
 
 #learning_god_container img {

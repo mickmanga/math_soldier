@@ -109,10 +109,61 @@ const openCourse = () => {
     )
 };
 
+const diminishAudio = (audioElement: HTMLAudioElement) => {
+
+    if(audioElement.volume > 0){
+        audioElement.volume -= 0.01;
+    }
+
+  requestAnimationFrame( () => diminishAudio(audioElement));
+
+}
+
 const launchGodFootsteps = () => {
     const godStepsAudio = document.getElementById("god_steps")! as HTMLAudioElement;
     godStepsAudio.play();
+
+    setTimeout(
+        () => {
+        
+         const earthquakeAudio = document.getElementById("earthquake")! as HTMLAudioElement;
+           earthquakeAudio.play();
+
+
+           setTimeout(
+            () => {
+                launchMonsterAnimation();
+                 moveLearningGod(Date.now()); 
+                //diminishAudio(earthquakeAudio);
+                const godStepsFast = document.getElementById("god_steps_fast")! as HTMLAudioElement;
+                godStepsFast.volume = 0.45;
+                godStepsFast.playbackRate = 1;
+                godStepsFast.play();
+
+            }, 6000
+           );
+
+           
+    setTimeout(
+        () => {
+        
+         const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
+           godSongAudio.play();
+             
+        }, 1000
+    )
+
+
+
+             
+        }, 11500
+    )
+
+
+
 }
+
+
 
 window.onload = () => {
     setTimeout(
@@ -147,45 +198,6 @@ const launchLearningGod = () => {
   letterBoxBottom.style.display = "flex";
 
    launchGodFootsteps();
-   setTimeout(
-    () => {  
-      const godSongAudio = document.getElementById("god_song")! as HTMLAudioElement;
-      godSongAudio.play();
-
-      setTimeout(
-        () => {
-            setTimeout(
-                () => {
-                 const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
-                 godTalking.play();
-                 setTimeout(
-                    () => {
-                        launchAnimation(heroCharacter, AnimationType.teleportation);
-                        
-                        setTimeout(
-                            () => {
-                                window.location.replace(
-                                    "http://localhost:3001/challenge"
-                                )
-                            },4000
-                        )
-                        
-                    },1000
-                 )
-                }, 2000
-            );
-        }, 11500
-      )
-
-    }, 5000
-   )
-
-    setTimeout(
-        () => { 
-           launchMonsterAnimation();
-           moveLearningGod();
-        }, 14000
-    )
 
 }
 
@@ -204,12 +216,53 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-const moveLearningGod = () => {
+let songLaunched = false;
+
+let initialTimeStamp = 0;
+
+const moveLearningGod = (initialTS?: number) => {
 
     const learningGodLeft = learningGodContainer.getBoundingClientRect().left;
 
-    if(learningGodLeft <= (window.innerWidth* 0.75)){
-        launchAnimation(learningGodCharacter, AnimationType.idle,  )
+    if(initialTS){
+        initialTimeStamp = initialTS;
+    }
+
+    if(learningGodLeft <= (window.innerWidth* 0.7)){
+        launchAnimation(learningGodCharacter, AnimationType.idle);
+        const godStepsFast = document.getElementById("god_steps_fast")! as HTMLAudioElement;
+        godStepsFast.pause();
+
+
+             
+        setTimeout(
+            () => {
+
+           const godSongAudio2 = document.getElementById("learning_god")! as HTMLAudioElement;
+           godSongAudio2.play();
+                
+              setTimeout(
+                () => {
+                    const godTalking = document.getElementById("god_talking")! as HTMLAudioElement;
+                    godTalking.play();
+                }, 3500
+              )
+            }, 3500
+        )
+
+         setTimeout(
+            () => {
+              //  launchAnimation(heroCharacter, AnimationType.teleportation);
+                
+               // setTimeout(
+                  //  () => {
+                      //  window.location.replace(
+                        //    "http://localhost:3001/challenge"
+                        //)
+                    //},4000
+                //)
+                
+            },3000)
         return;
     }
 
