@@ -184,7 +184,7 @@ cinematic 2
   bottom: 0;
 }
 #explosion_img_big {
-  height: 270% !important;
+  height: 200% !important;
   width: auto !important;
   position: absolute;
   left: 0;

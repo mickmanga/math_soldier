@@ -2367,13 +2367,27 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      null,
+      null,
       { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null,
       null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
-      null,
-      null,
-      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       null,
       null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
@@ -3016,9 +3030,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroRunning = false;
   var idleTimeoutContainer = document.getElementById("idle_timeout_container");
   var SPECIAL_MODE_MAX_VALUE = 10;
-  var getElementsRight = (element) => {
-    return element.getBoundingClientRect().left + element.getBoundingClientRect().width;
-  };
   var handleHeroAndEnemyContact = (enemy) => {
     enemy.collideable = false;
     if (!invisible || enemy.answer.true) {
@@ -3098,6 +3109,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var dragonAudio = document.getElementById("dragon_audio");
   var getEnemyRealRight = (enemyContainer) => {
     return enemyContainer.getBoundingClientRect().left + (enemyContainer.getBoundingClientRect().width - enemyContainer.getBoundingClientRect().width * 0.3);
+  };
+  var getEnemyRight = (enemyContainer) => {
+    return enemyContainer.getBoundingClientRect().right - enemyContainer.getBoundingClientRect().width * (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? 63 / 170 : 16 / 64);
   };
   var stepsInSwow = document.getElementById(
     "snow_steps_audio"
@@ -3802,6 +3816,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return mountainGodPillar;
   };
   var prepareMountainGodAnimations = (element) => {
+    enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
@@ -4003,7 +4018,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 11 /* hero_teleportation */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 7 /* hero_death */ || animationId === 85 /* lightning */ || animationId === 30 /* hammer_opponent_idle */ || animationId === 35 /* hammer_opponent_death */ || animationId === 58 /* witch_opponent_death */ || animationId === 59 /* witch_opponent_death_from_special_attack */ || animationId === 32 /* hammer_opponent_attack */ || animationId === 33 /* hammer_opponent_special_attack */ || animationId === 34 /* hammer_opponent_special_attack2 */ || animationId === 61 /* orc_opponent_idle */ || animationId === 63 /* orc_opponent_attack */ || animationId === 66 /* dwarf_opponent_idle */ || animationId === 68 /* dwarf_opponent_attack */ || animationId === 39 /* golem_opponent_idle */ || animationId === 41 /* golem_opponent_attack */ || animationId === 42 /* golem_opponent_death */ || animationId === 64 /* orc_opponent_death */ || animationId === 69 /* dwarf_opponent_death */ || animationId === 43 /* golem_opponent_death_from_special_attack */ || animationId === 40 /* golem_opponent_run */ || animationId === 56 /* witch_opponent_run */ || animationId === 31 /* hammer_opponent_run */ || animationId === 38 /* hammer_opponent_taunt */ || animationId === 36 /* hammer_opponent_death_from_special_attack */ || animationId === 50 /* king_opponent_idle */ || animationId === 52 /* king_opponent_attack */ || animationId === 55 /* witch_opponent_idle */ || animationId === 57 /* witch_opponent_attack */ || animationId === 73 /* dragon_fly_right */ || animationId === 74 /* dragon_fly_left */ || animationId === 13 /* learning_god_idle */ || animationId === 14 /* learning_god_open_course */ || animationId === 12 /* learning_god_walk_left */ || animationId === 15 /* mountain_god_attack */ || animationId === 20 /* mountain_god_idle */ || animationId === 18 /* mountain_god_teleportation */ || animationId === 19 /* mountain_god_run */ || animationId === 16 /* mountain_god_hurt */ || animationId === 17 /* mountain_god_hurt_from_special_attack */ || animationId === 45 /* golem_master_transformation */ || animationId === 46 /* golem_master_idle */ || animationId === 86 /* mountain_pillar_activated */ || animationId === 47 /* pnj1_transformation */ || animationId === 48 /* pnj1_transformation2 */ || animationId === 49 /* pnj2_idle */ || animationId === 71 /* pike_man_idle */ || animationId === 72 /* pike_man_open_gate */ || animationId === 79 /* hero_transformation_pre_run */ || animationId === 80 /* hero_transformation_run */ || animationId === 81 /* hero_transformation_hurt */ || animationId === 82 /* hero_transformation_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 85 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 120 : animationId === 41 /* golem_opponent_attack */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 / (enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 74 /* dragon_fly_left */ ? 150 : animationId === 73 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 90 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 100 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 120 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 86 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : animationId === 71 /* pike_man_idle */ ? 100 : animationId === 72 /* pike_man_open_gate */ ? 100 : animationId === 79 /* hero_transformation_pre_run */ ? 100 : animationId === 80 /* hero_transformation_run */ ? 80 : animationId === 82 /* hero_transformation_attack */ ? 17 : animationId === 81 /* hero_transformation_hurt */ ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 85 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 120 : animationId === 41 /* golem_opponent_attack */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 / (enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 74 /* dragon_fly_left */ ? 150 : animationId === 73 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 90 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 100 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 120 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 86 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : animationId === 71 /* pike_man_idle */ ? 100 : animationId === 72 /* pike_man_open_gate */ ? 100 : animationId === 79 /* hero_transformation_pre_run */ ? 100 : animationId === 80 /* hero_transformation_run */ ? 80 : animationId === 82 /* hero_transformation_attack */ ? 14 : animationId === 81 /* hero_transformation_hurt */ ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4156,7 +4171,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       0 /* HERO */,
       setTimeout(() => {
         launchHeroRunAnimation();
-      }, special ? 500 : transformed ? 360 : 350)
+      }, special ? 500 : transformed ? 230 : 350)
     );
   };
   window.tryAgain = tryAgain;
@@ -4314,15 +4329,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const currentTimeStamp = Date.now();
     const diff = currentTimeStamp - previousTimeStamp;
-    console.log(diff);
     throttleNum = 0;
     const enemyContainer = enemy.character.element.parentElement;
     enemyContainer.style.left = `${Math.round(
-      enemyContainer.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 8)
+      enemyContainer.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 5)
     )}px`;
     if (enemyCurrentlyOnScreen !== 0 /* MOUNTAIN_GOD */) {
       enemyViewPoint.style.left = `${Math.round(
-        enemyViewPoint.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 8)
+        enemyViewPoint.getBoundingClientRect().left - 2 * (runningPointReached ? 1.4 : 1) * (superSpeedOn ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) * (diff / 5)
       )}px`;
     }
     requestAnimationFrame(() => moveEnemy(enemy, throttleNum, currentTimeStamp));
@@ -4899,8 +4913,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           animation: {
             id: 82 /* hero_transformation_attack */,
             sprite: {
-              path: ASSETS_PATH_BASE + "/characters/transformed_hero/attack/new",
-              length: 12
+              path: ASSETS_PATH_BASE + "/characters/transformed_hero/attack/new/new",
+              length: 7
             }
           }
         }
@@ -5962,13 +5976,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var golemLaunched = false;
   var createPikeManCharacter = (pikeImage) => {
+    enemyCurrentlyOnScreen = 1 /* RED_GOLEM */;
     const masterCharacter = new DefaultCharacter(pikeImage, 0 /* default */, pikeManAnimations);
     document.addEventListener("keyup", (event) => {
       if (event.key === "b") {
         launchAnimation(masterCharacter, 23 /* open_gate */, false);
         setTimeout(
           () => {
-            launchChallenge("677e814577322467895fd1a2");
+            launchChallenge("677e814577322467895fd17e");
+            setTimeout(
+              launchTransformation,
+              3e3
+            );
             gateOpened = true;
             setTimeout(
               () => {
@@ -6294,7 +6313,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var checkForOpponentsClearance = () => {
     ennemiesOnScreen.forEach((enemyOnScreen) => {
-      const enemyRight = getElementsRight(enemyOnScreen.character.element.parentElement);
+      const enemyRight = getEnemyRight(enemyOnScreen.character.element.parentElement);
       if (enemyRight / 2 < 0 - window.innerWidth * 0.05) {
         clearEnemy(enemyOnScreen);
       }
@@ -6364,7 +6383,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         true,
         80 /* hero_transformation_run */
       );
-      setTimeout(turnHeroTransformationOff, 2e4);
+      setTimeout(turnHeroTransformationOff, 1e5);
       return;
     }
     document.getElementById("transformation_background").style.display = "flex";
@@ -6395,7 +6414,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             triggerOpponentsApparition();
             document.getElementById("transformation_background").style.display = "none";
             transformationScreamAudio.play();
-            setTimeout(() => transformedEpicAudio.play(), 1e3);
             electricityAudio.volume = 0.2;
             transformed = true;
             preTransformed = false;
@@ -6414,7 +6432,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               true,
               80 /* hero_transformation_run */
             );
-            setTimeout(turnHeroTransformationOff, 15e3);
+            setTimeout(turnHeroTransformationOff, 1e5);
           }, 5e3)
         );
       }, 500)
@@ -6621,10 +6639,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
-    setTimeout(
-      switchToSpecialModeAndLaunchSpecialModeTimeout,
-      15e3
-    );
   };
   var calculateHeroSize = () => {
     const heroFullWidthInScreenWidthPercentage = 31;
