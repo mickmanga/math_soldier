@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ChallengeAnswerData {
-  explanation: string,
-  text: string,
+  value: string,
   true: boolean,
-  _id: string  
 }
 
 export interface ChallengeAnswer {

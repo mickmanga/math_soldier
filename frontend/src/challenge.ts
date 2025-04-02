@@ -152,30 +152,9 @@ const getUrlParameter = (name: string): string | null => {
   return urlParams.get(name);
 };
 
-// Fetch a challenge by ID from the backend
-const fetchChallengeById = async (challengeId: string): Promise<void> => {
-  try {
-      const response = await fetch(`http://localhost:3000/api/challenges/${challengeId}`);
-      if (!response.ok) {
-        throw new Error(`Error fetching challenge: ${response.statusText}`);
-      }
-      answers = response;
-      const challengeData = await response.json();
-      sortAndStoreAnswers(challengeData.answers);
-      currentChallengeLength = challengeData.answers.length;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+const getCurrentAnswers = () => {
 
-// On page load, get the challengeId from the URL and fetch the challenge
-const initializeChallengePage = async (challengeId: string) => {
-  if (challengeId) {
-    const challenge = await fetchChallengeById(challengeId);
-  } else {
-    console.error('No challengeId provided in the URL.');
-  }
-};
+}
 
 //document.addEventListener('DOMContentLoaded', initializeChallengePage);
 
@@ -468,7 +447,315 @@ const resetBlackGolem = (element: HTMLImageElement) => {
   */
 }
 
-const findNextAnswer = () => {
+// Define the shape of each entry
+type AnswerItem = {
+  value: string;
+  true: boolean;
+};
+
+// Define that we have numeric keys, each key maps to an array of ArithmeticItem
+interface AnswersInterface {
+  [level: number]: AnswerItem[];
+}
+
+let statsIntroAnswers: AnswersInterface = {
+  1: [
+    { value: "La moyenne de 2, 2, 2 est 2", true: true },
+    { value: "La médiane de 1, 3, 5 est 3", true: true },
+    { value: "La médiane de 2, 4, 6 est 5", true: false },
+    { value: "50% de 50 est 25", true: true },
+    { value: "50% de 50 est 20", true: false },
+  ],
+  2: [
+    { value: "La moyenne de 10, 10, 10 est 10", true: true },
+    { value: "La médiane de 2, 5, 9 est 5", true: true },
+    { value: "La médiane de 3, 5, 7, 9 est 6", true: false },
+    { value: "20% de 100 est 20", true: true },
+    { value: "20% de 80 est 10", true: false },
+    { value: "La mode de 1, 3, 3, 3, 4 est 3", true: true },
+    { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
+    { value: "L'étendue de 4, 6, 6 est 2", true: true },
+    { value: "L'étendue de 5, 7, 9 est 3", true: false },
+    { value: "La moyenne de 2, 2, 6, 6 est 4", true: true },
+    { value: "La moyenne de 3, 3, 3, 9 est 5", true: false },
+    { value: "La médiane de 11, 13, 15 est 13", true: true },
+    { value: "La médiane de 2, 2, 5, 5 est 3.5", true: true },
+    { value: "25% de 40 est 8", true: true },
+    { value: "30% de 50 est 20", true: false },
+    { value: "La mode de 7, 7, 8, 9 est 8", true: false },
+    { value: "L'étendue de 10, 10, 10 est 0", true: true },
+    { value: "La moyenne de 1, 2, 3, 4 est 2.5", true: false },
+    { value: "La médiane de 2, 3, 4, 5 est 3.5", true: true },
+    { value: "50% de 200 est 100", true: true }
+  ],
+  3: [
+    { value: "La moyenne de 4, 6, 8, 10 est 7", true: true },
+    { value: "La médiane de 10, 12, 14 est 12", true: true },
+    { value: "L'étendue de 5, 5, 10, 10 est 5", true: true },
+    { value: "La mode de 1, 2, 2, 2, 3 est 2", true: true },
+    { value: "La mode de 2, 3, 4, 4, 4 est 3", true: false },
+    { value: "40% de 100 est 60", true: false },
+    { value: "33% de 300 est 99", true: true },
+    { value: "La moyenne de 2, 2, 2, 2, 10 est 4", true: false },
+    { value: "La médiane de 3, 5, 7, 9, 11 est 7", true: true },
+    { value: "L'étendue de 2, 6, 10 est 8", true: true },
+    { value: "L'étendue de 8, 8, 8 est 8", true: false },
+    { value: "La mode de 5, 5, 5, 6 est 5", true: true },
+    { value: "La médiane de 2, 3, 4, 5, 6 est 4", true: true },
+    { value: "60% de 100 est 60", true: true },
+    { value: "60% de 100 est 50", true: false },
+    { value: "La moyenne de 6, 6, 6, 9 est 6.75", true: true },
+    { value: "La médiane de 1, 1, 5, 9, 9 est 5", true: true },
+    { value: "La mode de 4, 4, 4, 5, 5, 6 est 4 et 5", true: false },
+    { value: "L'étendue de 3, 10 est 7", true: false },
+    { value: "20% de 400 est 80", true: true }
+  ],
+  4: [
+    { value: "La moyenne de 3, 6, 9, 12 est 7.5", true: false },
+    { value: "La moyenne de 5, 6, 7, 8 est 6.5", true: true },
+    { value: "La médiane de 4, 4, 6, 8, 10 est 6", true: true },
+    { value: "L'étendue de 2, 4, 6, 8 est 6", true: true },
+    { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
+    { value: "La mode de 5, 5, 7, 7 est 5 et 7", true: true },
+    { value: "45% de 200 est 90", true: true },
+    { value: "10% de 60 est 10", true: false },
+    { value: "La médiane de 2, 2, 2, 3, 4 est 2", true: true },
+    { value: "La moyenne de 8, 8, 8, 10 est 8.5", true: true },
+    { value: "La moyenne de 10, 10, 10 est 9", true: false },
+    { value: "La mode de 3, 4, 4, 4, 4 est 4", true: true },
+    { value: "L'étendue de 10, 15, 20 est 10", true: false },
+    { value: "La médiane de 1, 2, 3, 4, 5 est 3", true: true },
+    { value: "25% de 100 est 30", true: false },
+    { value: "50% de 300 est 150", true: true },
+    { value: "La mode de 6, 6, 7, 7, 7 est 7", true: true },
+    { value: "La médiane de 2, 4, 6, 8 est 5", true: false },
+    { value: "L'étendue de 1, 3, 8 est 7", true: true },
+    { value: "La moyenne de 9, 9, 9, 9 est 9", true: true }
+  ],
+  5: [
+    { value: "La médiane de 3, 3, 4, 5, 10 est 4", true: true },
+    { value: "L'étendue de 5, 10, 15, 20 est 15", true: true },
+    { value: "La moyenne de 5, 5, 15, 15 est 10", true: true },
+    { value: "La mode de 2, 2, 2, 2, 5 est 5", true: false },
+    { value: "75% de 100 est 25", true: false },
+    { value: "75% de 100 est 75", true: true },
+    { value: "La médiane de 2, 2, 3, 9, 10 est 3", true: false },
+    { value: "La mode de 6, 7, 7, 7, 9 est 7", true: true },
+    { value: "L'étendue de 3, 3, 3 est 0", true: true },
+    { value: "La moyenne de 4, 8, 12, 16 est 10", true: false },
+    { value: "La médiane de 4, 6, 7, 8, 9 est 7", true: true },
+    { value: "10% de 50 est 5", true: true },
+    { value: "10% de 80 est 10", true: false },
+    { value: "La mode de 1, 2, 3, 3, 4, 4 est 3 et 4", true: true },
+    { value: "La moyenne de 10, 10, 10, 10, 10 est 10", true: true },
+    { value: "50% de 400 est 150", true: false },
+    { value: "L'étendue de 4, 4, 4, 5 est 1", true: true },
+    { value: "La médiane de 6, 6, 7, 7, 8 est 7", true: true },
+    { value: "La mode de 2, 2, 2, 3, 3 est 2", true: true },
+    { value: "La moyenne de 2, 4, 6 est 4", true: true }
+  ],
+  6: [
+    { value: "La moyenne de 10, 15, 20 est 15", true: true },
+    { value: "L'étendue de 10, 10, 10 est 0", true: true },
+    { value: "La médiane de 10, 10, 10, 10 est 10", true: true },
+    { value: "80% de 50 est 40", true: true },
+    { value: "80% de 50 est 30", true: false },
+    { value: "La mode de 5, 7, 7, 7, 7, 9 est 7", true: true },
+    { value: "L'étendue de 2, 8, 12, 12 est 10", true: true },
+    { value: "La médiane de 4, 5, 9, 10, 11 est 9", true: false },
+    { value: "La moyenne de 4, 6, 10, 12 est 8", true: true },
+    { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
+    { value: "25% de 200 est 30", true: false },
+    { value: "25% de 200 est 50", true: true },
+    { value: "La médiane de 10, 12, 14, 16 est 13", true: false },
+    { value: "La moyenne de 8, 8, 8, 12 est 9", true: false },
+    { value: "L'étendue de 5, 10, 15 est 10", true: false },
+    { value: "La médiane de 1, 2, 3, 4, 5 est 3", true: true },
+    { value: "La mode de 8, 8, 9, 9, 9 est 9", true: true },
+    { value: "90% de 100 est 90", true: true },
+    { value: "La moyenne de 2, 2, 10 est 5", true: false },
+    { value: "La médiane de 2, 3, 3, 4, 5 est 3", true: true }
+  ],
+  7: [
+    { value: "La moyenne de 10, 10, 20, 20 est 15", true: true },
+    { value: "La médiane de 8, 9, 10, 11, 12 est 10", true: true },
+    { value: "L'étendue de 10, 15, 20, 25 est 15", true: true },
+    { value: "La mode de 3, 5, 5, 5, 5 est 3", true: false },
+    { value: "40% de 250 est 100", true: true },
+    { value: "La médiane de 3, 3, 5, 7, 7 est 5", true: true },
+    { value: "La moyenne de 6, 6, 6, 6, 10 est 6.8", true: false },
+    { value: "L'étendue de 10, 10, 15, 20 est 10", true: false },
+    { value: "La mode de 9, 9, 9, 9 est 9", true: true },
+    { value: "70% de 100 est 70", true: true },
+    { value: "70% de 100 est 60", true: false },
+    { value: "La médiane de 12, 13, 14, 15, 16 est 14", true: true },
+    { value: "La moyenne de 5, 5, 10, 20 est 10", true: true },
+    { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
+    { value: "L'étendue de 3, 9 est 6", true: false },
+    { value: "La médiane de 2, 2, 4, 4, 6 est 4", true: false },
+    { value: "La moyenne de 3, 3, 3, 9 est 4.5", true: false },
+    { value: "La mode de 1, 2, 2, 2 est 1", true: false },
+    { value: "L'étendue de 5, 8, 11 est 6", true: false },
+    { value: "La moyenne de 2, 6, 10, 10 est 7", true: true }
+  ],
+  8: [
+    { value: "La moyenne de 10, 12, 14, 16, 18 est 14", true: true },
+    { value: "L'étendue de 10, 12, 18 est 8", true: true },
+    { value: "La médiane de 10, 11, 11, 12, 14 est 11", true: false },
+    { value: "La mode de 7, 7, 8, 8, 8 est 7", true: false },
+    { value: "20% de 500 est 100", true: true },
+    { value: "30% de 200 est 70", true: false },
+    { value: "La moyenne de 2, 4, 6, 8, 10 est 6", true: true },
+    { value: "La médiane de 5, 6, 7, 8, 9 est 7", true: true },
+    { value: "90% de 50 est 45", true: true },
+    { value: "90% de 50 est 40", true: false },
+    { value: "La mode de 2, 2, 3, 4, 4 est 2 et 4", true: true },
+    { value: "L'étendue de 2, 5, 11 est 9", true: false },
+    { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
+    { value: "La médiane de 2, 4, 6, 8 est 5", true: false },
+    { value: "La mode de 10, 10, 10, 12, 12 est 10", true: true },
+    { value: "75% de 200 est 150", true: true },
+    { value: "La médiane de 1, 2, 3, 4, 5 est 3", true: true },
+    { value: "L'étendue de 3, 3, 5, 9 est 6", true: true },
+    { value: "La moyenne de 6, 6, 8, 8, 8 est 7.2", true: true },
+    { value: "La mode de 4, 4, 4, 5, 5 est 5", true: false }
+  ],
+  9: [
+    { value: "La moyenne de 10, 10, 10, 30 est 15", true: true },
+    { value: "La médiane de 10, 10, 11, 12, 15 est 11", true: true },
+    { value: "L'étendue de 20, 25, 25, 25 est 5", true: true },
+    { value: "60% de 300 est 150", true: false },
+    { value: "La mode de 5, 6, 6, 7, 7, 7 est 6", true: false },
+    { value: "La moyenne de 2, 4, 8, 8, 8 est 6", true: false },
+    { value: "La médiane de 2, 4, 6, 8, 10 est 6", true: true },
+    { value: "L'étendue de 1, 2, 10 est 9", true: true },
+    { value: "La mode de 4, 4, 4, 4, 5 est 4", true: true },
+    { value: "75% de 400 est 300", true: false },
+    { value: "La moyenne de 10, 12, 14, 14, 16 est 13.2", true: true },
+    { value: "La médiane de 3, 3, 4, 5, 5 est 4", true: true },
+    { value: "L'étendue de 5, 10, 15, 20 est 15", true: true },
+    { value: "La mode de 2, 2, 2, 3, 3 est 3", true: false },
+    { value: "La moyenne de 10, 10, 10, 10 est 10", true: true },
+    { value: "La médiane de 2, 3, 4, 5, 6 est 4", true: true },
+    { value: "La moyenne de 6, 6, 7, 7, 8 est 6.8", true: true },
+    { value: "50% de 200 est 100", true: true },
+    { value: "La médiane de 10, 10, 10, 15 est 10", true: false },
+    { value: "La mode de 8, 8, 8, 8, 9 est 8", true: true }
+  ],
+  10: [
+    { value: "La moyenne de 10, 10, 10, 10, 50 est 18", true: false },
+    { value: "La moyenne de 10, 20, 30, 40 est 25", true: true },
+    { value: "La médiane de 10, 15, 15, 20, 20 est 15", true: true },
+    { value: "L'étendue de 10, 10, 10, 25 est 15", true: true },
+    { value: "La mode de 2, 2, 2, 3, 3, 3 est 2 et 3", true: true },
+    { value: "85% de 200 est 170", true: false },
+    { value: "90% de 200 est 180", true: true },
+    { value: "La médiane de 2, 4, 6, 8, 10 est 6", true: true },
+    { value: "L'étendue de 3, 3, 10 est 7", true: false },
+    { value: "La moyenne de 5, 10, 15, 25 est 13.75", true: false },
+    { value: "La mode de 7, 7, 8, 8, 8 est 8", true: true },
+    { value: "70% de 100 est 70", true: true },
+    { value: "La médiane de 4, 5, 5, 6, 7 est 5", true: false },
+    { value: "L'étendue de 10, 10, 10, 10 est 0", true: true },
+    { value: "La moyenne de 6, 6, 6, 10, 12 est 8", true: false },
+    { value: "La médiane de 6, 7, 8, 9, 10 est 8", true: true },
+    { value: "La mode de 1, 1, 1, 2, 2 est 1", true: true },
+    { value: "95% de 200 est 190", true: true },
+    { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
+    { value: "L'étendue de 2, 4, 10 est 8", true: true }
+  ]
+};
+
+
+let arithmeticAnswers: AnswersInterface = {
+  1: [
+    { value: "1+1 = 2", true: true },
+    { value: "2×2 = 5", true: false },
+    { value: "6÷2 = 3", true: true },
+    { value: "4-1 = 2", true: false },
+    { value: "5×1 = 5", true: true },
+    { value: "3+4 = 8", true: false },
+  ],
+  2: [
+    { value: "3×3 = 9", true: true },
+    { value: "10-4 = 5", true: false },
+    { value: "12÷3 = 4", true: true },
+    { value: "7+5 = 13", true: false },
+    { value: "4×2 = 8", true: true },
+    { value: "15÷3 = 6", true: false },
+  ],
+  3: [
+    { value: "4×3 = 12", true: true },
+    { value: "20÷5 = 5", true: false },
+    { value: "7+8 = 15", true: true },
+    { value: "9-4 = 6", true: false },
+    { value: "5×3 = 15", true: true },
+    { value: "21÷7 = 2", true: false },
+  ],
+  4: [
+    { value: "10+7 = 17", true: true },
+    { value: "9×3 = 26", true: false },
+    { value: "32÷8 = 4", true: true },
+    { value: "16-3 = 13", true: false },
+    { value: "5×5 = 25", true: true },
+    { value: "28÷4 = 6", true: false },
+  ],
+  5: [
+    { value: "12+10 = 22", true: true },
+    { value: "9×4 = 34", true: false },
+    { value: "36÷6 = 6", true: true },
+    { value: "22-7 = 16", true: false },
+    { value: "6×6 = 36", true: true },
+    { value: "35÷5 = 8", true: false },
+  ],
+  6: [
+    { value: "15+8 = 23", true: true },
+    { value: "10×3 = 32", true: false },
+    { value: "48÷6 = 8", true: true },
+    { value: "18-4 = 12", true: false },
+    { value: "7×7 = 49", true: true },
+    { value: "50÷5 = 9", true: false },
+    { value: "25+10 = 35", true: true },
+  ],
+  7: [
+    { value: "18+14 = 32", true: true },
+    { value: "11×4 = 44", true: true },
+    { value: "56÷7 = 8", true: true },
+    { value: "25-8 = 18", true: false },
+    { value: "9×6 = 54", true: true },
+    { value: "49÷7 = 6", true: false },
+  ],
+  8: [
+    { value: "25+10 = 35", true: true },
+    { value: "12×5 = 55", true: false },
+    { value: "64÷8 = 8", true: true },
+    { value: "30-9 = 21", true: true },
+    { value: "8×7 = 56", true: true },
+    { value: "72÷9 = 7", true: false },
+  ],
+  9: [
+    { value: "36+15 = 51", true: true },
+    { value: "13×4 = 56", true: true },
+    { value: "81÷9 = 8", true: false },
+    { value: "50-10 = 40", true: true },
+    { value: "7×9 = 63", true: true },
+    { value: "63÷7 = 8", true: false },
+    { value: "45+16 = 61", true: true },
+  ],
+  10: [
+    { value: "40+15 = 55", true: true },
+    { value: "14×4 = 56", true: true },
+    { value: "96÷8 = 12", true: true },
+    { value: "54-9 = 45", true: true },
+    { value: "8×8 = 65", true: false },
+    { value: "99÷9 = 11", true: true },
+  ]
+};
+
+
+const findNextAnswer = (): ChallengeAnswerData | "done" => {
+
+  /*
 
   const challenge = store.getState().challenge;
   const currentAnswerIndex = challenge.currentAnswerIndex;
@@ -499,6 +786,21 @@ const findNextAnswer = () => {
   const data = answers[store.getState().challenge.currentAnswerIndex].data;
   store.dispatch(incrementAnswerIndex());
 
+  */
+
+   if(statsIntroAnswers[currentChallengeLevel].length === 0){
+      if(currentChallengeLevel === 10){
+        return("done");
+      }
+      currentChallengeLevel++;
+   }
+
+  const answerIndex = Math.floor(Math.random() * statsIntroAnswers[1].length);
+  const data = statsIntroAnswers[currentChallengeLevel][answerIndex];
+
+
+  statsIntroAnswers[currentChallengeLevel].splice(answerIndex,1);
+
   return data;
 
 }
@@ -512,18 +814,8 @@ const Grades = {
 };
 
 const getChallengeGrade = () => {
-
-  const grade = Math.round((score === 0 ? 0 :  score/currentChallengeLength) * 20);
   
-  return Grades.D.includes(grade)
-    ? "D"
-    : Grades.C.includes(grade)
-    ? "C"
-    : Grades.B.includes(grade)
-    ? "B"
-    : Grades.A.includes(grade)
-    ? "A"
-    : "S";
+  return score * 100;
 };
 
 const updateLifePointsDisplay = () => {
@@ -613,7 +905,7 @@ const buildAndLaunchEnemy = (answer: ChallengeAnswerData) => {
   }
 
   lightUpAnswerDataContainer();
-  answerDataValue.innerHTML = enemy.answer.text;
+  answerDataValue.innerHTML = enemy.answer.value;
 
   launchOpponent(enemy);
 };
@@ -1206,7 +1498,7 @@ const createMapElement = (element: MapElement) => {
 
 const createPikeCharacterAndPrepareAnimations = () => {
   
-  specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
+  //specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
 
   const pikeContainer = document.createElement("div");
   pikeContainer.classList.add("pike_man_container");
@@ -1246,14 +1538,17 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
 
-      setTimeout(
-        () => {
-          launchAnimation(pillarElement, AnimationType.transformation);
-            setTimeout(
-                 launchMountainGodCinematic, 5000
-             )
-        }, 1000
-      );
+      //setTimeout(
+        //() => {
+          //launchAnimation(pillarElement, AnimationType.transformation);
+           // setTimeout(
+           //      launchMountainGodCinematic, 5000
+         //    )
+       // }, 1000
+     // );
+
+     quitCinematic();
+     launchChallenge("123");
    
       return;
     }
@@ -1352,6 +1647,8 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
 
   return block;
 };
+
+
 
 const moveCamera = (
   direction: Direction,
@@ -1606,7 +1903,7 @@ const launchCharacterAnimation = (
   ) {
     const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
 
-    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 100 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ?  130 : animationId === ANIMATION_ID.hammer_opponent_taunt ? 100 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 120 : animationId === ANIMATION_ID.golem_opponent_attack ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100/(enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR: 1) : animationId === ANIMATION_ID.hammer_opponent_special_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack2 ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 90 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 100 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_hurt ? 100 : animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack ? 60 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : animationId === ANIMATION_ID.pnj1_transformation ? 200 : animationId === ANIMATION_ID.pnj1_transformation2 ? 250 : animationId === ANIMATION_ID.pnj2_idle ? 130 : animationId === ANIMATION_ID.pike_man_idle ? 100 : animationId === ANIMATION_ID.pike_man_open_gate ? 100 : animationId === ANIMATION_ID.hero_transformation_pre_run ? 100 : animationId === ANIMATION_ID.hero_transformation_run ? 80 : animationId === ANIMATION_ID.hero_transformation_attack ? 14 : animationId === ANIMATION_ID.hero_transformation_hurt ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+    const minimumTimeInMsBetweenFrames = animationId === ANIMATION_ID.hero_run && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === ANIMATION_ID.hero_walk_left ? 150 : animationId === ANIMATION_ID.lightning ? 125 : animationId === ANIMATION_ID.hero_walk_right ? 150 : animationId === ANIMATION_ID.hero_idle ? 225 : animationId === ANIMATION_ID.hero_teleportation ? 120 : animationId === ANIMATION_ID.hero_death ? 70 : animationId ===  ANIMATION_ID.hero_special_attack ? 30 :  animationId === ANIMATION_ID.hero_second_idle ? 400 : animationId === ANIMATION_ID.hammer_opponent_death ? 100 : animationId === ANIMATION_ID.golem_opponent_death ? 80 : animationId === ANIMATION_ID.witch_opponent_death ? 100 : animationId === ANIMATION_ID.witch_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.golem_opponent_death_from_special_attack ? 40 : animationId === ANIMATION_ID.hammer_opponent_idle ?  130 : animationId === ANIMATION_ID.hammer_opponent_taunt ? 100 : animationId === ANIMATION_ID.orc_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_idle ? 80 : animationId === ANIMATION_ID.golem_opponent_attack ? 120 : animationId === ANIMATION_ID.golem_opponent_run ? 150 : animationId === ANIMATION_ID.witch_opponent_run ? 150 : animationId === ANIMATION_ID.hammer_opponent_run ? 50 : animationId === ANIMATION_ID.witch_opponent_idle ? 90 : animationId === ANIMATION_ID.witch_opponent_attack ? 120 : animationId === ANIMATION_ID.king_opponent_idle ? 115 :  animationId === ANIMATION_ID.king_opponent_attack ? 50 : animationId === ANIMATION_ID.dwarf_opponent_idle ? 80 : animationId === ANIMATION_ID.hammer_opponent_attack ? 100/(enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR: 1) : animationId === ANIMATION_ID.hammer_opponent_special_attack ? 100 : animationId === ANIMATION_ID.hammer_opponent_special_attack2 ? 100 : animationId === ANIMATION_ID.dragon_fly_left ? 150 : animationId === ANIMATION_ID.dragon_fly_right ? 150 : animationId === ANIMATION_ID.learning_god_idle ? 90 : animationId === ANIMATION_ID.learning_god_open_course ? 100 : animationId === ANIMATION_ID.learning_god_walk_left ? 100 : animationId === ANIMATION_ID.mountain_god_run ? 70 : animationId === ANIMATION_ID.mountain_god_attack ? 100 : animationId === ANIMATION_ID.golem_master_idle ? 120 : animationId === ANIMATION_ID.golem_master_transformation ? 120 : animationId === ANIMATION_ID.mountain_pillar_activated ? 100 : animationId === ANIMATION_ID.mountain_god_idle ? 140 : animationId === ANIMATION_ID.mountain_god_hurt ? 100 : animationId === ANIMATION_ID.mountain_god_hurt_from_special_attack ? 60 : animationId === ANIMATION_ID.mountain_god_teleportation ? 60 : animationId === ANIMATION_ID.pnj1_transformation ? 200 : animationId === ANIMATION_ID.pnj1_transformation2 ? 250 : animationId === ANIMATION_ID.pnj2_idle ? 130 : animationId === ANIMATION_ID.pike_man_idle ? 100 : animationId === ANIMATION_ID.pike_man_open_gate ? 100 : animationId === ANIMATION_ID.hero_transformation_pre_run ? 100 : animationId === ANIMATION_ID.hero_transformation_run ? 80 : animationId === ANIMATION_ID.hero_transformation_attack ? 14 : animationId === ANIMATION_ID.hero_transformation_hurt ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
 
     if (diff < minimumTimeInMsBetweenFrames) {
 
@@ -2119,6 +2416,8 @@ const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocit
    requestAnimationFrame( () => moveElement(element, animation, velocityPerMs, direction));
 }
 
+let currentChallengeLevel = 1;
+
 const moveEnemy = (
   enemy: Enemy,
   throttleNum = 0,
@@ -2267,7 +2566,7 @@ const launchHeroSpecialTimeout = (timerValue: number) => {
 const rewardHero = () => {
   const bonus_ratio = transformed ? TRANSFORMED_BONUS_RATIO : 1;
 
-  store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: true}))
+ // store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: true}))
 
   if (!transformed) {
     rewardStreak++;
@@ -2278,7 +2577,7 @@ const rewardHero = () => {
     }
   }
 
-  score += bonus_ratio * REWARD_UNIT;
+  score += bonus_ratio * (transformed ? 2 : REWARD_UNIT);
   updateScoreDisplay();
 
   displayReward("Congrats! You destroyed a good answer!");
@@ -2300,7 +2599,7 @@ const updateScoreDisplay = () => {
 const killWrongEnemy = (enemy: EnemyInterface, fromSpecialAttack: boolean) => {
   scoreMalusContainer.style.display = "flex";
 
-  store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: false}))
+ // store.dispatch(setFoundAtIndex({index: store.getState().challenge.currentAnswerIndex - 1, found: false}))
 
   lifePoints.value--;
   checkForHerosDeath();
@@ -4371,10 +4670,10 @@ const createGolemCharacter = (): DefaultCharacter => {
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
   const newEnnemyImg = document.createElement("img") as HTMLImageElement;
-  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";  
+  newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new/1.png";  
   newOpponentContainer.append(newEnnemyImg);
-  newOpponentContainer.style.bottom = "18vh";
-  newOpponentContainer.style.width = "55vw";
+  newOpponentContainer.style.bottom = "13vh";
+  newOpponentContainer.style.width = "80vw";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
@@ -4402,9 +4701,6 @@ const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
           //launchChallenge("677e814577322467895fd17e");
           launchChallenge("677e814577322467895fd17e");
 
-          setTimeout(
-            launchTransformation, 3000
-          )
 
           gateOpened = true;
           setTimeout(
@@ -4637,11 +4933,11 @@ const hideChallengeDisplay = () => {
   topScoreContainer.style.opacity = "0";
 }
 
-const launchChallenge = (pillarId: string) => {
+const launchChallenge = (challengeId: string) => {
 
   store.getState().persistedMap.elementsOnScreen.forEach(
     element => {
-      if(element.id !== pillarId){
+      if(element.id !== challengeId){
         const mapElement = findMapElement(element.id);
         if(!mapElement){
           return;
@@ -4656,7 +4952,7 @@ const launchChallenge = (pillarId: string) => {
   setupChallengeDisplay();
   breathAudio.play();
   gameMode = GAME_MODES.challenge;
-  initializeChallengePage(pillarId);
+//  initializeChallengePage(challengeId);
 
 }
 

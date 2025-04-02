@@ -2370,50 +2370,62 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
       null,
       null,
-      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
-      null,
-      null,
-      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       null,
       null,
       null,
       null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
         {
@@ -2429,7 +2441,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ] },
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
         {
           question: "combien fait 1+1",
@@ -3040,8 +3051,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   var ASSETS_PATH_BASE = "assets/challenge";
-  var currentChallengeLength = 0;
-  var answers = null;
   var getHeroMode = () => {
     return store.getState().persistedMap.heroMode;
   };
@@ -3049,27 +3058,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
   };
-  var fetchChallengeById = (challengeId) => __async(void 0, null, function* () {
-    try {
-      const response = yield fetch(`http://localhost:3000/api/challenges/${challengeId}`);
-      if (!response.ok) {
-        throw new Error(`Error fetching challenge: ${response.statusText}`);
-      }
-      answers = response;
-      const challengeData = yield response.json();
-      sortAndStoreAnswers(challengeData.answers);
-      currentChallengeLength = challengeData.answers.length;
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
-  var initializeChallengePage = (challengeId) => __async(void 0, null, function* () {
-    if (challengeId) {
-      const challenge = yield fetchChallengeById(challengeId);
-    } else {
-      console.error("No challengeId provided in the URL.");
-    }
-  });
   var getHeroLeft = () => {
     if (!heroContainer) {
       console.log("we cant get the hero left, the hero container was not initialized yet");
@@ -3225,61 +3213,227 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       new Answer("20 - 12 = 10", false)
     ]
   };
-  var sortAndStoreAnswers = (challengeData) => {
-    const shuffle = (array) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const randomIndex = Math.floor(Math.random() * (i + 1));
-        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
-      }
-      return array;
-    };
-    let randomlySortedChallengeArray = shuffle(challengeData);
-    randomlySortedChallengeArray.forEach(
-      (challenge) => {
-        store.dispatch(addAnswer({
-          data: challenge,
-          found: null
-        }));
-      }
-    );
+  var statsIntroAnswers = {
+    1: [
+      { value: "La moyenne de 2, 2, 2 est 2", true: true },
+      { value: "La m\xE9diane de 1, 3, 5 est 3", true: true },
+      { value: "La m\xE9diane de 2, 4, 6 est 5", true: false },
+      { value: "50% de 50 est 25", true: true },
+      { value: "50% de 50 est 20", true: false }
+    ],
+    2: [
+      { value: "La moyenne de 10, 10, 10 est 10", true: true },
+      { value: "La m\xE9diane de 2, 5, 9 est 5", true: true },
+      { value: "La m\xE9diane de 3, 5, 7, 9 est 6", true: false },
+      { value: "20% de 100 est 20", true: true },
+      { value: "20% de 80 est 10", true: false },
+      { value: "La mode de 1, 3, 3, 3, 4 est 3", true: true },
+      { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
+      { value: "L'\xE9tendue de 4, 6, 6 est 2", true: true },
+      { value: "L'\xE9tendue de 5, 7, 9 est 3", true: false },
+      { value: "La moyenne de 2, 2, 6, 6 est 4", true: true },
+      { value: "La moyenne de 3, 3, 3, 9 est 5", true: false },
+      { value: "La m\xE9diane de 11, 13, 15 est 13", true: true },
+      { value: "La m\xE9diane de 2, 2, 5, 5 est 3.5", true: true },
+      { value: "25% de 40 est 8", true: true },
+      { value: "30% de 50 est 20", true: false },
+      { value: "La mode de 7, 7, 8, 9 est 8", true: false },
+      { value: "L'\xE9tendue de 10, 10, 10 est 0", true: true },
+      { value: "La moyenne de 1, 2, 3, 4 est 2.5", true: false },
+      { value: "La m\xE9diane de 2, 3, 4, 5 est 3.5", true: true },
+      { value: "50% de 200 est 100", true: true }
+    ],
+    3: [
+      { value: "La moyenne de 4, 6, 8, 10 est 7", true: true },
+      { value: "La m\xE9diane de 10, 12, 14 est 12", true: true },
+      { value: "L'\xE9tendue de 5, 5, 10, 10 est 5", true: true },
+      { value: "La mode de 1, 2, 2, 2, 3 est 2", true: true },
+      { value: "La mode de 2, 3, 4, 4, 4 est 3", true: false },
+      { value: "40% de 100 est 60", true: false },
+      { value: "33% de 300 est 99", true: true },
+      { value: "La moyenne de 2, 2, 2, 2, 10 est 4", true: false },
+      { value: "La m\xE9diane de 3, 5, 7, 9, 11 est 7", true: true },
+      { value: "L'\xE9tendue de 2, 6, 10 est 8", true: true },
+      { value: "L'\xE9tendue de 8, 8, 8 est 8", true: false },
+      { value: "La mode de 5, 5, 5, 6 est 5", true: true },
+      { value: "La m\xE9diane de 2, 3, 4, 5, 6 est 4", true: true },
+      { value: "60% de 100 est 60", true: true },
+      { value: "60% de 100 est 50", true: false },
+      { value: "La moyenne de 6, 6, 6, 9 est 6.75", true: true },
+      { value: "La m\xE9diane de 1, 1, 5, 9, 9 est 5", true: true },
+      { value: "La mode de 4, 4, 4, 5, 5, 6 est 4 et 5", true: false },
+      { value: "L'\xE9tendue de 3, 10 est 7", true: false },
+      { value: "20% de 400 est 80", true: true }
+    ],
+    4: [
+      { value: "La moyenne de 3, 6, 9, 12 est 7.5", true: false },
+      { value: "La moyenne de 5, 6, 7, 8 est 6.5", true: true },
+      { value: "La m\xE9diane de 4, 4, 6, 8, 10 est 6", true: true },
+      { value: "L'\xE9tendue de 2, 4, 6, 8 est 6", true: true },
+      { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
+      { value: "La mode de 5, 5, 7, 7 est 5 et 7", true: true },
+      { value: "45% de 200 est 90", true: true },
+      { value: "10% de 60 est 10", true: false },
+      { value: "La m\xE9diane de 2, 2, 2, 3, 4 est 2", true: true },
+      { value: "La moyenne de 8, 8, 8, 10 est 8.5", true: true },
+      { value: "La moyenne de 10, 10, 10 est 9", true: false },
+      { value: "La mode de 3, 4, 4, 4, 4 est 4", true: true },
+      { value: "L'\xE9tendue de 10, 15, 20 est 10", true: false },
+      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
+      { value: "25% de 100 est 30", true: false },
+      { value: "50% de 300 est 150", true: true },
+      { value: "La mode de 6, 6, 7, 7, 7 est 7", true: true },
+      { value: "La m\xE9diane de 2, 4, 6, 8 est 5", true: false },
+      { value: "L'\xE9tendue de 1, 3, 8 est 7", true: true },
+      { value: "La moyenne de 9, 9, 9, 9 est 9", true: true }
+    ],
+    5: [
+      { value: "La m\xE9diane de 3, 3, 4, 5, 10 est 4", true: true },
+      { value: "L'\xE9tendue de 5, 10, 15, 20 est 15", true: true },
+      { value: "La moyenne de 5, 5, 15, 15 est 10", true: true },
+      { value: "La mode de 2, 2, 2, 2, 5 est 5", true: false },
+      { value: "75% de 100 est 25", true: false },
+      { value: "75% de 100 est 75", true: true },
+      { value: "La m\xE9diane de 2, 2, 3, 9, 10 est 3", true: false },
+      { value: "La mode de 6, 7, 7, 7, 9 est 7", true: true },
+      { value: "L'\xE9tendue de 3, 3, 3 est 0", true: true },
+      { value: "La moyenne de 4, 8, 12, 16 est 10", true: false },
+      { value: "La m\xE9diane de 4, 6, 7, 8, 9 est 7", true: true },
+      { value: "10% de 50 est 5", true: true },
+      { value: "10% de 80 est 10", true: false },
+      { value: "La mode de 1, 2, 3, 3, 4, 4 est 3 et 4", true: true },
+      { value: "La moyenne de 10, 10, 10, 10, 10 est 10", true: true },
+      { value: "50% de 400 est 150", true: false },
+      { value: "L'\xE9tendue de 4, 4, 4, 5 est 1", true: true },
+      { value: "La m\xE9diane de 6, 6, 7, 7, 8 est 7", true: true },
+      { value: "La mode de 2, 2, 2, 3, 3 est 2", true: true },
+      { value: "La moyenne de 2, 4, 6 est 4", true: true }
+    ],
+    6: [
+      { value: "La moyenne de 10, 15, 20 est 15", true: true },
+      { value: "L'\xE9tendue de 10, 10, 10 est 0", true: true },
+      { value: "La m\xE9diane de 10, 10, 10, 10 est 10", true: true },
+      { value: "80% de 50 est 40", true: true },
+      { value: "80% de 50 est 30", true: false },
+      { value: "La mode de 5, 7, 7, 7, 7, 9 est 7", true: true },
+      { value: "L'\xE9tendue de 2, 8, 12, 12 est 10", true: true },
+      { value: "La m\xE9diane de 4, 5, 9, 10, 11 est 9", true: false },
+      { value: "La moyenne de 4, 6, 10, 12 est 8", true: true },
+      { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
+      { value: "25% de 200 est 30", true: false },
+      { value: "25% de 200 est 50", true: true },
+      { value: "La m\xE9diane de 10, 12, 14, 16 est 13", true: false },
+      { value: "La moyenne de 8, 8, 8, 12 est 9", true: false },
+      { value: "L'\xE9tendue de 5, 10, 15 est 10", true: false },
+      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
+      { value: "La mode de 8, 8, 9, 9, 9 est 9", true: true },
+      { value: "90% de 100 est 90", true: true },
+      { value: "La moyenne de 2, 2, 10 est 5", true: false },
+      { value: "La m\xE9diane de 2, 3, 3, 4, 5 est 3", true: true }
+    ],
+    7: [
+      { value: "La moyenne de 10, 10, 20, 20 est 15", true: true },
+      { value: "La m\xE9diane de 8, 9, 10, 11, 12 est 10", true: true },
+      { value: "L'\xE9tendue de 10, 15, 20, 25 est 15", true: true },
+      { value: "La mode de 3, 5, 5, 5, 5 est 3", true: false },
+      { value: "40% de 250 est 100", true: true },
+      { value: "La m\xE9diane de 3, 3, 5, 7, 7 est 5", true: true },
+      { value: "La moyenne de 6, 6, 6, 6, 10 est 6.8", true: false },
+      { value: "L'\xE9tendue de 10, 10, 15, 20 est 10", true: false },
+      { value: "La mode de 9, 9, 9, 9 est 9", true: true },
+      { value: "70% de 100 est 70", true: true },
+      { value: "70% de 100 est 60", true: false },
+      { value: "La m\xE9diane de 12, 13, 14, 15, 16 est 14", true: true },
+      { value: "La moyenne de 5, 5, 10, 20 est 10", true: true },
+      { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
+      { value: "L'\xE9tendue de 3, 9 est 6", true: false },
+      { value: "La m\xE9diane de 2, 2, 4, 4, 6 est 4", true: false },
+      { value: "La moyenne de 3, 3, 3, 9 est 4.5", true: false },
+      { value: "La mode de 1, 2, 2, 2 est 1", true: false },
+      { value: "L'\xE9tendue de 5, 8, 11 est 6", true: false },
+      { value: "La moyenne de 2, 6, 10, 10 est 7", true: true }
+    ],
+    8: [
+      { value: "La moyenne de 10, 12, 14, 16, 18 est 14", true: true },
+      { value: "L'\xE9tendue de 10, 12, 18 est 8", true: true },
+      { value: "La m\xE9diane de 10, 11, 11, 12, 14 est 11", true: false },
+      { value: "La mode de 7, 7, 8, 8, 8 est 7", true: false },
+      { value: "20% de 500 est 100", true: true },
+      { value: "30% de 200 est 70", true: false },
+      { value: "La moyenne de 2, 4, 6, 8, 10 est 6", true: true },
+      { value: "La m\xE9diane de 5, 6, 7, 8, 9 est 7", true: true },
+      { value: "90% de 50 est 45", true: true },
+      { value: "90% de 50 est 40", true: false },
+      { value: "La mode de 2, 2, 3, 4, 4 est 2 et 4", true: true },
+      { value: "L'\xE9tendue de 2, 5, 11 est 9", true: false },
+      { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
+      { value: "La m\xE9diane de 2, 4, 6, 8 est 5", true: false },
+      { value: "La mode de 10, 10, 10, 12, 12 est 10", true: true },
+      { value: "75% de 200 est 150", true: true },
+      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
+      { value: "L'\xE9tendue de 3, 3, 5, 9 est 6", true: true },
+      { value: "La moyenne de 6, 6, 8, 8, 8 est 7.2", true: true },
+      { value: "La mode de 4, 4, 4, 5, 5 est 5", true: false }
+    ],
+    9: [
+      { value: "La moyenne de 10, 10, 10, 30 est 15", true: true },
+      { value: "La m\xE9diane de 10, 10, 11, 12, 15 est 11", true: true },
+      { value: "L'\xE9tendue de 20, 25, 25, 25 est 5", true: true },
+      { value: "60% de 300 est 150", true: false },
+      { value: "La mode de 5, 6, 6, 7, 7, 7 est 6", true: false },
+      { value: "La moyenne de 2, 4, 8, 8, 8 est 6", true: false },
+      { value: "La m\xE9diane de 2, 4, 6, 8, 10 est 6", true: true },
+      { value: "L'\xE9tendue de 1, 2, 10 est 9", true: true },
+      { value: "La mode de 4, 4, 4, 4, 5 est 4", true: true },
+      { value: "75% de 400 est 300", true: false },
+      { value: "La moyenne de 10, 12, 14, 14, 16 est 13.2", true: true },
+      { value: "La m\xE9diane de 3, 3, 4, 5, 5 est 4", true: true },
+      { value: "L'\xE9tendue de 5, 10, 15, 20 est 15", true: true },
+      { value: "La mode de 2, 2, 2, 3, 3 est 3", true: false },
+      { value: "La moyenne de 10, 10, 10, 10 est 10", true: true },
+      { value: "La m\xE9diane de 2, 3, 4, 5, 6 est 4", true: true },
+      { value: "La moyenne de 6, 6, 7, 7, 8 est 6.8", true: true },
+      { value: "50% de 200 est 100", true: true },
+      { value: "La m\xE9diane de 10, 10, 10, 15 est 10", true: false },
+      { value: "La mode de 8, 8, 8, 8, 9 est 8", true: true }
+    ],
+    10: [
+      { value: "La moyenne de 10, 10, 10, 10, 50 est 18", true: false },
+      { value: "La moyenne de 10, 20, 30, 40 est 25", true: true },
+      { value: "La m\xE9diane de 10, 15, 15, 20, 20 est 15", true: true },
+      { value: "L'\xE9tendue de 10, 10, 10, 25 est 15", true: true },
+      { value: "La mode de 2, 2, 2, 3, 3, 3 est 2 et 3", true: true },
+      { value: "85% de 200 est 170", true: false },
+      { value: "90% de 200 est 180", true: true },
+      { value: "La m\xE9diane de 2, 4, 6, 8, 10 est 6", true: true },
+      { value: "L'\xE9tendue de 3, 3, 10 est 7", true: false },
+      { value: "La moyenne de 5, 10, 15, 25 est 13.75", true: false },
+      { value: "La mode de 7, 7, 8, 8, 8 est 8", true: true },
+      { value: "70% de 100 est 70", true: true },
+      { value: "La m\xE9diane de 4, 5, 5, 6, 7 est 5", true: false },
+      { value: "L'\xE9tendue de 10, 10, 10, 10 est 0", true: true },
+      { value: "La moyenne de 6, 6, 6, 10, 12 est 8", true: false },
+      { value: "La m\xE9diane de 6, 7, 8, 9, 10 est 8", true: true },
+      { value: "La mode de 1, 1, 1, 2, 2 est 1", true: true },
+      { value: "95% de 200 est 190", true: true },
+      { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
+      { value: "L'\xE9tendue de 2, 4, 10 est 8", true: true }
+    ]
   };
   var findNextAnswer = () => {
-    const challenge = store.getState().challenge;
-    const currentAnswerIndex = challenge.currentAnswerIndex;
-    const answers2 = challenge.answers;
-    if (currentAnswerIndex >= answers2.length) {
-      return "done";
+    if (statsIntroAnswers[currentChallengeLevel].length === 0) {
+      if (currentChallengeLevel === 10) {
+        return "done";
+      }
+      currentChallengeLevel++;
     }
-    if (currentAnswerIndex === answers2.length - 1) {
-      endOfChallengeContainer.style.opacity = "1";
-      endOfChallengeContainer.innerHTML = "Dernier ennemi...";
-      setTimeout(() => {
-        endOfChallengeContainer.style.opacity = "0";
-        endOfChallengeContainer.innerHTML = "";
-      }, 1e3);
-    }
-    if (currentAnswerIndex === answers2.length - 3) {
-      endOfChallengeContainer.style.opacity = "1";
-      endOfChallengeContainer.innerHTML = "3 derniers ennemis...";
-      setTimeout(() => {
-        endOfChallengeContainer.style.opacity = "0";
-        endOfChallengeContainer.innerHTML = "";
-      }, 1e3);
-    }
-    const data = answers2[store.getState().challenge.currentAnswerIndex].data;
-    store.dispatch(incrementAnswerIndex());
+    const answerIndex = Math.floor(Math.random() * statsIntroAnswers[1].length);
+    const data = statsIntroAnswers[currentChallengeLevel][answerIndex];
+    statsIntroAnswers[currentChallengeLevel].splice(answerIndex, 1);
     return data;
   };
-  var Grades = {
-    D: [0, 1, 2, 3, 4, 5],
-    C: [6, 7, 8, 9, 10],
-    B: [11, 12, 13, 14],
-    A: [15, 16, 17],
-    S: [18, 19, 20]
-  };
   var getChallengeGrade = () => {
-    const grade = Math.round((score === 0 ? 0 : score / currentChallengeLength) * 20);
-    return Grades.D.includes(grade) ? "D" : Grades.C.includes(grade) ? "C" : Grades.B.includes(grade) ? "B" : Grades.A.includes(grade) ? "A" : "S";
+    return score * 100;
   };
   var lastEnemyIndex = 0;
   var buildEnemy = (answer) => {
@@ -3324,7 +3478,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       return;
     }
     lightUpAnswerDataContainer();
-    answerDataValue.innerHTML = enemy.answer.text;
+    answerDataValue.innerHTML = enemy.answer.value;
     launchOpponent(enemy);
   };
   var triggerOpponentsApparition = () => {
@@ -3796,7 +3950,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return element.type === 1 /* form */ ? createFormElement(element) : element.type === 0 /* challenge */ ? createChallengPilar(element) : createCharacterElement(element);
   };
   var createPikeCharacterAndPrepareAnimations = () => {
-    specifyAndLaunchCinematic(1 /* FIRST */);
     const pikeContainer = document.createElement("div");
     pikeContainer.classList.add("pike_man_container");
     pikeContainer.style.bottom = "-20.75vh";
@@ -3820,16 +3973,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        setTimeout(
-          () => {
-            launchAnimation(pillarElement, 19 /* transformation */);
-            setTimeout(
-              launchMountainGodCinematic,
-              5e3
-            );
-          },
-          1e3
-        );
+        quitCinematic();
+        launchChallenge("123");
         return;
       }
       requestAnimationFrame(
@@ -4018,7 +4163,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newExecutionTimeStamp = Date.now();
     if ((animationId === 1 /* hero_run */ || animationId === 5 /* hero_walk_left */ || animationId === 4 /* hero_walk_right */ || animationId === 8 /* hero_idle */ || animationId === 11 /* hero_teleportation */ || animationId === 10 /* hero_special_attack */ || animationId === 9 /* hero_second_idle */ || animationId === 7 /* hero_death */ || animationId === 85 /* lightning */ || animationId === 30 /* hammer_opponent_idle */ || animationId === 35 /* hammer_opponent_death */ || animationId === 58 /* witch_opponent_death */ || animationId === 59 /* witch_opponent_death_from_special_attack */ || animationId === 32 /* hammer_opponent_attack */ || animationId === 33 /* hammer_opponent_special_attack */ || animationId === 34 /* hammer_opponent_special_attack2 */ || animationId === 61 /* orc_opponent_idle */ || animationId === 63 /* orc_opponent_attack */ || animationId === 66 /* dwarf_opponent_idle */ || animationId === 68 /* dwarf_opponent_attack */ || animationId === 39 /* golem_opponent_idle */ || animationId === 41 /* golem_opponent_attack */ || animationId === 42 /* golem_opponent_death */ || animationId === 64 /* orc_opponent_death */ || animationId === 69 /* dwarf_opponent_death */ || animationId === 43 /* golem_opponent_death_from_special_attack */ || animationId === 40 /* golem_opponent_run */ || animationId === 56 /* witch_opponent_run */ || animationId === 31 /* hammer_opponent_run */ || animationId === 38 /* hammer_opponent_taunt */ || animationId === 36 /* hammer_opponent_death_from_special_attack */ || animationId === 50 /* king_opponent_idle */ || animationId === 52 /* king_opponent_attack */ || animationId === 55 /* witch_opponent_idle */ || animationId === 57 /* witch_opponent_attack */ || animationId === 73 /* dragon_fly_right */ || animationId === 74 /* dragon_fly_left */ || animationId === 13 /* learning_god_idle */ || animationId === 14 /* learning_god_open_course */ || animationId === 12 /* learning_god_walk_left */ || animationId === 15 /* mountain_god_attack */ || animationId === 20 /* mountain_god_idle */ || animationId === 18 /* mountain_god_teleportation */ || animationId === 19 /* mountain_god_run */ || animationId === 16 /* mountain_god_hurt */ || animationId === 17 /* mountain_god_hurt_from_special_attack */ || animationId === 45 /* golem_master_transformation */ || animationId === 46 /* golem_master_idle */ || animationId === 86 /* mountain_pillar_activated */ || animationId === 47 /* pnj1_transformation */ || animationId === 48 /* pnj1_transformation2 */ || animationId === 49 /* pnj2_idle */ || animationId === 71 /* pike_man_idle */ || animationId === 72 /* pike_man_open_gate */ || animationId === 79 /* hero_transformation_pre_run */ || animationId === 80 /* hero_transformation_run */ || animationId === 81 /* hero_transformation_hurt */ || animationId === 82 /* hero_transformation_attack */) && lastExecutionTimeStamp) {
       const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
-      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 85 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 120 : animationId === 41 /* golem_opponent_attack */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 / (enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 74 /* dragon_fly_left */ ? 150 : animationId === 73 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 90 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 100 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 120 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 86 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : animationId === 71 /* pike_man_idle */ ? 100 : animationId === 72 /* pike_man_open_gate */ ? 100 : animationId === 79 /* hero_transformation_pre_run */ ? 100 : animationId === 80 /* hero_transformation_run */ ? 80 : animationId === 82 /* hero_transformation_attack */ ? 14 : animationId === 81 /* hero_transformation_hurt */ ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
+      const minimumTimeInMsBetweenFrames = animationId === 1 /* hero_run */ && superSpeedOn ? ANIMATION_HERO_RUN_SUPER_SPEED_DURATION_BETWEEN_FRAMES_IN_MS : animationId === 5 /* hero_walk_left */ ? 150 : animationId === 85 /* lightning */ ? 125 : animationId === 4 /* hero_walk_right */ ? 150 : animationId === 8 /* hero_idle */ ? 225 : animationId === 11 /* hero_teleportation */ ? 120 : animationId === 7 /* hero_death */ ? 70 : animationId === 10 /* hero_special_attack */ ? 30 : animationId === 9 /* hero_second_idle */ ? 400 : animationId === 35 /* hammer_opponent_death */ ? 100 : animationId === 42 /* golem_opponent_death */ ? 80 : animationId === 58 /* witch_opponent_death */ ? 100 : animationId === 59 /* witch_opponent_death_from_special_attack */ ? 40 : animationId === 36 /* hammer_opponent_death_from_special_attack */ ? 40 : animationId === 43 /* golem_opponent_death_from_special_attack */ ? 40 : animationId === 30 /* hammer_opponent_idle */ ? 130 : animationId === 38 /* hammer_opponent_taunt */ ? 100 : animationId === 61 /* orc_opponent_idle */ ? 80 : animationId === 39 /* golem_opponent_idle */ ? 80 : animationId === 41 /* golem_opponent_attack */ ? 120 : animationId === 40 /* golem_opponent_run */ ? 150 : animationId === 56 /* witch_opponent_run */ ? 150 : animationId === 31 /* hammer_opponent_run */ ? 50 : animationId === 55 /* witch_opponent_idle */ ? 90 : animationId === 57 /* witch_opponent_attack */ ? 120 : animationId === 50 /* king_opponent_idle */ ? 115 : animationId === 52 /* king_opponent_attack */ ? 50 : animationId === 66 /* dwarf_opponent_idle */ ? 80 : animationId === 32 /* hammer_opponent_attack */ ? 100 / (enemyOnScreenAttackIndex === 2 ? CAMERA_SUPER_SPEED_MULTIPLICATOR : 1) : animationId === 33 /* hammer_opponent_special_attack */ ? 100 : animationId === 34 /* hammer_opponent_special_attack2 */ ? 100 : animationId === 74 /* dragon_fly_left */ ? 150 : animationId === 73 /* dragon_fly_right */ ? 150 : animationId === 13 /* learning_god_idle */ ? 90 : animationId === 14 /* learning_god_open_course */ ? 100 : animationId === 12 /* learning_god_walk_left */ ? 100 : animationId === 19 /* mountain_god_run */ ? 70 : animationId === 15 /* mountain_god_attack */ ? 100 : animationId === 46 /* golem_master_idle */ ? 120 : animationId === 45 /* golem_master_transformation */ ? 120 : animationId === 86 /* mountain_pillar_activated */ ? 100 : animationId === 20 /* mountain_god_idle */ ? 140 : animationId === 16 /* mountain_god_hurt */ ? 100 : animationId === 17 /* mountain_god_hurt_from_special_attack */ ? 60 : animationId === 18 /* mountain_god_teleportation */ ? 60 : animationId === 47 /* pnj1_transformation */ ? 200 : animationId === 48 /* pnj1_transformation2 */ ? 250 : animationId === 49 /* pnj2_idle */ ? 130 : animationId === 71 /* pike_man_idle */ ? 100 : animationId === 72 /* pike_man_open_gate */ ? 100 : animationId === 79 /* hero_transformation_pre_run */ ? 100 : animationId === 80 /* hero_transformation_run */ ? 80 : animationId === 82 /* hero_transformation_attack */ ? 14 : animationId === 81 /* hero_transformation_hurt */ ? 30 : ANIMATION_HERO_RUN_DURATION_BETWEEN_FRAMES_IN_MS;
       if (diff < minimumTimeInMsBetweenFrames) {
         return requestAnimationFrame(
           () => launchCharacterAnimation(
@@ -4254,74 +4399,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       launchAnimation(enemy.character, 15 /* idle */);
     }
   };
-  var createMountainGod = (cinematic = false) => {
-    const mountainGodContainer = document.createElement("div");
-    mountainGodContainer.classList.add("mountain_god_container");
-    const mountainGodImg = document.createElement("img");
-    mountainGodContainer.append(mountainGodImg);
-    if (cinematic) {
-      document.body.append(mountainGodContainer);
-    } else {
-      mountainGodContainer.classList.add("mountain_god_container_fight");
-    }
-    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
-  };
-  var launchMountainGodCinematic = () => {
-    const thunder = document.getElementById("thunder_audio");
-    thunder.play();
-    const mountainGodCharacter = createMountainGod(true);
-    setTimeout(
-      () => {
-        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
-        setTimeout(
-          () => {
-            launchAnimation(mountainGodCharacter, 2 /* specialAttack2 */, false);
-            setTimeout(
-              () => {
-                launchAnimation(mountainGodCharacter, 15 /* idle */);
-              },
-              1600
-            );
-            setTimeout(
-              () => {
-                setTimeout(
-                  () => {
-                    const god = document.getElementById("god_audio");
-                    god.play();
-                    setTimeout(
-                      () => {
-                        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
-                        setTimeout(
-                          () => {
-                            document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
-                            quitCinematic();
-                            setTimeout(
-                              () => {
-                                launchChallenge("677e814577322467895fd15c");
-                              },
-                              2e3
-                            );
-                          },
-                          2e3
-                        );
-                      },
-                      8e3
-                    );
-                  },
-                  700
-                );
-              },
-              700
-            );
-          },
-          360
-        );
-      },
-      1e3
-    );
-  };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
+  var currentChallengeLevel = 1;
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
     const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 17 /* movement */);
     if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1 || !enemy.character.element) {
@@ -4389,7 +4469,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var rewardHero = () => {
     const bonus_ratio = transformed ? TRANSFORMED_BONUS_RATIO : 1;
-    store.dispatch(setFoundAtIndex({ index: store.getState().challenge.currentAnswerIndex - 1, found: true }));
     if (!transformed) {
       rewardStreak++;
       updateTransformationProgressBarDisplay();
@@ -4397,7 +4476,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         switchToSpecialModeAndLaunchSpecialModeTimeout();
       }
     }
-    score += bonus_ratio * REWARD_UNIT;
+    score += bonus_ratio * (transformed ? 2 : REWARD_UNIT);
     updateScoreDisplay();
     displayReward("Congrats! You destroyed a good answer!");
     if (transformed) {
@@ -4414,7 +4493,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var killWrongEnemy = (enemy, fromSpecialAttack) => {
     scoreMalusContainer.style.display = "flex";
-    store.dispatch(setFoundAtIndex({ index: store.getState().challenge.currentAnswerIndex - 1, found: false }));
     lifePoints.value--;
     checkForHerosDeath();
     rewardStreak = 0;
@@ -5966,10 +6044,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
-    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/1.png";
+    newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new/1.png";
     newOpponentContainer.append(newEnnemyImg);
-    newOpponentContainer.style.bottom = "18vh";
-    newOpponentContainer.style.width = "55vw";
+    newOpponentContainer.style.bottom = "13vh";
+    newOpponentContainer.style.width = "80vw";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
@@ -5984,10 +6062,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         setTimeout(
           () => {
             launchChallenge("677e814577322467895fd17e");
-            setTimeout(
-              launchTransformation,
-              3e3
-            );
             gateOpened = true;
             setTimeout(
               () => {
@@ -6138,10 +6212,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     scoreContainer.style.opacity = "0";
     topScoreContainer.style.opacity = "0";
   };
-  var launchChallenge = (pillarId) => {
+  var launchChallenge = (challengeId) => {
     store.getState().persistedMap.elementsOnScreen.forEach(
       (element) => {
-        if (element.id !== pillarId) {
+        if (element.id !== challengeId) {
           const mapElement = findMapElement(element.id);
           if (!mapElement) {
             return;
@@ -6154,7 +6228,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     setupChallengeDisplay();
     breathAudio.play();
     gameMode = 1 /* challenge */;
-    initializeChallengePage(pillarId);
   };
   var setupChallengeDisplay = () => {
     lightningImg.style.opacity = "1";

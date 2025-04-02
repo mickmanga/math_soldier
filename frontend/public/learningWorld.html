@@ -65,8 +65,8 @@
                 <button onclick="displaySideBar(event)" id="course_container_ab_back_left_button">></button>
                 <div id="course_container_ab_wrapper">
                   <button onclick="hideSideBar(event)" id="course_container_ab_back_right_button"><</button>
-                  <div class="course_container_aba" style="opacity: 1;">Qu'est ce qu'un vecteur?</div>
-                  <div class="course_container_aba">Couplets, triplets, n-uplets de réels</div>
+                  <div class="course_container_aba" style="opacity: 1;">Introduction aux statistiques</div>
+                  <div class="course_container_aba">Introduction à l'algebre</div>
                   <div class="course_container_aba">Construire le vecteur somme</div>
                   <div class="course_container_aba">Multiplication vecteur/scalaire</div>
                   <div class="course_container_aba">Exemples de vecteurs</div>
@@ -142,261 +142,117 @@
   <div class="container">
 
     <!-- Introduction -->
-    <h1>Introduction to statistics</h1>
+    <h1>Introduction aux statistiques</h1>
     <p>
 
     </p>
 
     <!-- Section 1: General Definition -->
     <section>
-      <h2>Stone 1 (0 to 500p) : 85% of players</h2>
+      <h2>1) La moyenne</h2>
       <p>
-        Les statistiques sont une branche des mathématiques permettant d'analyser l'environnement, et de faire des prédctions.
+        Définition : La moyenne (arithmétique) est la somme de toutes les valeurs divisée par le nombre total de celles-ci.
       </p>
-      <ul>
-        <li><strong>Pourcentages</strong>: 50% de 100 = 50, 30% de 100 = 33.33</li>
-        <li><strong>Magnitude (or norm)</strong>: The length of the vector, usually representing the intensity or force associated with it.</li>
-      </ul>
+
       <p>
-        We commonly denote a vector <code>V</code> in the form <code>(x, y)</code>, where <code>x</code> and <code>y</code> are its components along the X and Y axes.
+        Exemple : Pour cinq notes : 12, 14, 10, 8 et 16, la moyenne est
+
+12
++
+14
++
+10
++
+8
++
+16
+5
+=
+12.
+5
+12+14+10+8+16
+​
+ =12.
       </p>
     </section>
 
     <!-- Section 2: Graphical Representation and Components (with graphic) -->
     <section>
-      <h2>2. Graphical Representation and Components</h2>
+      <h2>2) La médiane</h2>
       <p>
-        In a two-dimensional plane, the vector <code>(x, y)</code> can be represented by an arrow starting at the origin (<code>(0, 0)</code>)
-        and ending at the point <code>(x, y)</code>. The direction of this arrow corresponds to the vector's orientation, and its length corresponds to the vector's magnitude.
-      </p>
+        Définition : La médiane est la valeur centrale d’une série de données lorsqu’elles sont ordonnées.
+
+        Comment la calculer :
+        
+        Si le nombre de valeurs est impair, la médiane est la valeur du milieu.
+        
+        Si le nombre de valeurs est pair, la médiane est la moyenne des deux valeurs centrales.
       <p>
-        Below is an example of a vector <code>V = (50, 100)</code> represented on a coordinate system.
-        The origin of the coordinate system is placed at the center of the canvas, and the vector points toward the upper-right corner.
+        Exemple : Pour la série ordonnée 8, 10, 12, 14, 16 (cinq valeurs), la médiane est la troisième valeur, soit 12.
+
+        Pour la série 8,10,12,14 => la médiane sera la moyenne de 10 et 12, donc 11.
       </p>
 
-      <div class="canvas-container">
-        <canvas id="vectorCanvas" width="400" height="400"></canvas>
-      </div>
+ 
     </section>
 
     <!-- Section 3: Magnitude and Direction -->
     <section>
-      <h2>3. Magnitude and Direction</h2>
+      <h2>3) Les pourcentages</h2>
       <p>
-        The <strong>magnitude</strong> (or norm) of a vector <code>V = (x, y)</code> is calculated using the Pythagorean theorem:
+        Définition : Les pourcentages expriment une proportion sur 100.
+
+        Ils permettent de comparer des fractions de quantité (par exemple, 45 % de personnes satisfaites sur un échantillon).
+
+        Ils se calculent souvent à partir d’une fraction en multipliant par 100 (par exemple, 
+45
+100
+×
+100
+=
+45
+%
+100
+45
+​
+ ×100=45%).
       </p>
-      <div class="example">
-        ||V|| = √(x² + y²)
-      </div>
-      <p>
-        The <strong>direction</strong> of a vector, often expressed as an <em>angle</em> (in degrees or radians), is generally determined by:
-      </p>
-      <div class="example">
-        θ = arctan(y / x)
-      </div>
-      <p>
-        <strong>Example:</strong> For <code>V = (3, 4)</code>:
-      </p>
-      <div class="example">
-        Magnitude: ||V|| = √(3² + 4²) = 5<br>
-        Angle: θ = arctan(4/3) ≈ 53.13°
-      </div>
     </section>
 
     <!-- Section 4: Addition and Subtraction of Vectors -->
     <section>
-      <h2>4. Addition and Subtraction of Vectors</h2>
+      <h2>4) Le mode</h2>
       <p>
-        Operations between vectors are done component-wise.
-      </p>
-      <h3>4.1 Addition</h3>
-      <p>
-        For two vectors <code>A = (a₁, a₂)</code> and <code>B = (b₁, b₂)</code>:
-      </p>
-      <div class="example">
-        A + B = (a₁ + b₁, a₂ + b₂)
-      </div>
-      <p>
-        <strong>Example:</strong> <code>A = (2, 3)</code>, <code>B = (4, 1)</code>:
-      </p>
-      <div class="example">
-        A + B = (2 + 4, 3 + 1) = (6, 4)
-      </div>
+        Définition : Le mode est la valeur la plus fréquente dans une série de données.
 
-      <h3>4.2 Subtraction</h3>
-      <p>
-        For subtraction, just subtract the corresponding components:
-      </p>
-      <div class="example">
-        A - B = (a₁ - b₁, a₂ - b₂)
-      </div>
-      <p>
-        <strong>Example:</strong> <code>A = (2, 3)</code>, <code>B = (1, -2)</code>:
-      </p>
-      <div class="example">
-        A - B = (2 - 1, 3 - (-2)) = (1, 5)
-      </div>
+        Exemple : Dans la série 12, 14, 14, 10, 8, 16, 14, le mode est 14, car c’est la valeur qui apparaît le plus souvent.
+      </p> 
+
     </section>
 
     <!-- Section 5: Scalar Multiplication -->
     <section>
-      <h2>5. Scalar Multiplication</h2>
+      <h2>5. L'étendue</h2>
       <p>
-        Multiplying a vector by a scalar <code>k</code> enlarges or shrinks its magnitude without changing its direction (unless <code>k</code> is negative, in which case the direction is reversed).
-      </p>
-      <div class="example">
-        k × V = (k × x, k × y)
-      </div>
-      <p>
-        <strong>Example:</strong> <code>V = (3, 4)</code>, <code>k = 2</code>:
-      </p>
-      <div class="example">
-        2 × V = (6, 8)
-      </div>
-    </section>
+        Définition : L’étendue est la différence entre la valeur la plus grande et la valeur la plus petite d’un jeu de données.
 
-    <!-- Section 6: Dot Product -->
-    <section>
-      <h2>6. Dot Product</h2>
-      <p>
-        The dot product of two vectors <code>A = (a₁, a₂)</code> and <code>B = (b₁, b₂)</code> is defined as:
-      </p>
-      <div class="example">
-        A · B = a₁b₁ + a₂b₂
-      </div>
-      <p>
-        It can also be expressed in terms of the norms of the vectors and the angle <code>θ</code> between them:
-      </p>
-      <div class="example">
-        A · B = ||A|| · ||B|| · cos(θ)
-      </div>
-      <p>
-        The dot product is useful for:
-      </p>
-      <ul>
-        <li>Determining if two vectors are orthogonal (the dot product is 0).</li>
-        <li>Calculating the angle between two vectors.</li>
-        <li>Performing projection operations in physics and geometry.</li>
-      </ul>
-    </section>
+Utilité : Elle donne une première idée de la dispersion des données.
 
-    <!-- Section 7: Normalization, Projection, and Conclusion -->
-    <section>
-      <h2>7. Normalization, Projection, and Conclusion</h2>
+Exemple : Si les données vont de 8 à 16, l’étendue est 
+16
+−
+8
+=
+8
+16−8=8.
 
-      <h3>7.1 Unit Vector and Normalization</h3>
-      <p>
-        A <strong>unit vector</strong> is a vector with a magnitude of 1. For any non-zero vector <code>V</code>,
-        you can normalize it (convert it to a unit vector) by dividing it by its own norm:
+
       </p>
-      <div class="example">
-        V<sub>unit</sub> = V / ||V||
+      
       </div>
-      <p>
-        This operation is very common when you want to keep only the direction of a vector, discarding its scale.
-      </p>
-
-      <h3>7.2 Projection of a Vector</h3>
-      <p>
-        The projection of a vector <code>A</code> onto another vector <code>B</code> finds the component of <code>A</code>
-        in the direction of <code>B</code>. It is often written as:
-      </p>
-      <div class="example">
-        proj<sub>B</sub>(A) = ( (A · B) / ||B||² ) · B
-      </div>
-      <p>
-        Projection is particularly useful for decomposing forces in physics or extracting a component along a given axis.
-      </p>
-
-      <h3>7.3 Conclusion</h3>
-      <p>
-        Vectors form an essential basis for describing and understanding geometric and physical phenomena.
-        In two dimensions, their manipulation (addition, subtraction, dot product, normalization, etc.) provides powerful tools
-        to model translations, directions, and even dynamic phenomena.
-      </p>
-      <p>
-        Building on this knowledge, you can explore:
-      </p>
-      <ul>
-        <li>Extending vectors to three dimensions (3D).</li>
-        <li>The cross product, crucial in 3D for calculating normals.</li>
-        <li>More advanced linear algebra, including matrices and linear transformations.</li>
-      </ul>
-      <p>
-        Mastering these fundamental concepts opens the door to a wide range of applications in science, engineering, and beyond.
-      </p>
     </section>
 
   </div>
-
-  <!-- Script to draw the vector in Section 2 -->
-  <script>
-    const canvas = document.getElementById('vectorCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Origin at the center of the canvas
-    const originX = canvas.width / 2;
-    const originY = canvas.height / 2;
-
-    // Draw X and Y axes in red
-    function drawAxes() {
-      ctx.strokeStyle = 'var(--vector-red)';
-      ctx.lineWidth = 2;
-      // Horizontal axis
-      ctx.beginPath();
-      ctx.moveTo(0, originY);
-      ctx.lineTo(canvas.width, originY);
-      ctx.stroke();
-      // Vertical axis
-      ctx.beginPath();
-      ctx.moveTo(originX, 0);
-      ctx.lineTo(originX, canvas.height);
-      ctx.stroke();
-    }
-
-    // Draw a vector from the center in red
-    function drawVector(x, y) {
-      ctx.strokeStyle = 'var(--vector-red)';
-      ctx.fillStyle = 'var(--vector-red)';
-      ctx.lineWidth = 4;
-
-      // End point of the vector
-      const endX = originX + x;
-      const endY = originY - y; // Invert y because the canvas has an inverted Y-axis
-
-      // Draw the vector line
-      ctx.beginPath();
-      ctx.moveTo(originX, originY);
-      ctx.lineTo(endX, endY);
-      ctx.stroke();
-
-      // Draw the arrowhead
-      const headLength = 10;
-      const angle = Math.atan2(originY - endY, endX - originX);
-      ctx.beginPath();
-      ctx.moveTo(endX, endY);
-      ctx.lineTo(
-        endX - headLength * Math.cos(angle - Math.PI / 6),
-        endY + headLength * Math.sin(angle - Math.PI / 6)
-      );
-      ctx.lineTo(
-        endX - headLength * Math.cos(angle + Math.PI / 6),
-        endY + headLength * Math.sin(angle + Math.PI / 6)
-      );
-      ctx.lineTo(endX, endY);
-      ctx.fill();
-    }
-
-    // Initialize the drawing
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawAxes();
-      // Example vector: (50, 100)
-      drawVector(50, 100);
-    }
-
-    draw();
-  </script>
 </body>
 </html>
 
