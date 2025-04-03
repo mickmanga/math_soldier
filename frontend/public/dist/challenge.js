@@ -2367,10 +2367,13 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      null,
+      null,
       { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      null,
       null,
       null,
       null,
@@ -3213,223 +3216,78 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       new Answer("20 - 12 = 10", false)
     ]
   };
-  var statsIntroAnswers = {
+  var arithmeticAnswers = {
     1: [
-      { value: "La moyenne de 2, 2, 2 est 2", true: true },
-      { value: "La m\xE9diane de 1, 3, 5 est 3", true: true },
-      { value: "La m\xE9diane de 2, 4, 6 est 5", true: false },
-      { value: "50% de 50 est 25", true: true },
-      { value: "50% de 50 est 20", true: false }
+      { value: "3 + 1 = 4", true: true },
+      { value: "5 - 2 = 2", true: false },
+      { value: "2 \xD7 3 = 6", true: true },
+      { value: "8 \xF7 4 = 3", true: false }
     ],
     2: [
-      { value: "La moyenne de 10, 10, 10 est 10", true: true },
-      { value: "La m\xE9diane de 2, 5, 9 est 5", true: true },
-      { value: "La m\xE9diane de 3, 5, 7, 9 est 6", true: false },
-      { value: "20% de 100 est 20", true: true },
-      { value: "20% de 80 est 10", true: false },
-      { value: "La mode de 1, 3, 3, 3, 4 est 3", true: true },
-      { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
-      { value: "L'\xE9tendue de 4, 6, 6 est 2", true: true },
-      { value: "L'\xE9tendue de 5, 7, 9 est 3", true: false },
-      { value: "La moyenne de 2, 2, 6, 6 est 4", true: true },
-      { value: "La moyenne de 3, 3, 3, 9 est 5", true: false },
-      { value: "La m\xE9diane de 11, 13, 15 est 13", true: true },
-      { value: "La m\xE9diane de 2, 2, 5, 5 est 3.5", true: true },
-      { value: "25% de 40 est 8", true: true },
-      { value: "30% de 50 est 20", true: false },
-      { value: "La mode de 7, 7, 8, 9 est 8", true: false },
-      { value: "L'\xE9tendue de 10, 10, 10 est 0", true: true },
-      { value: "La moyenne de 1, 2, 3, 4 est 2.5", true: false },
-      { value: "La m\xE9diane de 2, 3, 4, 5 est 3.5", true: true },
-      { value: "50% de 200 est 100", true: true }
+      { value: "12 \xF7 3 = 4", true: true },
+      { value: "7 \xD7 2 = 15", true: false },
+      { value: "14 - 5 = 9", true: true },
+      { value: "9 + 7 = 17", true: false }
     ],
     3: [
-      { value: "La moyenne de 4, 6, 8, 10 est 7", true: true },
-      { value: "La m\xE9diane de 10, 12, 14 est 12", true: true },
-      { value: "L'\xE9tendue de 5, 5, 10, 10 est 5", true: true },
-      { value: "La mode de 1, 2, 2, 2, 3 est 2", true: true },
-      { value: "La mode de 2, 3, 4, 4, 4 est 3", true: false },
-      { value: "40% de 100 est 60", true: false },
-      { value: "33% de 300 est 99", true: true },
-      { value: "La moyenne de 2, 2, 2, 2, 10 est 4", true: false },
-      { value: "La m\xE9diane de 3, 5, 7, 9, 11 est 7", true: true },
-      { value: "L'\xE9tendue de 2, 6, 10 est 8", true: true },
-      { value: "L'\xE9tendue de 8, 8, 8 est 8", true: false },
-      { value: "La mode de 5, 5, 5, 6 est 5", true: true },
-      { value: "La m\xE9diane de 2, 3, 4, 5, 6 est 4", true: true },
-      { value: "60% de 100 est 60", true: true },
-      { value: "60% de 100 est 50", true: false },
-      { value: "La moyenne de 6, 6, 6, 9 est 6.75", true: true },
-      { value: "La m\xE9diane de 1, 1, 5, 9, 9 est 5", true: true },
-      { value: "La mode de 4, 4, 4, 5, 5, 6 est 4 et 5", true: false },
-      { value: "L'\xE9tendue de 3, 10 est 7", true: false },
-      { value: "20% de 400 est 80", true: true }
+      { value: "15 \xF7 3 = 5", true: true },
+      { value: "8 \xD7 4 = 32", true: true },
+      { value: "20 - 9 = 12", true: false },
+      { value: "7 + 13 = 21", true: false }
     ],
     4: [
-      { value: "La moyenne de 3, 6, 9, 12 est 7.5", true: false },
-      { value: "La moyenne de 5, 6, 7, 8 est 6.5", true: true },
-      { value: "La m\xE9diane de 4, 4, 6, 8, 10 est 6", true: true },
-      { value: "L'\xE9tendue de 2, 4, 6, 8 est 6", true: true },
-      { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
-      { value: "La mode de 5, 5, 7, 7 est 5 et 7", true: true },
-      { value: "45% de 200 est 90", true: true },
-      { value: "10% de 60 est 10", true: false },
-      { value: "La m\xE9diane de 2, 2, 2, 3, 4 est 2", true: true },
-      { value: "La moyenne de 8, 8, 8, 10 est 8.5", true: true },
-      { value: "La moyenne de 10, 10, 10 est 9", true: false },
-      { value: "La mode de 3, 4, 4, 4, 4 est 4", true: true },
-      { value: "L'\xE9tendue de 10, 15, 20 est 10", true: false },
-      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
-      { value: "25% de 100 est 30", true: false },
-      { value: "50% de 300 est 150", true: true },
-      { value: "La mode de 6, 6, 7, 7, 7 est 7", true: true },
-      { value: "La m\xE9diane de 2, 4, 6, 8 est 5", true: false },
-      { value: "L'\xE9tendue de 1, 3, 8 est 7", true: true },
-      { value: "La moyenne de 9, 9, 9, 9 est 9", true: true }
+      { value: "9 \xD7 9 = 81", true: true },
+      { value: "30 \xF7 5 = 7", true: false },
+      { value: "17 + 15 = 32", true: true },
+      { value: "40 - 16 = 25", true: false }
     ],
     5: [
-      { value: "La m\xE9diane de 3, 3, 4, 5, 10 est 4", true: true },
-      { value: "L'\xE9tendue de 5, 10, 15, 20 est 15", true: true },
-      { value: "La moyenne de 5, 5, 15, 15 est 10", true: true },
-      { value: "La mode de 2, 2, 2, 2, 5 est 5", true: false },
-      { value: "75% de 100 est 25", true: false },
-      { value: "75% de 100 est 75", true: true },
-      { value: "La m\xE9diane de 2, 2, 3, 9, 10 est 3", true: false },
-      { value: "La mode de 6, 7, 7, 7, 9 est 7", true: true },
-      { value: "L'\xE9tendue de 3, 3, 3 est 0", true: true },
-      { value: "La moyenne de 4, 8, 12, 16 est 10", true: false },
-      { value: "La m\xE9diane de 4, 6, 7, 8, 9 est 7", true: true },
-      { value: "10% de 50 est 5", true: true },
-      { value: "10% de 80 est 10", true: false },
-      { value: "La mode de 1, 2, 3, 3, 4, 4 est 3 et 4", true: true },
-      { value: "La moyenne de 10, 10, 10, 10, 10 est 10", true: true },
-      { value: "50% de 400 est 150", true: false },
-      { value: "L'\xE9tendue de 4, 4, 4, 5 est 1", true: true },
-      { value: "La m\xE9diane de 6, 6, 7, 7, 8 est 7", true: true },
-      { value: "La mode de 2, 2, 2, 3, 3 est 2", true: true },
-      { value: "La moyenne de 2, 4, 6 est 4", true: true }
+      { value: "13 \xD7 8 = 104", true: true },
+      { value: "72 \xF7 8 = 8", true: false },
+      { value: "45 + 19 = 64", true: true },
+      { value: "55 - 18 = 36", true: false }
     ],
     6: [
-      { value: "La moyenne de 10, 15, 20 est 15", true: true },
-      { value: "L'\xE9tendue de 10, 10, 10 est 0", true: true },
-      { value: "La m\xE9diane de 10, 10, 10, 10 est 10", true: true },
-      { value: "80% de 50 est 40", true: true },
-      { value: "80% de 50 est 30", true: false },
-      { value: "La mode de 5, 7, 7, 7, 7, 9 est 7", true: true },
-      { value: "L'\xE9tendue de 2, 8, 12, 12 est 10", true: true },
-      { value: "La m\xE9diane de 4, 5, 9, 10, 11 est 9", true: false },
-      { value: "La moyenne de 4, 6, 10, 12 est 8", true: true },
-      { value: "La mode de 2, 2, 3, 3 est 2 et 3", true: true },
-      { value: "25% de 200 est 30", true: false },
-      { value: "25% de 200 est 50", true: true },
-      { value: "La m\xE9diane de 10, 12, 14, 16 est 13", true: false },
-      { value: "La moyenne de 8, 8, 8, 12 est 9", true: false },
-      { value: "L'\xE9tendue de 5, 10, 15 est 10", true: false },
-      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
-      { value: "La mode de 8, 8, 9, 9, 9 est 9", true: true },
-      { value: "90% de 100 est 90", true: true },
-      { value: "La moyenne de 2, 2, 10 est 5", true: false },
-      { value: "La m\xE9diane de 2, 3, 3, 4, 5 est 3", true: true }
+      { value: "16 \xD7 7 = 112", true: true },
+      { value: "100 \xF7 4 = 20", true: false },
+      { value: "81 - 34 = 47", true: true },
+      { value: "64 + 29 = 92", true: false }
     ],
     7: [
-      { value: "La moyenne de 10, 10, 20, 20 est 15", true: true },
-      { value: "La m\xE9diane de 8, 9, 10, 11, 12 est 10", true: true },
-      { value: "L'\xE9tendue de 10, 15, 20, 25 est 15", true: true },
-      { value: "La mode de 3, 5, 5, 5, 5 est 3", true: false },
-      { value: "40% de 250 est 100", true: true },
-      { value: "La m\xE9diane de 3, 3, 5, 7, 7 est 5", true: true },
-      { value: "La moyenne de 6, 6, 6, 6, 10 est 6.8", true: false },
-      { value: "L'\xE9tendue de 10, 10, 15, 20 est 10", true: false },
-      { value: "La mode de 9, 9, 9, 9 est 9", true: true },
-      { value: "70% de 100 est 70", true: true },
-      { value: "70% de 100 est 60", true: false },
-      { value: "La m\xE9diane de 12, 13, 14, 15, 16 est 14", true: true },
-      { value: "La moyenne de 5, 5, 10, 20 est 10", true: true },
-      { value: "La mode de 2, 2, 3, 3, 3 est 3", true: true },
-      { value: "L'\xE9tendue de 3, 9 est 6", true: false },
-      { value: "La m\xE9diane de 2, 2, 4, 4, 6 est 4", true: false },
-      { value: "La moyenne de 3, 3, 3, 9 est 4.5", true: false },
-      { value: "La mode de 1, 2, 2, 2 est 1", true: false },
-      { value: "L'\xE9tendue de 5, 8, 11 est 6", true: false },
-      { value: "La moyenne de 2, 6, 10, 10 est 7", true: true }
+      { value: "19 \xD7 6 = 114", true: true },
+      { value: "121 \xF7 11 = 12", true: false },
+      { value: "95 - 49 = 46", true: true },
+      { value: "77 + 36 = 112", true: false }
     ],
     8: [
-      { value: "La moyenne de 10, 12, 14, 16, 18 est 14", true: true },
-      { value: "L'\xE9tendue de 10, 12, 18 est 8", true: true },
-      { value: "La m\xE9diane de 10, 11, 11, 12, 14 est 11", true: false },
-      { value: "La mode de 7, 7, 8, 8, 8 est 7", true: false },
-      { value: "20% de 500 est 100", true: true },
-      { value: "30% de 200 est 70", true: false },
-      { value: "La moyenne de 2, 4, 6, 8, 10 est 6", true: true },
-      { value: "La m\xE9diane de 5, 6, 7, 8, 9 est 7", true: true },
-      { value: "90% de 50 est 45", true: true },
-      { value: "90% de 50 est 40", true: false },
-      { value: "La mode de 2, 2, 3, 4, 4 est 2 et 4", true: true },
-      { value: "L'\xE9tendue de 2, 5, 11 est 9", true: false },
-      { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
-      { value: "La m\xE9diane de 2, 4, 6, 8 est 5", true: false },
-      { value: "La mode de 10, 10, 10, 12, 12 est 10", true: true },
-      { value: "75% de 200 est 150", true: true },
-      { value: "La m\xE9diane de 1, 2, 3, 4, 5 est 3", true: true },
-      { value: "L'\xE9tendue de 3, 3, 5, 9 est 6", true: true },
-      { value: "La moyenne de 6, 6, 8, 8, 8 est 7.2", true: true },
-      { value: "La mode de 4, 4, 4, 5, 5 est 5", true: false }
+      { value: "23 \xD7 7 = 161", true: true },
+      { value: "144 \xF7 12 = 13", true: false },
+      { value: "128 - 77 = 51", true: true },
+      { value: "87 + 48 = 136", true: false }
     ],
     9: [
-      { value: "La moyenne de 10, 10, 10, 30 est 15", true: true },
-      { value: "La m\xE9diane de 10, 10, 11, 12, 15 est 11", true: true },
-      { value: "L'\xE9tendue de 20, 25, 25, 25 est 5", true: true },
-      { value: "60% de 300 est 150", true: false },
-      { value: "La mode de 5, 6, 6, 7, 7, 7 est 6", true: false },
-      { value: "La moyenne de 2, 4, 8, 8, 8 est 6", true: false },
-      { value: "La m\xE9diane de 2, 4, 6, 8, 10 est 6", true: true },
-      { value: "L'\xE9tendue de 1, 2, 10 est 9", true: true },
-      { value: "La mode de 4, 4, 4, 4, 5 est 4", true: true },
-      { value: "75% de 400 est 300", true: false },
-      { value: "La moyenne de 10, 12, 14, 14, 16 est 13.2", true: true },
-      { value: "La m\xE9diane de 3, 3, 4, 5, 5 est 4", true: true },
-      { value: "L'\xE9tendue de 5, 10, 15, 20 est 15", true: true },
-      { value: "La mode de 2, 2, 2, 3, 3 est 3", true: false },
-      { value: "La moyenne de 10, 10, 10, 10 est 10", true: true },
-      { value: "La m\xE9diane de 2, 3, 4, 5, 6 est 4", true: true },
-      { value: "La moyenne de 6, 6, 7, 7, 8 est 6.8", true: true },
-      { value: "50% de 200 est 100", true: true },
-      { value: "La m\xE9diane de 10, 10, 10, 15 est 10", true: false },
-      { value: "La mode de 8, 8, 8, 8, 9 est 8", true: true }
+      { value: "27 \xD7 9 = 243", true: true },
+      { value: "169 \xF7 13 = 14", true: false },
+      { value: "153 - 88 = 65", true: true },
+      { value: "96 + 58 = 152", true: false }
     ],
     10: [
-      { value: "La moyenne de 10, 10, 10, 10, 50 est 18", true: false },
-      { value: "La moyenne de 10, 20, 30, 40 est 25", true: true },
-      { value: "La m\xE9diane de 10, 15, 15, 20, 20 est 15", true: true },
-      { value: "L'\xE9tendue de 10, 10, 10, 25 est 15", true: true },
-      { value: "La mode de 2, 2, 2, 3, 3, 3 est 2 et 3", true: true },
-      { value: "85% de 200 est 170", true: false },
-      { value: "90% de 200 est 180", true: true },
-      { value: "La m\xE9diane de 2, 4, 6, 8, 10 est 6", true: true },
-      { value: "L'\xE9tendue de 3, 3, 10 est 7", true: false },
-      { value: "La moyenne de 5, 10, 15, 25 est 13.75", true: false },
-      { value: "La mode de 7, 7, 8, 8, 8 est 8", true: true },
-      { value: "70% de 100 est 70", true: true },
-      { value: "La m\xE9diane de 4, 5, 5, 6, 7 est 5", true: false },
-      { value: "L'\xE9tendue de 10, 10, 10, 10 est 0", true: true },
-      { value: "La moyenne de 6, 6, 6, 10, 12 est 8", true: false },
-      { value: "La m\xE9diane de 6, 7, 8, 9, 10 est 8", true: true },
-      { value: "La mode de 1, 1, 1, 2, 2 est 1", true: true },
-      { value: "95% de 200 est 190", true: true },
-      { value: "La moyenne de 8, 8, 8, 8 est 8", true: true },
-      { value: "L'\xE9tendue de 2, 4, 10 est 8", true: true }
+      { value: "33 \xD7 8 = 264", true: true },
+      { value: "196 \xF7 14 = 15", true: false },
+      { value: "225 - 137 = 88", true: true },
+      { value: "113 + 79 = 193", true: false }
     ]
   };
   var findNextAnswer = () => {
-    if (statsIntroAnswers[currentChallengeLevel].length === 0) {
+    if (arithmeticAnswers[currentChallengeLevel].length === 0) {
       if (currentChallengeLevel === 10) {
         return "done";
       }
       currentChallengeLevel++;
     }
-    const answerIndex = Math.floor(Math.random() * statsIntroAnswers[1].length);
-    const data = statsIntroAnswers[currentChallengeLevel][answerIndex];
-    statsIntroAnswers[currentChallengeLevel].splice(answerIndex, 1);
+    const answerIndex = Math.floor(Math.random() * arithmeticAnswers[1].length);
+    const data = arithmeticAnswers[currentChallengeLevel][answerIndex];
+    arithmeticAnswers[currentChallengeLevel].splice(answerIndex, 1);
     return data;
   };
   var getChallengeGrade = () => {
@@ -3479,6 +3337,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     lightUpAnswerDataContainer();
     answerDataValue.innerHTML = enemy.answer.value;
+    enemyOnScreen = true;
     launchOpponent(enemy);
   };
   var triggerOpponentsApparition = () => {
@@ -3993,6 +3852,18 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pilarContainer.append(pilarImg);
     return pilarContainer;
   };
+  var createElementMapBlockStart = (left, imagePath, zIndex) => {
+    store.dispatch(decreaseStartIndex());
+    const startIndex = store.getState().persistedMap.startIndex;
+    store.dispatch(addElementOnScreen(startIndex));
+    const element = store.getState().persistedMap.elements[startIndex];
+    if (element) {
+      const elementDiv = createMapElement(element);
+      return createMapBlock(left, imagePath, zIndex, elementDiv);
+    } else {
+      return createMapBlock(left, imagePath, zIndex);
+    }
+  };
   var createElementMapBlockEnd = (left, imagePath, zIndex) => {
     store.dispatch(increaseEndIndex());
     const endIndex = store.getState().persistedMap.endIndex;
@@ -4402,7 +4273,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
   var currentChallengeLevel = 1;
+  var enemyOnScreen = false;
   var moveEnemy = (enemy, throttleNum = 0, previousTimeStamp) => {
+    if (!enemyOnScreen) {
+      return;
+    }
     const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, 17 /* movement */);
     if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1 || !enemy.character.element) {
       return;
@@ -4630,6 +4505,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroInTheRedZone = false;
     const enemyDestructionAndRevivalCallback = () => {
       enemy.character.element.remove();
+      enemyOnScreen = false;
       if (!preTransformed) {
         triggerOpponentsApparition();
       }
@@ -4640,8 +4516,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       enemyDestructionAndRevivalCallback();
     }
     runningPointReached = false;
-    ennemiesOnScreen.forEach((enemyOnScreen, index) => {
-      if (enemy === enemyOnScreen) {
+    ennemiesOnScreen.forEach((enemyOnScreen2, index) => {
+      if (enemy === enemyOnScreen2) {
         ennemiesOnScreen.splice(index, 1);
       }
     });
@@ -4675,23 +4551,23 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var enemyLaunchedAttack = false;
   var movementInteruptedForCinematicTransition = false;
   var detectCollision = () => {
-    ennemiesOnScreen.forEach((enemyOnScreen) => {
-      const enemyContainer = enemyOnScreen.character.element.parentElement;
-      const enemyLeft = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodRealLeft(enemyOnScreen) : enemyContainer.getBoundingClientRect().left;
+    ennemiesOnScreen.forEach((enemyOnScreen2) => {
+      const enemyContainer = enemyOnScreen2.character.element.parentElement;
+      const enemyLeft = enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? getMountainGodRealLeft(enemyOnScreen2) : enemyContainer.getBoundingClientRect().left;
       if (getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack) {
         enemyLaunchedAttack = true;
         if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */) {
           if (enemyOnScreenAttackIndex < 2) {
-            launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : 1 /* specialAttack */);
+            launchAnimation(enemyOnScreen2.character, enemyOnScreenAttackIndex === 0 ? 0 /* attack */ : 1 /* specialAttack */);
           }
         } else {
-          launchAnimation(enemyOnScreen.character, 0 /* attack */, false);
+          launchAnimation(enemyOnScreen2.character, 0 /* attack */, false);
           setTimeout(
             () => {
-              if (enemyOnScreen.hurt) {
+              if (enemyOnScreen2.hurt) {
                 return;
               }
-              launchAnimation(enemyOnScreen.character, 15 /* idle */);
+              launchAnimation(enemyOnScreen2.character, 15 /* idle */);
             },
             1920
           );
@@ -4701,67 +4577,104 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         heroInTheRedZone = true;
         updateEnemyViewPointDisplay();
         runningPointReached = true;
-        launchAnimation(enemyOnScreen.character, 6 /* run */);
+        launchAnimation(enemyOnScreen2.character, 6 /* run */);
       }
-      if (getHeroLeft() > enemyLeft + enemyContainer.getBoundingClientRect().width * (enemyCurrentlyOnScreen === 1 /* RED_GOLEM */ ? 0.3 : 0) && enemyOnScreen.collideable && enemyOnScreenAttackIndex < 2) {
-        handleHeroAndEnemyContact(enemyOnScreen);
+      if (getHeroLeft() > enemyLeft + enemyContainer.getBoundingClientRect().width * (enemyCurrentlyOnScreen === 1 /* RED_GOLEM */ ? 0.3 : 0) && enemyOnScreen2.collideable && enemyOnScreenAttackIndex < 2) {
+        handleHeroAndEnemyContact(enemyOnScreen2);
       }
     });
     requestAnimationFrame(detectCollision);
   };
   var repositioningDone = false;
   var checkForScreenUpdateFromLeftToRight = (throttleNum) => {
-    MAP_SETS.forEach(
-      (mapSet, index) => {
-        const firstMapDomElement = mapSet.maps[0];
-        if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
-          if (index === 4 && gameMode === 0 /* discovery */) {
-            store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
-            store.dispatch(increaseStartIndex());
+    if (currentHeroDirection === 1 /* RIGHT_TO_LEFT */) {
+      if (gameMode === 1 /* challenge */) {
+        return;
+      }
+      MAP_SETS.forEach(
+        (mapSet, index) => {
+          const startIndex = store.getState().persistedMap.startIndex;
+          const firstMapDomElement = mapSet.maps[0];
+          if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
+              if (startIndex === 0) {
+                interruptAnimation(5 /* hero_walk_left */);
+                stopCameraMovingToLeft();
+                return;
+              }
+            }
+            mapSet.maps.unshift(
+              index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+                firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
+                mapSet.imagePath,
+                `${index}`
+              )
+            );
           }
-          firstMapDomElement.remove();
-          mapSet.maps.shift();
+          const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+          if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
+              store.dispatch(decreaseEndIndex());
+            }
+            lastMapDomElement.remove();
+            mapSet.maps.pop();
+          }
         }
-        const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-        const endIndex = store.getState().persistedMap.endIndex;
-        const elements = store.getState().persistedMap.elements;
-        if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width <= window.innerWidth) {
-          if (index === 4) {
-            if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
-              interruptAnimation(4 /* hero_walk_right */);
-              stopCameraMovingToRight();
-              return;
+      );
+      requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+    } else {
+      MAP_SETS.forEach(
+        (mapSet, index) => {
+          const firstMapDomElement = mapSet.maps[0];
+          if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
+              store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
+              store.dispatch(increaseStartIndex());
             }
-            if (store.getState().unpersistedMapReducer.currentlyFinishingChallenge) {
-              store.dispatch(setCurrentlyFinishingChallenge(false));
-            }
+            firstMapDomElement.remove();
+            mapSet.maps.shift();
           }
-          ;
-          if (index === 4) {
-            if (gameMode === 0 /* discovery */) {
-              mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+          const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+          const endIndex = store.getState().persistedMap.endIndex;
+          const elements = store.getState().persistedMap.elements;
+          if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width <= window.innerWidth) {
+            if (index === 4) {
+              if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
+                interruptAnimation(4 /* hero_walk_right */);
+                stopCameraMovingToRight();
+                return;
+              }
+              if (store.getState().unpersistedMapReducer.currentlyFinishingChallenge) {
+                store.dispatch(setCurrentlyFinishingChallenge(false));
+              }
+            }
+            ;
+            if (index === 4) {
+              if (gameMode === 0 /* discovery */) {
+                mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+              } else {
+                mapSet.maps.push(store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+                  lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
+                  mapSet.imagePath,
+                  `${index}`
+                ));
+              }
             } else {
-              mapSet.maps.push(store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+              mapSet.maps.push(createMapBlock(
                 lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
                 mapSet.imagePath,
                 `${index}`
               ));
             }
-          } else {
-            mapSet.maps.push(createMapBlock(
-              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
-              mapSet.imagePath,
-              `${index}`
-            ));
-          }
-          if (currentCinematicMode !== 0 /* NONE */ && !repositioningDone) {
-            repositioningDone = true;
-            repositionMapBlocks();
+            if (currentCinematicMode !== 0 /* NONE */ && !repositioningDone) {
+              repositioningDone = true;
+              repositionMapBlocks();
+            }
           }
         }
-      }
-    );
-    requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+      );
+      requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+    }
   };
   var buildEndOfChallengeElement = () => {
     const endOfChallengeContainer2 = document.createElement("div");
@@ -6047,7 +5960,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new/1.png";
     newOpponentContainer.append(newEnnemyImg);
     newOpponentContainer.style.bottom = "13vh";
-    newOpponentContainer.style.width = "80vw";
+    newOpponentContainer.style.width = "77vw";
     document.getElementsByTagName("body")[0].append(newOpponentContainer);
     resetViewPoint();
     return new DefaultCharacter(newEnnemyImg, 0 /* idle */, golemAnimations);
@@ -6385,10 +6298,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
   };
   var checkForOpponentsClearance = () => {
-    ennemiesOnScreen.forEach((enemyOnScreen) => {
-      const enemyRight = getEnemyRight(enemyOnScreen.character.element.parentElement);
+    ennemiesOnScreen.forEach((enemyOnScreen2) => {
+      const enemyRight = getEnemyRight(enemyOnScreen2.character.element.parentElement);
       if (enemyRight / 2 < 0 - window.innerWidth * 0.05) {
-        clearEnemy(enemyOnScreen);
+        clearEnemy(enemyOnScreen2);
       }
     });
     requestAnimationFrame(checkForOpponentsClearance);

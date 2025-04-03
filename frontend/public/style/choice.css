@@ -12,7 +12,7 @@ html, * {
     z-index: 1;
 }
 
-#choiceContainer {
+#bottom_container {
     position: absolute;
     bottom: 0;
     height: 15vh;
@@ -20,8 +20,27 @@ html, * {
     z-index: 2;
     left: 33vw;
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#choiceContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+#characterNameInput {
+    border-radius: 15px;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    text-align: center;
+    display: none;
 }
 
 .choiceCircle {
@@ -29,6 +48,24 @@ html, * {
     aspect-ratio: 1/1;
     border-radius: 50%;
     background: grey;
+}
+
+#continue_button {
+    position: absolute;
+    bottom: 5vh;
+    width: 10vw;
+    height: 5vh;
+    right: 5vw;
+    z-index: 10000;
+    display: flex;
+    display: none;
+}
+
+#continue_button button {
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
 }
 
 #hero_container {
@@ -58,6 +95,7 @@ html, * {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    display: none;
 }
 
 .personalisation_container_a {

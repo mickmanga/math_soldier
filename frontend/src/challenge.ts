@@ -667,89 +667,67 @@ let statsIntroAnswers: AnswersInterface = {
 };
 
 
-let arithmeticAnswers: AnswersInterface = {
+let arithmeticAnswers = {
   1: [
-    { value: "1+1 = 2", true: true },
-    { value: "2×2 = 5", true: false },
-    { value: "6÷2 = 3", true: true },
-    { value: "4-1 = 2", true: false },
-    { value: "5×1 = 5", true: true },
-    { value: "3+4 = 8", true: false },
+    { value: "3 + 1 = 4", true: true },
+    { value: "5 - 2 = 2", true: false },
+    { value: "2 × 3 = 6", true: true },
+    { value: "8 ÷ 4 = 3", true: false },
   ],
   2: [
-    { value: "3×3 = 9", true: true },
-    { value: "10-4 = 5", true: false },
-    { value: "12÷3 = 4", true: true },
-    { value: "7+5 = 13", true: false },
-    { value: "4×2 = 8", true: true },
-    { value: "15÷3 = 6", true: false },
+    { value: "12 ÷ 3 = 4", true: true },
+    { value: "7 × 2 = 15", true: false },
+    { value: "14 - 5 = 9", true: true },
+    { value: "9 + 7 = 17", true: false },
   ],
   3: [
-    { value: "4×3 = 12", true: true },
-    { value: "20÷5 = 5", true: false },
-    { value: "7+8 = 15", true: true },
-    { value: "9-4 = 6", true: false },
-    { value: "5×3 = 15", true: true },
-    { value: "21÷7 = 2", true: false },
+    { value: "15 ÷ 3 = 5", true: true },
+    { value: "8 × 4 = 32", true: true },
+    { value: "20 - 9 = 12", true: false },
+    { value: "7 + 13 = 21", true: false },
   ],
   4: [
-    { value: "10+7 = 17", true: true },
-    { value: "9×3 = 26", true: false },
-    { value: "32÷8 = 4", true: true },
-    { value: "16-3 = 13", true: false },
-    { value: "5×5 = 25", true: true },
-    { value: "28÷4 = 6", true: false },
+    { value: "9 × 9 = 81", true: true },
+    { value: "30 ÷ 5 = 7", true: false },
+    { value: "17 + 15 = 32", true: true },
+    { value: "40 - 16 = 25", true: false },
   ],
   5: [
-    { value: "12+10 = 22", true: true },
-    { value: "9×4 = 34", true: false },
-    { value: "36÷6 = 6", true: true },
-    { value: "22-7 = 16", true: false },
-    { value: "6×6 = 36", true: true },
-    { value: "35÷5 = 8", true: false },
+    { value: "13 × 8 = 104", true: true },
+    { value: "72 ÷ 8 = 8", true: false },
+    { value: "45 + 19 = 64", true: true },
+    { value: "55 - 18 = 36", true: false },
   ],
   6: [
-    { value: "15+8 = 23", true: true },
-    { value: "10×3 = 32", true: false },
-    { value: "48÷6 = 8", true: true },
-    { value: "18-4 = 12", true: false },
-    { value: "7×7 = 49", true: true },
-    { value: "50÷5 = 9", true: false },
-    { value: "25+10 = 35", true: true },
+    { value: "16 × 7 = 112", true: true },
+    { value: "100 ÷ 4 = 20", true: false },
+    { value: "81 - 34 = 47", true: true },
+    { value: "64 + 29 = 92", true: false },
   ],
   7: [
-    { value: "18+14 = 32", true: true },
-    { value: "11×4 = 44", true: true },
-    { value: "56÷7 = 8", true: true },
-    { value: "25-8 = 18", true: false },
-    { value: "9×6 = 54", true: true },
-    { value: "49÷7 = 6", true: false },
+    { value: "19 × 6 = 114", true: true },
+    { value: "121 ÷ 11 = 12", true: false },
+    { value: "95 - 49 = 46", true: true },
+    { value: "77 + 36 = 112", true: false },
   ],
   8: [
-    { value: "25+10 = 35", true: true },
-    { value: "12×5 = 55", true: false },
-    { value: "64÷8 = 8", true: true },
-    { value: "30-9 = 21", true: true },
-    { value: "8×7 = 56", true: true },
-    { value: "72÷9 = 7", true: false },
+    { value: "23 × 7 = 161", true: true },
+    { value: "144 ÷ 12 = 13", true: false },
+    { value: "128 - 77 = 51", true: true },
+    { value: "87 + 48 = 136", true: false },
   ],
   9: [
-    { value: "36+15 = 51", true: true },
-    { value: "13×4 = 56", true: true },
-    { value: "81÷9 = 8", true: false },
-    { value: "50-10 = 40", true: true },
-    { value: "7×9 = 63", true: true },
-    { value: "63÷7 = 8", true: false },
-    { value: "45+16 = 61", true: true },
+    { value: "27 × 9 = 243", true: true },
+    { value: "169 ÷ 13 = 14", true: false },
+    { value: "153 - 88 = 65", true: true },
+    { value: "96 + 58 = 152", true: false },
   ],
   10: [
-    { value: "40+15 = 55", true: true },
-    { value: "14×4 = 56", true: true },
-    { value: "96÷8 = 12", true: true },
-    { value: "54-9 = 45", true: true },
-    { value: "8×8 = 65", true: false },
-    { value: "99÷9 = 11", true: true },
-  ]
+    { value: "33 × 8 = 264", true: true },
+    { value: "196 ÷ 14 = 15", true: false },
+    { value: "225 - 137 = 88", true: true },
+    { value: "113 + 79 = 193", true: false },
+  ],
 };
 
 
@@ -788,18 +766,18 @@ const findNextAnswer = (): ChallengeAnswerData | "done" => {
 
   */
 
-   if(statsIntroAnswers[currentChallengeLevel].length === 0){
+   if(arithmeticAnswers[currentChallengeLevel].length === 0){
       if(currentChallengeLevel === 10){
         return("done");
       }
       currentChallengeLevel++;
    }
 
-  const answerIndex = Math.floor(Math.random() * statsIntroAnswers[1].length);
-  const data = statsIntroAnswers[currentChallengeLevel][answerIndex];
+  const answerIndex = Math.floor(Math.random() * arithmeticAnswers[1].length);
+  const data = arithmeticAnswers[currentChallengeLevel][answerIndex];
 
 
-  statsIntroAnswers[currentChallengeLevel].splice(answerIndex,1);
+  arithmeticAnswers[currentChallengeLevel].splice(answerIndex,1);
 
   return data;
 
@@ -907,6 +885,7 @@ const buildAndLaunchEnemy = (answer: ChallengeAnswerData) => {
   lightUpAnswerDataContainer();
   answerDataValue.innerHTML = enemy.answer.value;
 
+  enemyOnScreen = true;
   launchOpponent(enemy);
 };
 
@@ -2418,11 +2397,16 @@ const moveElement = (element: ElementInterface, animation: ANIMATION_ID, velocit
 
 let currentChallengeLevel = 1;
 
+let enemyOnScreen = false;
+
 const moveEnemy = (
   enemy: Enemy,
   throttleNum = 0,
   previousTimeStamp: number
 ): any => {
+  if(!enemyOnScreen){
+    return;
+  }
   const enemyAnimation = getCharacterAnimationAccordingToType(enemy.character, AnimationType.movement)!;
 
   if (ANIMATION_RUNNING_VALUES[enemyAnimation.id] !== 1 || !enemy.character.element) {
@@ -2784,6 +2768,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
 
   const enemyDestructionAndRevivalCallback = () => {
     enemy.character.element.remove();
+    enemyOnScreen = false;
 
     if (!preTransformed) {
       triggerOpponentsApparition();
@@ -2903,67 +2888,122 @@ const detectCollision = () => {
 let repositioningDone = false;
 
 const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
-  
+
+  if(currentHeroDirection === Direction.RIGHT_TO_LEFT){
+    
+  if(gameMode === GAME_MODES.challenge){
+    return;
+  }
+
   MAP_SETS.forEach(
 
   (mapSet, index) => {
-      
-  const firstMapDomElement = mapSet.maps[0];
 
-  if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
+   const startIndex = store.getState().persistedMap.startIndex;
+   const firstMapDomElement = mapSet.maps[0];
+
+  if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
     if(index === 4 && gameMode === GAME_MODES.discovery){
-     store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
-     store.dispatch(increaseStartIndex());
+
+      if(startIndex === 0){
+        interruptAnimation(ANIMATION_ID.hero_walk_left);
+        stopCameraMovingToLeft();
+        return;
+      }  
     }
 
-    firstMapDomElement.remove();
-    mapSet.maps.shift();
+    mapSet.maps.unshift(
+      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      createMapBlock(
+        firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
+       )
+    );
+
   }
 
   const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
-  const endIndex = store.getState().persistedMap.endIndex;
-  const elements = store.getState().persistedMap.elements;
-
+  
     if (
       lastMapDomElement &&
-      (lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width) <= window.innerWidth
+      lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      
-      if(index === 4){
-        if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
-          interruptAnimation(ANIMATION_ID.hero_walk_right);
-          stopCameraMovingToRight();
-           return;
-         }
-
-      if(store.getState().unpersistedMapReducer.currentlyFinishingChallenge){
-        store.dispatch(setCurrentlyFinishingChallenge(false));
+      if(index === 4 && gameMode === GAME_MODES.discovery){
+        store.dispatch(decreaseEndIndex());
       }
-     };
-
-     if(index === 4){
-
-      if(gameMode === GAME_MODES.discovery){
-        mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
-      } else {
-          mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
-            lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
-          ))
-      }
-    } else {
-      mapSet.maps.push(createMapBlock(
-         lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
-       ));
+         lastMapDomElement.remove();
+         mapSet.maps.pop();
+      } 
     }
-    if(currentCinematicMode !== CINEMATIC_MODES.NONE && !repositioningDone){
-      repositioningDone = true;
-      repositionMapBlocks();
-    }
-    } 
-   }
   )
- requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+
+  requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+
+  } else {
+      
+  MAP_SETS.forEach(
+
+    (mapSet, index) => {
+        
+    const firstMapDomElement = mapSet.maps[0];
+  
+    if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
+  
+      if(index === 4 && gameMode === GAME_MODES.discovery){
+       store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
+       store.dispatch(increaseStartIndex());
+      }
+  
+      firstMapDomElement.remove();
+      mapSet.maps.shift();
+    }
+  
+    const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
+    const endIndex = store.getState().persistedMap.endIndex;
+    const elements = store.getState().persistedMap.elements;
+  
+      if (
+        lastMapDomElement &&
+        (lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width) <= window.innerWidth
+      ) {
+        
+        if(index === 4){
+          if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
+            interruptAnimation(ANIMATION_ID.hero_walk_right);
+            stopCameraMovingToRight();
+             return;
+           }
+  
+        if(store.getState().unpersistedMapReducer.currentlyFinishingChallenge){
+          store.dispatch(setCurrentlyFinishingChallenge(false));
+        }
+       };
+  
+       if(index === 4){
+  
+        if(gameMode === GAME_MODES.discovery){
+          mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+        } else {
+            mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
+              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
+            ))
+        }
+      } else {
+        mapSet.maps.push(createMapBlock(
+           lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
+         ));
+      }
+      if(currentCinematicMode !== CINEMATIC_MODES.NONE && !repositioningDone){
+        repositioningDone = true;
+        repositionMapBlocks();
+      }
+      } 
+     }
+    )
+   requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
+
+  }
+
 };
 
 const buildEndOfChallengeElement = () => {
@@ -4673,7 +4713,7 @@ const createGolemCharacter = (): DefaultCharacter => {
   newEnnemyImg.src = ASSETS_PATH_BASE + "/characters/enemies/golem/idle/new/1.png";  
   newOpponentContainer.append(newEnnemyImg);
   newOpponentContainer.style.bottom = "13vh";
-  newOpponentContainer.style.width = "80vw";
+  newOpponentContainer.style.width = "77vw";
 
   document.getElementsByTagName("body")[0].append(newOpponentContainer);
 
