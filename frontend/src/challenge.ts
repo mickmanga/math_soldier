@@ -361,6 +361,8 @@ declare global {
     openMap: (event: Event) => void;
     tryAgain: (event: Event) => void;
     closeForm: (event: Event) => void;
+    goFullScreen: (event: Event) => void;
+    launchHeroMovement: (event: Event) => void;
   }
 }
 
@@ -2080,6 +2082,11 @@ const launchAttack = (special = false) => {
 
 window.tryAgain = tryAgain;
 
+const goFullScreen = (event: Event) => {
+  document.documentElement.requestFullscreen();
+}
+
+
 window.launchAttack = (event: Event) => {
   if (!gameLaunched) {
     launchGame();
@@ -2087,6 +2094,9 @@ window.launchAttack = (event: Event) => {
   }
   launchAttack();
 };
+
+window.goFullScreen = goFullScreen;
+
 
 
 const clearTimeoutAndLaunchNewOne = (
@@ -5003,6 +5013,34 @@ const setupChallengeDisplay = () => {
   topScoreContainer.style.opacity = "1";
 }
 
+const launchHero = () => {
+    
+  if(movementInteruptedForCinematicTransition){
+    return;
+  }
+
+  heroMoving = true;
+
+  if(gameMode === GAME_MODES.discovery){
+    currentHeroDirection=Direction.LEFT_TO_RIGHT;
+    launchHeroWalk2(Direction.LEFT_TO_RIGHT)
+    return;
+  }
+
+  if (!gameLaunched) {
+    launchGame();
+  } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
+    resumeRun();
+  }
+
+}
+
+const launchHeroMovement = (event: Event) => {
+  launchHero();
+}
+
+window.launchHeroMovement = launchHeroMovement;
+
 document.addEventListener("keydown", (event) => {
 
   if(event.key === "Shift"){
@@ -5025,24 +5063,8 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "d") {
-    
-    if(movementInteruptedForCinematicTransition){
-      return;
-    }
-
-    heroMoving = true;
-
-    if(gameMode === GAME_MODES.discovery){
-      currentHeroDirection=Direction.LEFT_TO_RIGHT;
-      launchHeroWalk2(Direction.LEFT_TO_RIGHT)
-      return;
-    }
-
-    if (!gameLaunched) {
-      launchGame();
-    } else if (ANIMATION_RUNNING_VALUES[ANIMATION_ID.hero_run] === 0) {
-      resumeRun();
-    }
+    launchHero();
+  
   }
   
   if(event.key === "q"){

@@ -1196,6 +1196,42 @@ cinematic 2
   animation: scroll infinite linear;
 }
 
+#leftMobileButtonsContainer {
+  position: absolute;
+  z-index: 100000;
+  left: 5%;
+  bottom: 2vh;
+  width: 20%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(112, 112, 112, 0.171);
+  border-radius: 15px;
+  display: none;
+}
+
+#leftMobileButtonsContainer button, #rightMobileButtonsContainer button {
+  height: 55%;
+  width: 30%;
+}
+
+#rightMobileButtonsContainer {
+  position: absolute;
+  z-index: 100000;
+  right: 5%;
+  bottom: 2vh;
+  width: 20%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(112, 112, 112, 0.187);
+  border-radius: 15px;
+  display: none;
+
+}
+
 /* Layer images and scroll durations */
 .layer-1 {
   background-image: url('backgrounds/1.png');

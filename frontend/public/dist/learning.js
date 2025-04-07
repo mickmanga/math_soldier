@@ -2367,10 +2367,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      null,
+      null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       null,
       null,
-      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
       null,
       null,
       null,
@@ -4101,6 +4103,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     );
   };
   window.tryAgain = tryAgain;
+  var goFullScreen = (event) => {
+    document.documentElement.requestFullscreen();
+  };
   window.launchAttack = (event) => {
     if (!gameLaunched) {
       launchGame();
@@ -4108,6 +4113,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     launchAttack();
   };
+  window.goFullScreen = goFullScreen;
   var clearTimeoutAndLaunchNewOne = (timeoutId, timeout) => {
     GAME_TIMEOUTS[timeoutId].forEach((gameTimout) => clearTimeout(gameTimout));
     GAME_TIMEOUTS[timeoutId] = [timeout];
@@ -6026,6 +6032,26 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     scoreContainer.style.opacity = "1";
     topScoreContainer.style.opacity = "1";
   };
+  var launchHero = () => {
+    if (movementInteruptedForCinematicTransition) {
+      return;
+    }
+    heroMoving = true;
+    if (gameMode === 0 /* discovery */) {
+      currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
+      launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
+      return;
+    }
+    if (!gameLaunched) {
+      launchGame();
+    } else if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
+      resumeRun();
+    }
+  };
+  var launchHeroMovement = (event) => {
+    launchHero();
+  };
+  window.launchHeroMovement = launchHeroMovement;
   document.addEventListener("keydown", (event) => {
     if (event.key === "Shift") {
       heroRunning = true;
@@ -6042,20 +6068,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       window.location.replace(window.location.href);
     }
     if (event.key === "d") {
-      if (movementInteruptedForCinematicTransition) {
-        return;
-      }
-      heroMoving = true;
-      if (gameMode === 0 /* discovery */) {
-        currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
-        launchHeroWalk2(0 /* LEFT_TO_RIGHT */);
-        return;
-      }
-      if (!gameLaunched) {
-        launchGame();
-      } else if (ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
-        resumeRun();
-      }
+      launchHero();
     }
     if (event.key === "q") {
       if (gameMode === 1 /* challenge */) {
