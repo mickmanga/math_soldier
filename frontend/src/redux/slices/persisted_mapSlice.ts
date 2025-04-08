@@ -19,8 +19,9 @@ const initialState: MapState = {
   elements: [
     null,
     null,
-    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.pike_man},
-    null,
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     null,
     {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     null,

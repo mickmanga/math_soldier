@@ -28,6 +28,8 @@ export enum CHARACTER_ELEMENTS_NAMES {
    "golem_master",
    "mountain_god",
    "pike_man",
+   "elves",
+   "elves_and_dragon"
 }
 
 export enum HERO_MODES {

@@ -1,4 +1,4 @@
-import { AnimationType, heroCharacter, launchAnimation } from "./challenge";
+import { AnimationType, heroCharacter, maleOrcCharacter, femaleOrcCharacter, launchAnimation } from "./challenge";
 
 const switchCharacter = () => {
   alert("switch character");
@@ -6,5 +6,5 @@ const switchCharacter = () => {
 }
 
 window.onload = () => {
-  launchAnimation(heroCharacter, AnimationType.idle);
+  launchAnimation(femaleOrcCharacter, AnimationType.idle);
 }

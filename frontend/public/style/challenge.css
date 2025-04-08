@@ -229,6 +229,37 @@ cinematic 2
   opacity: 0.85;
 }
 
+.elves_village_container {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  bottom: -15%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  z-index: 11000;
+}
+
+#elves_habitation {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 80% !important;
+  width: auto !important;
+  opacity: 0.96;
+
+}
+
+#elve_1 {
+  position: absolute;
+  bottom: 15%;
+  left: 0;
+  height: 30% !important;
+  width: auto !important;
+}
+
+
 .mountain_obelisk_container_full {
   top: 26.25vh;
   height: 59vh;
