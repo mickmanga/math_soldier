@@ -98,7 +98,7 @@ audio {
   width: 31%;
   */
   bottom: 15.5vh;
-  width: 31%;
+  width: 30%;
   left: 20vw;
   height: auto;
   z-index: 3011;
@@ -196,7 +196,7 @@ cinematic 2
   position: absolute;
   bottom:-2.5vh;
   right: 0vw;
-  height: 50vh;
+  height: 40vh;
   width: 35vw;
   display: flex;
   justify-content: center;
@@ -243,11 +243,11 @@ cinematic 2
 
 #elves_habitation {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: 7.5vh;
+  left: 30%;
   height: 80% !important;
   width: auto !important;
-  opacity: 0.96;
+  opacity: 0.98;
 
 }
 
@@ -286,7 +286,7 @@ cinematic 2
   position: absolute;
   left: 20%;
   top: 10%;
-  height: 80%;
+  height: 45%;
   width: 60%;
   background: rgb(182, 182, 182);
   z-index: 10000;

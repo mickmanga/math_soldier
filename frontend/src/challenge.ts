@@ -95,9 +95,9 @@ const getElementsRight = (element: HTMLElement) => {
 const handleHeroAndEnemyContact = (enemy: Enemy) => {
   enemy.collideable = false;
 
-  if (!invisible || enemy.answer.true) {
+  if (!superSpeedOn || enemy.answer.true) {
     hurtHero();
-  } else if (invisible && !enemy.answer.true) {
+  } else if (superSpeedOn && !enemy.answer.true) {
     rewardHero();
     transformIfRequired();
   }
@@ -304,7 +304,7 @@ let heroHurt = false;
 let heroIsAlive = true;
 
 const lifePoints = { max: 10, value: 10 };
-let INVISIBILITY_DURATION_IN_MILLISECONDS = 2000;
+let INVISIBILITY_DURATION_IN_MILLISECONDS = 300;
 
 let invisible = false;
 
@@ -667,71 +667,78 @@ let statsIntroAnswers: AnswersInterface = {
     { value: "L'étendue de 2, 4, 10 est 8", true: true }
   ]
 };
-
-
 let arithmeticAnswers = {
   1: [
-    { value: "3 + 1 = 4", true: true },
-    { value: "5 - 2 = 2", true: false },
-    { value: "2 × 3 = 6", true: true },
-    { value: "8 ÷ 4 = 3", true: false },
+    { value: "2 + 1 = 3",   true: true  },
+    { value: "5 - 3 = 3",   true: false },
+    { value: "1 × 4 = 4",   true: true  },
+    { value: "6 ÷ 3 = 3",   true: false },
+    { value: "3 + 2 = 5",   true: true  }
   ],
   2: [
-    { value: "12 ÷ 3 = 4", true: true },
-    { value: "7 × 2 = 15", true: false },
-    { value: "14 - 5 = 9", true: true },
-    { value: "9 + 7 = 17", true: false },
+    { value: "7 + 2 = 9",   true: true  },
+    { value: "8 - 3 = 6",   true: false },
+    { value: "2 × 5 = 10",  true: true  },
+    { value: "12 ÷ 4 = 2",  true: false },
+    { value: "9 - 6 = 3",   true: true  }
   ],
   3: [
-    { value: "15 ÷ 3 = 5", true: true },
-    { value: "8 × 4 = 32", true: true },
-    { value: "20 - 9 = 12", true: false },
-    { value: "7 + 13 = 21", true: false },
+    { value: "4 × 4 = 16",  true: true  },
+    { value: "18 ÷ 3 = 6",  true: true  },
+    { value: "15 - 7 = 9",  true: false },
+    { value: "7 + 9 = 16",  true: true  },
+    { value: "18 ÷ 3 = 5",  true: false }
   ],
   4: [
-    { value: "9 × 9 = 81", true: true },
-    { value: "30 ÷ 5 = 7", true: false },
-    { value: "17 + 15 = 32", true: true },
-    { value: "40 - 16 = 25", true: false },
+    { value: "6 × 5 = 30",   true: true  },
+    { value: "24 ÷ 6 = 5",   true: true  },
+    { value: "20 + 10 = 35", true: false },
+    { value: "18 - 7 = 11",  true: true  },
+    { value: "21 ÷ 3 = 8",   true: false }
   ],
   5: [
-    { value: "13 × 8 = 104", true: true },
-    { value: "72 ÷ 8 = 8", true: false },
-    { value: "45 + 19 = 64", true: true },
-    { value: "55 - 18 = 36", true: false },
+    { value: "7 × 6 = 42",    true: true  },
+    { value: "48 ÷ 8 = 6",    true: true  },
+    { value: "30 + 15 = 45",  true: true  },
+    { value: "50 - 20 = 29",  true: false },
+    { value: "9 × 5 = 44",    true: false }
   ],
   6: [
-    { value: "16 × 7 = 112", true: true },
-    { value: "100 ÷ 4 = 20", true: false },
-    { value: "81 - 34 = 47", true: true },
-    { value: "64 + 29 = 92", true: false },
+    { value: "12 × 7 = 84",   true: true  },
+    { value: "81 ÷ 9 = 9",    true: true  },
+    { value: "40 + 60 = 100", true: true  },
+    { value: "90 - 30 = 50",  true: false },
+    { value: "14 × 6 = 78",   true: false }
   ],
   7: [
-    { value: "19 × 6 = 114", true: true },
-    { value: "121 ÷ 11 = 12", true: false },
-    { value: "95 - 49 = 46", true: true },
-    { value: "77 + 36 = 112", true: false },
+    { value: "11 × 11 = 121", true: true  },
+    { value: "144 ÷ 12 = 12", true: true  },
+    { value: "55 + 45 = 100", true: true  },
+    { value: "130 - 30 = 90", true: false },
+    { value: "8 × 9 = 70",    true: false }
   ],
   8: [
-    { value: "23 × 7 = 161", true: true },
-    { value: "144 ÷ 12 = 13", true: false },
-    { value: "128 - 77 = 51", true: true },
-    { value: "87 + 48 = 136", true: false },
+    { value: "15 × 8 = 120",  true: true  },
+    { value: "64 ÷ 8 = 8",    true: true  },
+    { value: "18 × 6 = 108",  true: true  },
+    { value: "70 + 30 = 90",  true: false },
+    { value: "144 - 44 = 90", true: false }
   ],
   9: [
-    { value: "27 × 9 = 243", true: true },
-    { value: "169 ÷ 13 = 14", true: false },
-    { value: "153 - 88 = 65", true: true },
-    { value: "96 + 58 = 152", true: false },
+    { value: "13 × 12 = 156", true: true  },
+    { value: "180 ÷ 20 = 9",  true: true  },
+    { value: "200 - 50 = 150",true: true  },
+    { value: "150 + 60 = 200",true: false },
+    { value: "20 + 30 = 49",  true: false }
   ],
   10: [
-    { value: "33 × 8 = 264", true: true },
-    { value: "196 ÷ 14 = 15", true: false },
-    { value: "225 - 137 = 88", true: true },
-    { value: "113 + 79 = 193", true: false },
-  ],
+    { value: "17 × 15 = 255", true: true  },
+    { value: "256 ÷ 16 = 16", true: true  },
+    { value: "120 + 180 = 300", true: true },
+    { value: "300 - 100 = 150", true: false },
+    { value: "14 × 14 = 190", true: false }
+  ]
 };
-
 
 const findNextAnswer = (): ChallengeAnswerData | "done" => {
 
@@ -1595,7 +1602,7 @@ const createElvesVillage = () => {
   elvesVillageContainer.classList.add("elves_village_container");
   
   elveMage.src =  ASSETS_PATH_BASE + '/characters/neutral/elves/1/1.png';
-  elvesHouse.src = ASSETS_PATH_BASE + '/items/habitations/elves_habitation4.png';
+  elvesHouse.src = ASSETS_PATH_BASE + '/items/habitations/elves_habitation5.png';
 
   elvesVillageContainer.append(elveMage);
   elvesVillageContainer.append(elvesHouse);
@@ -4932,7 +4939,7 @@ const specifyAndLaunchCinematic = (cinematicMode: CINEMATIC_MODES) => {
 
 const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
 
-  specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
+  specifyAndLaunchCinematic(CINEMATIC_MODES.L);
 
   const talnurMusic = document.getElementById("talnur_music") as HTMLAudioElement;
   talnurMusic.play();
@@ -5034,6 +5041,10 @@ export const moveHero = (type: MovementType, direction: Direction) => {
 
 const executeSuperSpeedToggle = () => {  
   superSpeedOn = !superSpeedOn;
+
+  setTimeout(
+    () => superSpeedOn = false, 300
+  )
 }
 
 const quitChallenge = () => {
@@ -5057,6 +5068,12 @@ document.addEventListener("keyup", (event) => {
   if(event.key === "d" && gameMode === GAME_MODES.discovery){
     stopHeroMove(Direction.LEFT_TO_RIGHT);
   }
+
+  
+  if(event.key === "d" && gameMode === GAME_MODES.challenge){
+    stopRun(true);
+  }
+
 
   
   if(event.key === "q"){
@@ -5174,6 +5191,12 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
+  if(event.key === " "){
+    executeSuperSpeedToggle();
+  }
+
+  /*
+
   if (event.key === " " && !invisible) {
     if(getHeroMode() === HERO_MODES.special){
       launchHeroLightningSpeedAnimation();
@@ -5181,6 +5204,7 @@ document.addEventListener("keydown", (event) => {
     }
     launchInvisibilityToggle();
   }
+  */
 
   if (event.key === "m") {
     if(getHeroMode() === HERO_MODES.special){
@@ -5227,9 +5251,6 @@ const stopSuperSpeed = () => {
 
 
 const stopRun = (definitiveStop = false) => {
-  if (heroInTheRedZone) {
-    return;
-  }
   
   const currentTime = Date.now();
 
@@ -5720,7 +5741,7 @@ const animateLightning = () => {
     for(let i=1; i <= 5; i++){
 
       const lastSet = i === 5 ? true : false;
-      const velocity = i * i;
+      const velocity = i <= 4 ? 0.01 : i * i;
 
       createMapSet(`assets/challenge/maps/snow/${i}.png` , velocity, `${i}`, lastSet);
 
@@ -5765,7 +5786,7 @@ window.onload = () => {
   animateLightning();
   //launchHeroTeleporationAnimation();
  // launchAnimation(heroCharacter, AnimationType.idle, false);
-  //launchDragon();
+ launchDragon();
  // quitCinematic();
 };
 

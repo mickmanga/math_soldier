@@ -2367,11 +2367,48 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
+      null,
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "06", name: 3 /* elves */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       null,
       null,
       null,
@@ -3010,6 +3047,12 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
+  var CINEMATIC_MODES = /* @__PURE__ */ ((CINEMATIC_MODES2) => {
+    CINEMATIC_MODES2[CINEMATIC_MODES2["NONE"] = 0] = "NONE";
+    CINEMATIC_MODES2[CINEMATIC_MODES2["FIRST"] = 1] = "FIRST";
+    CINEMATIC_MODES2[CINEMATIC_MODES2["SECOND"] = 2] = "SECOND";
+    return CINEMATIC_MODES2;
+  })(CINEMATIC_MODES || {});
   var currentCinematicMode = 0 /* NONE */;
   var gateOpened = false;
   var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
@@ -3049,9 +3092,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var SPECIAL_MODE_MAX_VALUE = 10;
   var handleHeroAndEnemyContact = (enemy) => {
     enemy.collideable = false;
-    if (!invisible || enemy.answer.true) {
+    if (!superSpeedOn || enemy.answer.true) {
       hurtHero();
-    } else if (invisible && !enemy.answer.true) {
+    } else if (superSpeedOn && !enemy.answer.true) {
       rewardHero();
       transformIfRequired();
     }
@@ -3166,7 +3209,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var heroHurt = false;
   var heroIsAlive = true;
   var lifePoints = { max: 10, value: 10 };
-  var INVISIBILITY_DURATION_IN_MILLISECONDS = 2e3;
+  var INVISIBILITY_DURATION_IN_MILLISECONDS = 300;
   var invisible = false;
   var ennemiesOnScreen = [];
   var enemiesComingTimeout = null;
@@ -3221,64 +3264,74 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var arithmeticAnswers = {
     1: [
-      { value: "3 + 1 = 4", true: true },
-      { value: "5 - 2 = 2", true: false },
-      { value: "2 \xD7 3 = 6", true: true },
-      { value: "8 \xF7 4 = 3", true: false }
+      { value: "2 + 1 = 3", true: true },
+      { value: "5 - 3 = 3", true: false },
+      { value: "1 \xD7 4 = 4", true: true },
+      { value: "6 \xF7 3 = 3", true: false },
+      { value: "3 + 2 = 5", true: true }
     ],
     2: [
-      { value: "12 \xF7 3 = 4", true: true },
-      { value: "7 \xD7 2 = 15", true: false },
-      { value: "14 - 5 = 9", true: true },
-      { value: "9 + 7 = 17", true: false }
+      { value: "7 + 2 = 9", true: true },
+      { value: "8 - 3 = 6", true: false },
+      { value: "2 \xD7 5 = 10", true: true },
+      { value: "12 \xF7 4 = 2", true: false },
+      { value: "9 - 6 = 3", true: true }
     ],
     3: [
-      { value: "15 \xF7 3 = 5", true: true },
-      { value: "8 \xD7 4 = 32", true: true },
-      { value: "20 - 9 = 12", true: false },
-      { value: "7 + 13 = 21", true: false }
+      { value: "4 \xD7 4 = 16", true: true },
+      { value: "18 \xF7 3 = 6", true: true },
+      { value: "15 - 7 = 9", true: false },
+      { value: "7 + 9 = 16", true: true },
+      { value: "18 \xF7 3 = 5", true: false }
     ],
     4: [
-      { value: "9 \xD7 9 = 81", true: true },
-      { value: "30 \xF7 5 = 7", true: false },
-      { value: "17 + 15 = 32", true: true },
-      { value: "40 - 16 = 25", true: false }
+      { value: "6 \xD7 5 = 30", true: true },
+      { value: "24 \xF7 6 = 5", true: true },
+      { value: "20 + 10 = 35", true: false },
+      { value: "18 - 7 = 11", true: true },
+      { value: "21 \xF7 3 = 8", true: false }
     ],
     5: [
-      { value: "13 \xD7 8 = 104", true: true },
-      { value: "72 \xF7 8 = 8", true: false },
-      { value: "45 + 19 = 64", true: true },
-      { value: "55 - 18 = 36", true: false }
+      { value: "7 \xD7 6 = 42", true: true },
+      { value: "48 \xF7 8 = 6", true: true },
+      { value: "30 + 15 = 45", true: true },
+      { value: "50 - 20 = 29", true: false },
+      { value: "9 \xD7 5 = 44", true: false }
     ],
     6: [
-      { value: "16 \xD7 7 = 112", true: true },
-      { value: "100 \xF7 4 = 20", true: false },
-      { value: "81 - 34 = 47", true: true },
-      { value: "64 + 29 = 92", true: false }
+      { value: "12 \xD7 7 = 84", true: true },
+      { value: "81 \xF7 9 = 9", true: true },
+      { value: "40 + 60 = 100", true: true },
+      { value: "90 - 30 = 50", true: false },
+      { value: "14 \xD7 6 = 78", true: false }
     ],
     7: [
-      { value: "19 \xD7 6 = 114", true: true },
-      { value: "121 \xF7 11 = 12", true: false },
-      { value: "95 - 49 = 46", true: true },
-      { value: "77 + 36 = 112", true: false }
+      { value: "11 \xD7 11 = 121", true: true },
+      { value: "144 \xF7 12 = 12", true: true },
+      { value: "55 + 45 = 100", true: true },
+      { value: "130 - 30 = 90", true: false },
+      { value: "8 \xD7 9 = 70", true: false }
     ],
     8: [
-      { value: "23 \xD7 7 = 161", true: true },
-      { value: "144 \xF7 12 = 13", true: false },
-      { value: "128 - 77 = 51", true: true },
-      { value: "87 + 48 = 136", true: false }
+      { value: "15 \xD7 8 = 120", true: true },
+      { value: "64 \xF7 8 = 8", true: true },
+      { value: "18 \xD7 6 = 108", true: true },
+      { value: "70 + 30 = 90", true: false },
+      { value: "144 - 44 = 90", true: false }
     ],
     9: [
-      { value: "27 \xD7 9 = 243", true: true },
-      { value: "169 \xF7 13 = 14", true: false },
-      { value: "153 - 88 = 65", true: true },
-      { value: "96 + 58 = 152", true: false }
+      { value: "13 \xD7 12 = 156", true: true },
+      { value: "180 \xF7 20 = 9", true: true },
+      { value: "200 - 50 = 150", true: true },
+      { value: "150 + 60 = 200", true: false },
+      { value: "20 + 30 = 49", true: false }
     ],
     10: [
-      { value: "33 \xD7 8 = 264", true: true },
-      { value: "196 \xF7 14 = 15", true: false },
-      { value: "225 - 137 = 88", true: true },
-      { value: "113 + 79 = 193", true: false }
+      { value: "17 \xD7 15 = 255", true: true },
+      { value: "256 \xF7 16 = 16", true: true },
+      { value: "120 + 180 = 300", true: true },
+      { value: "300 - 100 = 150", true: false },
+      { value: "14 \xD7 14 = 190", true: false }
     ]
   };
   var findNextAnswer = () => {
@@ -3797,7 +3850,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const elvesVillageContainer = document.createElement("div");
     elvesVillageContainer.classList.add("elves_village_container");
     elveMage.src = ASSETS_PATH_BASE + "/characters/neutral/elves/1/1.png";
-    elvesHouse.src = ASSETS_PATH_BASE + "/items/habitations/elves_habitation4.png";
+    elvesHouse.src = ASSETS_PATH_BASE + "/items/habitations/elves_habitation5.png";
     elvesVillageContainer.append(elveMage);
     elvesVillageContainer.append(elvesHouse);
     return elvesVillageContainer;
@@ -4025,6 +4078,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       spriteIndex++;
     }
     if (!characterElement) {
+      interruptAnimation(animationId);
       return;
     }
     characterElement.src = `${spriteBase}/${spriteIndex}.${extension}`;
@@ -6002,7 +6056,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchCinematic();
   };
   var createMasterCharacterElementAndPrepareAnimations = () => {
-    specifyAndLaunchCinematic(1 /* FIRST */);
+    specifyAndLaunchCinematic(CINEMATIC_MODES.L);
     const talnurMusic = document.getElementById("talnur_music");
     talnurMusic.play();
     const masterElement = document.createElement("div");
@@ -6056,6 +6110,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var executeSuperSpeedToggle = () => {
     superSpeedOn = !superSpeedOn;
+    setTimeout(
+      () => superSpeedOn = false,
+      300
+    );
   };
   document.addEventListener("keyup", (event) => {
     if (event.key === "a") {
@@ -6069,6 +6127,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "d" && gameMode === 0 /* discovery */) {
       stopHeroMove(0 /* LEFT_TO_RIGHT */);
+    }
+    if (event.key === "d" && gameMode === 1 /* challenge */) {
+      stopRun(true);
     }
     if (event.key === "q") {
       stopHeroMove(1 /* RIGHT_TO_LEFT */);
@@ -6156,12 +6217,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     if (!gameLaunched || preTransformed || heroHurt) {
       return;
     }
-    if (event.key === " " && !invisible) {
-      if (getHeroMode() === 1 /* special */) {
-        launchHeroLightningSpeedAnimation();
-        return;
-      }
-      launchInvisibilityToggle();
+    if (event.key === " ") {
+      executeSuperSpeedToggle();
     }
     if (event.key === "m") {
       if (getHeroMode() === 1 /* special */) {
@@ -6199,9 +6256,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     superSpeedOn = false;
   };
   var stopRun = (definitiveStop = false) => {
-    if (heroInTheRedZone) {
-      return;
-    }
     const currentTime = Date.now();
     if (lastStopInMs && currentTime - lastStopInMs < 1e3) {
       return;
@@ -6559,7 +6613,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var createMapSets = () => {
     for (let i = 1; i <= 5; i++) {
       const lastSet = i === 5 ? true : false;
-      const velocity = i * i;
+      const velocity = i <= 4 ? 0.01 : i * i;
       createMapSet(`assets/challenge/maps/snow/${i}.png`, velocity, `${i}`, lastSet);
     }
   };
@@ -6590,6 +6644,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     defineSwordReach();
     updateTransformationProgressBarDisplay();
     animateLightning();
+    launchDragon();
   };
   var calculateHeroSize = () => {
     const heroFullWidthInScreenWidthPercentage = 31;
@@ -6681,6 +6736,33 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var dragonImage = document.getElementById("dragon_img");
   var dragonContainer = document.getElementById("dragon_container");
+  var moveDragon = (lastExecutionTimeStamp) => {
+    const newExecutionTimeStamp = Date.now();
+    const diff = newExecutionTimeStamp - lastExecutionTimeStamp;
+    if (diff < 100) {
+      return requestAnimationFrame(() => moveDragon(lastExecutionTimeStamp));
+    }
+    dragonContainer.style.left = `${dragonContainer.getBoundingClientRect().left - 4}px`;
+    if (dragonContainer.getBoundingClientRect().left < -(window.innerWidth * 0.1)) {
+      dragonContainer.style.left = `${window.innerWidth * 1.2}px`;
+    }
+    requestAnimationFrame(() => moveDragon(newExecutionTimeStamp));
+  };
+  var launchDragon = () => {
+    dragonAudio.play();
+    launchAnimationAndDeclareItLaunched(
+      dragonImage,
+      0,
+      "png",
+      ASSETS_PATH_BASE + "/characters/neutral/dragons/red/rightToLeft",
+      1,
+      3,
+      1,
+      true,
+      76 /* dragon_fly_left */
+    );
+    moveDragon(Date.now());
+  };
   var soundEffectImage = document.getElementById("sound_effect_img_container");
   var displaySoundEffectImage = () => {
     soundEffectImage.style.display = "flex";
@@ -6688,62 +6770,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       () => soundEffectImage.style.display = "none",
       1e3
     );
-  };
-  var launchHeroLightningSpeedAnimation = () => {
-    superSpeedOn = true;
-    animateLightning();
-    heroImage.style.display = "none";
-    specialMoveIndicator.style.display = "none";
-    launchInvisibilityToggle(true);
-    ANIMATION_RUNNING_VALUES[87 /* lightning */] = 0;
-    lightningImg.style.opacity = "0";
-    if (enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ && enemyOnScreenAttackIndex === 2) {
-      ennemiesOnScreen.forEach(
-        (enemy) => moveEnemy(enemy, 0, Date.now())
-      );
-    }
-    setTimeout(() => {
-      superSpeedOn = false;
-      lightningImg.style.opacity = "1";
-      lightningImg.style.left = "10%";
-      launchAnimationAndDeclareItLaunched(
-        lightningImg,
-        0,
-        "png",
-        `assets/challenge/items/purple_lightning`,
-        1,
-        8,
-        1,
-        true,
-        87 /* lightning */
-      );
-      heroImage.style.display = "flex";
-      setTimeout(
-        () => {
-          ANIMATION_RUNNING_VALUES[87 /* lightning */] = 0;
-          lightningImg.style.opacity = "0";
-          setTimeout(
-            () => {
-              lightningImg.style.opacity = "1";
-              lightningImg.style.left = "0";
-              launchAnimationAndDeclareItLaunched(
-                lightningImg,
-                0,
-                "png",
-                `assets/challenge/items/lightning`,
-                1,
-                17,
-                1,
-                true,
-                87 /* lightning */
-              );
-            },
-            800
-          );
-        },
-        800
-      );
-    }, INVISIBILITY_DURATION_IN_MILLISECONDS / CAMERA_SUPER_SPEED_MULTIPLICATOR);
   };
   var repositionMapBlocks = () => {
     let previousMapBlock = null;
