@@ -765,7 +765,8 @@ cinematic 2
   /*
   background: linear-gradient(to bottom, #253968, #2b3561, rgb(31 59 107));
   */
-  background: #257ec1;
+ /* background: #257ec1; */
+ background: black;
 }
 
 @keyframes Blazing {
