@@ -669,76 +669,87 @@ let statsIntroAnswers: AnswersInterface = {
 };
 let arithmeticAnswers = {
   1: [
-    { value: "2 + 1 = 3",   true: true  },
-    { value: "5 - 3 = 3",   true: false },
-    { value: "1 × 4 = 4",   true: true  },
-    { value: "6 ÷ 3 = 3",   true: false },
-    { value: "3 + 2 = 5",   true: true  }
+    { value: "Naturels (ℕ) = Nombres positifs et zéro", true: true },
+    { value: "Naturels (ℕ) = Nombres positifs et négatifs", true: false },
+  
   ],
   2: [
-    { value: "7 + 2 = 9",   true: true  },
-    { value: "8 - 3 = 6",   true: false },
-    { value: "2 × 5 = 10",  true: true  },
-    { value: "12 ÷ 4 = 2",  true: false },
-    { value: "9 - 6 = 3",   true: true  }
+    { value: "ℕ contient 3, 4, 5", true: true },
+    { value: "ℕ contient des fractions", true: false },
+    { value: "ℕ contient le nombre 0", true: true },
+    { value: "ℕ commence toujours à 1", true: false },
+    { value: "ℕ est utilisé pour compter et numéroter", true: true },
+    { value: "–1 ∈ ℕ", true: false },
+    { value: "ℕ est un ensemble infini", true: true },
+    { value: "ℕ contient 0.5", true: false }
   ],
   3: [
-    { value: "4 × 4 = 16",  true: true  },
-    { value: "18 ÷ 3 = 6",  true: true  },
-    { value: "15 - 7 = 9",  true: false },
-    { value: "7 + 9 = 16",  true: true  },
-    { value: "18 ÷ 3 = 5",  true: false }
+    
+    { value: "Entiers (ℤ) = positifs, négatifs et zéro", true: true },
+
   ],
   4: [
-    { value: "6 × 5 = 30",   true: true  },
-    { value: "24 ÷ 6 = 5",   true: true  },
-    { value: "20 + 10 = 35", true: false },
-    { value: "18 - 7 = 11",  true: true  },
-    { value: "21 ÷ 3 = 8",   true: false }
+     { value: "ℤ contient tous les nombres naturels", true: true },
+    { value: "ℤ contient des nombres décimaux", true: false },
+    { value: "ℤ contient –3, 0 et 2", true: true },
+    { value: "ℤ est utilisé pour représenter des dettes", true: true },
+    { value: "ℤ contient les nombres complexes", true: false },
+    { value: "ℤ exclut le 0", true: false },
+    { value: "ℤ contient 2.5", true: false },
+    { value: "ℤ est utilisé pour exprimer des températures négatives", true: true },
+    { value: "ℤ = ℕ", true: false }
+
   ],
   5: [
-    { value: "7 × 6 = 42",    true: true  },
-    { value: "48 ÷ 8 = 6",    true: true  },
-    { value: "30 + 15 = 45",  true: true  },
-    { value: "50 - 20 = 29",  true: false },
-    { value: "9 × 5 = 44",    true: false }
+        { value: "Rationnels (ℚ) = fractions de deux entiers", true: true },
+    { value: "ℚ contient tous les entiers", true: true },
+    { value: "ℚ contient –3/4 et 1/2", true: true },
+    { value: "ℚ contient 0.25", true: true },
+    { value: "ℚ contient 0.333... (périodique)", true: true },
+    { value: "ℚ contient des irrationnels", true: false },
+    { value: "ℚ est utilisé pour mesurer précisément (ex: 0,75 litre)", true: true },
+    { value: "3 = 3/1 ∈ ℚ", true: true },
+    { value: "L’écriture décimale d’un rationnel est finie ou périodique", true: true },
+    { value: "√2 ∈ ℚ", true: false }
+
   ],
   6: [
-    { value: "12 × 7 = 84",   true: true  },
-    { value: "81 ÷ 9 = 9",    true: true  },
-    { value: "40 + 60 = 100", true: true  },
-    { value: "90 - 30 = 50",  true: false },
-    { value: "14 × 6 = 78",   true: false }
-  ],
+    
+    { value: "Réels (ℝ) = rationnels et irrationnels", true: true },
+
+
+  ], 
   7: [
-    { value: "11 × 11 = 121", true: true  },
-    { value: "144 ÷ 12 = 12", true: true  },
-    { value: "55 + 45 = 100", true: true  },
-    { value: "130 - 30 = 90", true: false },
-    { value: "8 × 9 = 70",    true: false }
+        { value: "ℝ contient π, √2, –2", true: true },
+    { value: "ℝ contient tous les rationnels", true: true },
+    { value: "ℝ contient des nombres imaginaires", true: false },
+    { value: "Les irrationnels ne peuvent pas s’écrire en fractions", true: true },
+    { value: "ℝ peut représenter une longueur exacte", true: true },
+    { value: "ℝ = ℚ", true: false },
+    { value: "ℝ contient e et √2", true: true },
+    { value: "ℝ contient tous les nombres qu’on peut placer sur une droite", true: true },
+    { value: "ℝ contient uniquement des décimaux finis", true: false }
+    
+
+
   ],
   8: [
-    { value: "15 × 8 = 120",  true: true  },
-    { value: "64 ÷ 8 = 8",    true: true  },
-    { value: "18 × 6 = 108",  true: true  },
-    { value: "70 + 30 = 90",  true: false },
-    { value: "144 - 44 = 90", true: false }
-  ],
+        { value: "Complexes (ℂ) = a + bi, avec a et b réels", true: true },
+  ], 
+
   9: [
-    { value: "13 × 12 = 156", true: true  },
-    { value: "180 ÷ 20 = 9",  true: true  },
-    { value: "200 - 50 = 150",true: true  },
-    { value: "150 + 60 = 200",true: false },
-    { value: "20 + 30 = 49",  true: false }
-  ],
-  10: [
-    { value: "17 × 15 = 255", true: true  },
-    { value: "256 ÷ 16 = 16", true: true  },
-    { value: "120 + 180 = 300", true: true },
-    { value: "300 - 100 = 150", true: false },
-    { value: "14 × 14 = 190", true: false }
+    { value: "i² = –1", true: true },
+    { value: "2 + 0i ∈ ℝ", true: true },
+    { value: "ℝ ⊂ ℂ", true: true },
+    { value: "ℂ contient tous les réels", true: true },
+    { value: "ℂ ne contient pas les réels", true: false },
+    { value: "Les complexes permettent de résoudre x² + 1 = 0", true: true },
+    { value: "4 = 4 + 0i ∈ ℂ", true: true },
+    { value: "Les complexes sont utilisés en physique", true: true },
+    { value: "Tous les complexes ont une partie imaginaire non nulle", true: false }
   ]
 };
+
 
 const findNextAnswer = (): ChallengeAnswerData | "done" => {
 
@@ -1430,7 +1441,7 @@ class MapSet {
   constructor(imagePath: string, velocity: number, zIndex: string, lastSet: boolean){
     this.imagePath = imagePath;
     this.velocity = velocity;
-    this.maps = [lastSet && gameMode === GAME_MODES.discovery ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
+    this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex) ];
   }
 }
 
@@ -1602,9 +1613,8 @@ const createElvesVillage = () => {
   elvesVillageContainer.classList.add("elves_village_container");
   
   elveMage.src =  ASSETS_PATH_BASE + '/characters/neutral/elves/1/1.png';
-  elvesHouse.src = ASSETS_PATH_BASE + '/items/habitations/elves_habitation5.png';
+  elvesHouse.src = ASSETS_PATH_BASE + '/items/habitations/orc_habitation_1.png';
 
-  elvesVillageContainer.append(elveMage);
   elvesVillageContainer.append(elvesHouse);
 
 
@@ -2970,7 +2980,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 4 && gameMode === GAME_MODES.discovery){
+    if(index === 4){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -2980,7 +2990,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -2994,7 +3004,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 4){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -3015,7 +3025,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   
     if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
   
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 4){
        store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
        store.dispatch(increaseStartIndex());
       }
@@ -3027,6 +3037,14 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
     const endIndex = store.getState().persistedMap.endIndex;
     const elements = store.getState().persistedMap.elements;
+
+    if(index === 4 && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0){
+      if(endIndex >= (elements.length - 1)){
+         interruptAnimation(ANIMATION_ID.hero_walk_right);
+         stopCameraMovingToRight();
+         return;
+       }
+     }
   
       if (
         lastMapDomElement &&
@@ -3034,7 +3052,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       ) {
         
         if(index === 4){
-          if(gameMode === GAME_MODES.discovery && endIndex >= (elements.length - 1)){
+          if(endIndex >= (elements.length - 1)){
             interruptAnimation(ANIMATION_ID.hero_walk_right);
             stopCameraMovingToRight();
              return;
@@ -3047,13 +3065,8 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   
        if(index === 4){
   
-        if(gameMode === GAME_MODES.discovery){
           mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
-        } else {
-            mapSet.maps.push( store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
-              lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
-            ))
-        }
+   
       } else {
         mapSet.maps.push(createMapBlock(
            lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
@@ -3085,7 +3098,6 @@ const buildEndOfChallengeElement = () => {
 
   return endOfChallengeContainer;
 }
-
 
 const createEndOfChallengeMapBlock = (left:number, imagePath: string, zIndex: string) => {
    store.dispatch(setCurrentlyFinishingChallenge(false));
@@ -5179,7 +5191,7 @@ document.addEventListener("keydown", (event) => {
   
   if(event.key === "q"){
     if(gameMode === GAME_MODES.challenge){
-      return;
+      //return;
     }
     heroMoving = true;
     gameLaunched = true;

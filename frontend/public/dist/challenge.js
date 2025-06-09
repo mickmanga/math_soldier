@@ -2365,10 +2365,142 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      null,
-      null,
+      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
       null,
@@ -2406,7 +2538,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "06", name: 3 /* elves */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
@@ -2420,7 +2551,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       null,
       null,
       null,
@@ -3266,74 +3396,72 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var arithmeticAnswers = {
     1: [
-      { value: "2 + 1 = 3", true: true },
-      { value: "5 - 3 = 3", true: false },
-      { value: "1 \xD7 4 = 4", true: true },
-      { value: "6 \xF7 3 = 3", true: false },
-      { value: "3 + 2 = 5", true: true }
+      { value: "Naturels (\u2115) = Nombres positifs et z\xE9ro", true: true },
+      { value: "Naturels (\u2115) = Nombres positifs et n\xE9gatifs", true: false }
     ],
     2: [
-      { value: "7 + 2 = 9", true: true },
-      { value: "8 - 3 = 6", true: false },
-      { value: "2 \xD7 5 = 10", true: true },
-      { value: "12 \xF7 4 = 2", true: false },
-      { value: "9 - 6 = 3", true: true }
+      { value: "\u2115 contient 3, 4, 5", true: true },
+      { value: "\u2115 contient des fractions", true: false },
+      { value: "\u2115 contient le nombre 0", true: true },
+      { value: "\u2115 commence toujours \xE0 1", true: false },
+      { value: "\u2115 est utilis\xE9 pour compter et num\xE9roter", true: true },
+      { value: "\u20131 \u2208 \u2115", true: false },
+      { value: "\u2115 est un ensemble infini", true: true },
+      { value: "\u2115 contient 0.5", true: false }
     ],
     3: [
-      { value: "4 \xD7 4 = 16", true: true },
-      { value: "18 \xF7 3 = 6", true: true },
-      { value: "15 - 7 = 9", true: false },
-      { value: "7 + 9 = 16", true: true },
-      { value: "18 \xF7 3 = 5", true: false }
+      { value: "Entiers (\u2124) = positifs, n\xE9gatifs et z\xE9ro", true: true }
     ],
     4: [
-      { value: "6 \xD7 5 = 30", true: true },
-      { value: "24 \xF7 6 = 5", true: true },
-      { value: "20 + 10 = 35", true: false },
-      { value: "18 - 7 = 11", true: true },
-      { value: "21 \xF7 3 = 8", true: false }
+      { value: "\u2124 contient tous les nombres naturels", true: true },
+      { value: "\u2124 contient des nombres d\xE9cimaux", true: false },
+      { value: "\u2124 contient \u20133, 0 et 2", true: true },
+      { value: "\u2124 est utilis\xE9 pour repr\xE9senter des dettes", true: true },
+      { value: "\u2124 contient les nombres complexes", true: false },
+      { value: "\u2124 exclut le 0", true: false },
+      { value: "\u2124 contient 2.5", true: false },
+      { value: "\u2124 est utilis\xE9 pour exprimer des temp\xE9ratures n\xE9gatives", true: true },
+      { value: "\u2124 = \u2115", true: false }
     ],
     5: [
-      { value: "7 \xD7 6 = 42", true: true },
-      { value: "48 \xF7 8 = 6", true: true },
-      { value: "30 + 15 = 45", true: true },
-      { value: "50 - 20 = 29", true: false },
-      { value: "9 \xD7 5 = 44", true: false }
+      { value: "Rationnels (\u211A) = fractions de deux entiers", true: true },
+      { value: "\u211A contient tous les entiers", true: true },
+      { value: "\u211A contient \u20133/4 et 1/2", true: true },
+      { value: "\u211A contient 0.25", true: true },
+      { value: "\u211A contient 0.333... (p\xE9riodique)", true: true },
+      { value: "\u211A contient des irrationnels", true: false },
+      { value: "\u211A est utilis\xE9 pour mesurer pr\xE9cis\xE9ment (ex: 0,75 litre)", true: true },
+      { value: "3 = 3/1 \u2208 \u211A", true: true },
+      { value: "L\u2019\xE9criture d\xE9cimale d\u2019un rationnel est finie ou p\xE9riodique", true: true },
+      { value: "\u221A2 \u2208 \u211A", true: false }
     ],
     6: [
-      { value: "12 \xD7 7 = 84", true: true },
-      { value: "81 \xF7 9 = 9", true: true },
-      { value: "40 + 60 = 100", true: true },
-      { value: "90 - 30 = 50", true: false },
-      { value: "14 \xD7 6 = 78", true: false }
+      { value: "R\xE9els (\u211D) = rationnels et irrationnels", true: true }
     ],
     7: [
-      { value: "11 \xD7 11 = 121", true: true },
-      { value: "144 \xF7 12 = 12", true: true },
-      { value: "55 + 45 = 100", true: true },
-      { value: "130 - 30 = 90", true: false },
-      { value: "8 \xD7 9 = 70", true: false }
+      { value: "\u211D contient \u03C0, \u221A2, \u20132", true: true },
+      { value: "\u211D contient tous les rationnels", true: true },
+      { value: "\u211D contient des nombres imaginaires", true: false },
+      { value: "Les irrationnels ne peuvent pas s\u2019\xE9crire en fractions", true: true },
+      { value: "\u211D peut repr\xE9senter une longueur exacte", true: true },
+      { value: "\u211D = \u211A", true: false },
+      { value: "\u211D contient e et \u221A2", true: true },
+      { value: "\u211D contient tous les nombres qu\u2019on peut placer sur une droite", true: true },
+      { value: "\u211D contient uniquement des d\xE9cimaux finis", true: false }
     ],
     8: [
-      { value: "15 \xD7 8 = 120", true: true },
-      { value: "64 \xF7 8 = 8", true: true },
-      { value: "18 \xD7 6 = 108", true: true },
-      { value: "70 + 30 = 90", true: false },
-      { value: "144 - 44 = 90", true: false }
+      { value: "Complexes (\u2102) = a + bi, avec a et b r\xE9els", true: true }
     ],
     9: [
-      { value: "13 \xD7 12 = 156", true: true },
-      { value: "180 \xF7 20 = 9", true: true },
-      { value: "200 - 50 = 150", true: true },
-      { value: "150 + 60 = 200", true: false },
-      { value: "20 + 30 = 49", true: false }
-    ],
-    10: [
-      { value: "17 \xD7 15 = 255", true: true },
-      { value: "256 \xF7 16 = 16", true: true },
-      { value: "120 + 180 = 300", true: true },
-      { value: "300 - 100 = 150", true: false },
-      { value: "14 \xD7 14 = 190", true: false }
+      { value: "i\xB2 = \u20131", true: true },
+      { value: "2 + 0i \u2208 \u211D", true: true },
+      { value: "\u211D \u2282 \u2102", true: true },
+      { value: "\u2102 contient tous les r\xE9els", true: true },
+      { value: "\u2102 ne contient pas les r\xE9els", true: false },
+      { value: "Les complexes permettent de r\xE9soudre x\xB2 + 1 = 0", true: true },
+      { value: "4 = 4 + 0i \u2208 \u2102", true: true },
+      { value: "Les complexes sont utilis\xE9s en physique", true: true },
+      { value: "Tous les complexes ont une partie imaginaire non nulle", true: false }
     ]
   };
   var findNextAnswer = () => {
@@ -3864,7 +3992,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     constructor(imagePath, velocity, zIndex, lastSet) {
       this.imagePath = imagePath;
       this.velocity = velocity;
-      this.maps = [lastSet && gameMode === 0 /* discovery */ ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
+      this.maps = [lastSet ? createElementMapBlockCenter(0, imagePath, zIndex) : createMapBlock(0, imagePath, zIndex)];
     }
   };
   var createMapSet = (imagePath, velocity, zIndex = "1", lastSet) => {
@@ -3944,8 +4072,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const elvesVillageContainer = document.createElement("div");
     elvesVillageContainer.classList.add("elves_village_container");
     elveMage.src = ASSETS_PATH_BASE + "/characters/neutral/elves/1/1.png";
-    elvesHouse.src = ASSETS_PATH_BASE + "/items/habitations/elves_habitation5.png";
-    elvesVillageContainer.append(elveMage);
+    elvesHouse.src = ASSETS_PATH_BASE + "/items/habitations/orc_habitation_1.png";
     elvesVillageContainer.append(elvesHouse);
     return elvesVillageContainer;
   };
@@ -4698,7 +4825,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           const startIndex = store.getState().persistedMap.startIndex;
           const firstMapDomElement = mapSet.maps[0];
           if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
-            if (index === 4 && gameMode === 0 /* discovery */) {
+            if (index === 4) {
               if (startIndex === 0) {
                 interruptAnimation(5 /* hero_walk_left */);
                 stopCameraMovingToLeft();
@@ -4706,7 +4833,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               }
             }
             mapSet.maps.unshift(
-              index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+              index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
                 firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
                 mapSet.imagePath,
                 `${index}`
@@ -4715,7 +4842,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           }
           const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
           if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
-            if (index === 4 && gameMode === 0 /* discovery */) {
+            if (index === 4) {
               store.dispatch(decreaseEndIndex());
             }
             lastMapDomElement.remove();
@@ -4729,7 +4856,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         (mapSet, index) => {
           const firstMapDomElement = mapSet.maps[0];
           if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
-            if (index === 4 && gameMode === 0 /* discovery */) {
+            if (index === 4) {
               store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
               store.dispatch(increaseStartIndex());
             }
@@ -4739,9 +4866,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
           const endIndex = store.getState().persistedMap.endIndex;
           const elements = store.getState().persistedMap.elements;
+          if (index === 4 && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0) {
+            if (endIndex >= elements.length - 1) {
+              interruptAnimation(4 /* hero_walk_right */);
+              stopCameraMovingToRight();
+              return;
+            }
+          }
           if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width <= window.innerWidth) {
             if (index === 4) {
-              if (gameMode === 0 /* discovery */ && endIndex >= elements.length - 1) {
+              if (endIndex >= elements.length - 1) {
                 interruptAnimation(4 /* hero_walk_right */);
                 stopCameraMovingToRight();
                 return;
@@ -4752,15 +4886,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
             ;
             if (index === 4) {
-              if (gameMode === 0 /* discovery */) {
-                mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
-              } else {
-                mapSet.maps.push(store.getState().unpersistedMapReducer.currentlyFinishingChallenge ? createEndOfChallengeMapBlock(lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`) : createMapBlock(
-                  lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
-                  mapSet.imagePath,
-                  `${index}`
-                ));
-              }
+              mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
             } else {
               mapSet.maps.push(createMapBlock(
                 lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
@@ -4777,22 +4903,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
       requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
     }
-  };
-  var buildEndOfChallengeElement = () => {
-    const endOfChallengeContainer2 = document.createElement("div");
-    endOfChallengeContainer2.style.position = "absolute";
-    endOfChallengeContainer2.style.zIndex = "1500";
-    endOfChallengeContainer2.style.left = "40vw";
-    endOfChallengeContainer2.style.top = "30vh";
-    endOfChallengeContainer2.style.height = "30vh";
-    endOfChallengeContainer2.style.width = "40vw";
-    endOfChallengeContainer2.style.background = "blue";
-    return endOfChallengeContainer2;
-  };
-  var createEndOfChallengeMapBlock = (left, imagePath, zIndex) => {
-    store.dispatch(setCurrentlyFinishingChallenge(false));
-    const endOfChallengeElement = buildEndOfChallengeElement();
-    return createMapBlock(left, imagePath, zIndex, endOfChallengeElement);
   };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
@@ -6333,7 +6443,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "q") {
       if (gameMode === 1 /* challenge */) {
-        return;
       }
       heroMoving = true;
       gameLaunched = true;

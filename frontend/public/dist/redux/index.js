@@ -2356,10 +2356,142 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      null,
-      null,
+      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+        {
+          question: "combien fait 1+1",
+          answer: "2",
+          validated: false
+        },
+        {
+          question: "combien fait 2+2",
+          answer: "4",
+          validated: false
+        }
+      ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
       null,
@@ -2397,7 +2529,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "06", name: 3 /* elves */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
@@ -2411,7 +2542,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       null,
       null,
       null,

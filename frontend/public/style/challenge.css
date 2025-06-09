@@ -243,9 +243,9 @@ cinematic 2
 
 #elves_habitation {
   position: absolute;
-  bottom: 7.5vh;
+  bottom: 6vh;
   left: 30%;
-  height: 80% !important;
+  height: 60% !important;
   width: auto !important;
   opacity: 0.98;
 
@@ -759,7 +759,7 @@ cinematic 2
   background: red;
   bottom: 0;
   left:0;
-  height: 15%;
+  height: 16%;
   width: 100%;
   display: flex;
   /*

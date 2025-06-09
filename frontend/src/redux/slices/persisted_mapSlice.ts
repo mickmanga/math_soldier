@@ -17,10 +17,142 @@ export enum GOLEM_IDS {
 
 const initialState: MapState = {
   elements: [
-    null,
-    null,
+        {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.pike_man},
+    {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
     null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    null,
+  {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    null,
+      {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    null,
+      {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+   {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    null,
+      {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    null,
+      {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    null,
+      {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), formBlocks: [
+      {
+       question: "combien fait 1+1",
+       answer: "2",
+       validated: false
+     },
+     {
+      question: "combien fait 2+2",
+      answer: "4",
+      validated: false
+     },
+  ]},
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, 
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null, 
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     null,   
     null,
@@ -58,7 +190,6 @@ const initialState: MapState = {
     null,
     null,
     null,
-    {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
@@ -72,7 +203,6 @@ const initialState: MapState = {
     null,
     null,
     null,
-    {type: ELEMENT_TYPE.character, id: "02", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
     null,
     null,
     null,
