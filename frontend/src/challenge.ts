@@ -363,6 +363,7 @@ declare global {
     closeForm: (event: Event) => void;
     goFullScreen: (event: Event) => void;
     launchHeroMovement: (event: Event) => void;
+    validateQuestion: (event: Event) => void;
   }
 }
 
@@ -2871,6 +2872,12 @@ const destroyEnemyAndLaunchNewOne = (enemy: EnemyInterface) => {
   destroyEnemy(enemy);
 };
 
+const validateQuestion = (event: Event) => {
+   alert("validated!");
+}
+
+window.validateQuestion = validateQuestion;
+
 const hurtHero = () => {
   if (!heroIsAlive) {
     return;
@@ -4686,6 +4693,7 @@ const closeForm = (event: Event) => {
 };
 
 window.closeForm = closeForm;
+
 
 
 const getMinifiedFormContainerFromId = (id: string) => {

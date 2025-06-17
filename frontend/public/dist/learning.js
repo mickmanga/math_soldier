@@ -4663,6 +4663,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var destroyEnemyAndLaunchNewOne = (enemy) => {
     destroyEnemy(enemy);
   };
+  var validateQuestion = (event) => {
+    alert("validated!");
+  };
+  window.validateQuestion = validateQuestion;
   var hurtHero = () => {
     if (!heroIsAlive) {
       return;
