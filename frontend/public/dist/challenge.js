@@ -4755,8 +4755,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var destroyEnemyAndLaunchNewOne = (enemy) => {
     destroyEnemy(enemy);
   };
+  var updateFormElement = (mapElement) => {
+    const questionContainer = document.getElementsByClassName("extended_form_container_aaaa")[0];
+    questionContainer.innerHTML = "Ma question";
+  };
   var validateQuestion = (event) => {
-    alert("validated!");
   };
   window.validateQuestion = validateQuestion;
   var hurtHero = () => {
@@ -6181,6 +6184,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     minifiedFormContentContainer.append(validatedPoint);
     minifiedFormContentContainer.append(extendButton);
     formBackgroundContainer.append(formContainer);
+    updateFormElement(formElement);
     const golemContainer = document.createElement("div");
     golemContainer.style.height = "50%";
     golemContainer.style.position = "absolute";

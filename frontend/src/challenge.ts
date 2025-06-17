@@ -2872,8 +2872,18 @@ const destroyEnemyAndLaunchNewOne = (enemy: EnemyInterface) => {
   destroyEnemy(enemy);
 };
 
+const updateFormElement = (mapElement: MapElement) => {
+  const questionContainer = document.getElementsByClassName("extended_form_container_aaaa")[0] as HTMLDivElement;
+  questionContainer.innerHTML = "Ma question";
+}
+
 const validateQuestion = (event: Event) => {
-   alert("validated!");
+
+  /*
+ 
+    
+ */
+
 }
 
 window.validateQuestion = validateQuestion;
@@ -4803,6 +4813,8 @@ const createFormElement = (formElement: MapElement) => {
     minifiedFormContentContainer.append(extendButton);
     
     formBackgroundContainer.append(formContainer);
+
+    updateFormElement(formElement);
 
     const golemContainer = document.createElement("div");
     golemContainer.style.height = "50%";
