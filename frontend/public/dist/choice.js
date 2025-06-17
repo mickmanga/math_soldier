@@ -2667,6 +2667,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd22a" },
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
+    elements2: [],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
@@ -6499,7 +6500,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         true,
         82 /* hero_transformation_run */
       );
-      setTimeout(turnHeroTransformationOff, 1e5);
+      setTimeout(turnHeroTransformationOff, 15e3);
       return;
     }
     document.getElementById("transformation_background").style.display = "flex";
@@ -6548,7 +6549,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               true,
               82 /* hero_transformation_run */
             );
-            setTimeout(turnHeroTransformationOff, 1e5);
+            setTimeout(turnHeroTransformationOff, 15e3);
           }, 5e3)
         );
       }, 500)

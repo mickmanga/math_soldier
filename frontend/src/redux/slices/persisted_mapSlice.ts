@@ -318,6 +318,11 @@ const initialState: MapState = {
  {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd22a"},
  {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd23a"},
 ],  
+
+elements2: [
+
+],
+
   elementsOnScreen: [],
   startIndex: 0,
   endIndex: 0,

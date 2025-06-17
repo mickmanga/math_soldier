@@ -5454,7 +5454,7 @@ const launchTransformation = () => {
       ANIMATION_ID.hero_transformation_run
     );
 
-    setTimeout(turnHeroTransformationOff, 100000);
+    setTimeout(turnHeroTransformationOff, 15000);
     return;
   }
 
@@ -5523,7 +5523,7 @@ const launchTransformation = () => {
             ANIMATION_ID.hero_transformation_run
           );
 
-          setTimeout(turnHeroTransformationOff, 100000);
+          setTimeout(turnHeroTransformationOff, 15000);
         }, 5000)
       );
     }, 500)

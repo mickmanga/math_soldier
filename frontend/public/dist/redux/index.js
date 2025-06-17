@@ -2658,6 +2658,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd22a" },
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
+    elements2: [],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
