@@ -2357,7 +2357,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2372,37 +2372,37 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
-          question: "combien fait 1+1",
-          answer: "2",
+          question: "combien fait 10X4",
+          answer: "40",
           validated: false
         },
         {
-          question: "combien fait 2+2",
-          answer: "4",
+          question: "combien fait 20X3",
+          answer: "60",
           validated: false
         }
       ] },
       null,
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
-          question: "combien fait 1+1",
-          answer: "2",
+          question: "combien fait 100+100",
+          answer: "200",
           validated: false
         },
         {
-          question: "combien fait 2+2",
-          answer: "4",
+          question: "combien fait 23+23",
+          answer: "46",
           validated: false
         }
       ] },
       null,
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2417,7 +2417,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2432,7 +2432,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2447,7 +2447,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2497,7 +2497,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2593,7 +2593,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       null,
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2607,7 +2607,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ] },
       null,
       null,
-      { type: 1 /* form */, id: 1 /* golem2 */.toString(), formBlocks: [
+      { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2623,7 +2623,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       { type: 2 /* character */, id: "02", name: 1 /* mountain_god */ },
       { type: 2 /* character */, id: "02", name: 0 /* golem_master */ },
-      { type: 1 /* form */, id: "1234ER", formBlocks: [
+      { type: 1 /* form */, id: "1234ER", questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2637,7 +2637,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       ] },
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd15c" },
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd17e" },
-      { type: 1 /* form */, id: "04", formBlocks: [
+      { type: 1 /* form */, id: "04", questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
           answer: "2",
@@ -2658,7 +2658,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd22a" },
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
-    elements2: [],
     elementsOnScreen: [],
     startIndex: 0,
     endIndex: 0,
@@ -2713,10 +2712,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       },
       setHeroMode: (state, action) => {
         state.heroMode = action.payload;
+      },
+      increaseQuestionIndex: (state, action) => {
+        const elementId = action.payload;
+        const element = state.elements.find((el) => (el == null ? void 0 : el.id) === elementId);
+        if (element && element.type === 1 /* form */ && typeof element.questionIndex === "number" && Array.isArray(element.formBlocks) && element.questionIndex < element.formBlocks.length - 1) {
+          console.log(element.questionIndex);
+          element.questionIndex++;
+          console.log("after >");
+          console.log(element.questionIndex);
+        } else {
+          alert("nope");
+        }
       }
     }
   });
-  var { setElements, increaseEndIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
+  var { setElements, increaseEndIndex, increaseQuestionIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
   var persisted_mapSlice_default = persistedMapSlice.reducer;
 
   // src/redux/slices/unpersisted_mapSlice.ts

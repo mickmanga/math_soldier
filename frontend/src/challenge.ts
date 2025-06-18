@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, GOLEM_IDS, increaseEndIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, GOLEM_IDS, increaseEndIndex, increaseQuestionIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { CHARACTER_ELEMENTS_NAMES, CharacterElement, ELEMENT_TYPE, FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
@@ -24,6 +24,8 @@ enum CINEMATIC_MODES {
 }
 
 let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
+
+let currentFormIndex = 0;
 
 let gateOpened = false;
 
@@ -410,6 +412,18 @@ const MATHS_ARITHMETIC = {
     new Answer("20 - 12 = 10", false),
   ],
 };
+
+
+const extendForm = (id: string) => {
+  extendedFormContainer.style.display = "flex";
+}
+
+const closeForm = (event: Event) => {
+  extendedFormContainer.style.display = "none";
+};
+
+window.closeForm = closeForm;
+
 
 const sortAndStoreAnswers = (challengeData: Array<ChallengeAnswerData>) => {
 
@@ -2872,17 +2886,67 @@ const destroyEnemyAndLaunchNewOne = (enemy: EnemyInterface) => {
   destroyEnemy(enemy);
 };
 
-const updateFormElement = (mapElement: MapElement) => {
+let currentForm:  null | MapElement = null;
+
+const updateFormElement = () => {
+  if (!currentForm) {
+    return;
+  }
+
+  
   const questionContainer = document.getElementsByClassName("extended_form_container_aaaa")[0] as HTMLDivElement;
-  questionContainer.innerHTML = "Ma question";
+  // Only access formBlocks if mapElement is a FormElement
+  if ('formBlocks' in currentForm && Array.isArray((currentForm as any).formBlocks)) {
+    if(currentFormIndex >=  (currentForm as FormElement).formBlocks.length) {
+      alert("You have answered all questions! Well done!");
+      currentFormIndex = 0;
+      extendedFormContainer.style.display = "none";
+    }
+
+    questionContainer.innerHTML = (currentForm as FormElement).formBlocks[currentFormIndex].question;
+  } else {
+    questionContainer.innerHTML = "";
+  }
 }
+
 
 const validateQuestion = (event: Event) => {
 
-  /*
- 
-    
- */
+ // event.preventDefault();
+ // event.stopPropagation();
+
+
+  const questionContainer = document.getElementsByClassName("extended_form_container_aaaa")[0] as HTMLDivElement;
+  const answerInput = document.getElementById("answer_input") as HTMLInputElement;
+
+  if (!currentForm || !answerInput) {
+    return;
+  }
+
+  const answer = answerInput.value.trim();
+
+  if (answer === "") {
+    questionContainer.innerHTML = "Please enter an answer!";
+    return;
+  }
+
+  // Check the answer against the current question's correct answer
+  if (
+    'formBlocks' in currentForm &&
+    typeof (currentForm as any).questionIndex === 'number' &&
+    Array.isArray((currentForm as any).formBlocks) &&
+    (currentForm as any).formBlocks[currentFormIndex] &&
+    (currentForm as any).formBlocks[currentFormIndex].answer === answer
+  ) {
+    questionContainer.innerHTML = "Correct answer!";
+    currentFormIndex++;
+  } else {
+    questionContainer.innerHTML = "Wrong answer!";
+    return;
+  }
+
+  answerInput.value = "";
+  updateFormElement();
 
 }
 
@@ -4693,17 +4757,6 @@ let lastGolemVal = 0;
 let golemAudioIndex = 0;
 
 
-const extendForm = (id: string) => {
-  extendedFormContainer.style.display = "flex";
-}
-
-
-const closeForm = (event: Event) => {
-  extendedFormContainer.style.display = "none";
-};
-
-window.closeForm = closeForm;
-
 
 
 const getMinifiedFormContainerFromId = (id: string) => {
@@ -4782,7 +4835,6 @@ const createFormElement = (formElement: MapElement) => {
     minifiedFormContentContainer.id= `${MINIFIED_FORM_PREFIX}${formElement.id}`;
 
     formContainer.append(minifiedFormContentContainer);
-    
 
     const validatedPoint = document.createElement("div");
     validatedPoint.style.position = "absolute";
@@ -4814,7 +4866,9 @@ const createFormElement = (formElement: MapElement) => {
     
     formBackgroundContainer.append(formContainer);
 
-    updateFormElement(formElement);
+    currentForm = formElement;
+
+    updateFormElement();
 
     const golemContainer = document.createElement("div");
     golemContainer.style.height = "50%";

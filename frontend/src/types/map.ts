@@ -3,7 +3,8 @@ export type MapElement = FormElement | ChallengeElement | CharacterElement;
 export type FormElement = {
    type: ELEMENT_TYPE;
    id: string;
-   formBlocks: Array<FormBlock>
+   formBlocks: Array<FormBlock>,
+   questionIndex: number,
 };
 
 export type FormBlock = {
