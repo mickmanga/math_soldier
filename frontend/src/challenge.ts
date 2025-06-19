@@ -2941,7 +2941,7 @@ const validateQuestion = (event: Event) => {
     questionContainer.innerHTML = "Correct answer!";
     currentFormIndex++;
   } else {
-    questionContainer.innerHTML = "Wrong answer!";
+    alert("Wrong answer!");
     return;
   }
 

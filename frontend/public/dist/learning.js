@@ -4714,7 +4714,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       questionContainer.innerHTML = "Correct answer!";
       currentFormIndex++;
     } else {
-      questionContainer.innerHTML = "Wrong answer!";
+      alert("Wrong answer!");
       return;
     }
     answerInput.value = "";
