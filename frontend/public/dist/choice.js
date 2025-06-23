@@ -3503,7 +3503,8 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var buildEnemy = (answer) => {
     enemyLaunchedAttack = false;
     const enemyCreationCallbacks = [
-      enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? createAndInjectRedHammerImgInDomAndGetCharacter : createGolemCharacter
+      createAndInjectRedHammerImgInDomAndGetCharacter,
+      createGolemCharacter
     ];
     const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
     lastEnemyIndex++;
@@ -4668,7 +4669,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     };
     if (delay) {
-      setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4 ? 2500 : 2500);
+      setTimeout(enemyDestructionAndRevivalCallback, enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? 700 : 1e3);
     } else {
       enemyDestructionAndRevivalCallback();
     }
@@ -6009,6 +6010,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     updateEnemyViewPointDisplay();
   };
   var createAndInjectRedHammerImgInDomAndGetCharacter = () => {
+    enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");
@@ -6132,6 +6134,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     return formBackgroundContainer;
   };
   var createGolemCharacter = () => {
+    enemyCurrentlyOnScreen = 1 /* RED_GOLEM */;
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img");

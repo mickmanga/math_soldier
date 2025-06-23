@@ -864,11 +864,12 @@ const buildEnemy = (answer: ChallengeAnswerData) => {
  enemyLaunchedAttack = false;
 
  const enemyCreationCallbacks = [
-  enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD ?
-  createAndInjectRedHammerImgInDomAndGetCharacter : createGolemCharacter
+  createAndInjectRedHammerImgInDomAndGetCharacter,
+  createGolemCharacter
  ];
 
  const enemyCharacter = enemyCreationCallbacks[lastEnemyIndex]();
+ 
 
  lastEnemyIndex++;
  
@@ -2867,7 +2868,7 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
   }
 
   if(delay){
-    setTimeout(enemyDestructionAndRevivalCallback, Math.random() > 0.4? 2500 : 2500);
+    setTimeout(enemyDestructionAndRevivalCallback, enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD ? 700 : 1000);
   } else {
     enemyDestructionAndRevivalCallback();
   }
@@ -4697,6 +4698,8 @@ const resetViewPoint = () => {
 
 const createAndInjectRedHammerImgInDomAndGetCharacter = (): DefaultCharacter => {
 
+  enemyCurrentlyOnScreen = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
+
     const newOpponentContainer = document.createElement("div");
     newOpponentContainer.classList.add("hard_enemy_container");
     const newEnnemyImg = document.createElement("img") as HTMLImageElement;
@@ -4902,6 +4905,8 @@ const createFormElement = (formElement: MapElement) => {
 }
 
 const createGolemCharacter = (): DefaultCharacter => {
+
+  enemyCurrentlyOnScreen = ENEMIES_ON_SCREEN.RED_GOLEM
 
   const newOpponentContainer = document.createElement("div");
   newOpponentContainer.classList.add("hard_enemy_container");
