@@ -96,6 +96,10 @@ const getElementsRight = (element: HTMLElement) => {
 
 const handleHeroAndEnemyContact = (enemy: Enemy) => {
   enemy.collideable = false;
+  
+  if(enemy.hurt){
+    return;
+  }
 
   if (!superSpeedOn || enemy.answer.true) {
     hurtHero();
@@ -103,6 +107,7 @@ const handleHeroAndEnemyContact = (enemy: Enemy) => {
     rewardHero();
     transformIfRequired();
   }
+  triggerOpponentsApparition();
 }
 
 export const ASSETS_PATH_BASE = "assets/challenge";
@@ -2128,13 +2133,15 @@ const launchAttack = (special = false) => {
  
   const enemyCanBeHit = (enemy: EnemyInterface) => {
 
+
+
   const enemyLeft = getMountainGodRealLeft(enemy)! * (special ? 1.1: 1.2);
 
     return (
       getEnemyRealRight(enemy.character.element.parentElement!) > getHeroLeft() &&
       enemyLeft <
       getHeroLeft() +
-          swordReach
+          swordReach && !enemy.hurt
     )
   };
 
@@ -2860,14 +2867,10 @@ const destroyEnemy = (enemy: EnemyInterface, delay = true) => {
 
   const enemyDestructionAndRevivalCallback = () => {
     enemy.character.element.remove();
-    enemyOnScreen = false;
-
-    if (!preTransformed) {
-      triggerOpponentsApparition();
-    }
   }
 
   if(delay){
+    triggerOpponentsApparition();
     setTimeout(enemyDestructionAndRevivalCallback, enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD ? 700 : 1000);
   } else {
     enemyDestructionAndRevivalCallback();
@@ -2970,9 +2973,10 @@ const hurtHero = () => {
    hurtAudio.currentTime = 0;
 
  // updateLifePointsDisplay();
-  launchHeroHurtAnimation();
+ // launchHeroHurtAnimation();
 
   displayMalus("Malus! You were hurt!");
+  
 };
 
 const checkForHerosDeath = () => {
@@ -3000,7 +3004,7 @@ const detectCollision = () => {
 
     if(getHeroLeft() > enemyContainer.getBoundingClientRect().left && !enemyLaunchedAttack){
       enemyLaunchedAttack = true;
-
+      
       if(enemyCurrentlyOnScreen === ENEMIES_ON_SCREEN.MOUNTAIN_GOD){
         if(enemyOnScreenAttackIndex < 2){
           launchAnimation(enemyOnScreen.character, enemyOnScreenAttackIndex === 0 ? AnimationType.attack : AnimationType.specialAttack);
@@ -3236,8 +3240,8 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
          mapSet.maps.pop();
       } 
     }
-  )
-
+  );
+  
   requestAnimationFrame(() => checkForScreenUpdateFromRightToLeft(throttleNum));
 };
 
@@ -4942,7 +4946,6 @@ const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
           //launchChallenge("677e814577322467895fd17e");
           launchChallenge("677e814577322467895fd17e");
 
-
           gateOpened = true;
           setTimeout(
             () => {
@@ -5728,6 +5731,7 @@ const launchDeathAnimation = () => {
 };
 
 const launchHeroHurtAnimation = () => {
+
   launchAnimationAndDeclareItLaunched(
     heroImage,
     0,
@@ -5745,6 +5749,7 @@ const launchHeroHurtAnimation = () => {
   if (!hardMode) {
     stopCameraMovingToRight();
   }
+  
 
   clearTimeoutAndLaunchNewOne(
     TimeoutId.HERO,
@@ -5755,6 +5760,7 @@ const launchHeroHurtAnimation = () => {
       }
     }, 500)
   );
+
 };
 
 const stopCameraMovingToRight = () => {

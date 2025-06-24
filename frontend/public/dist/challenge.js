@@ -3237,12 +3237,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var SPECIAL_MODE_MAX_VALUE = 10;
   var handleHeroAndEnemyContact = (enemy) => {
     enemy.collideable = false;
+    if (enemy.hurt) {
+      return;
+    }
     if (!superSpeedOn || enemy.answer.true) {
       hurtHero();
     } else if (superSpeedOn && !enemy.answer.true) {
       rewardHero();
       transformIfRequired();
     }
+    triggerOpponentsApparition();
   };
   var ASSETS_PATH_BASE = "assets/challenge";
   var getHeroMode = () => {
@@ -4413,7 +4417,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     const enemyCanBeHit = (enemy) => {
       const enemyLeft = getMountainGodRealLeft(enemy) * (special ? 1.1 : 1.2);
-      return getEnemyRealRight(enemy.character.element.parentElement) > getHeroLeft() && enemyLeft < getHeroLeft() + swordReach;
+      return getEnemyRealRight(enemy.character.element.parentElement) > getHeroLeft() && enemyLeft < getHeroLeft() + swordReach && !enemy.hurt;
     };
     ennemiesOnScreen.forEach((enemy) => {
       if (!enemyCanBeHit(enemy)) {
@@ -4755,12 +4759,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     heroInTheRedZone = false;
     const enemyDestructionAndRevivalCallback = () => {
       enemy.character.element.remove();
-      enemyOnScreen = false;
-      if (!preTransformed) {
-        triggerOpponentsApparition();
-      }
     };
     if (delay) {
+      triggerOpponentsApparition();
       setTimeout(enemyDestructionAndRevivalCallback, enemyCurrentlyOnScreen === 0 /* MOUNTAIN_GOD */ ? 700 : 1e3);
     } else {
       enemyDestructionAndRevivalCallback();
@@ -4824,7 +4825,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     lifePoints.value--;
     checkForHerosDeath();
     hurtAudio.currentTime = 0;
-    launchHeroHurtAnimation();
     displayMalus("Malus! You were hurt!");
   };
   var checkForHerosDeath = () => {
@@ -6823,31 +6823,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     heroImage.src = ASSETS_PATH_BASE + "/characters/hero/death/1.png";
     setTimeout(killHero2, 1e3);
-  };
-  var launchHeroHurtAnimation = () => {
-    launchAnimationAndDeclareItLaunched(
-      heroImage,
-      0,
-      "png",
-      transformed ? ASSETS_PATH_BASE + "/characters/transformed_hero/hurt" : ASSETS_PATH_BASE + "/characters/hero/hurt",
-      1,
-      transformed ? 7 : 3,
-      1,
-      false,
-      transformed ? 83 /* hero_transformation_hurt */ : 6 /* hero_hurt */
-    );
-    if (!hardMode) {
-      stopCameraMovingToRight();
-    }
-    clearTimeoutAndLaunchNewOne(
-      0 /* HERO */,
-      setTimeout(() => {
-        heroHurt = false;
-        if (heroIsAlive && ANIMATION_RUNNING_VALUES[1 /* hero_run */] === 0) {
-          launchHeroRun();
-        }
-      }, 500)
-    );
   };
   var stopCameraMovingToRight = () => {
     ANIMATION_RUNNING_VALUES[77 /* camera_left_to_right */] = 0;
