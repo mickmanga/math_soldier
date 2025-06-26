@@ -4793,7 +4793,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           const startIndex = store.getState().persistedMap.startIndex;
           const firstMapDomElement = mapSet.maps[0];
           if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
-            if (index === 4) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
               if (startIndex === 0) {
                 interruptAnimation(5 /* hero_walk_left */);
                 stopCameraMovingToLeft();
@@ -4801,7 +4801,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               }
             }
             mapSet.maps.unshift(
-              index === 4 ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+              index === 4 && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
                 firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
                 mapSet.imagePath,
                 `${index}`
@@ -4810,7 +4810,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           }
           const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
           if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5) {
-            if (index === 4) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
               store.dispatch(decreaseEndIndex());
             }
             lastMapDomElement.remove();
@@ -4824,7 +4824,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         (mapSet, index) => {
           const firstMapDomElement = mapSet.maps[0];
           if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
-            if (index === 4) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
               store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex));
               store.dispatch(increaseStartIndex());
             }
@@ -4834,7 +4834,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
           const lastMapDomElement = mapSet.maps[mapSet.maps.length - 1];
           const endIndex = store.getState().persistedMap.endIndex;
           const elements = store.getState().persistedMap.elements;
-          if (index === 4 && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0) {
+          if (index === 4 && gameMode === 0 /* discovery */ && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0) {
             if (endIndex >= elements.length - 1) {
               interruptAnimation(4 /* hero_walk_right */);
               stopCameraMovingToRight();
@@ -4842,7 +4842,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
           }
           if (lastMapDomElement && lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width <= window.innerWidth) {
-            if (index === 4) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
               if (endIndex >= elements.length - 1) {
                 interruptAnimation(4 /* hero_walk_right */);
                 stopCameraMovingToRight();
@@ -4853,7 +4853,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               }
             }
             ;
-            if (index === 4) {
+            if (index === 4 && gameMode === 0 /* discovery */) {
               mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
             } else {
               mapSet.maps.push(createMapBlock(
