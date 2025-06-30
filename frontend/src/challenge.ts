@@ -77,6 +77,8 @@ const idleTimeoutContainer = document.getElementById("idle_timeout_container")!;
 
 const SPECIAL_MODE_MAX_VALUE = 10;
 
+const mapBackgroundIndex = 1;
+
 const calculateElementOnScreenSizeBasedOnCurrentMapBlockWidth = (width: number) => {
   return width * currentMapBlockHeightAndWidthComparedToScreen;
 }
