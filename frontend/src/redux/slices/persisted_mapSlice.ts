@@ -4,6 +4,7 @@ import { CHARACTER_ELEMENTS_NAMES, ELEMENT_TYPE, HERO_MODES, MapElement } from '
 export interface MapState {
   elements: Array<MapElement | null>;
   elementsOnScreen: Array<MapElement>;
+  elementsCreationBlocked: boolean;
   startIndex: number,
   endIndex: number,
   currentIndex: number,
@@ -319,8 +320,8 @@ const initialState: MapState = {
     {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd22a"},
     {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd23a"},
   ],  
-
   elementsOnScreen: [],
+  elementsCreationBlocked: false,
   startIndex: 0,
   endIndex: 0,
   currentIndex: 0,
@@ -366,6 +367,10 @@ const persistedMapSlice = createSlice({
       }
       state.elementsOnScreen.push();
     },
+    setElementsCreationBlocked: (state, action: PayloadAction<boolean>) => {
+      state.elementsCreationBlocked = action.payload;
+    } ,
+    // This function removes an element from the elementsOnScreen array based on its index
     removeElementFromElementsOnScreen: (state, action: PayloadAction<number>) => {
       const removedElementIndex = action.payload;
 
@@ -398,5 +403,5 @@ const persistedMapSlice = createSlice({
   },
 });
 
-export const { setElements, increaseEndIndex, increaseQuestionIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
+export const { setElements, increaseEndIndex, increaseQuestionIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode, setElementsCreationBlocked } = persistedMapSlice.actions;
 export default persistedMapSlice.reducer;

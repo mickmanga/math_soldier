@@ -1,5 +1,5 @@
 import { addAnswer, ChallengeAnswerData, incrementAnswerIndex, setFoundAtIndex } from "./redux/slices/challengeSlice";
-import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, GOLEM_IDS, increaseEndIndex, increaseQuestionIndex, increaseStartIndex, removeElementFromElementsOnScreen, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
+import {addElementOnScreen, decreaseEndIndex, decreaseStartIndex, GOLEM_IDS, increaseEndIndex, increaseQuestionIndex, increaseStartIndex, removeElementFromElementsOnScreen, setElementsCreationBlocked, setEndIndex, setHeroMode, setStartIndex, updateCurrentIndex} from "./redux/slices/persisted_mapSlice";
 import {store } from "./redux/index";
 import { CHARACTER_ELEMENTS_NAMES, CharacterElement, ELEMENT_TYPE, FormBlock, FormElement, HERO_MODES, MapElement } from "./types/map";
 import { setCurrentlyFinishingChallenge } from "./redux/slices/unpersisted_mapSlice";
@@ -3068,7 +3068,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 4 && gameMode === GAME_MODES.discovery){
+    if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -3078,7 +3078,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -3092,7 +3092,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -3113,7 +3113,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
   
     if (firstMapDomElement.getBoundingClientRect().left < -window.innerWidth) {
   
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
        store.dispatch(removeElementFromElementsOnScreen(store.getState().persistedMap.startIndex)) 
        store.dispatch(increaseStartIndex());
       }
@@ -3126,7 +3126,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     const endIndex = store.getState().persistedMap.endIndex;
     const elements = store.getState().persistedMap.elements;
 
-    if(index === 4 && gameMode === GAME_MODES.discovery && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0){
+    if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery && lastMapDomElement && lastMapDomElement.getBoundingClientRect().left <= 0){
       if(endIndex >= (elements.length - 1)){
          interruptAnimation(ANIMATION_ID.hero_walk_right);
          stopCameraMovingToRight();
@@ -3139,7 +3139,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
         (lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width) <= window.innerWidth
       ) {
         
-        if(index === 4 && gameMode === GAME_MODES.discovery){
+        if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
           if(endIndex >= (elements.length - 1)){
             interruptAnimation(ANIMATION_ID.hero_walk_right);
             stopCameraMovingToRight();
@@ -3151,7 +3151,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
         }
        };
   
-       if(index === 4 && gameMode === GAME_MODES.discovery){
+       if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
           mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
       } else {
         mapSet.maps.push(createMapBlock(
@@ -3209,7 +3209,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
   if (firstMapDomElement.getBoundingClientRect().left > 0 && firstMapDomElement.getBoundingClientRect().left <= window.innerWidth * 0.05) {
 
-    if(index === 4 && gameMode === GAME_MODES.discovery){
+    if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
 
       if(startIndex === 0){
         interruptAnimation(ANIMATION_ID.hero_walk_left);
@@ -3219,7 +3219,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.discovery && !store.getState().persistedMap.elementsCreationBlocked ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -3233,7 +3233,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
       lastMapDomElement &&
       lastMapDomElement.getBoundingClientRect().left > window.innerWidth * 1.5
     ) {
-      if(index === 4 && gameMode === GAME_MODES.discovery){
+      if(index === 4 && gameMode === GAME_MODES.discovery && !store.getState().persistedMap.elementsCreationBlocked){
         store.dispatch(decreaseEndIndex());
       }
          lastMapDomElement.remove();
@@ -4932,6 +4932,10 @@ const createGolemCharacter = (): DefaultCharacter => {
 let golemLaunched = false;
 
 const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
+
+  
+ // store.dispatch(setElementsCreationBlocked(true));
+
 
   enemyCurrentlyOnScreen = ENEMIES_ON_SCREEN.RED_GOLEM;
   

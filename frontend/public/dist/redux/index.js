@@ -2659,6 +2659,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
+    elementsCreationBlocked: false,
     startIndex: 0,
     endIndex: 0,
     currentIndex: 0,
@@ -2703,6 +2704,10 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
         state.elementsOnScreen.push();
       },
+      setElementsCreationBlocked: (state, action) => {
+        state.elementsCreationBlocked = action.payload;
+      },
+      // This function removes an element from the elementsOnScreen array based on its index
       removeElementFromElementsOnScreen: (state, action) => {
         const removedElementIndex = action.payload;
         if (removedElementIndex > state.elementsOnScreen.length - 1 || removedElementIndex < 0) {
@@ -2727,7 +2732,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       }
     }
   });
-  var { setElements, increaseEndIndex, increaseQuestionIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode } = persistedMapSlice.actions;
+  var { setElements, increaseEndIndex, increaseQuestionIndex, decreaseEndIndex, increaseStartIndex, decreaseStartIndex, updateCurrentIndex, addElementOnScreen, removeElementFromElementsOnScreen, setEndIndex, setStartIndex, setHeroMode, setElementsCreationBlocked } = persistedMapSlice.actions;
   var persisted_mapSlice_default = persistedMapSlice.reducer;
 
   // src/redux/slices/unpersisted_mapSlice.ts
