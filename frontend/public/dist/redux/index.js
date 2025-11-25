@@ -2356,7 +2356,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      null,
+      null,
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2370,6 +2372,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       ] },
       null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
@@ -2417,6 +2435,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",

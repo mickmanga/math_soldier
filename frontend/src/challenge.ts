@@ -27,6 +27,8 @@ let currentCinematicMode: CINEMATIC_MODES = CINEMATIC_MODES.NONE;
 
 let currentFormIndex = 0;
 
+let mapBlockIndex = 1;
+
 let gateOpened = false;
 
 let enemyCurrentlyOnScreen: ENEMIES_ON_SCREEN = ENEMIES_ON_SCREEN.MOUNTAIN_GOD;
@@ -961,6 +963,7 @@ const tryAgain = () => {
 }
 
 const launchEndOfChallenge = () => {
+  
   endOfChallengeContainer.style.opacity = "1";
   endOfChallengeContainer.innerHTML = "Arrivée à la porte gelée...";
   hideChallengeDisplay();
@@ -1588,17 +1591,15 @@ const prepareMountainGodAnimations = (element: HTMLImageElement) => {
   const checkForHeroMeeting = () => {
     if(element.parentElement!.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01){
 
-      //setTimeout(
-        //() => {
-          //launchAnimation(pillarElement, AnimationType.transformation);
-           // setTimeout(
-           //      launchMountainGodCinematic, 5000
-         //    )
-       // }, 1000
-     // );
+      setTimeout(
+        () => {
+          launchAnimation(pillarElement, AnimationType.transformation);
+            setTimeout(
+                 launchMountainGodCinematic, 5000
+             )
+        }, 1000
+      );
 
-     quitCinematic();
-     launchChallenge("123");
    
       return;
     }
@@ -1625,6 +1626,8 @@ const createMoutainGodPilar = () => {
   return pilarContainer;
 }
 
+let habitationsIndex = 1;
+
 const createElvesVillage = () => {
   const elvesHouse = document.createElement("img")! as HTMLImageElement;
   elvesHouse.id = "elves_habitation";
@@ -1636,7 +1639,12 @@ const createElvesVillage = () => {
   elvesVillageContainer.classList.add("elves_village_container");
   
   elveMage.src =  ASSETS_PATH_BASE + '/characters/neutral/elves/1/1.png';
-  elvesHouse.src = ASSETS_PATH_BASE + '/items/habitations/orc_habitation_1.png';
+  elvesHouse.src = ASSETS_PATH_BASE + `/items/habitations/${habitationsIndex}.png`;
+  habitationsIndex++;
+  
+  if(habitationsIndex > 6) {
+    habitationsIndex = 1;
+  }
 
   elvesVillageContainer.append(elvesHouse);
 
@@ -1661,6 +1669,7 @@ const createElementMapBlockStart = (left:number, imagePath: string, zIndex: stri
    store.dispatch(addElementOnScreen(startIndex));
 
    const element = store.getState().persistedMap.elements[startIndex];
+   
    if(element){
      const elementDiv = createMapElement(element);
      return createMapBlock(left, imagePath, zIndex, elementDiv);
@@ -3078,7 +3087,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, getMapBlockImage(), `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -3152,7 +3161,7 @@ const checkForScreenUpdateFromLeftToRight = (throttleNum: number): any => {
        };
   
        if(index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === GAME_MODES.discovery){
-          mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+          mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, getMapBlockImage(), `${index}`));
       } else {
         mapSet.maps.push(createMapBlock(
            lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10, mapSet.imagePath, `${index}`
@@ -3193,6 +3202,16 @@ const createEndOfChallengeMapBlock = (left:number, imagePath: string, zIndex: st
    return createMapBlock(left, imagePath, zIndex, endOfChallengeElement);
 }
 
+const getMapBlockImage = () => {
+    
+  let newImagePath = `assets/challenge/maps/snow/map_set1/${mapBlockIndex}.png`;
+   mapBlockIndex++;
+   if(mapBlockIndex > 3){
+    mapBlockIndex = 1;
+   }
+
+   return newImagePath;
+}
 
 const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
 
@@ -3219,7 +3238,7 @@ const checkForScreenUpdateFromRightToLeft = (throttleNum: number): any => {
     }
 
     mapSet.maps.unshift(
-      index === 4 && gameMode === GAME_MODES.discovery && !store.getState().persistedMap.elementsCreationBlocked ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) :
+      index === 4 && gameMode === GAME_MODES.discovery && !store.getState().persistedMap.elementsCreationBlocked ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, getMapBlockImage(), `${index}`) :
       createMapBlock(
         firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`
        )
@@ -4934,7 +4953,7 @@ let golemLaunched = false;
 const createPikeManCharacter = (pikeImage: HTMLImageElement) => {
 
   
- // store.dispatch(setElementsCreationBlocked(true));
+  store.dispatch(setElementsCreationBlocked(true));
 
 
   enemyCurrentlyOnScreen = ENEMIES_ON_SCREEN.RED_GOLEM;
@@ -5009,7 +5028,7 @@ const createMasterCharacter = (masterImage : HTMLImageElement) => {
       
      if(masterImage.parentElement!.getBoundingClientRect().left - getHeroLeft() < (window.innerWidth * 0.01)){
        
-        setTimeout(animateMaster, 1000);
+        setTimeout(animateMaster, 4000);
         golemLaunched = true;
      }
 
@@ -5037,7 +5056,7 @@ const specifyAndLaunchCinematic = (cinematicMode: CINEMATIC_MODES) => {
 
 const createMasterCharacterElementAndPrepareAnimations = (): HTMLElement => {
 
-  specifyAndLaunchCinematic(CINEMATIC_MODES.L);
+  specifyAndLaunchCinematic(CINEMATIC_MODES.FIRST);
 
   const talnurMusic = document.getElementById("talnur_music") as HTMLAudioElement;
   talnurMusic.play();
@@ -5272,7 +5291,10 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === "d") {
     launchHero();
-  
+  }
+
+  if (event.key === "f"){
+    store.dispatch(setElementsCreationBlocked(false));
   }
   
   if(event.key === "q"){

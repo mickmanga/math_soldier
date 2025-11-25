@@ -2365,7 +2365,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   // src/redux/slices/persisted_mapSlice.ts
   var initialState2 = {
     elements: [
-      { type: 2 /* character */, id: "06", name: 2 /* pike_man */ },
+      null,
+      null,
+      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
@@ -2379,6 +2381,22 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         }
       ] },
       null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
@@ -2426,6 +2444,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       null,
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
+      { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 1+1",
@@ -3196,14 +3222,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
 
   // src/challenge.ts
   var gameMode = 0 /* discovery */;
-  var CINEMATIC_MODES = /* @__PURE__ */ ((CINEMATIC_MODES2) => {
-    CINEMATIC_MODES2[CINEMATIC_MODES2["NONE"] = 0] = "NONE";
-    CINEMATIC_MODES2[CINEMATIC_MODES2["FIRST"] = 1] = "FIRST";
-    CINEMATIC_MODES2[CINEMATIC_MODES2["SECOND"] = 2] = "SECOND";
-    return CINEMATIC_MODES2;
-  })(CINEMATIC_MODES || {});
   var currentCinematicMode = 0 /* NONE */;
   var currentFormIndex = 0;
+  var mapBlockIndex = 1;
   var gateOpened = false;
   var enemyCurrentlyOnScreen = 0 /* MOUNTAIN_GOD */;
   var mountainGodHurt = true;
@@ -3982,8 +4003,16 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const pillarElement = new DefaultCharacter(element, 0 /* default */, mountainPillarAnimations);
     const checkForHeroMeeting = () => {
       if (element.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        quitCinematic();
-        launchChallenge("123");
+        setTimeout(
+          () => {
+            launchAnimation(pillarElement, 19 /* transformation */);
+            setTimeout(
+              launchMountainGodCinematic,
+              5e3
+            );
+          },
+          1e3
+        );
         return;
       }
       requestAnimationFrame(
@@ -4002,6 +4031,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     pilarContainer.append(pilarImg);
     return pilarContainer;
   };
+  var habitationsIndex = 1;
   var createElvesVillage = () => {
     const elvesHouse = document.createElement("img");
     elvesHouse.id = "elves_habitation";
@@ -4010,7 +4040,11 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     const elvesVillageContainer = document.createElement("div");
     elvesVillageContainer.classList.add("elves_village_container");
     elveMage.src = ASSETS_PATH_BASE + "/characters/neutral/elves/1/1.png";
-    elvesHouse.src = ASSETS_PATH_BASE + "/items/habitations/orc_habitation_1.png";
+    elvesHouse.src = ASSETS_PATH_BASE + `/items/habitations/${habitationsIndex}.png`;
+    habitationsIndex++;
+    if (habitationsIndex > 6) {
+      habitationsIndex = 1;
+    }
     elvesVillageContainer.append(elvesHouse);
     return elvesVillageContainer;
   };
@@ -4437,6 +4471,72 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       launchAnimation(enemy.character, 15 /* idle */);
     }
   };
+  var createMountainGod = (cinematic = false) => {
+    const mountainGodContainer = document.createElement("div");
+    mountainGodContainer.classList.add("mountain_god_container");
+    const mountainGodImg = document.createElement("img");
+    mountainGodContainer.append(mountainGodImg);
+    if (cinematic) {
+      document.body.append(mountainGodContainer);
+    } else {
+      mountainGodContainer.classList.add("mountain_god_container_fight");
+    }
+    return new DefaultCharacter(mountainGodImg, 0 /* default */, redHammerAnimations);
+  };
+  var launchMountainGodCinematic = () => {
+    const thunder = document.getElementById("thunder_audio");
+    thunder.play();
+    const mountainGodCharacter = createMountainGod(true);
+    setTimeout(
+      () => {
+        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
+        setTimeout(
+          () => {
+            launchAnimation(mountainGodCharacter, 2 /* specialAttack2 */, false);
+            setTimeout(
+              () => {
+                launchAnimation(mountainGodCharacter, 15 /* idle */);
+              },
+              1600
+            );
+            setTimeout(
+              () => {
+                setTimeout(
+                  () => {
+                    const god = document.getElementById("god_audio");
+                    god.play();
+                    setTimeout(
+                      () => {
+                        launchAnimation(mountainGodCharacter, 21 /* teleportation */, false);
+                        setTimeout(
+                          () => {
+                            document.getElementById("obelisk").style.left = `${document.getElementById("obelisk").getBoundingClientRect().left + window.innerWidth * 0.02}px`;
+                            quitCinematic();
+                            setTimeout(
+                              () => {
+                                launchChallenge("677e814577322467895fd15c");
+                              },
+                              2e3
+                            );
+                          },
+                          2e3
+                        );
+                      },
+                      8e3
+                    );
+                  },
+                  700
+                );
+              },
+              700
+            );
+          },
+          360
+        );
+      },
+      1e3
+    );
+  };
   var currentHeroDirection = 0 /* LEFT_TO_RIGHT */;
   var heroMoving = false;
   var currentChallengeLevel = 1;
@@ -4806,7 +4906,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
               }
             }
             mapSet.maps.unshift(
-              index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, mapSet.imagePath, `${index}`) : createMapBlock(
+              index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === 0 /* discovery */ ? createElementMapBlockStart(firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth, getMapBlockImage(), `${index}`) : createMapBlock(
                 firstMapDomElement.offsetLeft - firstMapDomElement.offsetWidth,
                 mapSet.imagePath,
                 `${index}`
@@ -4859,7 +4959,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
             }
             ;
             if (index === 4 && !store.getState().persistedMap.elementsCreationBlocked && gameMode === 0 /* discovery */) {
-              mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, mapSet.imagePath, `${index}`));
+              mapSet.maps.push(createElementMapBlockEnd(lastMapDomElement.getBoundingClientRect().left + lastMapDomElement.getBoundingClientRect().width - 10, getMapBlockImage(), `${index}`));
             } else {
               mapSet.maps.push(createMapBlock(
                 lastMapDomElement.offsetLeft + lastMapDomElement.offsetWidth - 10,
@@ -4876,6 +4976,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       );
       requestAnimationFrame(() => checkForScreenUpdateFromLeftToRight(throttleNum));
     }
+  };
+  var getMapBlockImage = () => {
+    let newImagePath = `assets/challenge/maps/snow/map_set1/${mapBlockIndex}.png`;
+    mapBlockIndex++;
+    if (mapBlockIndex > 3) {
+      mapBlockIndex = 1;
+    }
+    return newImagePath;
   };
   var getCharacterAnimationAccordingToType = (character, animationType) => {
     for (let i = 0; i < character.animations.length; i++) {
@@ -6208,7 +6316,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
         return;
       }
       if (masterImage.parentElement.getBoundingClientRect().left - getHeroLeft() < window.innerWidth * 0.01) {
-        setTimeout(animateMaster, 1e3);
+        setTimeout(animateMaster, 4e3);
         golemLaunched = true;
       }
       requestAnimationFrame(launchMasterPositionCheck);
@@ -6231,7 +6339,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     launchCinematic();
   };
   var createMasterCharacterElementAndPrepareAnimations = () => {
-    specifyAndLaunchCinematic(CINEMATIC_MODES.L);
+    specifyAndLaunchCinematic(1 /* FIRST */);
     const talnurMusic = document.getElementById("talnur_music");
     talnurMusic.play();
     const masterElement = document.createElement("div");
@@ -6379,6 +6487,9 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     }
     if (event.key === "d") {
       launchHero();
+    }
+    if (event.key === "f") {
+      store.dispatch(setElementsCreationBlocked(false));
     }
     if (event.key === "q") {
       if (gameMode === 1 /* challenge */) {

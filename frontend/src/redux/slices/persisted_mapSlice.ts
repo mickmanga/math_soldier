@@ -18,7 +18,10 @@ export enum GOLEM_IDS {
 
 const initialState: MapState = {
   elements: [
-    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.pike_man},
+    null,
+    null,
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
+    
     {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
        question: "combien fait 1+1",
@@ -33,6 +36,23 @@ const initialState: MapState = {
     ]},
     null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+        {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+
     null,
     {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
@@ -79,6 +99,15 @@ const initialState: MapState = {
     null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     null,
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
+
     {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
        question: "combien fait 1+1",
@@ -94,6 +123,7 @@ const initialState: MapState = {
     null,
     null,
     null,
+    
     {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
        question: "combien fait 1+1",
