@@ -2358,19 +2358,19 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     elements: [
       null,
       null,
-      { type: 2 /* character */, id: "06", name: 1 /* mountain_god */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
-          question: "combien fait 1+1",
-          answer: "2",
+          question: "combien fait 10X4",
+          answer: "40",
           validated: false
         },
         {
-          question: "combien fait 2+2",
-          answer: "4",
+          question: "combien fait 20X3",
+          answer: "60",
           validated: false
         }
       ] },
+      null,
       null,
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },
       { type: 2 /* character */, id: "06", name: 4 /* elves_and_dragon */ },

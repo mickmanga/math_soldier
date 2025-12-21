@@ -18,22 +18,21 @@ export enum GOLEM_IDS {
 
 const initialState: MapState = {
   elements: [
+    null, 
     null,
-    null,
-    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.mountain_god},
-    
-    {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
+        {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
-       question: "combien fait 1+1",
-       answer: "2",
+       question: "combien fait 10X4",
+       answer: "40",
        validated: false
      },
      {
-      question: "combien fait 2+2",
-      answer: "4",
+      question: "combien fait 20X3",
+      answer: "60",
       validated: false
      },
     ]},
+    null,
     null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
         {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
