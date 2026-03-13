@@ -12,6 +12,10 @@ html, body {
   background: black;
 }
 
+.blockImage {
+  position: absolute;
+}
+
 /*
 CINEMATIC 1
 .mapBlock{

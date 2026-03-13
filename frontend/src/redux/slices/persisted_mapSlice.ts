@@ -5,6 +5,7 @@ export interface MapState {
   elements: Array<MapElement | null>;
   elementsOnScreen: Array<MapElement>;
   elementsCreationBlocked: boolean;
+  subBlockContainers: Array<any>;
   startIndex: number,
   endIndex: number,
   currentIndex: number,
@@ -19,7 +20,7 @@ export enum GOLEM_IDS {
 const initialState: MapState = {
   elements: [
     null, 
-    null,
+    {type: ELEMENT_TYPE.character, id: "07", name: CHARACTER_ELEMENTS_NAMES.pike_man},
         {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
        question: "combien fait 10X4",
@@ -35,7 +36,6 @@ const initialState: MapState = {
     null,
     null,
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
-        {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
@@ -51,7 +51,7 @@ const initialState: MapState = {
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
-
+    {type: ELEMENT_TYPE.character, id: "06", name: CHARACTER_ELEMENTS_NAMES.elves_and_dragon},
     null,
     {type: ELEMENT_TYPE.form, id: GOLEM_IDS.golem2.toString(), questionIndex: 0, formBlocks: [
       {
@@ -350,6 +350,88 @@ const initialState: MapState = {
     {type: ELEMENT_TYPE.challenge, topScore: "D", id: "677e814577322467895fd23a"},
   ],  
   elementsOnScreen: [],
+  subBlockContainers: [
+    {
+      /*
+
+       enum SubBlockContainerAnimations {
+         IDLE,
+         RUN,
+         WALK_AND_IDLE
+       }
+
+       enum MapMode {
+         visit,
+         fight
+       }
+         
+      
+       images : [
+         {
+           src:
+           zIndex: 
+           animations: SubBlockContainerAnimation,
+           mode: MapMode
+         },
+
+         {
+         }
+       ]
+
+       const createAndLaunchMovePlusIdleAnimationSet = (character) => {
+          
+         //
+
+         //La procedure
+
+         currentAnimations
+
+         nextAnimation
+
+         trigger
+       
+         //procesus, on check on check on check
+
+         launchAnimations(animationArray){
+            animationArray.forEach(launchAnimation(animationArray));
+         }
+
+         if(nextAnimationShouldBeLaunched){
+            interuptCurrentAnimationArray(// ca peut être un subSet en fait)
+         }
+
+         interruptCurrentAnimations = (animations) => {
+            animations.forEach(
+               interuptAnimation(animation);
+            )
+         }
+
+         cont nextAnimationShouldBeLaunched = ( //necessité de passer des paramètres, potentiellement) => {
+           return true/false; //tout simplement
+         }
+
+       }
+
+        const registerSubBlockCharacters = () => {
+
+          const newUuid = genereateNewUuid();
+
+          const subBlockCharacterAnimationSet = createMovePlusIdleAnimationSet(character);
+
+          currentBlock.subBlockCharactersAnimationSetsList.add(newUuid, subBlockCharacterAnimationSet);
+
+
+        
+        }
+ 
+
+      */
+
+    }
+
+  ],
+
+
   elementsCreationBlocked: false,
   startIndex: 0,
   endIndex: 0,

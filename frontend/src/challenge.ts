@@ -1711,6 +1711,7 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
   const backgroundImage = document.createElement("img");
   backgroundImage.src = imagePath;
 
+
   block.append(backgroundImage);
   block.style.position = "absolute";
   block.style.left = `${left}px`;
@@ -1719,8 +1720,30 @@ const createMapBlock = (left: number, imagePath: string, zIndex = "1", element?:
 
   document.getElementsByTagName("body")[0].append(block);
 
+
+    /* new logic */
+
+  const createBlockImages = () => {
+
+
+    
+  }
+
+  const createBlockImage = (leftPosition: number, src: string ) => {
+
+     const blockImage = document.createElement("img");
+     blockImage.classList.add("blockImage");
+     blockImage.style.left = leftPosition.toString();
+
+     return blockImage;
+
+  };
+
+
   if(element){
     block.append(element);
+
+    
   }
 
   return block;
@@ -2099,7 +2122,7 @@ const turnHeroTransformationOff = () => {
   }, 1000);
 
   setTimeout(() => {
-    epicAudio.play();
+  //  epicAudio.play();
   }, 4000);
 
   launchHeroRunAnimation();
@@ -6059,7 +6082,7 @@ const getRedHammerCharacterRealRight = (redHammerContainer: HTMLElement) => {
 
 const launchGame = () => {
   runAudio.play();
-  epicAudio.play();
+  //epicAudio.play();
   heroRunning = true;
   gameLaunched = true;
   launchHeroRun();

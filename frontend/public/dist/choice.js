@@ -2366,7 +2366,7 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   var initialState2 = {
     elements: [
       null,
-      null,
+      { type: 2 /* character */, id: "07", name: 2 /* pike_man */ },
       { type: 1 /* form */, id: 1 /* golem2 */.toString(), questionIndex: 0, formBlocks: [
         {
           question: "combien fait 10X4",
@@ -2694,6 +2694,84 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       { type: 0 /* challenge */, topScore: "D", id: "677e814577322467895fd23a" }
     ],
     elementsOnScreen: [],
+    subBlockContainers: [
+      {
+        /*
+        
+               enum SubBlockContainerAnimations {
+                 IDLE,
+                 RUN,
+                 WALK_AND_IDLE
+               }
+        
+               enum MapMode {
+                 visit,
+                 fight
+               }
+                 
+              
+               images : [
+                 {
+                   src:
+                   zIndex: 
+                   animations: SubBlockContainerAnimation,
+                   mode: MapMode
+                 },
+        
+                 {
+                 }
+               ]
+        
+               const createAndLaunchMovePlusIdleAnimationSet = (character) => {
+                  
+                 //
+        
+                 //La procedure
+        
+                 currentAnimations
+        
+                 nextAnimation
+        
+                 trigger
+               
+                 //procesus, on check on check on check
+        
+                 launchAnimations(animationArray){
+                    animationArray.forEach(launchAnimation(animationArray));
+                 }
+        
+                 if(nextAnimationShouldBeLaunched){
+                    interuptCurrentAnimationArray(// ca peut être un subSet en fait)
+                 }
+        
+                 interruptCurrentAnimations = (animations) => {
+                    animations.forEach(
+                       interuptAnimation(animation);
+                    )
+                 }
+        
+                 cont nextAnimationShouldBeLaunched = ( //necessité de passer des paramètres, potentiellement) => {
+                   return true/false; //tout simplement
+                 }
+        
+               }
+        
+                const registerSubBlockCharacters = () => {
+        
+                  const newUuid = genereateNewUuid();
+        
+                  const subBlockCharacterAnimationSet = createMovePlusIdleAnimationSet(character);
+        
+                  currentBlock.subBlockCharactersAnimationSetsList.add(newUuid, subBlockCharacterAnimationSet);
+        
+        
+                
+                }
+         
+        
+              */
+      }
+    ],
     elementsCreationBlocked: false,
     startIndex: 0,
     endIndex: 0,
@@ -4091,6 +4169,14 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
     block.onclick = (event) => timeManipulationToggle();
     block.id = `${lastBlockId}`;
     document.getElementsByTagName("body")[0].append(block);
+    const createBlockImages = () => {
+    };
+    const createBlockImage = (leftPosition, src) => {
+      const blockImage = document.createElement("img");
+      blockImage.classList.add("blockImage");
+      blockImage.style.left = leftPosition.toString();
+      return blockImage;
+    };
     if (element) {
       block.append(element);
     }
@@ -4326,7 +4412,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
       electricityAudio.volume = 0;
     }, 1e3);
     setTimeout(() => {
-      epicAudio.play();
     }, 4e3);
     launchHeroRunAnimation();
   };
@@ -6983,7 +7068,6 @@ Take a look at the reducer(s) handling this action type: ${action.type}.
   };
   var launchGame = () => {
     runAudio.play();
-    epicAudio.play();
     heroRunning = true;
     gameLaunched = true;
     launchHeroRun();
